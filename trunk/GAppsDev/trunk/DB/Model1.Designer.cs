@@ -34,6 +34,9 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Suppliers", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Orders", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cookies", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cookies), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 
 #endregion
 
@@ -276,6 +279,22 @@ namespace DB
             }
         }
         private ObjectSet<Cookies> _Cookies;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Orders_OrderToItem> Orders_OrderToItem
+        {
+            get
+            {
+                if ((_Orders_OrderToItem == null))
+                {
+                    _Orders_OrderToItem = base.CreateObjectSet<Orders_OrderToItem>("Orders_OrderToItem");
+                }
+                return _Orders_OrderToItem;
+            }
+        }
+        private ObjectSet<Orders_OrderToItem> _Orders_OrderToItem;
 
         #endregion
 
@@ -376,6 +395,14 @@ namespace DB
         {
             base.AddObject("Cookies", cookies);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Orders_OrderToItem EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToOrders_OrderToItem(Orders_OrderToItem orders_OrderToItem)
+        {
+            base.AddObject("Orders_OrderToItem", orders_OrderToItem);
+        }
 
         #endregion
 
@@ -402,13 +429,15 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="year">Initial value of the Year property.</param>
         /// <param name="departmentId">Initial value of the DepartmentId property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 year, global::System.Int32 departmentId)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Budget CreateBudget(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 year, global::System.Int32 departmentId, global::System.DateTime creationDate)
         {
             Budget budget = new Budget();
             budget.Id = id;
             budget.CompanyId = companyId;
             budget.Year = year;
             budget.DepartmentId = departmentId;
+            budget.CreationDate = creationDate;
             return budget;
         }
 
@@ -514,6 +543,30 @@ namespace DB
         private global::System.Int32 _DepartmentId;
         partial void OnDepartmentIdChanging(global::System.Int32 value);
         partial void OnDepartmentIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -1031,12 +1084,14 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Deprtment CreateDeprtment(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 name)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Deprtment CreateDeprtment(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 name, global::System.DateTime creationDate)
         {
             Deprtment deprtment = new Deprtment();
             deprtment.Id = id;
             deprtment.CompanyId = companyId;
             deprtment.Name = name;
+            deprtment.CreationDate = creationDate;
             return deprtment;
         }
 
@@ -1118,6 +1173,30 @@ namespace DB
         private global::System.Int32 _Name;
         partial void OnNameChanging(global::System.Int32 value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -1507,12 +1586,14 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="address">Initial value of the Address property.</param>
-        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.String address)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.String address, global::System.DateTime creationDate)
         {
             Location location = new Location();
             location.Id = id;
             location.CompanyId = companyId;
             location.Address = address;
+            location.CreationDate = creationDate;
             return location;
         }
 
@@ -1594,6 +1675,30 @@ namespace DB
         private global::System.String _Address;
         partial void OnAddressChanging(global::System.String value);
         partial void OnAddressChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -2142,6 +2247,28 @@ namespace DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Orders_OrderToItem")]
+        public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders", "Orders_OrderToItem");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders", "Orders_OrderToItem", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -2163,12 +2290,16 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="title">Initial value of the Title property.</param>
         /// <param name="subTitle">Initial value of the SubTitle property.</param>
-        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle)
+        /// <param name="supplierId">Initial value of the SupplierId property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.Int32 supplierId, global::System.DateTime creationDate)
         {
             Orders_Items orders_Items = new Orders_Items();
             orders_Items.Id = id;
             orders_Items.Title = title;
             orders_Items.SubTitle = subTitle;
+            orders_Items.SupplierId = supplierId;
+            orders_Items.CreationDate = creationDate;
             return orders_Items;
         }
 
@@ -2250,6 +2381,54 @@ namespace DB
         private global::System.String _SubTitle;
         partial void OnSubTitleChanging(global::System.String value);
         partial void OnSubTitleChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SupplierId
+        {
+            get
+            {
+                return _SupplierId;
+            }
+            set
+            {
+                OnSupplierIdChanging(value);
+                ReportPropertyChanging("SupplierId");
+                _SupplierId = StructuralObject.SetValidValue(value, "SupplierId");
+                ReportPropertyChanged("SupplierId");
+                OnSupplierIdChanged();
+            }
+        }
+        private global::System.Int32 _SupplierId;
+        partial void OnSupplierIdChanging(global::System.Int32 value);
+        partial void OnSupplierIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -2295,6 +2474,318 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Items", "Orders", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier")]
+        public Supplier Supplier
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Items_Suppliers", "Supplier").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Items_Suppliers", "Supplier").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Supplier> SupplierReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Items_Suppliers", "Supplier");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Supplier>("designModel.FK_Orders_Items_Suppliers", "Supplier", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem")]
+        public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Orders_OrderToItem")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Orders_OrderToItem : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Orders_OrderToItem object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="orderId">Initial value of the OrderId property.</param>
+        /// <param name="itemId">Initial value of the ItemId property.</param>
+        /// <param name="quantity">Initial value of the Quantity property.</param>
+        /// <param name="singleItemPrice">Initial value of the SingleItemPrice property.</param>
+        public static Orders_OrderToItem CreateOrders_OrderToItem(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 itemId, global::System.Int32 quantity, global::System.Decimal singleItemPrice)
+        {
+            Orders_OrderToItem orders_OrderToItem = new Orders_OrderToItem();
+            orders_OrderToItem.Id = id;
+            orders_OrderToItem.OrderId = orderId;
+            orders_OrderToItem.ItemId = itemId;
+            orders_OrderToItem.Quantity = quantity;
+            orders_OrderToItem.SingleItemPrice = singleItemPrice;
+            return orders_OrderToItem;
+        }
+
+        #endregion
+
+        #region Simple Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderId
+        {
+            get
+            {
+                return _OrderId;
+            }
+            set
+            {
+                if (_OrderId != value)
+                {
+                    OnOrderIdChanging(value);
+                    ReportPropertyChanging("OrderId");
+                    _OrderId = StructuralObject.SetValidValue(value, "OrderId");
+                    ReportPropertyChanged("OrderId");
+                    OnOrderIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _OrderId;
+        partial void OnOrderIdChanging(global::System.Int32 value);
+        partial void OnOrderIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ItemId
+        {
+            get
+            {
+                return _ItemId;
+            }
+            set
+            {
+                if (_ItemId != value)
+                {
+                    OnItemIdChanging(value);
+                    ReportPropertyChanging("ItemId");
+                    _ItemId = StructuralObject.SetValidValue(value, "ItemId");
+                    ReportPropertyChanged("ItemId");
+                    OnItemIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ItemId;
+        partial void OnItemIdChanging(global::System.Int32 value);
+        partial void OnItemIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Quantity
+        {
+            get
+            {
+                return _Quantity;
+            }
+            set
+            {
+                if (_Quantity != value)
+                {
+                    OnQuantityChanging(value);
+                    ReportPropertyChanging("Quantity");
+                    _Quantity = StructuralObject.SetValidValue(value, "Quantity");
+                    ReportPropertyChanged("Quantity");
+                    OnQuantityChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Quantity;
+        partial void OnQuantityChanging(global::System.Int32 value);
+        partial void OnQuantityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal SingleItemPrice
+        {
+            get
+            {
+                return _SingleItemPrice;
+            }
+            set
+            {
+                if (_SingleItemPrice != value)
+                {
+                    OnSingleItemPriceChanging(value);
+                    ReportPropertyChanging("SingleItemPrice");
+                    _SingleItemPrice = StructuralObject.SetValidValue(value, "SingleItemPrice");
+                    ReportPropertyChanged("SingleItemPrice");
+                    OnSingleItemPriceChanged();
+                }
+            }
+        }
+        private global::System.Decimal _SingleItemPrice;
+        partial void OnSingleItemPriceChanging(global::System.Decimal value);
+        partial void OnSingleItemPriceChanged();
+
+        #endregion
+
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items")]
+        public Orders_Items Orders_Items
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Orders_Items>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_Items").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Orders_Items>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_Items").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Orders_Items> Orders_ItemsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Orders_Items>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_Items");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Orders_Items>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_Items", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order")]
+        public Order Order
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_OrderToItem_Orders", "Order").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_OrderToItem_Orders", "Order").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Order> OrderReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_OrderToItem_Orders", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Order>("designModel.FK_Orders_OrderToItem_Orders", "Order", value);
                 }
             }
         }
@@ -2428,13 +2919,15 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="email">Initial value of the Email property.</param>
         /// <param name="roles">Initial value of the Roles property.</param>
-        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles, global::System.DateTime creationDate)
         {
             PendingUser pendingUser = new PendingUser();
             pendingUser.Id = id;
             pendingUser.CompanyId = companyId;
             pendingUser.Email = email;
             pendingUser.Roles = roles;
+            pendingUser.CreationDate = creationDate;
             return pendingUser;
         }
 
@@ -2540,6 +3033,30 @@ namespace DB
         private global::System.Int32 _Roles;
         partial void OnRolesChanging(global::System.Int32 value);
         partial void OnRolesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -2602,11 +3119,13 @@ namespace DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Supplier CreateSupplier(global::System.Int32 id, global::System.String name)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Supplier CreateSupplier(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate)
         {
             Supplier supplier = new Supplier();
             supplier.Id = id;
             supplier.Name = name;
+            supplier.CreationDate = creationDate;
             return supplier;
         }
 
@@ -2664,6 +3183,30 @@ namespace DB
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
@@ -2687,6 +3230,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Suppliers", "Orders", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Items_Suppliers", "Orders_Items")]
+        public EntityCollection<Orders_Items> Orders_Items
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_Items>("designModel.FK_Orders_Items_Suppliers", "Orders_Items");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_Items>("designModel.FK_Orders_Items_Suppliers", "Orders_Items", value);
                 }
             }
         }
