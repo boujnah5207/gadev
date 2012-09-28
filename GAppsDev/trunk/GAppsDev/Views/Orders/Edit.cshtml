@@ -1,0 +1,102 @@
+﻿@model DB.Order
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Order</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyId, "Company")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CompanyId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CompanyId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserId, "User")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("UserId", String.Empty)
+            @Html.ValidationMessageFor(model => model.UserId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreationDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreationDate)
+            @Html.ValidationMessageFor(model => model.CreationDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SupplierId, "Supplier")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SupplierId", String.Empty)
+            @Html.ValidationMessageFor(model => model.SupplierId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ItemId, "Orders_Items")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ItemId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ItemId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Notes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Price)
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StatusId, "Orders_Statuses")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("StatusId", String.Empty)
+            @Html.ValidationMessageFor(model => model.StatusId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrderApproverNotes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OrderApproverNotes)
+            @Html.ValidationMessageFor(model => model.OrderApproverNotes)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
