@@ -1,0 +1,11 @@
+﻿@if (Session["User"] != null)
+{
+    <text>
+        ברוך הבא, @Html.ActionLink((Session["User"] as GAppsDev.OpenIdService.OpenIdUser).FullName, "ניהול", "פרטים", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+            <a href="javascript:document.getElementById('logoutForm').submit()">התנתק</a>
+}
+    </text>
+} else {
+    <span>@Html.ActionLink("התחבר", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</span>
+}

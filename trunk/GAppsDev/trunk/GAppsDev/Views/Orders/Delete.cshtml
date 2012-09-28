@@ -1,0 +1,82 @@
+﻿@model DB.Order
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Order</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Company.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Company.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Supplier.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Supplier.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Orders_Items.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Orders_Items.Title)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Orders_Statuses.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Orders_Statuses.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OrderApproverNotes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderApproverNotes)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

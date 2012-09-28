@@ -1,0 +1,23 @@
+﻿@model GAppsDev.Models.ErrorModels.ErrorModel
+
+@{
+    ViewBag.Title = "שגיאה";
+
+    string HtmlNewLine = System.Environment.NewLine + "<br />";
+    string HtmlErrorMessage = Model.ErrorMessage.Replace(System.Environment.NewLine, HtmlNewLine);
+}
+
+<h2>
+    @ViewBag.Title
+</h2>
+
+<div id="error-container">
+    <span>
+        @Html.Raw(HtmlErrorMessage)
+    </span>
+</div>
+<br />
+
+<div>
+    <input class="FormButton" type=button value="חזור" onClick="history.go(-1)">
+</div>

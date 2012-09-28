@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAppsDev", "GAppsDev\GAppsDev.csproj", "{7A225107-A345-4FDB-92EC-71708CC8B5CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalLibraries", "ExternalLibraries\ExternalLibraries.csproj", "{834D71F9-1A14-4597-BAC4-8A0016687771}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseLibraries", "BaseLibraries\BaseLibraries.csproj", "{4A9FA61C-2D28-4CF9-A9B7-D8423E3DDFF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{58C868C7-9728-4946-A63E-932B9C72AF88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{F8AD162E-D11A-4105-B630-2B4FA9535B0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA", "DA\DA.csproj", "{21442E25-6BC5-48EB-905D-9BA313989C6D}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A225107-A345-4FDB-92EC-71708CC8B5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A225107-A345-4FDB-92EC-71708CC8B5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A225107-A345-4FDB-92EC-71708CC8B5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A225107-A345-4FDB-92EC-71708CC8B5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{834D71F9-1A14-4597-BAC4-8A0016687771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{834D71F9-1A14-4597-BAC4-8A0016687771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{834D71F9-1A14-4597-BAC4-8A0016687771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{834D71F9-1A14-4597-BAC4-8A0016687771}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A9FA61C-2D28-4CF9-A9B7-D8423E3DDFF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A9FA61C-2D28-4CF9-A9B7-D8423E3DDFF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A9FA61C-2D28-4CF9-A9B7-D8423E3DDFF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A9FA61C-2D28-4CF9-A9B7-D8423E3DDFF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58C868C7-9728-4946-A63E-932B9C72AF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58C868C7-9728-4946-A63E-932B9C72AF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58C868C7-9728-4946-A63E-932B9C72AF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58C868C7-9728-4946-A63E-932B9C72AF88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8AD162E-D11A-4105-B630-2B4FA9535B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8AD162E-D11A-4105-B630-2B4FA9535B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8AD162E-D11A-4105-B630-2B4FA9535B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8AD162E-D11A-4105-B630-2B4FA9535B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21442E25-6BC5-48EB-905D-9BA313989C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21442E25-6BC5-48EB-905D-9BA313989C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21442E25-6BC5-48EB-905D-9BA313989C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21442E25-6BC5-48EB-905D-9BA313989C6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
