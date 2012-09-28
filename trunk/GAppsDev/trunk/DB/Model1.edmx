@@ -14,6 +14,15 @@
           <EntitySet Name="Cookies" EntityType="designModel.Store.Cookies" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Deprtments" EntityType="designModel.Store.Deprtments" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Orders" EntityType="designModel.Store.Orders" store:Type="Tables" Schema="uddi" />
+          <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Store.Orders_OrderToItem" store:Type="Tables" store:Schema="uddi" store:Name="Orders.OrderToItem">
+            <DefiningQuery>SELECT 
+      [Orders_OrderToItem].[Id] AS [Id], 
+      [Orders_OrderToItem].[OrderId] AS [OrderId], 
+      [Orders_OrderToItem].[ItemId] AS [ItemId], 
+      [Orders_OrderToItem].[Quantity] AS [Quantity], 
+      [Orders_OrderToItem].[SingleItemPrice] AS [SingleItemPrice]
+      FROM [uddi].[Orders.OrderToItem] AS [Orders_OrderToItem]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Orders_Statuses" EntityType="designModel.Store.Orders_Statuses" store:Type="Tables" Schema="uddi" Table="Orders.Statuses" />
           <EntitySet Name="PendingUsers" EntityType="designModel.Store.PendingUsers" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Suppliers" EntityType="designModel.Store.Suppliers" store:Type="Tables" Schema="uddi" />
@@ -49,6 +58,18 @@
           <AssociationSet Name="FK_Locations_Companies" Association="designModel.Store.FK_Locations_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.Store.FK_Orders_Items_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Orders_Items" EntitySet="Orders_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToItem_Orders" Association="designModel.Store.FK_Orders_OrderToItem_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Orders_OrderToItem" EntitySet="Orders_OrderToItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToItem_Orders_Items" Association="designModel.Store.FK_Orders_OrderToItem_Orders_Items">
+            <End Role="Orders_Items" EntitySet="Orders_Items" />
+            <End Role="Orders_OrderToItem" EntitySet="Orders_OrderToItem" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Companies" Association="designModel.Store.FK_Orders_Companies">
             <End Role="Companies" EntitySet="Companies" />
@@ -105,14 +126,17 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders_Items">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SupplierId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="SubTitle" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="Budget">
           <Key>
@@ -122,6 +146,7 @@
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="Cookies">
           <Key>
@@ -138,6 +163,7 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Name" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -154,6 +180,23 @@
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="OrderApproverNotes" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view '800964065_design.uddi.Orders.OrderToItem' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Orders_OrderToItem">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="SingleItemPrice" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="SingleItemPrice" Type="decimal" Nullable="false" />
+        </EntityType>
         <EntityType Name="Orders_Statuses">
           <Key>
             <PropertyRef Name="Id" />
@@ -166,6 +209,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Roles" Type="int" Nullable="false" />
@@ -175,6 +219,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Users">
@@ -283,6 +328,42 @@
             </Principal>
             <Dependent Role="Locations">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Items_Suppliers">
+          <End Role="Suppliers" Type="designModel.Store.Suppliers" Multiplicity="1" />
+          <End Role="Orders_Items" Type="designModel.Store.Orders_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_Items">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToItem_Orders">
+          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="1" />
+          <End Role="Orders_OrderToItem" Type="designModel.Store.Orders_OrderToItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToItem">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToItem_Orders_Items">
+          <End Role="Orders_Items" Type="designModel.Store.Orders_Items" Multiplicity="1" />
+          <End Role="Orders_OrderToItem" Type="designModel.Store.Orders_OrderToItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders_Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToItem">
+              <PropertyRef Name="ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -447,6 +528,19 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Cookies" EntitySet="Cookies" />
           </AssociationSet>
+          <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Orders_OrderToItem" />
+          <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.FK_Orders_Items_Suppliers">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="Orders_Items" EntitySet="Orders_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToItem_Orders_Items" Association="designModel.FK_Orders_OrderToItem_Orders_Items">
+            <End Role="Orders_Items" EntitySet="Orders_Items" />
+            <End Role="Orders_OrderToItem" EntitySet="Orders_OrderToItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToItem_Orders" Association="designModel.FK_Orders_OrderToItem_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Orders_OrderToItem" EntitySet="Orders_OrderToItem" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
           <Key>
@@ -486,6 +580,7 @@
           <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Locations_Companies" FromRole="Locations" ToRole="Companies" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Locations" FromRole="Locations" ToRole="Inventory" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Orders_Items">
           <Key>
@@ -496,6 +591,10 @@
           <Property Name="SubTitle" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Items" FromRole="Orders_Items" ToRole="Inventory" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Items" FromRole="Orders_Items" ToRole="Orders" />
+          <Property Type="Int32" Name="SupplierId" Nullable="false" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Supplier" Relationship="designModel.FK_Orders_Items_Suppliers" FromRole="Orders_Items" ToRole="Supplier" />
+          <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders_Items" FromRole="Orders_Items" ToRole="Orders_OrderToItem" />
         </EntityType>
         <EntityType Name="Budget">
           <Key>
@@ -507,6 +606,7 @@
           <Property Name="DepartmentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budget_Companies" FromRole="Budget" ToRole="Companies" />
           <NavigationProperty Name="Deprtment" Relationship="designModel.FK_Budget_Deprtments" FromRole="Budget" ToRole="Deprtments" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Deprtment">
           <Key>
@@ -517,6 +617,7 @@
           <Property Name="Name" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Deprtments_Companies" FromRole="Deprtments" ToRole="Companies" />
           <NavigationProperty Name="Budgets" Relationship="designModel.FK_Budget_Deprtments" FromRole="Deprtments" ToRole="Budget" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -537,6 +638,7 @@
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Orders" ToRole="Orders_Statuses" />
           <NavigationProperty Name="Supplier" Relationship="designModel.FK_Orders_Suppliers" FromRole="Orders" ToRole="Suppliers" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
+          <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
         </EntityType>
         <EntityType Name="Orders_Statuses">
           <Key>
@@ -555,6 +657,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Roles" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_PendingUsers_Companies" FromRole="PendingUsers" ToRole="Companies" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Supplier">
           <Key>
@@ -563,6 +666,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Suppliers" FromRole="Suppliers" ToRole="Orders" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Orders_Items" Relationship="designModel.FK_Orders_Items_Suppliers" FromRole="Supplier" ToRole="Orders_Items" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -769,6 +874,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Orders_OrderToItem">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="SingleItemPrice" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="OrderId" Nullable="false" />
+          <Property Type="Int32" Name="ItemId" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="Decimal" Name="SingleItemPrice" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="Orders_Items" Relationship="designModel.FK_Orders_OrderToItem_Orders_Items" FromRole="Orders_OrderToItem" ToRole="Orders_Items" />
+          <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Orders_OrderToItem" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK_Orders_Items_Suppliers">
+          <End Type="designModel.Supplier" Role="Supplier" Multiplicity="1" />
+          <End Type="designModel.Orders_Items" Role="Orders_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_Items">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToItem_Orders_Items">
+          <End Type="designModel.Orders_Items" Role="Orders_Items" Multiplicity="1" />
+          <End Type="designModel.Orders_OrderToItem" Role="Orders_OrderToItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders_Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToItem">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToItem_Orders">
+          <End Type="designModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="designModel.Orders_OrderToItem" Role="Orders_OrderToItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToItem">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -789,23 +946,28 @@
             <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Locations"><EntityTypeMapping TypeName="designModel.Location"><MappingFragment StoreEntitySet="Locations">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
             <ScalarProperty Name="Address" ColumnName="Address" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Orders_Items"><EntityTypeMapping TypeName="designModel.Orders_Items"><MappingFragment StoreEntitySet="Orders_Items">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Title" ColumnName="Title" />
             <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Budgets"><EntityTypeMapping TypeName="designModel.Budget"><MappingFragment StoreEntitySet="Budget">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
             <ScalarProperty Name="Year" ColumnName="Year" />
             <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Deprtments"><EntityTypeMapping TypeName="designModel.Deprtment"><MappingFragment StoreEntitySet="Deprtments">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
@@ -826,13 +988,15 @@
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PendingUsers"><EntityTypeMapping TypeName="designModel.PendingUser"><MappingFragment StoreEntitySet="PendingUsers">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
             <ScalarProperty Name="Email" ColumnName="Email" />
             <ScalarProperty Name="Roles" ColumnName="Roles" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Suppliers"><EntityTypeMapping TypeName="designModel.Supplier"><MappingFragment StoreEntitySet="Suppliers">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="designModel.User"><MappingFragment StoreEntitySet="Users">
@@ -854,6 +1018,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Orders_OrderToItem">
+            <EntityTypeMapping TypeName="designModel.Orders_OrderToItem">
+              <MappingFragment StoreEntitySet="Orders_OrderToItem">
+                <ScalarProperty Name="SingleItemPrice" ColumnName="SingleItemPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -868,7 +1043,7 @@
     <edmx:Options>
       <edmx:DesignerInfoPropertySet>
         <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <edmx:DesignerProperty Name="EnablePluralization" Value="False" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
         <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </edmx:DesignerInfoPropertySet>
     </edmx:Options>
@@ -967,6 +1142,10 @@
         </edmx:AssociationConnector>
         <edmx:EntityTypeShape EntityType="designModel.Cookies" Width="1.5" PointX="7.375" PointY="17.625" />
         <edmx:AssociationConnector Association="designModel.FK_Cookies_Users" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="3.25" PointX="9.625" PointY="20" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_Items_Suppliers" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders_Items" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
