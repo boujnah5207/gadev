@@ -15,7 +15,6 @@ namespace DA
         OrdersApprover = 2 | Viewer,
         Viewer = 4,
         SuperAdmin = int.MaxValue
-
     }
 
     public static class Roles
