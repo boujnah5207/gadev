@@ -13,7 +13,7 @@ using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class OrdersController : Controller
+    public class OrdersController : BaseController
     {
         private const int WAITING_FOR_APPROVAL_STATUS = 1;
         private Entities db = new Entities();
@@ -28,8 +28,6 @@ namespace GAppsDev.Controllers
             {
                 return View(ordersRep.GetList("Company", "Orders_Items", "Orders_Statuses", "Supplier", "User").ToList());
             }
-            //var orders = db.Orders.Include("Company").Include("Orders_Items").Include("Orders_Statuses").Include("Supplier").Include("User");
-            //return View(orders.ToList());
         }
 
         //
@@ -73,11 +71,10 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
-                OpenIdUser currentUser = (OpenIdUser)Session["User"]; //((OpenIdIdentity)User.Identity).OpenIdUser;
-                if (Roles.HasRole(currentUser.Roles, RoleType.Employee))
+                if (Authorized(RoleType.Employee))
                 {
-                    order.UserId = currentUser.UserId;
-                    order.CompanyId = currentUser.CompanyId;
+                    order.UserId = CurrentUser.UserId;
+                    order.CompanyId = CurrentUser.CompanyId;
                     order.CreationDate = DateTime.Now;
                     order.StatusId = WAITING_FOR_APPROVAL_STATUS;
                     order.OrderApproverNotes = String.Empty;
@@ -91,11 +88,11 @@ namespace GAppsDev.Controllers
                     if (wasCreated)
                         return RedirectToAction("Index");
                     else
-                        return View("Error", new ErrorModel("קרתה שגיאה בזמן השמירה למסד הנתונים. ההזמנה לא נשמרה במערכת."));
+                        return Error(Errors.ORDERS_CREATE_ERROR);
                 }
                 else
                 {
-                    return View("Error", new ErrorModel("אין לך הרשאה ליצור הזמנות. אנא פנה למנהל המערכת."));
+                    return Error(Errors.NO_PERMISSION);
                 }
             }
 
