@@ -14,15 +14,7 @@
           <EntitySet Name="Cookies" EntityType="designModel.Store.Cookies" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Deprtments" EntityType="designModel.Store.Deprtments" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Orders" EntityType="designModel.Store.Orders" store:Type="Tables" Schema="uddi" />
-          <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Store.Orders_OrderToItem" store:Type="Tables" store:Schema="uddi" store:Name="Orders.OrderToItem">
-            <DefiningQuery>SELECT 
-      [Orders_OrderToItem].[Id] AS [Id], 
-      [Orders_OrderToItem].[OrderId] AS [OrderId], 
-      [Orders_OrderToItem].[ItemId] AS [ItemId], 
-      [Orders_OrderToItem].[Quantity] AS [Quantity], 
-      [Orders_OrderToItem].[SingleItemPrice] AS [SingleItemPrice]
-      FROM [uddi].[Orders.OrderToItem] AS [Orders_OrderToItem]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Store.Orders_OrderToItem" store:Type="Tables" Schema="uddi" Table="Orders.OrderToItem" />
           <EntitySet Name="Orders_Statuses" EntityType="designModel.Store.Orders_Statuses" store:Type="Tables" Schema="uddi" Table="Orders.Statuses" />
           <EntitySet Name="PendingUsers" EntityType="designModel.Store.PendingUsers" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Suppliers" EntityType="designModel.Store.Suppliers" store:Type="Tables" Schema="uddi" />
@@ -180,16 +172,9 @@
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="OrderApproverNotes" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view '800964065_design.uddi.Orders.OrderToItem' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="Orders_OrderToItem">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="OrderId" />
-            <PropertyRef Name="ItemId" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="SingleItemPrice" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
