@@ -38,12 +38,12 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StatusId)
+            @Html.DisplayFor(modelItem => item.Orders_Statuses.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("הצג", "Details", new { id=item.Id }) |
+            @Html.ActionLink("ערוך", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("מחק", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
