@@ -1,42 +1,69 @@
 ﻿@model DB.Order
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "הזמנה חדשה";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+@section ExtraScripts{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+    <script src="~/Scripts/createOrderScript.js"></script>
+}
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Order</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SupplierId, "Supplier")
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
         </div>
-        <div class="editor-field">
-            @Html.DropDownList("SupplierId", String.Empty)
-            @Html.ValidationMessageFor(model => model.SupplierId)
-        </div>
+    </section>
+}
+
+<fieldset>
+    <legend>בחירת ספק</legend>
+    <label class="inlineLabel" for="choosenSupplier">ספק: </label>
+    
+    @Html.DropDownList("SupplierId", (SelectList)ViewBag.SupplierId, new { id = "suppliersList" })
+    
+    <input id="SupplierButton" type="button" value="בחר והמשך" onclick="beginForm()"/>
+</fieldset>
+
+<fieldset id="formContainer" style="display:none;">
+    <legend>פרטי הזמנה</legend>
+
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { style = "display:none;" }))
+    {
+        @Html.ValidationSummary(true)
+
+        <input id="SupplierId" name="SupplierId" type="hidden" value="" />
+        <input id="ItemsAsString" name="Items" type="hidden" value="" />
 
         <div class="editor-label">
             @Html.LabelFor(model => model.ItemId, "Orders_Items")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ItemId", String.Empty)
-            @Html.ValidationMessageFor(model => model.ItemId)
+            <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
+            
+            <div id="AddNewItemContainer">
+                <span>הוסף פריט להזמנה: </span>
+                <br />
+                פריט: <span id="loadingMessage">
+                    טוען פריטים ...
+                </span>
+                כמות : <input style="width:50px" id="itemQuantity" type="text" />
+                מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
+                מחיר כולל : <input style="width:50px" id="itemFinalPrice" type="text" disabled="disabled"/>
+                <input id="AddNewItemButton" type="button" value="הוסף" />
+            </div>
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Price)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Price)
-            @Html.ValidationMessageFor(model => model.Price)
-        </div>
-
+        
+        <fieldset id="orderItems">
+            <legend>פריטים להזמנה</legend>
+        
+        </fieldset>
+        <span>מחיר כולל: </span><input type="text" id="totalOrderPrice" disabled="disabled"/>
         <div class="editor-label">
             @Html.LabelFor(model => model.Notes)
         </div>
@@ -46,10 +73,10 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="שלח הזמנה" />
         </p>
-    </fieldset>
-}
+    }
+</fieldset>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
