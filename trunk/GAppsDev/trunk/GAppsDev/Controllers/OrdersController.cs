@@ -36,15 +36,28 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult MyOrders()
         {
-            OpenIdUser currentUser = (OpenIdUser)Session["User"];
-
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            if (Authorized(RoleType.Employee))
             {
-                return View(ordersRep.GetList("Company", "Orders_Items", "Orders_Statuses", "Supplier", "User").Where(x => x.UserId == currentUser.UserId).ToList());
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    return View(ordersRep.GetList("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId).ToList());
+                }
             }
+            else return Error(Errors.NO_PERMISSION);
         }
 
-
+        [OpenIdAuthorize]
+        public ActionResult ApproveOrders()
+        {
+            if (Authorized(RoleType.OrdersApprover))
+            {
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    return View(ordersRep.GetList("Supplier", "User").Where(x => x.Orders_Statuses.Id == (int)StatusType.Pending).ToList());
+                }
+            }
+            else return Error(Errors.NO_PERMISSION);
+        }
 
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
@@ -71,7 +84,7 @@ namespace GAppsDev.Controllers
                 ViewBag.StatusId = new SelectList(statusRep.GetList().ToList(), "Id", "Name");
                 ViewBag.SupplierId = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
             }
-            
+
             return View();
         }
 
