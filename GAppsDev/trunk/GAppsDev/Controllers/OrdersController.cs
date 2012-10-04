@@ -34,6 +34,19 @@ namespace GAppsDev.Controllers
         // GET: /Orders/Details/5
 
         [OpenIdAuthorize]
+        public ActionResult MyOrders()
+        {
+            OpenIdUser currentUser = (OpenIdUser)Session["User"];
+
+            using (OrdersRepository ordersRep = new OrdersRepository())
+            {
+                return View(ordersRep.GetList("Company", "Orders_Items", "Orders_Statuses", "Supplier", "User").Where(x => x.UserId == currentUser.UserId).ToList());
+            }
+        }
+
+
+
+        [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
             Order order = db.Orders.Single(o => o.Id == id);
