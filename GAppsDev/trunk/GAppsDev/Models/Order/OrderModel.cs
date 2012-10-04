@@ -9,6 +9,6 @@ namespace GAppsDev.Models
     public class OrderModel
     {
         public Order Order { get; set; }
-        public Orders_OrderToItem OrderToITem { get; set; }
+        public List<Orders_OrderToItem> OrderToITem { get; set; }
     }
 }
