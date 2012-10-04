@@ -51,6 +51,7 @@
     <Compile Include="PendingUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles.cs" />
+    <Compile Include="Statuses.cs" />
     <Compile Include="SuppliersRepository.cs" />
     <Compile Include="UserRepository.cs" />
   </ItemGroup>
