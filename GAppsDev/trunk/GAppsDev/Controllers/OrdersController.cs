@@ -10,6 +10,7 @@ using DB;
 using GAppsDev.Models.ErrorModels;
 using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
+using GAppsDev.Models;
 
 namespace GAppsDev.Controllers
 {
@@ -47,7 +48,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult ApproveOrders()
+        public ActionResult PendingOrders()
         {
             if (Authorized(RoleType.OrdersApprover))
             {
@@ -55,6 +56,19 @@ namespace GAppsDev.Controllers
                 {
                     return View(ordersRep.GetList("Supplier", "User").Where(x => x.Orders_Statuses.Id == (int)StatusType.Pending).ToList());
                 }
+            }
+            else return Error(Errors.NO_PERMISSION);
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult ApproveOrder(int id = 0)
+        {
+            if (Authorized(RoleType.OrdersApprover))
+            {
+                OrderModel orderModel = new OrderModel();
+                orderModel.Order = db.Orders.Single(o => o.Id == id);
+                orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+                return View(orderModel);
             }
             else return Error(Errors.NO_PERMISSION);
         }
@@ -123,7 +137,6 @@ namespace GAppsDev.Controllers
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", order.CompanyId);
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", order.ItemId);
             ViewBag.StatusId = new SelectList(db.Orders_Statuses, "Id", "Name", order.StatusId);
             ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", order.SupplierId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "Email", order.UserId);
@@ -142,7 +155,6 @@ namespace GAppsDev.Controllers
                 return HttpNotFound();
             }
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", order.CompanyId);
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", order.ItemId);
             ViewBag.StatusId = new SelectList(db.Orders_Statuses, "Id", "Name", order.StatusId);
             ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", order.SupplierId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "Email", order.UserId);
@@ -164,7 +176,6 @@ namespace GAppsDev.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", order.CompanyId);
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", order.ItemId);
             ViewBag.StatusId = new SelectList(db.Orders_Statuses, "Id", "Name", order.StatusId);
             ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", order.SupplierId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "Email", order.UserId);
