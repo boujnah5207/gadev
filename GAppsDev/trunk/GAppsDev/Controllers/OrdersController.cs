@@ -27,7 +27,7 @@ namespace GAppsDev.Controllers
         {
             using (OrdersRepository ordersRep = new OrdersRepository())
             {
-                return View(ordersRep.GetList("Company", "Orders_Items", "Orders_Statuses", "Supplier", "User").ToList());
+                return View(ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").ToList());
             }
         }
 

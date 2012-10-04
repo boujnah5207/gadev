@@ -27,6 +27,7 @@
     
     @Html.DropDownList("SupplierId", (SelectList)ViewBag.SupplierId, new { id = "suppliersList" })
     
+    <input id="AddSupplierButton" type="button" value="הוסף ספק" onclick="addSupplier()"/>
     <input id="SupplierButton" type="button" value="בחר והמשך" onclick="beginForm()"/>
 </fieldset>
 
@@ -41,7 +42,7 @@
         <input id="ItemsAsString" name="Items" type="hidden" value="" />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ItemId, "Orders_Items")
+            פריטים בהזמנה
         </div>
         <div class="editor-field">
             <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
@@ -49,9 +50,7 @@
             <div id="AddNewItemContainer">
                 <span>הוסף פריט להזמנה: </span>
                 <br />
-                פריט: <span id="loadingMessage">
-                    טוען פריטים ...
-                </span>
+                פריט: <span id="loadingMessage"> טוען פריטים ... </span>
                 כמות : <input style="width:50px" id="itemQuantity" type="text" />
                 מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
                 מחיר כולל : <input style="width:50px" id="itemFinalPrice" type="text" disabled="disabled"/>
