@@ -42,7 +42,7 @@ namespace BaseLibraries
             }
             catch
             {
-                return Enumerable.Empty<TEntity>().AsQueryable();
+                return null;
             }
         }
 

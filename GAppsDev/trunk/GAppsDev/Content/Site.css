@@ -16,6 +16,25 @@ body {
     text-align:right;
 }
 
+
+.selectedSupplier {
+    font-size:20px;
+    font-weight:bold;
+}
+
+.inlineLabel {
+    margin-left:10px;
+    display:inline-block;
+}
+
+.hidden {
+    visibility:hidden;
+}
+
+form {
+    overflow:hidden;
+}
+
 a {
     color: #333;
     outline: none;
@@ -328,6 +347,10 @@ aside {
     font-weight: 700;
 }
 
+select {
+    min-width:130px;
+}
+
 /* login page */
 #loginForm {
     border-right: solid 2px #c8c8c8;
@@ -396,14 +419,10 @@ aside {
 
 /* forms */
 fieldset {
-    border: none;
+    border: 1px solid grey;
     margin: 0;
-    padding: 0;
+    padding: 15px;
 }
-
-    fieldset legend {
-        display: none;
-    }
 
     fieldset ol {
         padding: 0;
@@ -462,6 +481,13 @@ textarea {
         width: auto;
     }
 
+    input[type="submit"][disabled],
+    input[type="button"][disabled],
+    button [disabled] {
+        opacity:0.5;
+        cursor:default;
+    }
+    
     td input[type="submit"],
     td input[type="button"],
     td button {
@@ -594,41 +620,48 @@ tr.pager td {
 /********************
 *   Mobile Styles   *
 ********************/
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 850px)
+{
 
     /* header
     ----------------------------------------------------------*/
     header .float-left,
-    header .float-right {
+    header .float-right
+    {
         float: none;
     }
 
     /* logo */
-    header .site-title {
+    header .site-title
+    {
         margin: 10px;
         text-align: center;
     }
 
     /* login */
-    #login {
+    #login
+    {
         font-size: .85em;
         margin: 0 0 12px;
         text-align: center;
     }
 
-        #login ul {
+        #login ul
+        {
             margin: 5px 0;
             padding: 0;
         }
 
-        #login li {
+        #login li
+        {
             display: inline;
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        #login a {
+        #login a
+        {
             background: none;
             color: #999;
             font-weight: 600;
@@ -636,22 +669,26 @@ tr.pager td {
             padding: 0;
         }
 
-        #login a:hover {
-            color: #333;
-        }
+            #login a:hover
+            {
+                color: #333;
+            }
 
     /* menu */
-    nav {
+    nav
+    {
         margin-bottom: 5px;
     }
 
-    ul#menu {
+    ul#menu
+    {
         margin: 0;
         padding: 0;
         text-align: center;
     }
 
-        ul#menu li {
+        ul#menu li
+        {
             margin: 0;
             padding: 0;
         }
@@ -660,32 +697,38 @@ tr.pager td {
     /* main layout
     ----------------------------------------------------------*/
     .main-content,
-    .featured + .main-content {
+    .featured + .main-content
+    {
         background-position: 10px 0;
     }
 
-    .content-wrapper {
+    .content-wrapper
+    {
         padding-right: 10px;
         padding-left: 10px;
     }
 
-    .featured .content-wrapper {
+    .featured .content-wrapper
+    {
         padding: 10px;
     }
 
     /* page content */
-    article, aside {
+    article, aside
+    {
         float: none;
         width: 100%;
     }
 
     /* ordered list */
-    ol.round {
+    ol.round
+    {
         list-style-type: none;
         padding-left: 0;
     }
 
-        ol.round li {
+        ol.round li
+        {
             padding-left: 10px;
             margin: 25px 0;
         }
@@ -699,28 +742,33 @@ tr.pager td {
             ol.round li.six,
             ol.round li.seven,
             ol.round li.eight,
-            ol.round li.nine {
+            ol.round li.nine
+            {
                 background: none;
             }
 
-     /* features */
-     section.feature {
+    /* features */
+    section.feature
+    {
         float: none;
         padding: 10px;
         width: auto;
-     }
+    }
 
-        section.feature img {
+        section.feature img
+        {
             color: #999;
             content: attr(alt);
             font-size: 1.5em;
             font-weight: 600;
         }
 
-    /* forms */
-    input {
-        width: 90%;
-    }
+/* forms */
+
+
+input {
+    width: 90%;
+}
 
     /* login page */
     #loginForm {

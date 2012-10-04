@@ -12,7 +12,6 @@ namespace GAppsDev.Controllers
 {
     public abstract class BaseController : Controller
     {
-        
         public OpenIdUser CurrentUser 
         {
             get
@@ -23,11 +22,12 @@ namespace GAppsDev.Controllers
 
         public bool Authorized(params RoleType[] roles)
         {
-            OpenIdUser user = CurrentUser;
+            if (CurrentUser == null)
+                return false;
 
             foreach (RoleType role in roles)
             {
-                if (!Roles.HasRole(user.Roles, role))
+                if (!Roles.HasRole(CurrentUser.Roles, role))
                     return false;
             }
 

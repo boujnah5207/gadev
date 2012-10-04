@@ -14,5 +14,11 @@ namespace GAppsDev.Models.ErrorModels
         // Orders Errors
         public const string ORDERS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההזמנה לא נשמרה במערכת.";
 
+        // Suppliers Errors
+        public const string SUPPLIERS_GET_ERROR = "קרתה שגיאה בזמן הגישה לספקים בבסיס הנתונים. אנא נסה שוב.";
+
+        //OrderItems Errors
+        public const string ORDERITEMS_GET_ERROR = "קרתה שגיאה בזמן הגישה לפריטים להזמנה בבסיס הנתונים. אנא נסה שוב.";
+
     }
 }
