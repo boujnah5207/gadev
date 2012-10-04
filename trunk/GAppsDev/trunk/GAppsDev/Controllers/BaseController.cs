@@ -38,5 +38,37 @@ namespace GAppsDev.Controllers
         {
             return View("Error", new ErrorModel(errorMessage));
         }
+
+        public ActionResult Error(ModelStateDictionary modelState)
+        {
+            return View("Error", new ErrorModel(GetErrorsFromModel(modelState)));
+        }
+
+        protected string GetErrorsFromModel(ModelStateDictionary modelState)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(Errors.INVALID_FORM);
+            builder.AppendLine();
+
+            foreach (var kvp in modelState)
+            {
+                var fieldName = kvp.Key;
+                var value = kvp.Value;
+
+                if (value.Errors.Count > 0)
+                {
+                    builder.AppendLine(String.Format("בשדה \"{0}\":", fieldName, value.Value.AttemptedValue));
+                    foreach (var error in value.Errors)
+                    {
+                        builder.AppendLine(error.ErrorMessage);
+                    }
+                }
+            }
+
+            builder.AppendLine();
+            builder.AppendLine("אנא חזור ונסה שנית.");
+
+            return builder.ToString();
+        }
     }
 }

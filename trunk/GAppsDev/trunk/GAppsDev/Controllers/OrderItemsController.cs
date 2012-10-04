@@ -43,8 +43,28 @@ namespace GAppsDev.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name");
-            return View();
+            if (Authorized(RoleType.Employee))
+            {
+                List<Supplier> allSuppliers;
+                using(SuppliersRepository suppliersRep = new SuppliersRepository())
+                {
+                    allSuppliers = suppliersRep.GetList().ToList();
+                }
+
+                if (allSuppliers != null)
+                {
+                    ViewBag.SupplierId = new SelectList(allSuppliers, "Id", "Name");
+                    return View();
+                }
+                else
+                {
+                    return Error(Errors.SUPPLIERS_GET_ERROR);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //

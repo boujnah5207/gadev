@@ -38,7 +38,7 @@ function beginForm() {
     selectedSupplier.ID = suppliersList.val();
     selectedSupplier.Name = $("#suppliersList option:selected").text();
 
-    suppliersList.replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"))
+    $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"))
 
     $.ajax({
         type: "GET",
@@ -70,6 +70,32 @@ function beginForm() {
     itemQuantityField.keyup(updateItemFinalPrice);
 }
 
+function addSupplier() {
+    $.ajax({
+        type: "POST",
+        url: "/Suppliers/PopOutCreate/",
+    }).done(function (response) {
+        console.log($(response));
+        //var dialogContainer = $(response);
+        //console.log(dialogContainer);
+        $(response).dialog({
+            title: "הוסף ספק",
+            width: 400,
+            height: 540,
+            close: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Suppliers/GetAll",
+                }).done(function (response) {
+                    if (response.gotData) {
+                        UpdateSupplierList(response.data);
+                    }
+                });
+            }
+        })
+    });
+}
+
 function updateItemFinalPrice() {
     var quantity;
     var itemPrice;
@@ -89,6 +115,20 @@ function updateItemFinalPrice() {
     }
 
     itemFinalPrice.val(quantity * itemPrice);
+}
+
+function UpdateSupplierList(newSupplierList) {
+    selectText = "";
+    selectText += "<select id='suppliersList' name='SupplierId'>";
+
+    for (var i = 0; i < newSupplierList.length - 1; i++) {
+        selectText += "<option value=" + newSupplierList[i].Id + ">" + newSupplierList[i].Name + "</option>";
+    }
+
+    selectText += "</select>";
+
+    var dropDownList = $(selectText);
+    $("#suppliersList").replaceWith(dropDownList);
 }
 
 function UpdateItemsList(newItemList) {
