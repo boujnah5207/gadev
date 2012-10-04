@@ -129,14 +129,14 @@ namespace Mvc4.OpenId.Sample.Security
 
             using (CookiesRepository cookiesRep = new CookiesRepository())
             {
-                    Cookies existingCookie = cookiesRep.GetList().FirstOrDefault(x => x.UserId == user.UserId);
+                    Cooky existingCookie = cookiesRep.GetList().FirstOrDefault(x => x.UserId == user.UserId);
 
                     if (existingCookie != null)
                     {
                         if (cookiesRep.Delete(existingCookie.Id) == false)
                             return null;
                     }
-                    Cookies newCookie = new Cookies()
+                    Cooky newCookie = new Cooky()
                     {
                         UserId = user.UserId,
                         HashValue = hashValue

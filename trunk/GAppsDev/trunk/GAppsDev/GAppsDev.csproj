@@ -139,9 +139,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ErrorModels\ErrorModel.cs" />
-    <Compile Include="Models\ErrorModels\Errors.cs" />
-    <Compile Include="Models\OrderItemsModels\AjaxOrderItem.cs" />
+    <Compile Include="Models\Error\ErrorModel.cs" />
+    <Compile Include="Models\Error\Errors.cs" />
+    <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
+    <Compile Include="Models\Order\OrderModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
@@ -257,6 +258,11 @@
     <Content Include="Views\OrderItems\Create.cshtml" />
     <Content Include="Views\OrderItems\Edit.cshtml" />
     <Content Include="Views\OrderItems\Delete.cshtml" />
+    <Content Include="Views\Orders\MyOrders.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Orders\PendingOrders.cshtml" />
+    <Content Include="Views\Orders\ApproveOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

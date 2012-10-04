@@ -8,7 +8,7 @@ using DB;
 
 namespace DA
 {
-    public class CookiesRepository : BaseRepository<Cookies, Entities>, IDisposable
+    public class CookiesRepository : BaseRepository<Cooky, Entities>, IDisposable
     {
 
     }
