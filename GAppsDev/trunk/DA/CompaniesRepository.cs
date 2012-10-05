@@ -10,6 +10,10 @@ namespace DA
 {
     public class CompaniesRepository : BaseRepository<Company, Entities>
     {
-
+        public override bool Create(Company entity)
+        {
+            entity.CreationDate = DateTime.Now;
+            return base.Create(entity);
+        }
     }
 }

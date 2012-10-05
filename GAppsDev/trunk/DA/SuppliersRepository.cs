@@ -10,6 +10,10 @@ namespace DA
 {
     public class SuppliersRepository : BaseRepository<Supplier, Entities>
     {
-
+        public override bool Create(Supplier entity)
+        {
+            entity.CreationDate = DateTime.Now;
+            return base.Create(entity);
+        }
     }
 }

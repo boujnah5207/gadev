@@ -11,6 +11,10 @@ namespace DA
 {
     public class UserRepository : BaseRepository<User, Entities>, IDisposable
     {
-        
+        public override bool Create(User entity)
+        {
+            entity.CreationTime = DateTime.Now;
+            return base.Create(entity);
+        }
     }
 }
