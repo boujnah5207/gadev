@@ -365,7 +365,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Orders\PendingOrders.cshtml" />
-    <Content Include="Views\Orders\ApproveOrder.cshtml" />
+    <Content Include="Views\Orders\ModifyStatus.cshtml" />
     <Content Include="Views\Suppliers\PopOutCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>

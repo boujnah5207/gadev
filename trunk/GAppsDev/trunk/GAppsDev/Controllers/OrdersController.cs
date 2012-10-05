@@ -61,7 +61,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult ApproveOrder(int id = 0)
+        public ActionResult ModifyStatus(int id = 0)
         {
             if (Authorized(RoleType.OrdersApprover))
             {
@@ -71,6 +71,37 @@ namespace GAppsDev.Controllers
                 return View(orderModel);
             }
             else return Error(Errors.NO_PERMISSION);
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
+        {
+            if (Authorized(RoleType.OrdersApprover))
+            {
+                using (OrdersRepository ordersRepository = new OrdersRepository())
+                {
+                    Order order = ordersRepository.GetEntity(modifiedOrder.Order.Id);
+                    order.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
+                    if (selectedStatus == "אשר הזמנה") order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                    if (selectedStatus == "דחה הזמנה") order.StatusId = (int)StatusType.Declined;
+                    if (selectedStatus == "החזר למשתמש") order.StatusId = (int)StatusType.PendingOrderCreator;
+                    ordersRepository.Update(order);
+                    return RedirectToAction("PendingOrders");
+                }
+            }
+            else return Error(Errors.NO_PERMISSION);
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult DownloadOrderAsPdf(int id)
+        {
+            Order order = db.Orders.Single(o => o.Id == id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
         }
 
         [OpenIdAuthorize]

@@ -8,8 +8,8 @@ using DB;
 
 namespace DA
 {
-    public class OrderStatusesRepository : BaseRepository<Orders_Items, Entities>
+    public class OrderStatusesRepository : BaseRepository<Orders_Statuses, Entities>
     {
-
+        
     }
 }

@@ -5,6 +5,7 @@
 }
 
 <h2>אישור הזמנה</h2>
+@using (Html.BeginForm()) {
 
 <fieldset>
     <legend>Order</legend>
@@ -70,21 +71,22 @@
         @Html.DisplayFor(model => model.Order.Price)
     </div>
 
-    <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.StatusId)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
-    </div>
 
     <div class="display-label">
         @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.OrderApproverNotes)
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Order.OrderApproverNotes)
     </div>
+    @Html.HiddenFor(model => model.Order.Id)
+    <p>
+        <input type="submit" name="selectedStatus" value="אשר הזמנה" />
+        <input type="submit" name="selectedStatus" value="דחה הזמנה" />
+        <input type="submit" name="selectedStatus" value="החזר למשתמש" />
+
+    </p>
 </fieldset>
+}
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Order.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

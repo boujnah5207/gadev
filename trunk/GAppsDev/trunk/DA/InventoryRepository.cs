@@ -10,6 +10,10 @@ namespace DA
 {
     public class InventoryRepository : BaseRepository<Inventory, Entities>, IDisposable
     {
-
+        public override bool Create(Inventory entity)
+        {
+            entity.CreationDate = DateTime.Now;
+            return base.Create(entity);
+        }
     }
 }
