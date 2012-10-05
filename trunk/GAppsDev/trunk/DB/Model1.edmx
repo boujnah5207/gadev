@@ -162,10 +162,10 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="SupplierId" Type="int" Nullable="false" />
-          <Property Name="Notes" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
           <Property Name="Price" Type="decimal" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
-          <Property Name="OrderApproverNotes" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="OrderApproverNotes" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Orders_OrderToItem">
           <Key>
@@ -613,10 +613,10 @@
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
           <Property Type="Int32" Name="SupplierId" Nullable="false" />
-          <Property Type="String" Name="Notes" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Notes" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Decimal" Name="Price" Nullable="false" Precision="18" Scale="0" />
           <Property Type="Int32" Name="StatusId" Nullable="false" />
-          <Property Type="String" Name="OrderApproverNotes" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OrderApproverNotes" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
