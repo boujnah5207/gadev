@@ -1785,9 +1785,11 @@ namespace DB
         /// <param name="userId">Initial value of the UserId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
+        /// <param name="notes">Initial value of the Notes property.</param>
         /// <param name="price">Initial value of the Price property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.Decimal price, global::System.Int32 statusId)
+        /// <param name="orderApproverNotes">Initial value of the OrderApproverNotes property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.String notes, global::System.Decimal price, global::System.Int32 statusId, global::System.String orderApproverNotes)
         {
             Order order = new Order();
             order.Id = id;
@@ -1795,8 +1797,10 @@ namespace DB
             order.UserId = userId;
             order.CreationDate = creationDate;
             order.SupplierId = supplierId;
+            order.Notes = notes;
             order.Price = price;
             order.StatusId = statusId;
+            order.OrderApproverNotes = orderApproverNotes;
             return order;
         }
 
@@ -1930,7 +1934,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String Notes
         {
@@ -1942,7 +1946,7 @@ namespace DB
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
+                _Notes = StructuralObject.SetValidValue(value, false, "Notes");
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -2002,7 +2006,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String OrderApproverNotes
         {
@@ -2014,7 +2018,7 @@ namespace DB
             {
                 OnOrderApproverNotesChanging(value);
                 ReportPropertyChanging("OrderApproverNotes");
-                _OrderApproverNotes = StructuralObject.SetValidValue(value, true, "OrderApproverNotes");
+                _OrderApproverNotes = StructuralObject.SetValidValue(value, false, "OrderApproverNotes");
                 ReportPropertyChanged("OrderApproverNotes");
                 OnOrderApproverNotesChanged();
             }
