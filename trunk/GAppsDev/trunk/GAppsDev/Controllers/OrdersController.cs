@@ -138,26 +138,94 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Order order)
+        public ActionResult Create(Order order, string itemsString)
         {
             if (ModelState.IsValid)
             {
                 if (Authorized(RoleType.Employee))
                 {
+                    List<Orders_OrderToItem> ItemsList = new List<Orders_OrderToItem>();
+
                     order.UserId = CurrentUser.UserId;
                     order.CompanyId = CurrentUser.CompanyId;
                     order.CreationDate = DateTime.Now;
                     order.StatusId = WAITING_FOR_APPROVAL_STATUS;
                     order.OrderApproverNotes = String.Empty;
 
-                    bool wasCreated;
+                    bool wasOrderCreated;
                     using (OrdersRepository orderRep = new OrdersRepository())
                     {
-                        wasCreated = orderRep.Create(order);
+                        wasOrderCreated = orderRep.Create(order);
                     }
 
-                    if (wasCreated)
-                        return RedirectToAction("Index");
+                    if (wasOrderCreated)
+                    {
+                        string[] splitItems = itemsString.Split(new char[]{';'}, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string item in splitItems)
+                        {
+                            bool isValidItem;
+                            int itemId = 0;
+                            int quantity = 0;
+                            int singleItemPrice = 0;
+
+                            string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (itemValues.Length == 3)
+                            {
+                                if (
+                                    int.TryParse(itemValues[0], out itemId) &&
+                                    int.TryParse(itemValues[1], out quantity) &&
+                                    int.TryParse(itemValues[2], out singleItemPrice)
+                                    )
+                                {
+                                    isValidItem = true;
+                                }
+                                else
+                                {
+                                    isValidItem = false;
+                                }
+                            }
+                            else
+                            {
+                                isValidItem = false;
+                            }
+
+                            if (isValidItem)
+                            {
+                                Orders_OrderToItem newItem = new Orders_OrderToItem()
+                                {
+                                    OrderId = order.Id,
+                                    ItemId = itemId,
+                                    Quantity = quantity,
+                                    SingleItemPrice = singleItemPrice
+                                };
+
+                                ItemsList.Add(newItem);
+                            }
+                            else
+                            {
+                                using (OrdersRepository orderRep = new OrdersRepository())
+                                {
+                                    orderRep.Delete(order.Id);
+                                }
+                                return Error(Errors.INVALID_FORM);
+                            }
+                        }
+
+                        bool noItemErrors = true;
+                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        {
+                            foreach (Orders_OrderToItem item in ItemsList)
+                            {
+                                if (!orderToItemRep.Create(item))
+                                    noItemErrors = false;
+                            }
+                        }
+
+                        if (noItemErrors)
+                            return RedirectToAction("Index");
+                        else
+                            return Error("קרתה שגיאה בזמן שמירת הפריטים בהזמנה. לא כל הפריטים נשמרו.");
+                    }
                     else
                         return Error(Errors.ORDERS_CREATE_ERROR);
                 }

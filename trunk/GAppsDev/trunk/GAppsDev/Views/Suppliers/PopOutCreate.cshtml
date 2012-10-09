@@ -35,6 +35,22 @@
                 @Html.EditorFor(model => model.Phone_Number)
                 @Html.ValidationMessageFor(model => model.Phone_Number)
             </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Address)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.City)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.City)
+                @Html.ValidationMessageFor(model => model.City)
+            </div>
         </fieldset>
     
         <fieldset id="OptionalFields">
@@ -43,22 +59,6 @@
             <input type="button" value="הרחב" onclick="$('#hiddenFieldsContainer').slideToggle(500,null);"/>
 
             <div id="hiddenFieldsContainer" style="display:none;">
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Address)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Address)
-                    @Html.ValidationMessageFor(model => model.Address)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.City)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.City)
-                    @Html.ValidationMessageFor(model => model.City)
-                </div>
-
                 <div class="editor-label">
                     @Html.LabelFor(model => model.Customer_Number)
                 </div>
@@ -134,7 +134,7 @@
         </fieldset>
     
         <p>
-            <input type="submit" value="Create" />
+            <input id="submitSupplier" type="button" value="הוסף" />
         </p>
     }
 

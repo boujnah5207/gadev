@@ -9,6 +9,7 @@ using DA;
 using DB;
 using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.OrderItemsModels;
+using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
@@ -19,6 +20,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /OrderItems/
 
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
             var orders_items = db.Orders_Items.Include("Supplier");
@@ -28,6 +30,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /OrderItems/Details/5
 
+        [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
             Orders_Items orders_items = db.Orders_Items.Single(o => o.Id == id);
@@ -41,6 +44,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /OrderItems/Create
 
+        [OpenIdAuthorize]
         public ActionResult Create()
         {
             if (Authorized(RoleType.Employee))
@@ -71,6 +75,7 @@ namespace GAppsDev.Controllers
         // POST: /OrderItems/Create
 
         [HttpPost]
+        [OpenIdAuthorize]
         public ActionResult Create(Orders_Items orders_items)
         {
             if (ModelState.IsValid)
@@ -84,9 +89,44 @@ namespace GAppsDev.Controllers
             return View(orders_items);
         }
 
+        [OpenIdAuthorize]
+        public ActionResult PopOutCreate()
+        {
+            if (Authorized(RoleType.Employee))
+            {
+                return PartialView();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        public JsonResult AjaxCreate(Orders_Items orderItem)
+        {
+            if (Authorized(RoleType.Employee))
+            {
+                bool wasCreated;
+                using (OrderItemsRepository itemRep = new OrderItemsRepository())
+                {
+                    wasCreated = itemRep.Create(orderItem);
+                }
+
+                if (wasCreated)
+                    return Json(new { success = true, message = String.Empty }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, message = Errors.SUPPLIERS_CREATE_ERROR }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         //
         // GET: /OrderItems/Edit/5
 
+        [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
             Orders_Items orders_items = db.Orders_Items.Single(o => o.Id == id);
@@ -102,6 +142,7 @@ namespace GAppsDev.Controllers
         // POST: /OrderItems/Edit/5
 
         [HttpPost]
+        [OpenIdAuthorize]
         public ActionResult Edit(Orders_Items orders_items)
         {
             if (ModelState.IsValid)
@@ -118,6 +159,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /OrderItems/Delete/5
 
+        [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
             Orders_Items orders_items = db.Orders_Items.Single(o => o.Id == id);
@@ -132,6 +174,7 @@ namespace GAppsDev.Controllers
         // POST: /OrderItems/Delete/5
 
         [HttpPost, ActionName("Delete")]
+        [OpenIdAuthorize]
         public ActionResult DeleteConfirmed(int id)
         {
             Orders_Items orders_items = db.Orders_Items.Single(o => o.Id == id);
