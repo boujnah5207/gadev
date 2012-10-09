@@ -27,8 +27,8 @@
     
     @Html.DropDownList("SupplierId", (SelectList)ViewBag.SupplierId, new { id = "suppliersList" })
     
-    <input id="AddSupplierButton" type="button" value="הוסף ספק" onclick="addSupplier()"/>
     <input id="SupplierButton" type="button" value="בחר והמשך" onclick="beginForm()"/>
+    <input id="AddSupplierButton" type="button" value="צור ספק חדש" onclick="addSupplier()"/>
 </fieldset>
 
 <fieldset id="formContainer" style="display:none;">
@@ -41,28 +41,29 @@
         <input id="SupplierId" name="SupplierId" type="hidden" value="" />
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
-        <div class="editor-label">
-            פריטים בהזמנה
-        </div>
         <div class="editor-field">
             <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
             
             <div id="AddNewItemContainer">
-                <span>הוסף פריט להזמנה: </span>
-                <br />
                 פריט: <span id="loadingMessage"> טוען פריטים ... </span>
                 כמות : <input style="width:50px" id="itemQuantity" type="text" />
                 מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
-                מחיר כולל : <input style="width:50px" id="itemFinalPrice" type="text" disabled="disabled"/>
+                מחיר כולל : <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
                 <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()"/> <input id="AddNewItemButton" type="button" value="הוסף" />
             </div>
         </div>
         
-        <fieldset id="orderItems">
+        <fieldset>
             <legend>פריטים להזמנה</legend>
+
+            <div id="orderItems">
+                <span>אין פריטים בהזמנה.</span>
+            </div>
         
         </fieldset>
-        <span>מחיר כולל: </span><input type="text" id="totalOrderPrice" disabled="disabled"/>
+        <span>מחיר כולל: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
+        <br />
+        <br />
         <div class="editor-label">
             @Html.LabelFor(model => model.Notes)
         </div>
@@ -70,6 +71,7 @@
             @Html.TextAreaFor(model => model.Notes)
             @Html.ValidationMessageFor(model => model.Notes)
         </div>
+        <br />
 
         <p>
             <input type="submit" value="שלח הזמנה" />
@@ -78,7 +80,7 @@
 </fieldset>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("חזור לדף ההזמנות שלי", "MyOrders")
 </div>
 
 @section Scripts {
