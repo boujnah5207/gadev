@@ -58,12 +58,17 @@ function beginForm() {
 
             itemDropDownList = $("#ItemDropDownList");
             addItemButton.click(function () {
-                addNewItem(
-                    itemDropDownList.val(),
-                    itemDropDownList.find(" :selected").text(),
-                    itemQuantityField.val(),
-                    itemPriceField.val()
-                    );
+                if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
+                    addNewItem(
+                        itemDropDownList.val(),
+                        itemDropDownList.find(" :selected").text(),
+                        itemQuantityField.val(),
+                        itemPriceField.val()
+                        );
+                }
+                else {
+                    alert("אנא הכנס כמות ומחיר ונסה שוב.");
+                }
 
                 itemPriceField.val("");
                 itemQuantityField.val("");
@@ -111,7 +116,7 @@ function addSupplier() {
                 data: newSupplier
             }).done(function (response) {
                 if (response.success) {
-                    alert("success");
+                    alert("הספק נוצר בהצלחה.");
                 }
                 else {
                     alert(response.message);
@@ -134,6 +139,8 @@ function addSupplier() {
                 }).done(function (response) {
                     if (response.gotData) {
                         UpdateSupplierList(response.data);
+
+                        $('#suppliersList option:last-child').attr('selected', 'selected');
                     }
                 });
             }
@@ -199,14 +206,14 @@ function updateItemFinalPrice() {
     var quantity;
     var itemPrice;
 
-    if (itemQuantityField.val() != "") {
+    if (isInt(itemQuantityField.val())) {
         quantity = parseInt(itemQuantityField.val(), 10);
     }
     else {
         quantity = 0;
     }
 
-    if (itemPriceField.val() != "") {
+    if (isInt(itemPriceField.val())) {
         itemPrice = parseInt(itemPriceField.val(), 10);
     }
     else {
@@ -296,4 +303,14 @@ function removeItem(index) {
     $("#ItemlistIndex-" + index).remove();
     itemList.splice(index, 1);
     updateItems();
+}
+
+function isInt(value) {
+    var intRegex = /^\d+$/;
+    if (intRegex.test(value)) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
