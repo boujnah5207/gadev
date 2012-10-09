@@ -39,7 +39,7 @@
         @Html.ValidationSummary(true)
 
         <input id="SupplierId" name="SupplierId" type="hidden" value="" />
-        <input id="ItemsAsString" name="Items" type="hidden" value="" />
+        <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
         <div class="editor-label">
             פריטים בהזמנה
@@ -54,7 +54,7 @@
                 כמות : <input style="width:50px" id="itemQuantity" type="text" />
                 מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
                 מחיר כולל : <input style="width:50px" id="itemFinalPrice" type="text" disabled="disabled"/>
-                <input id="AddNewItemButton" type="button" value="הוסף" />
+                <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()"/> <input id="AddNewItemButton" type="button" value="הוסף" />
             </div>
         </div>
         
