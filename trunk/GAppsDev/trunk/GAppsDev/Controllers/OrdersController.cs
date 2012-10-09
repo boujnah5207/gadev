@@ -160,7 +160,7 @@ namespace GAppsDev.Controllers
 
                     if (wasOrderCreated)
                     {
-                        string[] splitItems = itemsString.Split(new char[]{';'}, StringSplitOptions.RemoveEmptyEntries);
+                        string[] splitItems = itemsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string item in splitItems)
                         {
                             bool isValidItem;
@@ -212,36 +212,62 @@ namespace GAppsDev.Controllers
                         }
 
                         bool noItemErrors = true;
+                        List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
                         using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                         {
                             foreach (Orders_OrderToItem item in ItemsList)
                             {
-                                if (!orderToItemRep.Create(item))
+                                if (orderToItemRep.Create(item))
+                                    createdItems.Add(item);
+                                else
                                     noItemErrors = false;
                             }
                         }
 
                         if (noItemErrors)
-                            return RedirectToAction("Index");
+                            return RedirectToAction("MyOrders");
                         else
-                            return Error("קרתה שגיאה בזמן שמירת הפריטים בהזמנה. לא כל הפריטים נשמרו.");
+                        {
+                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                            {
+                                foreach (Orders_OrderToItem item in createdItems)
+                                {
+                                    orderToItemRep.Delete(item.Id);
+                                }
+                            }
+
+                            using (OrdersRepository orderRep = new OrdersRepository())
+                            {
+                                orderRep.Delete(order.Id);
+                            }
+
+                            return Error(Errors.ORDERS_CREATE_ERROR);
+                        }
                     }
                     else
+                    {
                         return Error(Errors.ORDERS_CREATE_ERROR);
+                    }
                 }
                 else
                 {
                     return Error(Errors.NO_PERMISSION);
                 }
             }
+            else
+            {
+                return Error(ModelState);
+            }
 
+            /*
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", order.CompanyId);
             ViewBag.StatusId = new SelectList(db.Orders_Statuses, "Id", "Name", order.StatusId);
             ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", order.SupplierId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "Email", order.UserId);
             return View(order);
+            */
         }
-
+        
         //
         // GET: /Orders/Edit/5
 
