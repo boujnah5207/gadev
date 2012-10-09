@@ -1,6 +1,7 @@
 ﻿var formContainer;
 var form;
 var supplierButton;
+var AddSupplierButton;
 var suppliersList;
 var hiddenSupplierField;
 var selectedSupplier;
@@ -22,6 +23,7 @@ $(function () {
     formContainer = $("#formContainer");
     form = $("#formContainer form");
     supplierButton = $("#SupplierButton");
+    AddSupplierButton = $("#AddSupplierButton");
     suppliersList = $("#suppliersList");
     hiddenSupplierField = $("#SupplierId");
     addedItemsContainer = $("#orderItems");
@@ -48,6 +50,7 @@ function beginForm() {
     selectedSupplier.Name = $("#suppliersList option:selected").text();
 
     $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"))
+    AddSupplierButton.remove();
 
     $.ajax({
         type: "GET",
