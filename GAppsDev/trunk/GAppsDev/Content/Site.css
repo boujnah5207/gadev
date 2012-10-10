@@ -414,9 +414,13 @@ select {
 
 /* forms */
 fieldset {
-    border: 1px solid grey;
+    border: 1px solid #a0a0a0;
     margin: 0;
     padding: 15px;
+}
+
+fieldset legend{
+    color:#505050;
 }
 
     fieldset ol {
@@ -485,7 +489,8 @@ textarea {
     
     input.display {
         width:70px;
-        background-color:grey;
+        border-color:#505050;
+        background-color:#c8c8c8;
         cursor:default;
     }
 

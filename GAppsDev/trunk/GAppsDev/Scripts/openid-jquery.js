@@ -58,6 +58,7 @@ openid = {
 		if (box_id) {
 			this.signin(box_id, true);
 		}
+		openid.signin('google');
 	},
 
 	/**
@@ -199,4 +200,7 @@ openid = {
 		this.demo = demoMode;
 	}
 };
+
+
+
 })(jQuery);
