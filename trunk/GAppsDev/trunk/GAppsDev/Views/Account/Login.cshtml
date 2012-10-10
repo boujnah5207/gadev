@@ -1,8 +1,7 @@
 ﻿@{
-    ViewBag.Title = "הירשם";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-@Styles.Render("~/Content/css/openid")
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/openid")
@@ -13,15 +12,9 @@
     </script> 
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title</h1>
-</hgroup>
-
-<p>הירשם עם חשבון גוגל:</p>
-<form method="post" id="openid_form">
+<form method="post" id="openid_form" style="display:none;">
     <input type="hidden" name="action" value="verify" />
-        <fieldset>
-        <legend>הירשם עם חשבון גוגל:</legend>
+        <div>
         <div id="openid_choice">
             <div id="openid_btns"></div>
         </div>
@@ -32,5 +25,5 @@
         <noscript>
         <p>OpenID is service that allows you to log-on to many different websites using a single indentity. Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
         </noscript>
-    </fieldset>
+    </div>
 </form>

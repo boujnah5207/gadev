@@ -4,7 +4,15 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

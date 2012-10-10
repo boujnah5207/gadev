@@ -369,6 +369,7 @@
     <Content Include="Views\Orders\ModifyStatus.cshtml" />
     <Content Include="Views\Suppliers\PopOutCreate.cshtml" />
     <Content Include="Views\OrderItems\PopOutCreate.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

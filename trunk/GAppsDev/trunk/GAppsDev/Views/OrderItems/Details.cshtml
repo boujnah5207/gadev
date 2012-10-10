@@ -4,7 +4,15 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
 
 <fieldset>
     <legend>Orders_Items</legend>
