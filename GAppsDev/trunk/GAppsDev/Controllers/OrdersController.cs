@@ -107,12 +107,17 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            Order order = db.Orders.Single(o => o.Id == id);
-            if (order == null)
+            OrderModel orderModel = new OrderModel();
+            using (OrdersRepository ordersRepository = new OrdersRepository())
+            {
+            orderModel.Order = db.Orders.Single(o => o.Id == id);
+            orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+            }
+            if (orderModel.Order == null)
             {
                 return HttpNotFound();
             }
-            return View(order);
+            return View(orderModel);
         }
 
         //
@@ -267,7 +272,7 @@ namespace GAppsDev.Controllers
             return View(order);
             */
         }
-        
+
         //
         // GET: /Orders/Edit/5
 
