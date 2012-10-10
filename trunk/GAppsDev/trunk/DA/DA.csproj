@@ -50,11 +50,13 @@
     <Compile Include="OrderStatusesRepository.cs" />
     <Compile Include="OrderToItemRepository.cs" />
     <Compile Include="PendingUserRepository.cs" />
+    <Compile Include="PendingUsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles.cs" />
     <Compile Include="Statuses.cs" />
     <Compile Include="SuppliersRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="UsersRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseLibraries\BaseLibraries.csproj">

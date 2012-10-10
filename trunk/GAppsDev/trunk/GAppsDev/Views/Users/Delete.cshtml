@@ -1,0 +1,69 @@
+﻿@model DB.User
+
+@{
+    ViewBag.Title = "הסר משתמש";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<h3>האם אתה בטוח שברצונך למחוק את המשתמש?</h3>
+<fieldset>
+    <legend>משתמש למחיקה</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Roles)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Roles)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastLogInTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastLogInTime)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="מחק משתמש" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

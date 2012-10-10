@@ -1,0 +1,41 @@
+﻿@model DB.PendingUser
+
+@{
+    ViewBag.Title = "DeletePending";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DeletePending</h2>
+
+<h3>האם אתה בטוח שברצונך למחוק את המשתמש?</h3>
+<fieldset>
+    <legend>משתמש חדש</legend>
+    
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Roles)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Roles)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
