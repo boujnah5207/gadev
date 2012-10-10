@@ -95,7 +95,7 @@ namespace GAppsDev.OpenIdService
                         {
                             User loggingUser = userRep.GetEntity(claimedId);
 
-                            if (loggingUser != null)
+                            if (loggingUser != null && loggingUser.IsActive)
                             {
                                 return new OpenIdUser()
                                 {

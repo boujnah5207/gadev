@@ -14,6 +14,7 @@ namespace DA
         Employee = 1,
         OrdersApprover = 2 | Viewer,
         Viewer = 4,
+        SystemManager = 8,
         SuperAdmin = int.MaxValue
     }
 

@@ -1,0 +1,199 @@
+﻿@model GAppsDev.Models.UserModels.AllUsersModel
+
+@{
+    ViewBag.Title = "ניהול משתמשים";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<fieldset id="userLimit">
+    <legend>כמות משתמשים</legend>
+
+    <span>כל המשתמשים: @Model.UsersCount</span><br />
+    <span>מכסת משתמשים: @Model.UsersLimit</span><br />
+    <span>משתמשים מבוטלים: @Model.NonActiveUsers.Count</span>
+</fieldset>
+
+<p>
+    @Html.ActionLink("הוסף משתמש חדש", "Create")
+</p>
+
+<h2>משתמשים פעילים (@Model.ActiveUsers.Count)</h2>
+@if(Model.ActiveUsers.Count > 0)
+{
+    <table>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].Company.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].Roles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].CreationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUsers[0].LastLogInTime)
+            </th>
+            <th>פעולות</th>
+        </tr>
+
+    @foreach (var user in Model.ActiveUsers) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Roles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.CreationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.LastLogInTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=user.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=user.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=user.Id })
+            </td>
+        </tr>
+    }
+
+    </table>
+}
+else
+{
+    <div>
+        <span>לא נמצאו משתמשים פעילים.</span>
+    </div>
+}
+
+<h2>משתמשים חדשים (@Model.PendingUsers.Count)</h2>
+@if(Model.PendingUsers.Count > 0)
+{
+    <table>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PendingUsers[0].Email)
+            </th>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.PendingUsers[0].Roles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PendingUsers[0].CreationDate)
+            </th>
+            <th>פעולות</th>
+        </tr>
+
+    @foreach (var user in Model.PendingUsers) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Roles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.CreationDate)
+            </td>
+            <td>
+                @Html.ActionLink("ערוך", "EditPending", new { id=user.Id }) |
+                @Html.ActionLink("מחק", "DeletePending", new { id=user.Id })
+            </td>
+        </tr>
+    }
+
+    </table>
+}
+else
+{
+    <div>
+        <span>לא נמצאו משתמשים חדשים.</span>
+    </div>
+}
+
+
+<h2>משתמשים שבוטלו (@Model.NonActiveUsers.Count)</h2>
+@if (Model.NonActiveUsers.Count > 0)
+{
+    <table>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].Company.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].Roles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].CreationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonActiveUsers[0].LastLogInTime)
+            </th>
+            <th>פעולות</th>
+        </tr>
+
+    @foreach (var user in Model.NonActiveUsers)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => user.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.Roles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.CreationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.LastLogInTime)
+            </td>
+            <td>
+                @Html.ActionLink("החזר משתמש", "UndoDelete", new { id=user.Id })
+            </td>
+        </tr>
+    }
+
+    </table>
+}
+else
+{
+    <div>
+        <span>לא נמצאו משתמשים שבוטלו.</span>
+    </div>
+}

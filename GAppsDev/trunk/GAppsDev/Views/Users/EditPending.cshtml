@@ -1,0 +1,46 @@
+﻿@model DB.PendingUser
+
+@{
+    ViewBag.Title = "EditPending";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditPending</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>PendingUser</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Roles)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Roles)
+            @Html.ValidationMessageFor(model => model.Roles)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

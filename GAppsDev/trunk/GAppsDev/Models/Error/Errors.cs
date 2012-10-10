@@ -22,5 +22,13 @@ namespace GAppsDev.Models.ErrorModels
         //OrderItems Errors
         public const string ORDERITEMS_GET_ERROR = "קרתה שגיאה בזמן הגישה לפריטים להזמנה בבסיס הנתונים. אנא נסה שוב.";
 
+        //Users Errors
+        public const string USERS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. המשתמש לא נשמר במערכת.";
+        public const string USERS_LIMIT_REACHED = "חברתך הגיעה לגבול מספר המשתמשים שלה. אין אפשרות ליצור משתמשים חדשים.";
+        public const string USERS_DELETE_ERROR = "לא הייתה אפשרות להסיר את המשתמש. אנא נסה שוב.";
+        public const string USER_CANNOT_DELETE_SELF = "למשתמש אין אפשרות להסיר את עצמו.";
+        public const string USER_NOT_FOUND = "לא הייתה אפשרות למצוא משתמש בבסיס הנתונים.";
+
+
     }
 }
