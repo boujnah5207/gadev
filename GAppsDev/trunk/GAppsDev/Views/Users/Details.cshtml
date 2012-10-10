@@ -1,11 +1,19 @@
 ﻿@model DB.User
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "פרטים";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
 
 <fieldset>
     <legend>User</legend>
@@ -42,7 +50,10 @@
          @Html.DisplayNameFor(model => model.Roles)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Roles)
+        @{ 
+            string roles = ((DA.RoleType)Model.Roles).ToString();
+            <text> @roles </text>
+         }
     </div>
 
     <div class="display-label">

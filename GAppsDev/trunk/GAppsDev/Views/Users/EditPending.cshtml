@@ -27,8 +27,10 @@
             @Html.LabelFor(model => model.Roles)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Roles)
-            @Html.ValidationMessageFor(model => model.Roles)
+            @foreach (string roleName in ViewBag.RolesList)
+            {
+                <input name="roleNames" type="checkbox" value="@roleName" @if (((List<string>)ViewBag.ExistingRoles).Contains(roleName)) { <text>checked="checked" </text>}/> <span>@roleName</span> <br />
+            }
         </div>
 
         <p>

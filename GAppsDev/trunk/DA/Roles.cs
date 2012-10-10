@@ -25,6 +25,11 @@ namespace DA
             return ((RoleType)userRoles & role) == role;
         }
 
+        public static bool HasRole(RoleType roles, RoleType role)
+        {
+            return (roles & role) == role;
+        }
+
         public static void AddRole(User user, RoleType role)
         {
             user.Roles = (int)((RoleType)user.Roles | role);
@@ -45,6 +50,20 @@ namespace DA
             }
 
             return resultRole;
+        }
+
+        public static List<RoleType> GetAllRoles(RoleType roles)
+        {
+            List<RoleType> allRoles = new List<RoleType>();
+            int[] values = (int[])Enum.GetValues(typeof(RoleType));
+
+            foreach (int value in values)
+            {
+                if(HasRole(roles, (RoleType)value))
+                    allRoles.Add((RoleType)value);
+            }
+
+            return allRoles;
         }
     }
 }
