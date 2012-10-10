@@ -157,13 +157,40 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            User user = db.Users.Single(u => u.Id == id);
-            if (user == null)
+            if(Authorized(RoleType.SystemManager))
             {
-                return HttpNotFound();
+                User user;
+                using(UserRepository userRep = new UserRepository())
+                {
+                    user = userRep.GetEntity(id);
+                }
+
+                if(user != null)
+                {
+                    if (user.CompanyId != CurrentUser.CompanyId)
+                        return Error(Errors.NO_PERMISSION);
+
+                    List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                    roleNames.Remove(RoleType.None.ToString());
+                    roleNames.Remove(RoleType.SuperAdmin.ToString());
+                    ViewBag.RolesList = roleNames;
+
+                    ViewBag.ExistingRoles = 
+                        Roles.GetAllRoles((RoleType)user.Roles)
+                        .Select(x => x.ToString())
+                        .ToList();
+
+                    return View(user);
+                }
+                else
+                {
+                    return Error(Errors.USER_NOT_FOUND);
+                }
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", user.CompanyId);
-            return View(user);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -171,17 +198,60 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(User user, string[] roleNames)
         {
-            if (ModelState.IsValid)
+            if (Authorized(RoleType.SystemManager))
             {
-                db.Users.Attach(user);
-                db.ObjectStateManager.ChangeObjectState(user, EntityState.Modified);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    User userFromDatabase;
+                    using (UsersRepository userRep = new UsersRepository())
+                    {
+                        userFromDatabase = userRep.GetEntity(user.Id);
+
+                        if (userFromDatabase != null)
+                        {
+                            if (userFromDatabase.CompanyId != CurrentUser.CompanyId)
+                                return Error(Errors.NO_PERMISSION);
+
+                            RoleType combinedRoles = RoleType.None;
+                            foreach (string roleName in roleNames)
+                            {
+                                RoleType role;
+                                if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                                {
+                                    combinedRoles = Roles.CombineRoles(combinedRoles, role);
+                                }
+                                else
+                                {
+                                    return Error(Errors.INVALID_FORM);
+                                }
+                            }
+
+                            user.Roles = (int)combinedRoles;
+                            user.CompanyId = userFromDatabase.CompanyId;
+                            user.IsActive = userFromDatabase.IsActive;
+                            user.LastLogInTime = userFromDatabase.LastLogInTime;
+                            user.CreationTime = userFromDatabase.CreationTime;
+
+                            userRep.Update(user);
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            return Error(Errors.USER_NOT_FOUND);
+                        }
+                    }
+                }
+                else
+                {
+                    return Error(ModelState);
+                }
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", user.CompanyId);
-            return View(user);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
 
@@ -201,6 +271,16 @@ namespace GAppsDev.Controllers
 
                 if (user != null)
                 {
+                    List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                    roleNames.Remove(RoleType.None.ToString());
+                    roleNames.Remove(RoleType.SuperAdmin.ToString());
+                    ViewBag.RolesList = roleNames;
+
+                    ViewBag.ExistingRoles =
+                        Roles.GetAllRoles((RoleType)user.Roles)
+                        .Select(x => x.ToString())
+                        .ToList();
+
                     return View(user);
                 }
                 else
@@ -219,7 +299,7 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult EditPending(PendingUser user)
+        public ActionResult EditPending(PendingUser user, string[] roleNames)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -234,6 +314,23 @@ namespace GAppsDev.Controllers
                         {
                             if (userFromDatabase.CompanyId != CurrentUser.CompanyId)
                                 return Error(Errors.NO_PERMISSION);
+
+                            RoleType combinedRoles = RoleType.None;
+                            foreach (string roleName in roleNames)
+                            {
+                                RoleType role;
+                                if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                                {
+                                    combinedRoles = Roles.CombineRoles(combinedRoles, role);
+                                }
+                                else
+                                {
+                                    return Error(Errors.INVALID_FORM);
+                                }
+                            }
+
+                            user.Roles = (int)combinedRoles;
+                            user.CompanyId = userFromDatabase.CompanyId;
 
                             pendingUserRep.Update(user);
                             return RedirectToAction("Index");
@@ -296,7 +393,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 PendingUser user;
-                using (PendingUserRepository userRep = new PendingUserRepository())
+                using (PendingUsersRepository userRep = new PendingUsersRepository())
                 {
                     user = userRep.GetEntity(id);
                 }
@@ -325,7 +422,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 PendingUser user;
-                using (PendingUserRepository pendingUserRep = new PendingUserRepository())
+                using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
                 {
                     user = pendingUserRep.GetEntity(id);
 

@@ -8,8 +8,12 @@ using DB;
 
 namespace DA
 {
-    public class PendingUsersRepository : BaseRepository<PendingUser, Entities>
+    public class PendingUsersRepository : BaseRepository<PendingUser, Entities>, IDisposable
     {
-
+        public override bool Create(PendingUser entity)
+        {
+            entity.CreationDate = DateTime.Now;
+            return base.Create(entity);
+        }
     }
 }

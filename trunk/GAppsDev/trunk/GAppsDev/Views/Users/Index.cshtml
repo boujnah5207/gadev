@@ -65,7 +65,10 @@
                 @Html.DisplayFor(modelItem => user.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => user.Roles)
+                @{ 
+                    string roles = ((DA.RoleType)user.Roles).ToString();
+                    <text> @roles </text>
+                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => user.CreationTime)
@@ -74,9 +77,9 @@
                 @Html.DisplayFor(modelItem => user.LastLogInTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=user.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=user.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=user.Id })
+                @Html.ActionLink("ערוך", "Edit", new { id=user.Id }) |
+                @Html.ActionLink("פרטים", "Details", new { id=user.Id }) |
+                @Html.ActionLink("מחק", "Delete", new { id=user.Id })
             </td>
         </tr>
     }
@@ -114,7 +117,10 @@ else
                 @Html.DisplayFor(modelItem => user.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => user.Roles)
+                @{ 
+                    string roles = ((DA.RoleType)user.Roles).ToString();
+                    <text> @roles </text>
+                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => user.CreationDate)
@@ -175,7 +181,10 @@ else
                 @Html.DisplayFor(modelItem => user.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => user.Roles)
+                @{ 
+                    string roles = ((DA.RoleType)user.Roles).ToString();
+                    <text> @roles </text>
+                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => user.CreationTime)
