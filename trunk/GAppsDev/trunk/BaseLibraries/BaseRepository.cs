@@ -60,9 +60,23 @@ namespace BaseLibraries
             return true;
         }
 
-        public TEntity GetEntity(int id)
+        public TEntity GetEntity(int id, params string[] includes)
         {
-            return _db.CreateObjectSet<TEntity>().SingleOrDefault(GetEntityQuery(id));
+            try
+            {
+                ObjectQuery<TEntity> objectSet = _db.CreateObjectSet<TEntity>();
+
+                foreach (string include in includes)
+                {
+                    objectSet = objectSet.Include(include);
+                }
+
+                return objectSet.SingleOrDefault(GetEntityQuery(id));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public virtual TEntity Update(TEntity Entity, bool saveChanges = true)

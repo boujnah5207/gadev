@@ -35,22 +35,22 @@ $(function () {
     totalOrderPriceField = $("#totalOrderPrice");
 });
 
-function beginForm() {
-    formContainer.slideToggle(0, null);
-    supplierButton.slideToggle(0, null);
-    form.slideToggle(500, null);
-    supplierButton.attr("disabled", true);
-    suppliersList.attr("disabled", true);
+function beginForm(existingItems) {
+    console.log(existingItems);
 
     selectedSupplier = {};
-    selectedSupplier.ID = suppliersList.val();
-    hiddenSupplierField.val(selectedSupplier.ID);
-    console.log(hiddenSupplierField);
-    console.log(hiddenSupplierField.val());
-    selectedSupplier.Name = $("#suppliersList option:selected").text();
+    selectedSupplier.ID = hiddenSupplierField.val();
 
-    $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"))
-    AddSupplierButton.remove();
+    var items = existingItems.split(";");
+    for (var i in items) {
+        itemValues = items[i].split(",");
+        addNewItem(
+            itemValues[0],
+            itemValues[1],
+            itemValues[2],
+            itemValues[3]
+        );
+    }
 
     $.ajax({
         type: "GET",
@@ -81,70 +81,6 @@ function beginForm() {
 
     itemPriceField.keyup(updateItemFinalPrice);
     itemQuantityField.keyup(updateItemFinalPrice);
-}
-
-function addSupplier() {
-    $.ajax({
-        type: "POST",
-        url: "/Suppliers/PopOutCreate/",
-    }).done(function (response) {
-        dialogContainer = $(response);
-        dialogContainer.find("#submitSupplier").click(function () {
-            var newSupplier = {};
-            newSupplier.Name = $("#Name").val();
-            newSupplier.VAT_Number = $("#VAT_Number").val();
-            newSupplier.Phone_Number = $("#Phone_Number").val();
-            newSupplier.Address = $("#Address").val();
-            newSupplier.City = $("#City").val();
-            newSupplier.Customer_Number = $("#Customer_Number").val();
-            newSupplier.Additional_Phone = $("#Additional_Phone").val();
-            newSupplier.EMail = $("#EMail").val();
-            newSupplier.Fax = $("#Fax").val();
-            newSupplier.Activity_Hours = $("#Activity_Hours").val();
-            newSupplier.Branch_line = $("#Branch_line").val();
-            newSupplier.Presentor_name = $("#Presentor_name").val();
-            newSupplier.Crew_Number = $("#Crew_Number").val();
-            newSupplier.Notes = $("#Notes").val();
-
-            console.log("newSupplier created");
-            console.log(newSupplier);
-
-            $.ajax({
-                type: "POST",
-                url: "/Suppliers/AjaxCreate/",
-                data: newSupplier
-            }).done(function (response) {
-                if (response.success) {
-                    alert("הספק נוצר בהצלחה.");
-                }
-                else {
-                    alert(response.message);
-                }
-            });
-
-            dialogContainer.dialog("close");
-            dialogContainer.dialog("destroy");
-            dialogContainer.remove();
-        });
-
-        createSupplierDialog = dialogContainer.dialog({
-            title: "הוסף ספק",
-            width: 400,
-            height: 540,
-            close: function () {
-                $.ajax({
-                    type: "GET",
-                    url: "/Suppliers/GetAll",
-                }).done(function (response) {
-                    if (response.gotData) {
-                        UpdateSupplierList(response.data);
-
-                        $('#suppliersList option:last-child').attr('selected', 'selected');
-                    }
-                });
-            }
-        })
-    });
 }
 
 function addOrderItem() {
@@ -220,20 +156,6 @@ function updateItemFinalPrice() {
     }
 
     itemFinalPrice.val(quantity * itemPrice);
-}
-
-function UpdateSupplierList(newSupplierList) {
-    selectText = "";
-    selectText += "<select id='suppliersList' name='SupplierId'>";
-
-    for (var i = 0; i < newSupplierList.length; i++) {
-        selectText += "<option value=" + newSupplierList[i].Id + ">" + newSupplierList[i].Name + "</option>";
-    }
-
-    selectText += "</select>";
-
-    var dropDownList = $(selectText);
-    $("#suppliersList").replaceWith(dropDownList);
 }
 
 function InitializeItemsList(newItemList) {
