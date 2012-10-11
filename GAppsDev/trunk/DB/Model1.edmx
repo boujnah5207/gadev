@@ -1089,7 +1089,7 @@
         <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.774470040003987" PointY="22.356158460656253" />
         <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="1.7052452609433073" PointY="24.066725265265781" />
         <edmx:EntityTypeShape EntityType="designModel.Deprtment" Width="1.5" PointX="10.556555862797683" PointY="22.888576339412747" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="7.25" PointY="21.25" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="2" PointX="7.25" PointY="21.25" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.75" PointX="5" PointY="15.5" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="10.925545423722614" PointY="25.376792412892353" />
         <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="2.375" PointY="26.5" />

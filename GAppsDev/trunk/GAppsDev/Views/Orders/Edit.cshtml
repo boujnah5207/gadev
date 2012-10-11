@@ -1,8 +1,14 @@
 ﻿@model DB.Order
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "עריכת הזמנה";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section ExtraScripts{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+    <script src="~/Scripts/editOrderScript.js"></script>
 }
 
 @section featured {
@@ -15,88 +21,70 @@
     </section>
 }
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>ספק נבחר</legend>
+    <label class="inlineLabel" for="choosenSupplier">ספק: </label>
+    <span class='selectedSupplier'> @Model.Supplier.Name </span>
+</fieldset>
 
-    <fieldset>
-        <legend>Order</legend>
+<fieldset id="formContainer">
+    <legend>פרטי הזמנה</legend>
 
-        @Html.HiddenFor(model => model.Id)
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyId, "Company")
-        </div>
+        @Html.HiddenFor( model => model.SupplierId);
+        <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
+
         <div class="editor-field">
-            @Html.DropDownList("CompanyId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CompanyId)
+            <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
+            
+            <div id="AddNewItemContainer">
+                פריט: <span id="loadingMessage"> טוען פריטים ... </span>
+                כמות : <input style="width:50px" id="itemQuantity" type="text" />
+                מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
+                מחיר כולל : <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
+                <input id="AddNewItemButton" type="button" value="הוסף" /> <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()"/>
+            </div>
         </div>
+        
+        <fieldset>
+            <legend>פריטים להזמנה</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserId, "User")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("UserId", String.Empty)
-            @Html.ValidationMessageFor(model => model.UserId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreationDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreationDate)
-            @Html.ValidationMessageFor(model => model.CreationDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SupplierId, "Supplier")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("SupplierId", String.Empty)
-            @Html.ValidationMessageFor(model => model.SupplierId)
-        </div>
-
+            <div id="orderItems">
+                <span>אין פריטים בהזמנה.</span>
+            </div>
+        
+        </fieldset>
+        <span>מחיר כולל: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
+        <br />
+        <br />
         <div class="editor-label">
             @Html.LabelFor(model => model.Notes)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Notes)
+            @Html.TextAreaFor(model => model.Notes)
             @Html.ValidationMessageFor(model => model.Notes)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Price)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Price)
-            @Html.ValidationMessageFor(model => model.Price)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StatusId, "Orders_Statuses")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("StatusId", String.Empty)
-            @Html.ValidationMessageFor(model => model.StatusId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OrderApproverNotes)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.OrderApproverNotes)
-            @Html.ValidationMessageFor(model => model.OrderApproverNotes)
-        </div>
+        <br />
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="עדכן הזמנה" />
         </p>
-    </fieldset>
-}
+    }
+</fieldset>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("חזור לדף ההזמנות שלי", "MyOrders")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    $(function () {
+        beginForm("@ViewBag.ExistingItems");
+    });
+</script>
