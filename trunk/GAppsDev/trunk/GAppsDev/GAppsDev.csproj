@@ -46,6 +46,10 @@
       <HintPath>..\ExternalLibraries\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Rotativa\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -311,8 +315,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <None Include="Properties\PublishProfiles\profile1.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
-    <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
     <Content Include="Scripts\createSupplierScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -381,6 +385,8 @@
     <Content Include="Views\Users\UndoDelete.cshtml" />
     <Content Include="Views\Users\DeletePending.cshtml" />
     <Content Include="Views\Users\EditPending.cshtml" />
+    <Content Include="Views\Shared\_EmptyLayout.cshtml" />
+    <Content Include="Views\Orders\PrintOrderToScreen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

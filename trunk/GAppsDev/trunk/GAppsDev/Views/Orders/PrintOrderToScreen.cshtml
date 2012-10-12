@@ -1,0 +1,72 @@
+﻿@model DB.Order
+
+@{
+    ViewBag.Title = "PrintOrderToScreen";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+<h2>PrintOrderToScreen</h2>
+
+<fieldset>
+    <legend>Order</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompanyId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SupplierId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SupplierId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StatusId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StatusId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OrderApproverNotes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderApproverNotes)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
