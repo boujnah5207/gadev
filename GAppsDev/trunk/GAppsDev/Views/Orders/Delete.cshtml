@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model GAppsDev.Models.OrderModel
 
 @{
     ViewBag.Title = "Delete";
@@ -18,68 +18,90 @@
 <h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>Order</legend>
-
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Company.Name)
+         @Html.DisplayNameFor(model => model.Order.Company.Name)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.Email)
+        @Html.DisplayFor(model => model.Order.Company.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
+         @Html.DisplayNameFor(model => model.Order.User.Email)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
+        @Html.DisplayFor(model => model.Order.User.Email)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Supplier.Name)
+         @Html.DisplayNameFor(model => model.Order.CreationDate)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Supplier.Name)
+        @Html.DisplayFor(model => model.Order.CreationDate)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Orders_Items.Title)
+         @Html.DisplayNameFor(model => model.Order.Supplier.Name)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Orders_Items.Title)
+        @Html.DisplayFor(model => model.Order.Supplier.Name)
+    </div>
+
+    <table>
+        <tr class="display-label">
+            <th>שם הפריט
+            </th>
+            <th>תיאור הפריט
+            </th>
+            <th>מחיר בודד
+            </th>
+            <th>כמות
+            </th>
+        </tr>
+        @foreach (var item in Model.OrderToItem)
+        {
+            <tr class="display-field">
+                <td>
+                    @item.Orders_Items.Title
+                </td>
+                <td>
+                    @item.Orders_Items.SubTitle
+                </td>
+                <td>
+                    @item.SingleItemPrice
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Order.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Order.Notes)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Notes)
+         @Html.DisplayNameFor(model => model.Order.Price)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Notes)
+        @Html.DisplayFor(model => model.Order.Price)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Price)
+         @Html.DisplayNameFor(model => model.Order.Orders_Statuses.Name)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Price)
+        @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Orders_Statuses.Name)
+         @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Orders_Statuses.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.OrderApproverNotes)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OrderApproverNotes)
+        @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {
