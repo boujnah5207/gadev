@@ -81,27 +81,34 @@ namespace BaseLibraries
 
         public virtual TEntity Update(TEntity Entity, bool saveChanges = true)
         {
-            var entitySet = _db.CreateObjectSet<TEntity>().EntitySet;
-            var fqen = string.Format("{0}.{1}", entitySet.EntityContainer, entitySet.Name);
-            if (Entity.EntityState != EntityState.Modified)
+            try
             {
-                var primaryKeyName = GetPrimaryKeyName(typeof(TEntity));
-                var primaryKeyValue = (int)typeof(TEntity).GetProperty(primaryKeyName).GetValue(Entity, null);
-                var StubEntity = GetEntity(primaryKeyValue);
-                if (StubEntity.EntityState == EntityState.Detached)
+                var entitySet = _db.CreateObjectSet<TEntity>().EntitySet;
+                var fqen = string.Format("{0}.{1}", entitySet.EntityContainer, entitySet.Name);
+                if (Entity.EntityState != EntityState.Modified)
                 {
-                    var entityInContext = _db.GetObjectByKey(StubEntity.EntityKey);
+                    var primaryKeyName = GetPrimaryKeyName(typeof(TEntity));
+                    var primaryKeyValue = (int)typeof(TEntity).GetProperty(primaryKeyName).GetValue(Entity, null);
+                    var StubEntity = GetEntity(primaryKeyValue);
+                    if (StubEntity.EntityState == EntityState.Detached)
+                    {
+                        var entityInContext = _db.GetObjectByKey(StubEntity.EntityKey);
 
-                    if (entityInContext == null)
-                        _db.AttachTo(fqen, Entity);
-                    else
-                        Entity = (TEntity)entityInContext;
+                        if (entityInContext == null)
+                            _db.AttachTo(fqen, Entity);
+                        else
+                            Entity = (TEntity)entityInContext;
+                    }
                 }
-            }
 
-            _db.ApplyCurrentValues(fqen, Entity);
-            _db.SaveChanges();
-            return Entity;
+                _db.ApplyCurrentValues(fqen, Entity);
+                _db.SaveChanges();
+                return Entity;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public virtual bool Delete(int id)

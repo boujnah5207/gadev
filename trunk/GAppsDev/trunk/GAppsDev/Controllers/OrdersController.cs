@@ -18,6 +18,8 @@ namespace GAppsDev.Controllers
     public class OrdersController : BaseController
     {
         private const int WAITING_FOR_APPROVAL_STATUS = 1;
+        private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 7;
+
         private Entities db = new Entities();
 
         //
@@ -70,7 +72,7 @@ namespace GAppsDev.Controllers
             {
                 OrderModel orderModel = new OrderModel();
                 orderModel.Order = db.Orders.Single(o => o.Id == id);
-                orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+                orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
                 return View(orderModel);
             }
             else return Error(Errors.NO_PERMISSION);
@@ -101,14 +103,14 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.Employee))
             {
-                Order order = db.Orders.Single(o => o.Id == id);
-                if (order == null)
-                {
-                    return HttpNotFound();
-                }
-
-                return View(order);
+            Order order = db.Orders.Single(o => o.Id == id);
+            if (order == null)
+            {
+                return HttpNotFound();
             }
+
+            return View(order);
+        }
             else return Error(Errors.NO_PERMISSION);
         }
 
@@ -131,8 +133,8 @@ namespace GAppsDev.Controllers
             OrderModel orderModel = new OrderModel();
             using (OrdersRepository ordersRepository = new OrdersRepository())
             {
-                orderModel.Order = db.Orders.Single(o => o.Id == id);
-                orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+            orderModel.Order = db.Orders.Single(o => o.Id == id);
+            orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
             }
             if (orderModel.Order == null)
             {
@@ -184,57 +186,10 @@ namespace GAppsDev.Controllers
 
                     if (wasOrderCreated)
                     {
-                        string[] splitItems = itemsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string item in splitItems)
-                        {
-                            bool isValidItem;
-                            int itemId = 0;
-                            int quantity = 0;
-                            int singleItemPrice = 0;
+                        ItemsList = ItemsFromString(itemsString, order.Id);
 
-                            string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (itemValues.Length == 3)
+                        if (ItemsList != null)
                             {
-                                if (
-                                    int.TryParse(itemValues[0], out itemId) &&
-                                    int.TryParse(itemValues[1], out quantity) &&
-                                    int.TryParse(itemValues[2], out singleItemPrice)
-                                    )
-                                {
-                                    isValidItem = true;
-                                }
-                                else
-                                {
-                                    isValidItem = false;
-                                }
-                            }
-                            else
-                            {
-                                isValidItem = false;
-                            }
-
-                            if (isValidItem)
-                            {
-                                Orders_OrderToItem newItem = new Orders_OrderToItem()
-                                {
-                                    OrderId = order.Id,
-                                    ItemId = itemId,
-                                    Quantity = quantity,
-                                    SingleItemPrice = singleItemPrice
-                                };
-
-                                ItemsList.Add(newItem);
-                            }
-                            else
-                            {
-                                using (OrdersRepository orderRep = new OrdersRepository())
-                                {
-                                    orderRep.Delete(order.Id);
-                                }
-                                return Error(Errors.INVALID_FORM);
-                            }
-                        }
-
                         bool noItemErrors = true;
                         List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
                         using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
@@ -244,9 +199,12 @@ namespace GAppsDev.Controllers
                                 if (orderToItemRep.Create(item))
                                     createdItems.Add(item);
                                 else
+                                    {
                                     noItemErrors = false;
+                                        break;
                             }
                         }
+                            }
 
                         if (noItemErrors)
                             return RedirectToAction("MyOrders");
@@ -270,6 +228,11 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
+                            return Error(Errors.INVALID_FORM);
+                        }
+                    }
+                    else
+                    {
                         return Error(Errors.ORDERS_CREATE_ERROR);
                     }
                 }
@@ -282,14 +245,6 @@ namespace GAppsDev.Controllers
             {
                 return Error(ModelState);
             }
-
-            /*
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", order.CompanyId);
-            ViewBag.StatusId = new SelectList(db.Orders_Statuses, "Id", "Name", order.StatusId);
-            ViewBag.SupplierId = new SelectList(db.Suppliers, "Id", "Name", order.SupplierId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", order.UserId);
-            return View(order);
-            */
         }
 
         //
@@ -363,53 +318,11 @@ namespace GAppsDev.Controllers
                     {
                         if (orderFromDatabase.UserId == CurrentUser.UserId)
                         {
-                            string[] splitItems = itemsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                            foreach (string item in splitItems)
+                            if (orderFromDatabase.Id == WAITING_FOR_APPROVAL_STATUS || orderFromDatabase.Id == WAITING_FOR_CREATOR_REPLAY_STATUS)
                             {
-                                bool isValidItem;
-                                int itemId = 0;
-                                int quantity = 0;
-                                int singleItemPrice = 0;
-
-                                string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                if (itemValues.Length == 3)
+                                itemsFromEditForm = ItemsFromString(itemsString, order.Id);
+                                if (itemsFromEditForm != null)
                                 {
-                                    if (
-                                        int.TryParse(itemValues[0], out itemId) &&
-                                        int.TryParse(itemValues[1], out quantity) &&
-                                        int.TryParse(itemValues[2], out singleItemPrice)
-                                        )
-                                    {
-                                        isValidItem = true;
-                                    }
-                                    else
-                                    {
-                                        isValidItem = false;
-                                    }
-                                }
-                                else
-                                {
-                                    isValidItem = false;
-                                }
-
-                                if (isValidItem)
-                                {
-                                    Orders_OrderToItem newItem = new Orders_OrderToItem()
-                                    {
-                                        OrderId = orderFromDatabase.Id,
-                                        ItemId = itemId,
-                                        Quantity = quantity,
-                                        SingleItemPrice = singleItemPrice
-                                    };
-
-                                    itemsFromEditForm.Add(newItem);
-                                }
-                                else
-                                {
-                                    return Error(Errors.INVALID_FORM);
-                                }
-                            }
-
                             foreach (var newItem in itemsFromEditForm)
                             {
                                 Orders_OrderToItem existingItem = orderFromDatabase.Orders_OrderToItem.SingleOrDefault(x => x.ItemId == newItem.ItemId);
@@ -421,8 +334,6 @@ namespace GAppsDev.Controllers
                                         existingItem.SingleItemPrice != newItem.SingleItemPrice
                                         )
                                     {
-                                        //existingItem.Quantity = newItem.Quantity;
-                                        //existingItem.SingleItemPrice = newItem.SingleItemPrice;
                                         newItem.Id = existingItem.Id;
                                         itemsToUpdate.Add(newItem);
                                     }
@@ -443,23 +354,54 @@ namespace GAppsDev.Controllers
                                 }
                             }
 
-                            using(OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                                    bool noErrors = true;
+
+                                    using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                             {
                                 foreach (var item in itemsToCreate)
                                 {
-                                    orderToItemRep.Create(item);
+                                            if (!orderToItemRep.Create(item) && noErrors)
+                                                noErrors = false;
                                 }
                                 foreach (var item in itemsToUpdate)
                                 {
-                                    orderToItemRep.Update(item);
+                                            if (orderToItemRep.Update(item) == null && noErrors)
+                                                noErrors = false;
                                 }
                                 foreach (var item in itemsToDelete)
                                 {
-                                    orderToItemRep.Delete(item.Id);
+                                            if (!orderToItemRep.Delete(item.Id) && noErrors)
+                                                noErrors = false;
+                                        }
+
+                                        if (order.Notes != orderFromDatabase.Notes)
+                                        {
+                                            using (OrdersRepository ordersRep = new OrdersRepository())
+                                            {
+                                                order.CompanyId = orderFromDatabase.CompanyId;
+                                                order.CreationDate = orderFromDatabase.CreationDate;
+                                                order.StatusId = orderFromDatabase.StatusId;
+                                                order.SupplierId = orderFromDatabase.SupplierId;
+                                                order.UserId = orderFromDatabase.UserId;
+                                                ordersRep.Update(order);
+                                            }
                                 }
                             }
 
+                                    if (noErrors)
                             return RedirectToAction("MyOrders");
+                                    else
+                                        return Error(Errors.ORDER_UPDATE_ITEMS_ERROR);
+                        }
+                        else
+                        {
+                                    return Error(Errors.INVALID_FORM);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.ORDER_EDIT_AFTER_APPROVAL);
+                            }
                         }
                         else
                         {
@@ -488,12 +430,36 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            Order order = db.Orders.Single(o => o.Id == id);
-            if (order == null)
+            if (Authorized(RoleType.Employee))
             {
-                return HttpNotFound();
+                OrderModel model = new OrderModel();
+
+                using (OrdersRepository orderRep = new OrdersRepository())
+                {
+                    model.Order = orderRep.GetEntity(id, "Supplier", "Company", "User", "Orders_Statuses", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                    model.OrderToItem = model.Order.Orders_OrderToItem.ToList();
+                }
+
+                if (model.Order != null)
+                {
+                    if (model.Order.UserId == CurrentUser.UserId)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+                }
+                else
+                {
+                    return Error(Errors.ORDER_NOT_FOUND);
+                }
             }
-            return View(order);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -503,10 +469,113 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = db.Orders.Single(o => o.Id == id);
-            db.Orders.DeleteObject(order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Authorized(RoleType.Employee))
+            {
+                Order order;
+                using (OrdersRepository orderRep = new OrdersRepository())
+                {
+                    order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem");
+                }
+
+                if (order != null)
+                {
+                    if (order.UserId == CurrentUser.UserId)
+                    {
+                        bool noItemErrors = true;
+                        using (OrdersRepository orderRep = new OrdersRepository())
+                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        {
+                            foreach (var item in order.Orders_OrderToItem)
+                            {
+                                if (!orderToItemRep.Delete(item.Id))
+                                    noItemErrors = false;
+                            }
+
+                            if (noItemErrors)
+                            {
+                                if (orderRep.Delete(order.Id))
+                                {
+                                    return RedirectToAction("MyOrders");
+                                }
+                                else
+                                {
+                                    return Error(Errors.ORDERS_DELETE_ERROR);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+                }
+                else
+                {
+                    return Error(Errors.ORDER_NOT_FOUND);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)
+        {
+            List<Orders_OrderToItem> items = new List<Orders_OrderToItem>();
+
+            string[] splitItems = itemsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in splitItems)
+            {
+                bool isValidItem;
+                int itemId = 0;
+                int quantity = 0;
+                int singleItemPrice = 0;
+
+                string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (itemValues.Length == 3)
+                {
+                    if (
+                        int.TryParse(itemValues[0], out itemId) &&
+                        int.TryParse(itemValues[1], out quantity) &&
+                        int.TryParse(itemValues[2], out singleItemPrice)
+                        )
+                    {
+                        isValidItem = true;
+                    }
+                    else
+                    {
+                        isValidItem = false;
+                    }
+                }
+                else
+                {
+                    isValidItem = false;
+                }
+
+                if (isValidItem)
+                {
+                    Orders_OrderToItem newItem = new Orders_OrderToItem()
+                    {
+                        OrderId = orderId,
+                        ItemId = itemId,
+                        Quantity = quantity,
+                        SingleItemPrice = singleItemPrice
+                    };
+
+                    items.Add(newItem);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return items;
         }
 
         protected override void Dispose(bool disposing)
