@@ -11,6 +11,7 @@ using GAppsDev.Models.ErrorModels;
 using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using GAppsDev.Models;
+using Rotativa;
 
 namespace GAppsDev.Controllers
 {
@@ -21,6 +22,8 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Orders/
+
+
 
         [OpenIdAuthorize]
         public ActionResult Index()
@@ -94,14 +97,32 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        public ActionResult PrintOrderToScreen(int id)
+        {
+            if (Authorized(RoleType.Employee))
+            {
+                Order order = db.Orders.Single(o => o.Id == id);
+                if (order == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(order);
+            }
+            else return Error(Errors.NO_PERMISSION);
+        }
+
+        [OpenIdAuthorize]
         public ActionResult DownloadOrderAsPdf(int id)
         {
+            string cookieName = OpenIdMembershipService.LOGIN_COOKIE_NAME;
+            HttpCookie cookie = Request.Cookies[cookieName];
+            Dictionary<string, string> cookies = new Dictionary<string, string>();
+            cookies.Add(cookieName, cookie.Value);
+
             Order order = db.Orders.Single(o => o.Id == id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
+            return new ViewAsPdf("PrintOrderToScreen", order) { FileName = "Invoice.pdf"};
+            //return new ViewAsPdf("PrintOrderToScreen", new { id = id }) { FileName = "Invoice.pdf", Cookies = cookies };
         }
 
         [OpenIdAuthorize]
@@ -110,8 +131,8 @@ namespace GAppsDev.Controllers
             OrderModel orderModel = new OrderModel();
             using (OrdersRepository ordersRepository = new OrdersRepository())
             {
-            orderModel.Order = db.Orders.Single(o => o.Id == id);
-            orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+                orderModel.Order = db.Orders.Single(o => o.Id == id);
+                orderModel.OrderToITem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
             }
             if (orderModel.Order == null)
             {
