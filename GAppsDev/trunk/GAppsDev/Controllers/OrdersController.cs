@@ -12,6 +12,8 @@ using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using GAppsDev.Models;
 using Rotativa;
+using BaseLibraries;
+
 
 namespace GAppsDev.Controllers
 {
@@ -87,6 +89,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersApprover))
             {
                 using (OrdersRepository ordersRepository = new OrdersRepository())
+                
                 {
                     Order order = ordersRepository.GetEntity(modifiedOrder.Order.Id);
                     order.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
@@ -94,6 +97,8 @@ namespace GAppsDev.Controllers
                     if (selectedStatus == "דחה הזמנה") order.StatusId = (int)StatusType.Declined;
                     if (selectedStatus == "החזר למשתמש") order.StatusId = (int)StatusType.PendingOrderCreator;
                     ordersRepository.Update(order);
+                    EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                    emailMethods.sendGoogleEmail(CurrentUser.Email, CurrentUser.FullName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.Orders_Statuses.Name);
                     return RedirectToAction("PendingOrders");
                 }
             }
