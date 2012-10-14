@@ -526,6 +526,53 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult UploadInvoice(int id = 0)
+        {
+            if (Authorized(RoleType.Employee))
+            {
+                Order order;
+                using (OrdersRepository orderRep = new OrdersRepository())
+                {
+                    order = orderRep.GetEntity(id);
+                }
+
+                if (order != null)
+                {
+                    if (order.UserId == CurrentUser.UserId)
+                    {
+                        if (order.StatusId == 3)
+                        {
+                            // logic goes here
+                            return View();
+                        }
+                        else if (order.StatusId < 3)
+                        {
+                            return Error(Errors.ORDER_NOT_APPROVED);
+                        }
+                        else
+                        {
+                            return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+
+                }
+                else
+                {
+                    return Error(Errors.ORDER_NOT_FOUND);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
         private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)
         {
             List<Orders_OrderToItem> items = new List<Orders_OrderToItem>();
