@@ -20,6 +20,8 @@ namespace GAppsDev.Models.ErrorModels
         public const string ORDER_UPDATE_ITEMS_ERROR = "קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה עודכנו.";
         public const string ORDER_SAVE_ITEMS_ERROR = "קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה נשמרו.";
         public const string ORDER_EDIT_AFTER_APPROVAL = "אין לערוך הזמנה לאחר אישורה\\ביטולה, אנא צור הזמנה חדשה במקום.";
+        public const string ORDER_NOT_APPROVED = "ההזמנה עדיין לא אושרה. אנא המתן עד לאישור ההזמנה.";
+        public const string ORDER_ALREADY_HAS_INVOICE = "כבר נסרקה חשבונית להזמנה זאת. ";
 
 
         // Suppliers Errors
