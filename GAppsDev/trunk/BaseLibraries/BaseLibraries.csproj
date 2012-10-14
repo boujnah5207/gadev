@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="EmailMethods.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FileMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
