@@ -23,19 +23,86 @@ namespace GAppsDev.Controllers
         private const int APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE = 3;
         private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 7;
 
+        const int ITEMS_PER_PAGE = 3;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string ASCENDING = "ASC";
+
         private Entities db = new Entities();
 
         //
         // GET: /Orders/
 
-
-
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = ASCENDING)
         {
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            if(Authorized(RoleType.Employee))
             {
-                return View(ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").ToList());
+                IEnumerable<Order> orders;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
+                {
+                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User");
+                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
+                    ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
+                    
+                    int numberOfItems = orders.Count();
+                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                    if (numberOfItems % ITEMS_PER_PAGE != 0)
+                        numberOfPages++;
+
+                    if (page <= 0)
+                        page = FIRST_PAGE;
+                    if (page > numberOfPages)
+                        page = numberOfPages;
+
+                    if (sortby != NO_SORT_BY)
+                    {
+                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                        if (order == ASCENDING)
+                            orderFunction = x => orders.OrderBy(x);
+                        else
+                            orderFunction = x => orders.OrderByDescending(x);
+
+                        switch (sortby)
+                        {
+                            case "username":
+                            default:
+                                orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                break;
+                            case "creation":
+                                orders = orderFunction(x => x.CreationDate);
+                                break;
+                            case "supplier":
+                                orders = orderFunction(x => x.Supplier.Name);
+                                break;
+                            case "status":
+                                orders = orderFunction(x => x.StatusId);
+                                break;
+                            case "price":
+                                orders = orderFunction(x => x.Orders_OrderToItem.Sum(item => item.SingleItemPrice));
+                                break;
+                        }
+                    }
+
+                    orders = orders
+                        .Skip((page - 1) * ITEMS_PER_PAGE)
+                        .Take(ITEMS_PER_PAGE)
+                        .ToList();
+
+                    ViewBag.Sortby = sortby;
+                    ViewBag.Order = order;
+                    ViewBag.CurrPage = page;
+                    ViewBag.NumberOfPages = numberOfPages;
+
+                    return View(orders.ToList());
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
             }
         }
 
@@ -576,6 +643,20 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
+        }
+
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<Order> orders, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false)
+        {
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+
+            return PartialView(orders);
         }
 
         private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)

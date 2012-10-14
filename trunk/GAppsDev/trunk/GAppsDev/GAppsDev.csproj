@@ -141,6 +141,7 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="ExtendedClasses\ExtendedClasses.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -394,6 +395,7 @@
     <Content Include="Views\Users\EditPending.cshtml" />
     <Content Include="Views\Shared\_EmptyLayout.cshtml" />
     <Content Include="Views\Orders\PrintOrderToScreen.cshtml" />
+    <Content Include="Views\Orders\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

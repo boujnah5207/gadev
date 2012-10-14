@@ -89,7 +89,8 @@ namespace Mvc4.OpenId.Sample.Security
                                 LastName = logInResult.User.LastName,
                                 CreationTime = DateTime.Now,
                                 LastLogInTime = DateTime.Now,
-                                Roles = pendingUser.Roles
+                                Roles = pendingUser.Roles,
+                                IsActive = true
                             };
 
                             try
