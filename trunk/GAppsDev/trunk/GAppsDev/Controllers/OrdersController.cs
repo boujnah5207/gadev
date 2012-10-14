@@ -18,6 +18,7 @@ namespace GAppsDev.Controllers
     public class OrdersController : BaseController
     {
         private const int WAITING_FOR_APPROVAL_STATUS = 1;
+        private const int APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE = 3;
         private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 7;
 
         private Entities db = new Entities();
@@ -46,6 +47,7 @@ namespace GAppsDev.Controllers
             {
                 using (OrdersRepository ordersRep = new OrdersRepository())
                 {
+                    ViewBag.ApprovedStatus = APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE;
                     return View(ordersRep.GetList("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId).ToList());
                 }
             }
