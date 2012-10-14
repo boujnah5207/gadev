@@ -34,26 +34,31 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Supplier.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Orders_Statuses.Name)
-        </td>
-        <td>
-            @Html.ActionLink("הצג", "Details", new { id=item.Id }) |
-            @Html.ActionLink("ערוך", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("מחק", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orders_Statuses.Name)
+            </td>
+            <td>
+                @Html.ActionLink("הצג", "Details", new { id = item.Id }) |
+            @Html.ActionLink("ערוך", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("מחק", "Delete", new { id = item.Id })|
+            @if (item.Orders_Statuses.Id == ViewBag.ApprovedStatus)
+            {
+                @Html.ActionLink("הדפס הזמנה", "DownloadOrderAsPdf", new { id = item.Id })
+            }
+            </td>
+        </tr>
+    }
 
 </table>
