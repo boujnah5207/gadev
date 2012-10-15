@@ -156,6 +156,7 @@
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
     <Compile Include="Models\Search\OrdersSearchModel.cs" />
+    <Compile Include="Models\Search\OrderNotes.cs" />
     <Compile Include="Models\Supplier\AjaxSupplier.cs" />
     <Compile Include="Models\User\AllUsersModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
@@ -405,6 +406,7 @@
     <Content Include="Views\Shared\_EmptyLayout.cshtml" />
     <Content Include="Views\Orders\PrintOrderToScreen.cshtml" />
     <Content Include="Views\Orders\List.cshtml" />
+    <Content Include="Views\Orders\Search.cshtml" />
     <Content Include="Views\Orders\UploadSingleFile.cshtml" />
   </ItemGroup>
   <ItemGroup>

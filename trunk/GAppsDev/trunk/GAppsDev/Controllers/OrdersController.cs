@@ -46,9 +46,9 @@ namespace GAppsDev.Controllers
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
                     orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
-                    List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
+                    List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
                     ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
-                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
+                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
                     ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
                     
                     int numberOfItems = orders.Count();
@@ -708,54 +708,78 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.Employee))
             {
-                IQueryable<Order> orders;
+                List<Order> matchingOrders;
+                List<Order> TextMatchOrders = new List<Order>();
+
                 using (OrdersRepository ordersRep = new OrdersRepository())
+                using (UsersRepository usersRep = new UsersRepository())
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User");
-                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
+                    IQueryable<Order> ordersQuery;
+
+                    ordersQuery = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
+                    List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
+                    ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
+                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
                     ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
 
                     if (model.UserId.HasValue)
-                        orders = orders.Where(x => x.UserId == model.UserId.Value);
-
-                    /*
-                    if (!String.IsNullOrEmpty(model.FirstName))
-                        orders = orders.Where( x => x.User.FirstName == model.FirstName);
-
-                    if (!String.IsNullOrEmpty(model.LastName))
-                        orders = orders.Where(x => x.User.LastName == model.LastName);
-                    */
+                        ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);
 
                     if (model.SupplierId.HasValue)
-                        orders = orders.Where(x => x.SupplierId == model.SupplierId.Value);
+                        ordersQuery = ordersQuery.Where(x => x.SupplierId == model.SupplierId.Value);
 
                     if (model.StatusId.HasValue)
-                        orders = orders.Where(x => x.StatusId == model.StatusId.Value);
-
-                    if (!String.IsNullOrEmpty(model.NoteText))
-                        orders = orders.Where(x => x.StatusId == model.StatusId.Value);
+                        ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
 
                     if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value <= model.PriceMin.Value)
                         model.PriceMax = null;
 
                     if (model.PriceMin.HasValue)
-                        orders = orders.Where(x => x.Price >= model.PriceMin.Value);
+                        ordersQuery = ordersQuery.Where(x => x.Price >= model.PriceMin.Value);
 
                     if (model.PriceMax.HasValue)
-                        orders = orders.Where(x => x.Price <= model.PriceMax.Value);
+                        ordersQuery = ordersQuery.Where(x => x.Price <= model.PriceMax.Value);
 
                     if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value <= model.CreationMin.Value)
                         model.CreationMax = null;
 
                     if (model.CreationMin.HasValue)
-                        orders = orders.Where(x => x.CreationDate >= model.CreationMin.Value);
+                        ordersQuery = ordersQuery.Where(x => x.CreationDate >= model.CreationMin.Value);
 
                     if (model.CreationMax.HasValue)
-                        orders = orders.Where(x => x.CreationDate <= model.CreationMax.Value);
+                        ordersQuery = ordersQuery.Where(x => x.CreationDate <= model.CreationMax.Value);
 
-                    return View(orders.ToList());
+                    matchingOrders = ordersQuery.ToList();
+                }
+
+                if (!String.IsNullOrEmpty(model.NoteText))
+                {
+                    List<string> searchWords = model.NoteText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(str => str.Trim()).ToList();
+                    foreach (var order in matchingOrders)
+                    {
+                        foreach (var word in searchWords)
+                        {
+                            if (!String.IsNullOrEmpty(order.Notes) && order.Notes.Contains(word))
+                            {
+                                TextMatchOrders.Add(order);
+                                break;
+                            }
+
+                            if (!String.IsNullOrEmpty(order.OrderApproverNotes) && order.OrderApproverNotes.Contains(word))
+                            {
+                                TextMatchOrders.Add(order);
+                                break;
+                            }
+                        }
+                    }
+
+                    return View(TextMatchOrders);
+                }
+                else
+                {
+                    return View(matchingOrders);
                 }
             }
             else
@@ -776,6 +800,20 @@ namespace GAppsDev.Controllers
             ViewBag.IsCheckBoxed = isCheckBoxed;
 
             return PartialView(orders);
+        }
+
+        [ChildActionOnly]
+        public ActionResult SimpleList(IEnumerable<Order> orders)
+        {
+            ViewBag.IsOrdered = false;
+            ViewBag.IsPaged = false;
+            ViewBag.Sortby = null;
+            ViewBag.Order = null;
+            ViewBag.CurrPage = 1;
+            ViewBag.NumberOfPages = 1;
+            ViewBag.IsCheckBoxed = false;
+
+            return PartialView("List", orders);
         }
 
         private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)
