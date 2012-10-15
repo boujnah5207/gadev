@@ -43,9 +43,9 @@ namespace System.Web.Mvc.Html
                 builder.AppendLine("<div class='Pagination'>");
 
                 if (currPage != 1)
-                    builder.AppendLine(GetPageLink(" << Previous ", baseURL, prevPage, sortby, order));
+                    builder.AppendLine(GetPageLink(" << הקודם ", baseURL, prevPage, sortby, order));
                 else
-                    builder.AppendLine("<span class='currentPage'> << Previous </span>");
+                    builder.AppendLine("<span class='currentPage'> << הקודם </span>");
 
                 builder.AppendLine("<ul class='PageList'>");
 
@@ -79,9 +79,9 @@ namespace System.Web.Mvc.Html
                 builder.AppendLine("</ul>");
 
                 if (currPage != totalPages)
-                    builder.AppendLine(GetPageLink(" Next >> ", baseURL, nextPage, sortby, order));
+                    builder.AppendLine(GetPageLink(" הבא >> ", baseURL, nextPage, sortby, order));
                 else
-                    builder.AppendLine("<span class='currentPage'> Next >> </span>");
+                    builder.AppendLine("<span class='currentPage'> הבא >> </span>");
 
                 builder.AppendLine("</div>");
             }

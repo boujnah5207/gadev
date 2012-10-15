@@ -41,15 +41,17 @@ function beginForm(existingItems) {
     selectedSupplier = {};
     selectedSupplier.ID = hiddenSupplierField.val();
 
-    var items = existingItems.split(";");
-    for (var i in items) {
-        itemValues = items[i].split(",");
-        addNewItem(
-            itemValues[0],
-            itemValues[1],
-            itemValues[2],
-            itemValues[3]
-        );
+    if (existingItems != "") {
+        var items = existingItems.split(";");
+        for (var i in items) {
+            itemValues = items[i].split(",");
+            addNewItem(
+                itemValues[0],
+                itemValues[1],
+                itemValues[2],
+                itemValues[3]
+            );
+        }
     }
 
     $.ajax({

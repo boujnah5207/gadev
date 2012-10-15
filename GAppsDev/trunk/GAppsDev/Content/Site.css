@@ -190,7 +190,18 @@ footer {
         list-style: none;
     }
 
+    ul.PageList {
+        display: inline-block;
+        margin: 0px;
+        padding: 0px 10px;
+        list-style: none;
+    }
 
+    ul.PageList li {
+        display: inline-block;
+        margin: 0px;
+        padding: 0px 2px;
+    }
 /* menu
 ----------------------------------------------------------*/
 ul#menu {

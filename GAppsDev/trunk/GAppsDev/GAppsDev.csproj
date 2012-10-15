@@ -155,6 +155,7 @@
     <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
+    <Compile Include="Models\Search\OrdersSearchModel.cs" />
     <Compile Include="Models\Supplier\AjaxSupplier.cs" />
     <Compile Include="Models\User\AllUsersModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
@@ -333,6 +334,7 @@
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\createOrderScript.js" />
     <Content Include="Scripts\createSupplierScript.js" />
+    <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -349,6 +351,7 @@
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\openid-en.js" />
     <Content Include="Scripts\openid-jquery.js" />
+    <Content Include="Scripts\SearchScript.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
