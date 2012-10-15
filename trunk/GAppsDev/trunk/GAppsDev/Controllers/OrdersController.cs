@@ -13,6 +13,7 @@ using Mvc4.OpenId.Sample.Security;
 using GAppsDev.Models;
 using Rotativa;
 using BaseLibraries;
+using System.IO;
 using GAppsDev.Models.Search;
 
 namespace GAppsDev.Controllers
@@ -49,7 +50,7 @@ namespace GAppsDev.Controllers
                     ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
                     ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
                     ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
-
+                    
                     int numberOfItems = orders.Count();
                     int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
                     if (numberOfItems % ITEMS_PER_PAGE != 0)
@@ -152,6 +153,32 @@ namespace GAppsDev.Controllers
             else return Error(Errors.NO_PERMISSION);
         }
 
+
+        // This action renders the form
+        [OpenIdAuthorize]
+        public ActionResult UploadSingleFile()
+        {
+            return View();
+        }
+
+        // This action handles the form POST and the upload
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult UploadSingleFile(HttpPostedFileBase file)
+        {
+            // Verify that the user selected a file
+            if (file != null && file.ContentLength > 0)
+            {
+                // extract only the fielname
+                var fileName = Path.GetFileName(file.FileName);
+                // store the file inside ~/App_Data/uploads folder
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                file.SaveAs(path);
+            }
+            // redirect back to the index action to show the form once again
+            return RedirectToAction("Index");
+        }
+
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
@@ -179,14 +206,14 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.Employee))
             {
-                Order order = db.Orders.Single(o => o.Id == id);
-                if (order == null)
-                {
-                    return HttpNotFound();
-                }
-
-                return View(order);
+            Order order = db.Orders.Single(o => o.Id == id);
+            if (order == null)
+            {
+                return HttpNotFound();
             }
+
+            return View(order);
+        }
             else return Error(Errors.NO_PERMISSION);
         }
 
@@ -209,8 +236,8 @@ namespace GAppsDev.Controllers
             OrderModel orderModel = new OrderModel();
             using (OrdersRepository ordersRepository = new OrdersRepository())
             {
-                orderModel.Order = db.Orders.Single(o => o.Id == id);
-                orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+            orderModel.Order = db.Orders.Single(o => o.Id == id);
+            orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
             }
             if (orderModel.Order == null)
             {
@@ -263,7 +290,7 @@ namespace GAppsDev.Controllers
                     if (wasOrderCreated)
                     {
                         if (ItemsList != null)
-                        {
+                            {
                             if (ItemsList.Count == 0)
                                 return Error(Errors.ORDER_HAS_NO_ITEMS);
 
@@ -272,44 +299,44 @@ namespace GAppsDev.Controllers
                                 item.OrderId = order.Id;
                             }
 
-                            bool noItemErrors = true;
-                            List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
-                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        bool noItemErrors = true;
+                        List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
+                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        {
+                            foreach (Orders_OrderToItem item in ItemsList)
                             {
-                                foreach (Orders_OrderToItem item in ItemsList)
-                                {
-                                    if (orderToItemRep.Create(item))
-                                        createdItems.Add(item);
-                                    else
+                                if (orderToItemRep.Create(item))
+                                    createdItems.Add(item);
+                                else
                                     {
-                                        noItemErrors = false;
+                                    noItemErrors = false;
                                         break;
-                                    }
-                                }
-                            }
-
-                            if (noItemErrors)
-                                return RedirectToAction("MyOrders");
-                            else
-                            {
-                                using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                                {
-                                    foreach (Orders_OrderToItem item in createdItems)
-                                    {
-                                        orderToItemRep.Delete(item.Id);
-                                    }
-                                }
-
-                                using (OrdersRepository orderRep = new OrdersRepository())
-                                {
-                                    orderRep.Delete(order.Id);
-                                }
-
-                                return Error(Errors.ORDERS_CREATE_ERROR);
                             }
                         }
+                            }
+
+                        if (noItemErrors)
+                            return RedirectToAction("MyOrders");
                         else
                         {
+                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                            {
+                                foreach (Orders_OrderToItem item in createdItems)
+                                {
+                                    orderToItemRep.Delete(item.Id);
+                                }
+                            }
+
+                            using (OrdersRepository orderRep = new OrdersRepository())
+                            {
+                                orderRep.Delete(order.Id);
+                            }
+
+                            return Error(Errors.ORDERS_CREATE_ERROR);
+                        }
+                    }
+                    else
+                    {
                             return Error(Errors.INVALID_FORM);
                         }
                     }
@@ -354,7 +381,7 @@ namespace GAppsDev.Controllers
                         }
 
                         if (!String.IsNullOrEmpty(existingItems))
-                            existingItems = existingItems.Remove(existingItems.Length - 1);
+                        existingItems = existingItems.Remove(existingItems.Length - 1);
 
                         ViewBag.ExistingItems = existingItems;
 
@@ -410,53 +437,53 @@ namespace GAppsDev.Controllers
                                     if (itemsFromEditForm.Count == 0)
                                         return Error(Errors.ORDER_HAS_NO_ITEMS);
 
-                                    foreach (var newItem in itemsFromEditForm)
+                            foreach (var newItem in itemsFromEditForm)
+                            {
+                                Orders_OrderToItem existingItem = orderFromDatabase.Orders_OrderToItem.SingleOrDefault(x => x.ItemId == newItem.ItemId);
+
+                                if (existingItem != null)
+                                {
+                                    if (
+                                        existingItem.Quantity != newItem.Quantity ||
+                                        existingItem.SingleItemPrice != newItem.SingleItemPrice
+                                        )
                                     {
-                                        Orders_OrderToItem existingItem = orderFromDatabase.Orders_OrderToItem.SingleOrDefault(x => x.ItemId == newItem.ItemId);
-
-                                        if (existingItem != null)
-                                        {
-                                            if (
-                                                existingItem.Quantity != newItem.Quantity ||
-                                                existingItem.SingleItemPrice != newItem.SingleItemPrice
-                                                )
-                                            {
-                                                newItem.Id = existingItem.Id;
-                                                itemsToUpdate.Add(newItem);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            itemsToCreate.Add(newItem);
-                                        }
+                                        newItem.Id = existingItem.Id;
+                                        itemsToUpdate.Add(newItem);
                                     }
+                                }
+                                else
+                                {
+                                    itemsToCreate.Add(newItem);
+                                }
+                            }
 
-                                    foreach (var existingItem in orderFromDatabase.Orders_OrderToItem)
-                                    {
-                                        Orders_OrderToItem newItem = itemsFromEditForm.SingleOrDefault(x => x.ItemId == existingItem.ItemId);
+                            foreach (var existingItem in orderFromDatabase.Orders_OrderToItem)
+                            {
+                                Orders_OrderToItem newItem = itemsFromEditForm.SingleOrDefault(x => x.ItemId == existingItem.ItemId);
 
-                                        if (newItem == null)
-                                        {
-                                            itemsToDelete.Add(existingItem);
-                                        }
-                                    }
+                                if (newItem == null)
+                                {
+                                    itemsToDelete.Add(existingItem);
+                                }
+                            }
 
                                     bool noErrors = true;
 
                                     using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                                    {
-                                        foreach (var item in itemsToCreate)
-                                        {
+                            {
+                                foreach (var item in itemsToCreate)
+                                {
                                             if (!orderToItemRep.Create(item) && noErrors)
                                                 noErrors = false;
-                                        }
-                                        foreach (var item in itemsToUpdate)
-                                        {
+                                }
+                                foreach (var item in itemsToUpdate)
+                                {
                                             if (orderToItemRep.Update(item) == null && noErrors)
                                                 noErrors = false;
-                                        }
-                                        foreach (var item in itemsToDelete)
-                                        {
+                                }
+                                foreach (var item in itemsToDelete)
+                                {
                                             if (!orderToItemRep.Delete(item.Id) && noErrors)
                                                 noErrors = false;
                                         }
@@ -475,16 +502,16 @@ namespace GAppsDev.Controllers
 
                                                 ordersRep.Update(order);
                                             }
-                                        }
-                                    }
+                                }
+                            }
 
                                     if (noErrors)
-                                        return RedirectToAction("MyOrders");
+                            return RedirectToAction("MyOrders");
                                     else
                                         return Error(Errors.ORDER_UPDATE_ITEMS_ERROR);
-                                }
-                                else
-                                {
+                        }
+                        else
+                        {
                                     return Error(Errors.INVALID_FORM);
                                 }
                             }
@@ -536,10 +563,10 @@ namespace GAppsDev.Controllers
                     {
                         if (model.Order.StatusId == WAITING_FOR_APPROVAL_STATUS || model.Order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
                         {
-                            return View(model);
-                        }
-                        else
-                        {
+                        return View(model);
+                    }
+                    else
+                    {
                             return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
                         }
                     }
@@ -580,35 +607,35 @@ namespace GAppsDev.Controllers
                     {
                         if (order.StatusId == WAITING_FOR_APPROVAL_STATUS || order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
                         {
-                            bool noItemErrors = true;
-                            using (OrdersRepository orderRep = new OrdersRepository())
-                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        bool noItemErrors = true;
+                        using (OrdersRepository orderRep = new OrdersRepository())
+                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                        {
+                            foreach (var item in order.Orders_OrderToItem)
                             {
-                                foreach (var item in order.Orders_OrderToItem)
-                                {
-                                    if (!orderToItemRep.Delete(item.Id))
-                                        noItemErrors = false;
-                                }
+                                if (!orderToItemRep.Delete(item.Id))
+                                    noItemErrors = false;
+                            }
 
-                                if (noItemErrors)
+                            if (noItemErrors)
+                            {
+                                if (orderRep.Delete(order.Id))
                                 {
-                                    if (orderRep.Delete(order.Id))
-                                    {
-                                        return RedirectToAction("MyOrders");
-                                    }
-                                    else
-                                    {
-                                        return Error(Errors.ORDERS_DELETE_ERROR);
-                                    }
+                                    return RedirectToAction("MyOrders");
                                 }
                                 else
                                 {
-                                    return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
+                                    return Error(Errors.ORDERS_DELETE_ERROR);
                                 }
                             }
+                            else
+                            {
+                                return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
+                            }
                         }
-                        else
-                        {
+                    }
+                    else
+                    {
                             return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
                         }
                     }
