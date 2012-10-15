@@ -44,7 +44,7 @@ namespace GAppsDev.Controllers
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User");
+                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
                     List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
                     ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
                     ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
