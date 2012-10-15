@@ -442,7 +442,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -461,7 +461,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -486,7 +486,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -510,7 +510,7 @@ namespace DB
             {
                 OnYearChanging(value);
                 ReportPropertyChanging("Year");
-                _Year = StructuralObject.SetValidValue(value, "Year");
+                _Year = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Year");
                 OnYearChanged();
             }
@@ -534,7 +534,7 @@ namespace DB
             {
                 OnDepartmentIdChanging(value);
                 ReportPropertyChanging("DepartmentId");
-                _DepartmentId = StructuralObject.SetValidValue(value, "DepartmentId");
+                _DepartmentId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DepartmentId");
                 OnDepartmentIdChanged();
             }
@@ -558,7 +558,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -569,6 +569,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -680,7 +681,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -699,7 +700,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -724,7 +725,7 @@ namespace DB
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false, "Name");
+                _Name = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -748,7 +749,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -772,7 +773,7 @@ namespace DB
             {
                 OnUsersLimitChanging(value);
                 ReportPropertyChanging("UsersLimit");
-                _UsersLimit = StructuralObject.SetValidValue(value, "UsersLimit");
+                _UsersLimit = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("UsersLimit");
                 OnUsersLimitChanged();
             }
@@ -783,6 +784,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -970,7 +972,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -989,7 +991,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1014,7 +1016,7 @@ namespace DB
             {
                 OnUserIdChanging(value);
                 ReportPropertyChanging("UserId");
-                _UserId = StructuralObject.SetValidValue(value, "UserId");
+                _UserId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("UserId");
                 OnUserIdChanged();
             }
@@ -1038,7 +1040,7 @@ namespace DB
             {
                 OnHashValueChanging(value);
                 ReportPropertyChanging("HashValue");
-                _HashValue = StructuralObject.SetValidValue(value, false, "HashValue");
+                _HashValue = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("HashValue");
                 OnHashValueChanged();
             }
@@ -1049,6 +1051,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1122,7 +1125,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1141,7 +1144,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1166,7 +1169,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -1190,7 +1193,7 @@ namespace DB
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, "Name");
+                _Name = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -1214,7 +1217,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -1225,6 +1228,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1324,7 +1328,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1343,7 +1347,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1368,7 +1372,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -1392,7 +1396,7 @@ namespace DB
             {
                 OnTimeStampChanging(value);
                 ReportPropertyChanging("TimeStamp");
-                _TimeStamp = StructuralObject.SetValidValue(value, "TimeStamp");
+                _TimeStamp = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("TimeStamp");
                 OnTimeStampChanged();
             }
@@ -1416,7 +1420,7 @@ namespace DB
             {
                 OnItemIdChanging(value);
                 ReportPropertyChanging("ItemId");
-                _ItemId = StructuralObject.SetValidValue(value, "ItemId");
+                _ItemId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ItemId");
                 OnItemIdChanged();
             }
@@ -1440,7 +1444,7 @@ namespace DB
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
+                _LocationId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -1464,7 +1468,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -1475,6 +1479,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1624,7 +1629,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1643,7 +1648,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1668,7 +1673,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -1692,7 +1697,7 @@ namespace DB
             {
                 OnAddressChanging(value);
                 ReportPropertyChanging("Address");
-                _Address = StructuralObject.SetValidValue(value, false, "Address");
+                _Address = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Address");
                 OnAddressChanged();
             }
@@ -1716,7 +1721,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -1727,6 +1732,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1828,7 +1834,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1847,7 +1853,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1872,7 +1878,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -1896,7 +1902,7 @@ namespace DB
             {
                 OnUserIdChanging(value);
                 ReportPropertyChanging("UserId");
-                _UserId = StructuralObject.SetValidValue(value, "UserId");
+                _UserId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("UserId");
                 OnUserIdChanged();
             }
@@ -1920,7 +1926,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -1944,7 +1950,7 @@ namespace DB
             {
                 OnSupplierIdChanging(value);
                 ReportPropertyChanging("SupplierId");
-                _SupplierId = StructuralObject.SetValidValue(value, "SupplierId");
+                _SupplierId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SupplierId");
                 OnSupplierIdChanged();
             }
@@ -1968,7 +1974,7 @@ namespace DB
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
+                _Notes = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -1992,7 +1998,7 @@ namespace DB
             {
                 OnPriceChanging(value);
                 ReportPropertyChanging("Price");
-                _Price = StructuralObject.SetValidValue(value, "Price");
+                _Price = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Price");
                 OnPriceChanged();
             }
@@ -2016,7 +2022,7 @@ namespace DB
             {
                 OnStatusIdChanging(value);
                 ReportPropertyChanging("StatusId");
-                _StatusId = StructuralObject.SetValidValue(value, "StatusId");
+                _StatusId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("StatusId");
                 OnStatusIdChanged();
             }
@@ -2040,7 +2046,7 @@ namespace DB
             {
                 OnOrderApproverNotesChanging(value);
                 ReportPropertyChanging("OrderApproverNotes");
-                _OrderApproverNotes = StructuralObject.SetValidValue(value, true, "OrderApproverNotes");
+                _OrderApproverNotes = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("OrderApproverNotes");
                 OnOrderApproverNotesChanged();
             }
@@ -2051,6 +2057,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -2262,7 +2269,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2281,7 +2288,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2306,7 +2313,7 @@ namespace DB
             {
                 OnSupplierIdChanging(value);
                 ReportPropertyChanging("SupplierId");
-                _SupplierId = StructuralObject.SetValidValue(value, "SupplierId");
+                _SupplierId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SupplierId");
                 OnSupplierIdChanged();
             }
@@ -2330,7 +2337,7 @@ namespace DB
             {
                 OnTitleChanging(value);
                 ReportPropertyChanging("Title");
-                _Title = StructuralObject.SetValidValue(value, false, "Title");
+                _Title = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Title");
                 OnTitleChanged();
             }
@@ -2354,7 +2361,7 @@ namespace DB
             {
                 OnSubTitleChanging(value);
                 ReportPropertyChanging("SubTitle");
-                _SubTitle = StructuralObject.SetValidValue(value, false, "SubTitle");
+                _SubTitle = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("SubTitle");
                 OnSubTitleChanged();
             }
@@ -2378,7 +2385,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -2389,6 +2396,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -2508,7 +2516,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2527,7 +2535,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2552,7 +2560,7 @@ namespace DB
             {
                 OnOrderIdChanging(value);
                 ReportPropertyChanging("OrderId");
-                _OrderId = StructuralObject.SetValidValue(value, "OrderId");
+                _OrderId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("OrderId");
                 OnOrderIdChanged();
             }
@@ -2576,7 +2584,7 @@ namespace DB
             {
                 OnItemIdChanging(value);
                 ReportPropertyChanging("ItemId");
-                _ItemId = StructuralObject.SetValidValue(value, "ItemId");
+                _ItemId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ItemId");
                 OnItemIdChanged();
             }
@@ -2600,7 +2608,7 @@ namespace DB
             {
                 OnQuantityChanging(value);
                 ReportPropertyChanging("Quantity");
-                _Quantity = StructuralObject.SetValidValue(value, "Quantity");
+                _Quantity = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Quantity");
                 OnQuantityChanged();
             }
@@ -2624,7 +2632,7 @@ namespace DB
             {
                 OnSingleItemPriceChanging(value);
                 ReportPropertyChanging("SingleItemPrice");
-                _SingleItemPrice = StructuralObject.SetValidValue(value, "SingleItemPrice");
+                _SingleItemPrice = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SingleItemPrice");
                 OnSingleItemPriceChanged();
             }
@@ -2635,6 +2643,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -2742,7 +2751,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2761,7 +2770,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2786,7 +2795,7 @@ namespace DB
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false, "Name");
+                _Name = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -2797,6 +2806,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -2856,7 +2866,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2875,7 +2885,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2900,7 +2910,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -2924,7 +2934,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -2948,7 +2958,7 @@ namespace DB
             {
                 OnEmailChanging(value);
                 ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, false, "Email");
+                _Email = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Email");
                 OnEmailChanged();
             }
@@ -2972,7 +2982,7 @@ namespace DB
             {
                 OnRolesChanging(value);
                 ReportPropertyChanging("Roles");
-                _Roles = StructuralObject.SetValidValue(value, "Roles");
+                _Roles = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Roles");
                 OnRolesChanged();
             }
@@ -2983,6 +2993,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -3062,7 +3073,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3081,7 +3092,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -3106,7 +3117,7 @@ namespace DB
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -3130,7 +3141,7 @@ namespace DB
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false, "Name");
+                _Name = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -3154,7 +3165,7 @@ namespace DB
             {
                 OnVAT_NumberChanging(value);
                 ReportPropertyChanging("VAT_Number");
-                _VAT_Number = StructuralObject.SetValidValue(value, "VAT_Number");
+                _VAT_Number = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("VAT_Number");
                 OnVAT_NumberChanged();
             }
@@ -3178,7 +3189,7 @@ namespace DB
             {
                 OnAddressChanging(value);
                 ReportPropertyChanging("Address");
-                _Address = StructuralObject.SetValidValue(value, false, "Address");
+                _Address = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Address");
                 OnAddressChanged();
             }
@@ -3202,7 +3213,7 @@ namespace DB
             {
                 OnCityChanging(value);
                 ReportPropertyChanging("City");
-                _City = StructuralObject.SetValidValue(value, false, "City");
+                _City = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("City");
                 OnCityChanged();
             }
@@ -3226,7 +3237,7 @@ namespace DB
             {
                 OnPhone_NumberChanging(value);
                 ReportPropertyChanging("Phone_Number");
-                _Phone_Number = StructuralObject.SetValidValue(value, false, "Phone_Number");
+                _Phone_Number = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Phone_Number");
                 OnPhone_NumberChanged();
             }
@@ -3250,7 +3261,7 @@ namespace DB
             {
                 OnCustomer_NumberChanging(value);
                 ReportPropertyChanging("Customer_Number");
-                _Customer_Number = StructuralObject.SetValidValue(value, true, "Customer_Number");
+                _Customer_Number = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Customer_Number");
                 OnCustomer_NumberChanged();
             }
@@ -3274,7 +3285,7 @@ namespace DB
             {
                 OnAdditional_PhoneChanging(value);
                 ReportPropertyChanging("Additional_Phone");
-                _Additional_Phone = StructuralObject.SetValidValue(value, true, "Additional_Phone");
+                _Additional_Phone = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Additional_Phone");
                 OnAdditional_PhoneChanged();
             }
@@ -3298,7 +3309,7 @@ namespace DB
             {
                 OnEMailChanging(value);
                 ReportPropertyChanging("EMail");
-                _EMail = StructuralObject.SetValidValue(value, true, "EMail");
+                _EMail = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("EMail");
                 OnEMailChanged();
             }
@@ -3322,7 +3333,7 @@ namespace DB
             {
                 OnFaxChanging(value);
                 ReportPropertyChanging("Fax");
-                _Fax = StructuralObject.SetValidValue(value, true, "Fax");
+                _Fax = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Fax");
                 OnFaxChanged();
             }
@@ -3346,7 +3357,7 @@ namespace DB
             {
                 OnActivity_HoursChanging(value);
                 ReportPropertyChanging("Activity_Hours");
-                _Activity_Hours = StructuralObject.SetValidValue(value, true, "Activity_Hours");
+                _Activity_Hours = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Activity_Hours");
                 OnActivity_HoursChanged();
             }
@@ -3370,7 +3381,7 @@ namespace DB
             {
                 OnBranch_lineChanging(value);
                 ReportPropertyChanging("Branch_line");
-                _Branch_line = StructuralObject.SetValidValue(value, true, "Branch_line");
+                _Branch_line = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Branch_line");
                 OnBranch_lineChanged();
             }
@@ -3394,7 +3405,7 @@ namespace DB
             {
                 OnPresentor_nameChanging(value);
                 ReportPropertyChanging("Presentor_name");
-                _Presentor_name = StructuralObject.SetValidValue(value, true, "Presentor_name");
+                _Presentor_name = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Presentor_name");
                 OnPresentor_nameChanged();
             }
@@ -3418,7 +3429,7 @@ namespace DB
             {
                 OnCrew_NumberChanging(value);
                 ReportPropertyChanging("Crew_Number");
-                _Crew_Number = StructuralObject.SetValidValue(value, true, "Crew_Number");
+                _Crew_Number = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Crew_Number");
                 OnCrew_NumberChanged();
             }
@@ -3442,7 +3453,7 @@ namespace DB
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
+                _Notes = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -3453,6 +3464,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -3542,7 +3554,7 @@ namespace DB
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3561,7 +3573,7 @@ namespace DB
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, "Id");
+                    _Id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -3586,7 +3598,7 @@ namespace DB
             {
                 OnCompanyIdChanging(value);
                 ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value, "CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CompanyId");
                 OnCompanyIdChanged();
             }
@@ -3610,7 +3622,7 @@ namespace DB
             {
                 OnEmailChanging(value);
                 ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, false, "Email");
+                _Email = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Email");
                 OnEmailChanged();
             }
@@ -3634,7 +3646,7 @@ namespace DB
             {
                 OnFirstNameChanging(value);
                 ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, false, "FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("FirstName");
                 OnFirstNameChanged();
             }
@@ -3658,7 +3670,7 @@ namespace DB
             {
                 OnLastNameChanging(value);
                 ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, false, "LastName");
+                _LastName = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("LastName");
                 OnLastNameChanged();
             }
@@ -3682,7 +3694,7 @@ namespace DB
             {
                 OnRolesChanging(value);
                 ReportPropertyChanging("Roles");
-                _Roles = StructuralObject.SetValidValue(value, "Roles");
+                _Roles = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Roles");
                 OnRolesChanged();
             }
@@ -3706,7 +3718,7 @@ namespace DB
             {
                 OnCreationTimeChanging(value);
                 ReportPropertyChanging("CreationTime");
-                _CreationTime = StructuralObject.SetValidValue(value, "CreationTime");
+                _CreationTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreationTime");
                 OnCreationTimeChanged();
             }
@@ -3730,7 +3742,7 @@ namespace DB
             {
                 OnLastLogInTimeChanging(value);
                 ReportPropertyChanging("LastLogInTime");
-                _LastLogInTime = StructuralObject.SetValidValue(value, "LastLogInTime");
+                _LastLogInTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("LastLogInTime");
                 OnLastLogInTimeChanged();
             }
@@ -3754,7 +3766,7 @@ namespace DB
             {
                 OnIsActiveChanging(value);
                 ReportPropertyChanging("IsActive");
-                _IsActive = StructuralObject.SetValidValue(value, "IsActive");
+                _IsActive = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("IsActive");
                 OnIsActiveChanged();
             }
@@ -3765,6 +3777,7 @@ namespace DB
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -3855,4 +3868,5 @@ namespace DB
 
     #endregion
 
+    
 }
