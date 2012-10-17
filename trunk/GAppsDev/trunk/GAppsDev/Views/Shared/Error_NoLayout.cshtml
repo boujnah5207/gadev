@@ -1,0 +1,19 @@
+﻿@model GAppsDev.Models.ErrorModels.ErrorModel
+
+@{
+    ViewBag.Title = "שגיאה";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+    
+    string HtmlNewLine = System.Environment.NewLine + "<br />";
+    string HtmlErrorMessage = Model.ErrorMessage.Replace(System.Environment.NewLine, HtmlNewLine);
+}
+
+<h2>
+    @ViewBag.Title
+</h2>
+
+<div id="error-container">
+    <span>
+        @Html.Raw(HtmlErrorMessage)
+    </span>
+</div>

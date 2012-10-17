@@ -37,20 +37,19 @@ $(function () {
 
 function beginForm() {
     formContainer.slideToggle(0, null);
-    supplierButton.slideToggle(0, null);
+    //supplierButton.slideToggle(0, null);
     form.slideToggle(500, null);
-    supplierButton.attr("disabled", true);
-    suppliersList.attr("disabled", true);
+    //supplierButton.attr("disabled", true);
+    //suppliersList.attr("disabled", true);
 
     selectedSupplier = {};
     selectedSupplier.ID = suppliersList.val();
     hiddenSupplierField.val(selectedSupplier.ID);
-    console.log(hiddenSupplierField);
-    console.log(hiddenSupplierField.val());
     selectedSupplier.Name = $("#suppliersList option:selected").text();
 
-    $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"))
+    $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"));
     AddSupplierButton.remove();
+    supplierButton.remove();
 
     $.ajax({
         type: "GET",
@@ -106,9 +105,6 @@ function addSupplier() {
             newSupplier.Crew_Number = $("#Crew_Number").val();
             newSupplier.Notes = $("#Notes").val();
 
-            console.log("newSupplier created");
-            console.log(newSupplier);
-
             $.ajax({
                 type: "POST",
                 url: "/Suppliers/AjaxCreate/",
@@ -143,7 +139,7 @@ function addSupplier() {
                     }
                 });
             }
-        })
+        });
     });
 }
 
@@ -158,9 +154,6 @@ function addOrderItem() {
             newOrderItem.Title = $("#Title").val();
             newOrderItem.SubTitle = $("#SubTitle").val();
             newOrderItem.SupplierId = selectedSupplier.ID;
-            console.log($("#Title"));
-            console.log("newOrderItem created");
-            console.log(newOrderItem);
 
             $.ajax({
                 type: "POST",
@@ -197,7 +190,7 @@ function addOrderItem() {
                     }
                 });
             }
-        })
+        });
     });
 }
 
@@ -335,7 +328,6 @@ function updateItems() {
         value = value.slice(0, value.length - 1);
     }
     hiddenItemField.val(value);
-    console.log(value);
     totalOrderPriceField.val(totalPrice);
 }
 

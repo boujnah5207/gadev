@@ -36,8 +36,6 @@ $(function () {
 });
 
 function beginForm(existingItems) {
-    console.log(existingItems);
-
     selectedSupplier = {};
     selectedSupplier.ID = hiddenSupplierField.val();
 
@@ -96,9 +94,6 @@ function addOrderItem() {
             newOrderItem.Title = $("#Title").val();
             newOrderItem.SubTitle = $("#SubTitle").val();
             newOrderItem.SupplierId = selectedSupplier.ID;
-            console.log($("#Title"));
-            console.log("newOrderItem created");
-            console.log(newOrderItem);
 
             $.ajax({
                 type: "POST",
@@ -259,7 +254,6 @@ function updateItems() {
         value = value.slice(0, value.length - 1);
     }
     hiddenItemField.val(value);
-    console.log(value);
     totalOrderPriceField.val(totalPrice);
 }
 

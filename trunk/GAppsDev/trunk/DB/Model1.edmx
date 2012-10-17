@@ -1085,7 +1085,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <edmx:Diagram Name="Model1" ZoomLevel="34">
+      <edmx:Diagram Name="Model1" ZoomLevel="85">
         <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="1.9792821248896804" PointY="17.896440350402351" />
         <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="8.625" PointY="26.75" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="3.3230138008124257" PointY="20.739996070386841" />

@@ -13,7 +13,7 @@ using GAppsDev.Models.ErrorModels;
 namespace GAppsDev.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly OpenIdMembershipService openidemembership;
         public AccountController()
@@ -34,9 +34,13 @@ namespace GAppsDev.Controllers
                     HttpContext.Response.Cookies.Add(cookie);
                     return new RedirectResult(Request.Params["ReturnUrl"] ?? "/");
                 }
+                else if (result.IsCanceled)
+                {
+                    return View("Error_NoLayout", new ErrorModel("חשבון משתשתמש זה בוטל. אנא פנה למנהל המערכת."));
+                }
                 else
                 {
-                    return View("Error", new ErrorModel("חשבון המשתמש שלך לא מורשה. אנא צור קשר עם מנהל המערכת."));
+                    return View("Error_NoLayout", new ErrorModel("חשבון משתשתמש זה אינו רשום במערכת."));
                 }
             }
 
@@ -60,11 +64,12 @@ namespace GAppsDev.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("User");
-            OpenIdUser user = (OpenIdUser)Session["User"];
-            Response.Cookies[OpenIdMembershipService.LOGIN_COOKIE_NAME].Expires = DateTime.Now.AddDays(-1);
-            //WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
+            myCookie.Expires = DateTime.Now.AddDays(-1d);
+            Response.Cookies.Add(myCookie);
+
+            return View();
         }
     }
 }

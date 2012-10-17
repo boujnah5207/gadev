@@ -1,0 +1,83 @@
+﻿@model GAppsDev.Models.Search.OrdersSearchFormModel
+
+<fieldset>
+    <legend>חיפוש מתקדם</legend>
+    <div id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+
+    @using (Html.BeginForm("Search", "Orders"))
+    {
+        @Html.ValidationSummary(true)
+            
+            if (ViewBag.UserId != null)
+            {
+                @Html.Hidden("UserId", ((int?)ViewBag.UserId).Value)
+            }
+            else
+            {
+                <div class="editor-label">
+                <span>שם המזמין:</span>
+                </div>
+                <div class="editor-field">
+                        @Html.DropDownList("UserId", Model.UsersList)
+                </div>
+            }
+            
+            if (ViewBag.StatusId != null)
+            {
+                @Html.Hidden("StatusId", ((int?)ViewBag.StatusId).Value)
+            }
+            else
+            {
+                <div class="editor-label">
+                <span>סטאטוס:</span>
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("StatusId", Model.StatusesList)
+                </div>
+            }
+            
+            if (ViewBag.SupplierId != null)
+            {
+                @Html.Hidden("SupplierId", ((int?)ViewBag.SupplierId).Value)
+            }
+            else
+            {
+                <div class="editor-label">
+                <span>ספק:</span>
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("SupplierId", Model.SuppliersList)
+                </div>
+            }
+
+            <div class="editor-label">
+                <span>מחיר:</span>
+            </div>
+            <div class="editor-field">
+                 מ- @Html.TextBox("PriceMin") עד- @Html.TextBox("PriceMax")
+            </div>
+            
+            <div class="editor-label">
+                <span>תאריך יצירה (DD/MM/YYYY):</span>
+            </div>
+            <div class="editor-field">
+                מ- @Html.TextBox("CreationMin") עד- @Html.TextBox("CreationMax")
+            </div>
+            
+            <div class="editor-label">
+                <span>חפש את המילים הבאות בהערות:</span>
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("NoteText")
+            </div>
+        
+            <p>
+                <input type="submit" value="חפש"/>
+            </p>
+    }
+    </div>
+    @if (ViewBag.IsExpanding)
+    { 
+        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){<text>הצג</text>}else {<text>הסתר</text>}" /> 
+    }
+</fieldset>

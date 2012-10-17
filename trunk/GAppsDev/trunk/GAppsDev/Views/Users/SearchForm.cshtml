@@ -1,0 +1,50 @@
+﻿@model GAppsDev.Models.Search.UsersSearchFormModel
+
+<fieldset>
+    <legend>חיפוש מתקדם</legend>
+    <div id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+
+    @using (Html.BeginForm("Search", "Users"))
+    {
+        @Html.ValidationSummary(true)
+            
+            <div class="editor-label">
+                <span>שם משתמש:</span>
+            </div>
+            <div class="editor-field">
+                 שם פרטי: @Html.TextBox("FirstName") 
+                <br />
+                 שם משפחה: @Html.TextBox("LastName")
+            </div>
+            
+            <div class="editor-label">
+                <span>אימייל:</span>
+            </div>
+            <div class="editor-field">
+                 @Html.TextBox("Email")
+            </div>
+            
+            <div class="editor-label">
+            <span>הרשאה:</span>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("Role", Model.RolesList)
+            </div>
+            
+            <div class="editor-label">
+                <span>תאריך הצטרפות (DD/MM/YYYY):</span>
+            </div>
+            <div class="editor-field">
+                מ- @Html.TextBox("CreationMin") עד- @Html.TextBox("CreationMax")
+            </div>
+            
+            <p>
+                <input type="submit" value="חפש"/>
+            </p>
+    }
+    </div>
+    @if (ViewBag.IsExpanding)
+    { 
+        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){<text>הצג</text>}else {<text>הסתר</text>}" /> 
+    }
+</fieldset>

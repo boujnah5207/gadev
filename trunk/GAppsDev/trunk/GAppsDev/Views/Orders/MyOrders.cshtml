@@ -4,6 +4,10 @@
     ViewBag.Title = "ההזמנות שלי";
 }
 
+@section ExtraScripts{
+    <script src="~/Scripts/SearchScript.js"></script>
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
@@ -14,51 +18,17 @@
     </section>
 }
 
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.UserId })
+
 <p>
     @Html.ActionLink("יצירת הזמנה חדשה", "Create")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SupplierId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusId)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Supplier.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Orders_Statuses.Name)
-            </td>
-            <td>
-                @Html.ActionLink("הצג", "Details", new { id = item.Id }) |
-            @Html.ActionLink("ערוך", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("מחק", "Delete", new { id = item.Id })|
-            @if (item.Orders_Statuses.Id == ViewBag.ApprovedStatus)
-            {
-                @Html.ActionLink("הדפס הזמנה", "DownloadOrderAsPdf", new { id = item.Id })
-            }
-            </td>
-        </tr>
-    }
-
-</table>
+@if (Model.Count() != 0)
+{ 
+    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("MyOrders"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages, showUserName = false })    
+}
+else
+{
+    <span class="no-properties">לא נמצאו הזמנות.</span> 
+}

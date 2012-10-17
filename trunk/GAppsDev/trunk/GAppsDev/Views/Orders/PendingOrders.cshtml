@@ -4,6 +4,10 @@
     ViewBag.Title = "אישור הזמנות";
 }
 
+@section ExtraScripts{
+    <script src="~/Scripts/SearchScript.js"></script>
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
@@ -14,41 +18,13 @@
     </section>
 }
 
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SupplierId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th></th>
-    </tr>
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Supplier.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.ActionLink("הצג", "ModifyStatus", new { id=item.Id })
-        </td>
-    </tr>
+@if (Model.Count() != 0)
+{ 
+    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("PendingOrders"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
 }
-
-</table>
+else
+{
+    <span class="no-properties">לא נמצאו הזמנות.</span> 
+}

@@ -27,7 +27,7 @@ namespace GAppsDev.Controllers
         const int ITEMS_PER_PAGE = 7;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
-        const string ASCENDING = "ASC";
+        const string DEFAULT_ORDER = "DESC";
 
         private Entities db = new Entities();
 
@@ -35,22 +35,168 @@ namespace GAppsDev.Controllers
         // GET: /Orders/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = ASCENDING)
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
+        {
+            if (Authorized(RoleType.Viewer))
+            {
+                IEnumerable<Order> orders;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                    if (orders != null)
+                    {
+                        int numberOfItems = orders.Count();
+                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                        if (numberOfItems % ITEMS_PER_PAGE != 0)
+                            numberOfPages++;
+
+                        if (page <= 0)
+                            page = FIRST_PAGE;
+                        if (page > numberOfPages)
+                            page = numberOfPages;
+
+                        if (sortby != NO_SORT_BY)
+                        {
+                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                            if (order == DEFAULT_ORDER)
+                                orderFunction = x => orders.OrderByDescending(x);
+                            else
+                                orderFunction = x => orders.OrderBy(x);
+
+                            switch (sortby)
+                            {
+                                case "username":
+                                default:
+                                    orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                    break;
+                                case "creation":
+                                    orders = orderFunction(x => x.CreationDate);
+                                    break;
+                                case "supplier":
+                                    orders = orderFunction(x => x.Supplier.Name);
+                                    break;
+                                case "status":
+                                    orders = orderFunction(x => x.StatusId);
+                                    break;
+                                case "price":
+                                    orders = orderFunction(x => x.Price);
+                                    break;
+                            }
+                        }
+
+                        orders = orders
+                            .Skip((page - 1) * ITEMS_PER_PAGE)
+                            .Take(ITEMS_PER_PAGE)
+                            .ToList();
+
+                        ViewBag.Sortby = sortby;
+                        ViewBag.Order = order;
+                        ViewBag.CurrPage = page;
+                        ViewBag.NumberOfPages = numberOfPages;
+
+                        return View(orders.ToList());
+                    }
+                    else
+                    {
+                        return Error(Errors.ORDERS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        //
+        // GET: /Orders/Details/5
+
+        [OpenIdAuthorize]
+        public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
             if (Authorized(RoleType.Employee))
             {
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
-                using (UsersRepository usersRep = new UsersRepository())
-                using (SuppliersRepository suppliersRep = new SuppliersRepository())
-                using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
-                    List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
-                    ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
-                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
-                    ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
-                    
+                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.UserId == CurrentUser.UserId);
+
+                    if (orders != null)
+                    {
+                        int numberOfItems = orders.Count();
+                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                        if (numberOfItems % ITEMS_PER_PAGE != 0)
+                            numberOfPages++;
+
+                        if (page <= 0)
+                            page = FIRST_PAGE;
+                        if (page > numberOfPages)
+                            page = numberOfPages;
+
+                        if (sortby != NO_SORT_BY)
+                        {
+                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                            if (order == DEFAULT_ORDER)
+                                orderFunction = x => orders.OrderBy(x);
+                            else
+                                orderFunction = x => orders.OrderByDescending(x);
+
+                            switch (sortby)
+                            {
+                                case "creation":
+                                    orders = orderFunction(x => x.CreationDate);
+                                    break;
+                                case "supplier":
+                                    orders = orderFunction(x => x.Supplier.Name);
+                                    break;
+                                case "status":
+                                    orders = orderFunction(x => x.StatusId);
+                                    break;
+                                case "price":
+                                    orders = orderFunction(x => x.Price);
+                                    break;
+                            }
+                        }
+
+                        orders = orders
+                            .Skip((page - 1) * ITEMS_PER_PAGE)
+                            .Take(ITEMS_PER_PAGE)
+                            .ToList();
+
+                        ViewBag.Sortby = sortby;
+                        ViewBag.Order = order;
+                        ViewBag.CurrPage = page;
+                        ViewBag.NumberOfPages = numberOfPages;
+
+                        ViewBag.UserId = CurrentUser.UserId;
+                        return View(orders.ToList());
+
+                    }
+                    else
+                    {
+                        return Error(Errors.ORDERS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
+        {
+            if (Authorized(RoleType.OrdersApprover))
+            {
+                IEnumerable<Order> orders;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId && (x.Orders_Statuses.Id == (int)StatusType.Pending || x.Orders_Statuses.Id == (int)StatusType.PendingOrderCreator));
+
                     int numberOfItems = orders.Count();
                     int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
                     if (numberOfItems % ITEMS_PER_PAGE != 0)
@@ -65,7 +211,7 @@ namespace GAppsDev.Controllers
                     {
                         Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
-                        if (order == ASCENDING)
+                        if (order == DEFAULT_ORDER)
                             orderFunction = x => orders.OrderBy(x);
                         else
                             orderFunction = x => orders.OrderByDescending(x);
@@ -86,7 +232,7 @@ namespace GAppsDev.Controllers
                                 orders = orderFunction(x => x.StatusId);
                                 break;
                             case "price":
-                                orders = orderFunction(x => x.Orders_OrderToItem.Sum(item => item.SingleItemPrice));
+                                orders = orderFunction(x => x.Price);
                                 break;
                         }
                     }
@@ -108,36 +254,6 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
-        }
-
-        //
-        // GET: /Orders/Details/5
-
-        [OpenIdAuthorize]
-        public ActionResult MyOrders()
-        {
-            if (Authorized(RoleType.Employee))
-            {
-                using (OrdersRepository ordersRep = new OrdersRepository())
-                {
-                    ViewBag.ApprovedStatus = APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE;
-                    return View(ordersRep.GetList("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId).ToList());
-                }
-            }
-            else return Error(Errors.NO_PERMISSION);
-        }
-
-        [OpenIdAuthorize]
-        public ActionResult PendingOrders()
-        {
-            if (Authorized(RoleType.OrdersApprover))
-            {
-                using (OrdersRepository ordersRep = new OrdersRepository())
-                {
-                    return View(ordersRep.GetList("Supplier", "User").Where(x => x.Orders_Statuses.Id == (int)StatusType.Pending).ToList());
-                }
-            }
-            else return Error(Errors.NO_PERMISSION);
         }
 
         [OpenIdAuthorize]
@@ -206,14 +322,14 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.Employee))
             {
-            Order order = db.Orders.Single(o => o.Id == id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
+                Order order = db.Orders.Single(o => o.Id == id);
+                if (order == null)
+                {
+                    return HttpNotFound();
+                }
 
-            return View(order);
-        }
+                return View(order);
+            }
             else return Error(Errors.NO_PERMISSION);
         }
 
@@ -236,8 +352,8 @@ namespace GAppsDev.Controllers
             OrderModel orderModel = new OrderModel();
             using (OrdersRepository ordersRepository = new OrdersRepository())
             {
-            orderModel.Order = db.Orders.Single(o => o.Id == id);
-            orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+                orderModel.Order = db.Orders.Single(o => o.Id == id);
+                orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
             }
             if (orderModel.Order == null)
             {
@@ -290,7 +406,7 @@ namespace GAppsDev.Controllers
                     if (wasOrderCreated)
                     {
                         if (ItemsList != null)
-                            {
+                        {
                             if (ItemsList.Count == 0)
                                 return Error(Errors.ORDER_HAS_NO_ITEMS);
 
@@ -299,44 +415,44 @@ namespace GAppsDev.Controllers
                                 item.OrderId = order.Id;
                             }
 
-                        bool noItemErrors = true;
-                        List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
-                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                        {
-                            foreach (Orders_OrderToItem item in ItemsList)
-                            {
-                                if (orderToItemRep.Create(item))
-                                    createdItems.Add(item);
-                                else
-                                    {
-                                    noItemErrors = false;
-                                        break;
-                            }
-                        }
-                            }
-
-                        if (noItemErrors)
-                            return RedirectToAction("MyOrders");
-                        else
-                        {
+                            bool noItemErrors = true;
+                            List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
                             using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                             {
-                                foreach (Orders_OrderToItem item in createdItems)
+                                foreach (Orders_OrderToItem item in ItemsList)
                                 {
-                                    orderToItemRep.Delete(item.Id);
+                                    if (orderToItemRep.Create(item))
+                                        createdItems.Add(item);
+                                    else
+                                    {
+                                        noItemErrors = false;
+                                        break;
+                                    }
                                 }
                             }
 
-                            using (OrdersRepository orderRep = new OrdersRepository())
+                            if (noItemErrors)
+                                return RedirectToAction("MyOrders");
+                            else
                             {
-                                orderRep.Delete(order.Id);
-                            }
+                                using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                                {
+                                    foreach (Orders_OrderToItem item in createdItems)
+                                    {
+                                        orderToItemRep.Delete(item.Id);
+                                    }
+                                }
 
-                            return Error(Errors.ORDERS_CREATE_ERROR);
+                                using (OrdersRepository orderRep = new OrdersRepository())
+                                {
+                                    orderRep.Delete(order.Id);
+                                }
+
+                                return Error(Errors.ORDERS_CREATE_ERROR);
+                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
                             return Error(Errors.INVALID_FORM);
                         }
                     }
@@ -381,7 +497,7 @@ namespace GAppsDev.Controllers
                         }
 
                         if (!String.IsNullOrEmpty(existingItems))
-                        existingItems = existingItems.Remove(existingItems.Length - 1);
+                            existingItems = existingItems.Remove(existingItems.Length - 1);
 
                         ViewBag.ExistingItems = existingItems;
 
@@ -437,53 +553,53 @@ namespace GAppsDev.Controllers
                                     if (itemsFromEditForm.Count == 0)
                                         return Error(Errors.ORDER_HAS_NO_ITEMS);
 
-                            foreach (var newItem in itemsFromEditForm)
-                            {
-                                Orders_OrderToItem existingItem = orderFromDatabase.Orders_OrderToItem.SingleOrDefault(x => x.ItemId == newItem.ItemId);
-
-                                if (existingItem != null)
-                                {
-                                    if (
-                                        existingItem.Quantity != newItem.Quantity ||
-                                        existingItem.SingleItemPrice != newItem.SingleItemPrice
-                                        )
+                                    foreach (var newItem in itemsFromEditForm)
                                     {
-                                        newItem.Id = existingItem.Id;
-                                        itemsToUpdate.Add(newItem);
+                                        Orders_OrderToItem existingItem = orderFromDatabase.Orders_OrderToItem.SingleOrDefault(x => x.ItemId == newItem.ItemId);
+
+                                        if (existingItem != null)
+                                        {
+                                            if (
+                                                existingItem.Quantity != newItem.Quantity ||
+                                                existingItem.SingleItemPrice != newItem.SingleItemPrice
+                                                )
+                                            {
+                                                newItem.Id = existingItem.Id;
+                                                itemsToUpdate.Add(newItem);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            itemsToCreate.Add(newItem);
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    itemsToCreate.Add(newItem);
-                                }
-                            }
 
-                            foreach (var existingItem in orderFromDatabase.Orders_OrderToItem)
-                            {
-                                Orders_OrderToItem newItem = itemsFromEditForm.SingleOrDefault(x => x.ItemId == existingItem.ItemId);
+                                    foreach (var existingItem in orderFromDatabase.Orders_OrderToItem)
+                                    {
+                                        Orders_OrderToItem newItem = itemsFromEditForm.SingleOrDefault(x => x.ItemId == existingItem.ItemId);
 
-                                if (newItem == null)
-                                {
-                                    itemsToDelete.Add(existingItem);
-                                }
-                            }
+                                        if (newItem == null)
+                                        {
+                                            itemsToDelete.Add(existingItem);
+                                        }
+                                    }
 
                                     bool noErrors = true;
 
                                     using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                            {
-                                foreach (var item in itemsToCreate)
-                                {
+                                    {
+                                        foreach (var item in itemsToCreate)
+                                        {
                                             if (!orderToItemRep.Create(item) && noErrors)
                                                 noErrors = false;
-                                }
-                                foreach (var item in itemsToUpdate)
-                                {
+                                        }
+                                        foreach (var item in itemsToUpdate)
+                                        {
                                             if (orderToItemRep.Update(item) == null && noErrors)
                                                 noErrors = false;
-                                }
-                                foreach (var item in itemsToDelete)
-                                {
+                                        }
+                                        foreach (var item in itemsToDelete)
+                                        {
                                             if (!orderToItemRep.Delete(item.Id) && noErrors)
                                                 noErrors = false;
                                         }
@@ -502,16 +618,16 @@ namespace GAppsDev.Controllers
 
                                                 ordersRep.Update(order);
                                             }
-                                }
-                            }
+                                        }
+                                    }
 
                                     if (noErrors)
-                            return RedirectToAction("MyOrders");
+                                        return RedirectToAction("MyOrders");
                                     else
                                         return Error(Errors.ORDER_UPDATE_ITEMS_ERROR);
-                        }
-                        else
-                        {
+                                }
+                                else
+                                {
                                     return Error(Errors.INVALID_FORM);
                                 }
                             }
@@ -563,10 +679,10 @@ namespace GAppsDev.Controllers
                     {
                         if (model.Order.StatusId == WAITING_FOR_APPROVAL_STATUS || model.Order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
                         {
-                        return View(model);
-                    }
-                    else
-                    {
+                            return View(model);
+                        }
+                        else
+                        {
                             return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
                         }
                     }
@@ -607,35 +723,35 @@ namespace GAppsDev.Controllers
                     {
                         if (order.StatusId == WAITING_FOR_APPROVAL_STATUS || order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
                         {
-                        bool noItemErrors = true;
-                        using (OrdersRepository orderRep = new OrdersRepository())
-                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                        {
-                            foreach (var item in order.Orders_OrderToItem)
+                            bool noItemErrors = true;
+                            using (OrdersRepository orderRep = new OrdersRepository())
+                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                             {
-                                if (!orderToItemRep.Delete(item.Id))
-                                    noItemErrors = false;
-                            }
-
-                            if (noItemErrors)
-                            {
-                                if (orderRep.Delete(order.Id))
+                                foreach (var item in order.Orders_OrderToItem)
                                 {
-                                    return RedirectToAction("MyOrders");
+                                    if (!orderToItemRep.Delete(item.Id))
+                                        noItemErrors = false;
+                                }
+
+                                if (noItemErrors)
+                                {
+                                    if (orderRep.Delete(order.Id))
+                                    {
+                                        return RedirectToAction("MyOrders");
+                                    }
+                                    else
+                                    {
+                                        return Error(Errors.ORDERS_DELETE_ERROR);
+                                    }
                                 }
                                 else
                                 {
-                                    return Error(Errors.ORDERS_DELETE_ERROR);
+                                    return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
                                 }
                             }
-                            else
-                            {
-                                return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
-                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
                             return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
                         }
                     }
@@ -703,8 +819,26 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        public ActionResult Search()
+        {
+            if (Authorized(RoleType.Employee))
+            {
+                if (!Authorized(RoleType.Viewer))
+                {
+                    ViewBag.UserId = CurrentUser.UserId;
+                }
+
+                return View();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Search(OrdersSearchModel model)
+        public ActionResult Search(OrdersSearchValuesModel model)
         {
             if (Authorized(RoleType.Employee))
             {
@@ -719,21 +853,25 @@ namespace GAppsDev.Controllers
                     IQueryable<Order> ordersQuery;
 
                     ordersQuery = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
-                    List<SelectListItemFromDB> usersAsSelectItems = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }).ToList();
-                    ViewBag.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
-                    ViewBag.SuppliersList = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
-                    ViewBag.StatusesList = new SelectList(statusesRep.GetList().ToList(), "Id", "Name");
+                    
+                    if (Authorized(RoleType.Viewer))
+                    {
+                        if (model.UserId.HasValue && model.UserId.Value != -1)
+                            ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);
+                    }
+                    else
+                    {
+                        ordersQuery = ordersQuery.Where(x => x.UserId == CurrentUser.UserId);
+                        ViewBag.UserId = CurrentUser.UserId;
+                    }
 
-                    if (model.UserId.HasValue)
-                        ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);
-
-                    if (model.SupplierId.HasValue)
+                    if (model.SupplierId.HasValue && model.SupplierId.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.SupplierId == model.SupplierId.Value);
 
-                    if (model.StatusId.HasValue)
+                    if (model.StatusId.HasValue && model.StatusId.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
 
-                    if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value <= model.PriceMin.Value)
+                    if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
                         model.PriceMax = null;
 
                     if (model.PriceMin.HasValue)
@@ -742,7 +880,7 @@ namespace GAppsDev.Controllers
                     if (model.PriceMax.HasValue)
                         ordersQuery = ordersQuery.Where(x => x.Price <= model.PriceMax.Value);
 
-                    if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value <= model.CreationMin.Value)
+                    if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value < model.CreationMin.Value)
                         model.CreationMax = null;
 
                     if (model.CreationMin.HasValue)
@@ -789,31 +927,71 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult List(IEnumerable<Order> orders, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false)
+        public ActionResult List(IEnumerable<Order> orders, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
         {
+            ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = isOrdered;
             ViewBag.IsPaged = isPaged;
             ViewBag.Sortby = sortby;
             ViewBag.Order = order;
             ViewBag.CurrPage = currPage;
             ViewBag.NumberOfPages = numberOfPages;
+
             ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
 
             return PartialView(orders);
         }
 
         [ChildActionOnly]
-        public ActionResult SimpleList(IEnumerable<Order> orders)
+        public ActionResult SimpleList(IEnumerable<Order> orders, string baseUrl)
         {
+            ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = false;
             ViewBag.IsPaged = false;
             ViewBag.Sortby = null;
             ViewBag.Order = null;
             ViewBag.CurrPage = 1;
             ViewBag.NumberOfPages = 1;
+
             ViewBag.IsCheckBoxed = false;
+            ViewBag.ShowUserName = true;
+
+            ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
 
             return PartialView("List", orders);
+        }
+
+        [ChildActionOnly]
+        public ActionResult SearchForm(bool isExpanding, bool isCollapsed, int? userId = null, int? statusId = null, int? supplierId = null)
+        {
+            OrdersSearchFormModel model = new OrdersSearchFormModel();
+
+            using (UsersRepository usersRep = new UsersRepository())
+            using (SuppliersRepository suppliersRep = new SuppliersRepository())
+            using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
+            {
+                List<SelectListItemFromDB> usersAsSelectItems = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "כל המזמינים" } };
+                usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
+
+                List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = "כל הספקים" } };
+                suppliersSelectList.AddRange(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList());
+                model.SuppliersList = new SelectList(suppliersSelectList, "Id", "Name");
+
+                List<Orders_Statuses> statusesSelectList = new List<Orders_Statuses>() { new Orders_Statuses() { Id = -1, Name = "כל הסטאטוסים" } };
+                statusesSelectList.AddRange(statusesRep.GetList().ToList());
+                model.StatusesList = new SelectList(statusesSelectList, "Id", "Name");
+            }
+
+            ViewBag.IsExpanding = isExpanding;
+            ViewBag.IsCollapsed = isCollapsed;
+            ViewBag.UserId = userId;
+            ViewBag.StatusId = statusId;
+            ViewBag.SupplierId = supplierId;
+            return PartialView(model);
         }
 
         private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)

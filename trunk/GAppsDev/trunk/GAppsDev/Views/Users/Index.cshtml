@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section ExtraScripts{
+    <script src="~/Scripts/SearchScript.js"></script>
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
@@ -23,74 +27,20 @@
     <span>משתמשים מבוטלים: @Model.NonActiveUsers.Count</span>
 </fieldset>
 
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
+
 <p>
     @Html.ActionLink("הוסף משתמש חדש", "Create")
 </p>
 
 <h2>משתמשים פעילים (@Model.ActiveUsers.Count)</h2>
-@if(Model.ActiveUsers.Count > 0)
-{
-    <table>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].Company.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].Roles)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].CreationTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActiveUsers[0].LastLogInTime)
-            </th>
-            <th>פעולות</th>
-        </tr>
-
-    @foreach (var user in Model.ActiveUsers) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.LastName)
-            </td>
-            <td>
-                @{ 
-                    string roles = ((DA.RoleType)user.Roles).ToString();
-                    <text> @roles </text>
-                 }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.CreationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.LastLogInTime)
-            </td>
-            <td>
-                @Html.ActionLink("ערוך", "Edit", new { id=user.Id }) |
-                @Html.ActionLink("פרטים", "Details", new { id=user.Id }) |
-                @Html.ActionLink("מחק", "Delete", new { id=user.Id })
-            </td>
-        </tr>
-    }
-
-    </table>
+@if (Model.ActiveUsers.Count() != 0)
+{ 
+    @Html.Action("List", new { users = Model.ActiveUsers, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })
 }
 else
 {
-    <div>
-        <span>לא נמצאו משתמשים פעילים.</span>
-    </div>
+    <span class="no-properties">לא נמצאו משתמשים פעילים</span> 
 }
 
 <h2>משתמשים חדשים (@Model.PendingUsers.Count)</h2>

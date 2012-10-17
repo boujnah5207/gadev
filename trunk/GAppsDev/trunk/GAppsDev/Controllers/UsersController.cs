@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using DA;
 using DB;
 using GAppsDev.Models.ErrorModels;
+using GAppsDev.Models.Search;
 using GAppsDev.Models.UserModels;
 using Mvc4.OpenId.Sample.Security;
 
@@ -15,28 +16,107 @@ namespace GAppsDev.Controllers
 {
     public class UsersController : BaseController
     {
+        const int ITEMS_PER_PAGE = 7;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_ORDER = "DESC";
+
         private Entities db = new Entities();
 
         //
         // GET: /Users/
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
-            AllUsersModel model = new AllUsersModel();
-
-            using (UsersRepository usersRep = new UsersRepository())
-            using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
-            using (CompaniesRepository companiesRep = new CompaniesRepository())
+            if (Authorized(RoleType.SystemManager))
             {
-                model.ActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
-                model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+                AllUsersModel model = new AllUsersModel();
+                IEnumerable<User> activeUsers;
 
-                model.UsersLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
+                using (UsersRepository usersRep = new UsersRepository())
+                using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
+                using (CompaniesRepository companiesRep = new CompaniesRepository())
+                {
+                    activeUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
+                    model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                    model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+
+                    if (model.ActiveUsers != null && model.PendingUsers != null && model.NonActiveUsers != null)
+                    {
+                        try
+                        {
+                            model.UsersLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
+                        }
+                        catch
+                        {
+                            return Error(Errors.DATABASE_ERROR);
+                        }
+
+                        int numberOfItems = activeUsers.Count();
+                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                        if (numberOfItems % ITEMS_PER_PAGE != 0)
+                            numberOfPages++;
+
+                        if (page <= 0)
+                            page = FIRST_PAGE;
+                        if (page > numberOfPages)
+                            page = numberOfPages;
+
+                        if (sortby != NO_SORT_BY)
+                        {
+                            Func<Func<User, dynamic>, IEnumerable<User>> orderFunction;
+
+                            if (order == DEFAULT_ORDER)
+                                orderFunction = x => activeUsers.OrderByDescending(x);
+                            else
+                                orderFunction = x => activeUsers.OrderBy(x);
+
+                            switch (sortby)
+                            {
+                                case "username":
+                                default:
+                                    activeUsers = orderFunction(x => x.FirstName + " " + x.LastName);
+                                    break;
+                                case "roles":
+                                    activeUsers = orderFunction(x => ((RoleType)x.Roles).ToString());
+                                    break;
+                                case "email":
+                                    activeUsers = orderFunction(x => x.Email);
+                                    break;
+                                case "creation":
+                                    activeUsers = orderFunction(x => x.CreationTime);
+                                    break;
+                                case "login":
+                                    activeUsers = orderFunction(x => x.LastLogInTime);
+                                    break;
+                            }
+                        }
+
+                        activeUsers = activeUsers
+                            .Skip((page - 1) * ITEMS_PER_PAGE)
+                            .Take(ITEMS_PER_PAGE)
+                            .ToList();
+
+                        ViewBag.Sortby = sortby;
+                        ViewBag.Order = order;
+                        ViewBag.CurrPage = page;
+                        ViewBag.NumberOfPages = numberOfPages;
+
+                        model.ActiveUsers = activeUsers.ToList();
+
+                        return View(model);
+                    }
+                    else
+                    {
+                        return Error(Errors.USERS_GET_ERROR);
+                    }
+                }
             }
-
-            return View(model);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -587,6 +667,119 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult Search()
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                return View();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult Search(UsersSearchValuesModel model)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                using (UsersRepository usersRep = new UsersRepository())
+                {
+                    IQueryable<User> usersQuery = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                    if (usersQuery != null)
+                    {
+                        if (!String.IsNullOrEmpty(model.FirstName))
+                            usersQuery = usersQuery.Where(x => x.FirstName == model.FirstName);
+
+                        if (!String.IsNullOrEmpty(model.LastName))
+                            usersQuery = usersQuery.Where(x => x.LastName == model.LastName);
+
+                        if (model.Role.HasValue && model.Role.Value != -1)
+                            usersQuery = usersQuery.Where(x => ((RoleType)x.Roles & (RoleType)model.Role.Value) == (RoleType)model.Role.Value);
+                        
+                        if (!String.IsNullOrEmpty(model.Email))
+                            usersQuery = usersQuery.Where(x => x.Email == model.Email);
+
+                        if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value < model.CreationMin.Value)
+                            model.CreationMax = null;
+
+                        if (model.CreationMin.HasValue)
+                            usersQuery = usersQuery.Where(x => x.CreationTime >= model.CreationMin.Value);
+
+                        if (model.CreationMax.HasValue)
+                            usersQuery = usersQuery.Where(x => x.CreationTime <= model.CreationMax.Value);
+
+                        return View(usersQuery.ToList());
+                    }
+                    else
+                    {
+                        return Error(Errors.USERS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [ChildActionOnly]
+        public ActionResult SearchForm(bool isExpanding, bool isCollapsed)
+        {
+            UsersSearchFormModel model = new UsersSearchFormModel();
+
+            var allRoles = Enum.GetValues(typeof(RoleType));
+            List<SelectListItem> rolesList = new List<SelectListItem>();
+            foreach (var role in allRoles)
+            {
+                rolesList.Add(new SelectListItem() { Value = ((int)role).ToString(), Text = ((RoleType)role).ToString() });
+            }
+
+            model.RolesList = new SelectList(rolesList, "Value", "Text");
+
+            ViewBag.IsExpanding = isExpanding;
+            ViewBag.IsCollapsed = isCollapsed;
+            
+            return PartialView(model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<User> users, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            return PartialView(users);
+        }
+
+        [ChildActionOnly]
+        public ActionResult SimpleList(IEnumerable<User> users, string baseUrl)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = false;
+            ViewBag.IsPaged = false;
+            ViewBag.Sortby = null;
+            ViewBag.Order = null;
+            ViewBag.CurrPage = 1;
+            ViewBag.NumberOfPages = 1;
+
+            ViewBag.IsCheckBoxed = false;
+
+            return PartialView("List", users);
         }
 
         private bool? CompanyCanAddUsers()
