@@ -19,28 +19,28 @@
     <legend>Order</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.Company.Name)
+        @Html.DisplayNameFor(model => model.Order.Company.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Company.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.User.Email)
+        @Html.DisplayNameFor(model => model.Order.User.Email)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.User.Email)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.CreationDate)
+        @Html.DisplayNameFor(model => model.Order.CreationDate)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.CreationDate)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.Supplier.Name)
+        @Html.DisplayNameFor(model => model.Order.Supplier.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Supplier.Name)
@@ -77,34 +77,46 @@
     </table>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.Notes)
+        @Html.DisplayNameFor(model => model.Order.Notes)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Notes)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.Price)
+        @Html.DisplayNameFor(model => model.Order.Price)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Price)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.Orders_Statuses.Name)
+        @Html.DisplayNameFor(model => model.Order.Orders_Statuses.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
+        @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
+    
+    @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
+    {
+        using (Html.BeginForm("UploadSingleFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="display-field">
+            העלאת חשבונית
+            </div>
+            <input type="file" name="file" />
+            <input type="submit" value="OK" />
+        }
+    }
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Order.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Order.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
