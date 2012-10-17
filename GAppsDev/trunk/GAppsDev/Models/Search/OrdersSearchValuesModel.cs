@@ -6,7 +6,7 @@ using DB;
 
 namespace GAppsDev.Models.Search
 {
-    public class OrdersSearchModel
+    public class OrdersSearchValuesModel
     {
         public int? UserId { get; set; }
         public int? SupplierId { get; set; }

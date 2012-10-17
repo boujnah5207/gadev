@@ -155,8 +155,10 @@
     <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
-    <Compile Include="Models\Search\OrdersSearchModel.cs" />
-    <Compile Include="Models\Search\OrderNotes.cs" />
+    <Compile Include="Models\Search\UsersSearchFormModel.cs" />
+    <Compile Include="Models\Search\UsersSearchValuesModel.cs" />
+    <Compile Include="Models\Search\OrdersSearchValuesModel.cs" />
+    <Compile Include="Models\Search\OrdersSearchFormModel.cs" />
     <Compile Include="Models\Supplier\AjaxSupplier.cs" />
     <Compile Include="Models\User\AllUsersModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
@@ -334,7 +336,6 @@
     <Content Include="Rotativa\ssleay32.dll" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\createOrderScript.js" />
-    <Content Include="Scripts\createSupplierScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -408,6 +409,12 @@
     <Content Include="Views\Orders\List.cshtml" />
     <Content Include="Views\Orders\Search.cshtml" />
     <Content Include="Views\Orders\UploadSingleFile.cshtml" />
+    <Content Include="Views\Orders\SearchForm.cshtml" />
+    <Content Include="Views\Shared\Error_NoLayout.cshtml" />
+    <Content Include="Views\Account\LogOff.cshtml" />
+    <Content Include="Views\Users\List.cshtml" />
+    <Content Include="Views\Users\Search.cshtml" />
+    <Content Include="Views\Users\SearchForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

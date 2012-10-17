@@ -10,6 +10,7 @@ namespace GAppsDev.OpenIdService
         public bool IsAuthenticated { get; set; }
         public bool IsNewUser { get; set; }
         public bool IsRegistered { get; set; }
+        public bool IsCanceled { get; set; }
         
         public OpenIdUser User { get; set; }
 
@@ -18,6 +19,7 @@ namespace GAppsDev.OpenIdService
             IsAuthenticated = false;
             IsNewUser = false;
             IsRegistered = false;
+            IsCanceled = false;
             User = null;
         }
     }

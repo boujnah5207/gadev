@@ -22,6 +22,9 @@ namespace GAppsDev.OpenIdService
         public int Roles { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
+        public DateTime LastActionTime { get; set; }
+
+        public bool IsActive { get; set; }
 
         public bool IsSignedByProvider { get; set; }
         public string ClaimedIdentifier { get; set; }
@@ -95,7 +98,7 @@ namespace GAppsDev.OpenIdService
                         {
                             User loggingUser = userRep.GetEntity(claimedId);
 
-                            if (loggingUser != null && loggingUser.IsActive)
+                            if (loggingUser != null)
                             {
                                 return new OpenIdUser()
                                 {
@@ -108,7 +111,8 @@ namespace GAppsDev.OpenIdService
                                     CreationTime = loggingUser.CreationTime,
                                     LastLogInTime = loggingUser.LastLogInTime,
                                     IsSignedByProvider = false,
-                                    ClaimedIdentifier = claimedIdentifier
+                                    ClaimedIdentifier = claimedIdentifier,
+                                    IsActive = loggingUser.IsActive
                                 };
                             }
                         }

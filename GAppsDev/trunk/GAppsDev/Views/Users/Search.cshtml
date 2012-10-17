@@ -1,7 +1,7 @@
-﻿@model IEnumerable<DB.Order>
+﻿@model IEnumerable<DB.User>
 
 @{
-    ViewBag.Title = "כל ההזמנות";
+    ViewBag.Title = "חיפוש משתמשים";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,7 +15,7 @@
     </section>
 }
 
-@Html.Action("SearchForm", new { isExpanding = false, isCollapsed= false, userId = ViewBag.UserId })
+@Html.Action("SearchForm", new { isExpanding = false, isCollapsed= false })
 
 @if(Model != null)
 {
@@ -23,11 +23,11 @@
         <legend>תוצאות החיפוש</legend>
     @if (Model.Count() != 0)
     { 
-        @Html.Action("SimpleList", new { orders = Model })
+        @Html.Action("SimpleList", new { users = Model })
     }
     else
     {
-        <span class="no-properties">לא נמצאו הזמנות.</span> 
+        <span class="no-properties">לא נמצאו משתמשים.</span> 
     }
     </fieldset>
 }

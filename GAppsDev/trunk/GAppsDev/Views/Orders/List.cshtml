@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<DB.Order>
 
 @{
-    string BaseURL = Url.Action("Index");
-
     string ReverseOrder;
     if (ViewBag.Order == "ASC")
     {
@@ -22,17 +20,23 @@
         }
         @if ((bool)ViewBag.IsOrdered)
         {
-        <th>@Html.FilterLink(BaseURL, "שם המזמין", "username", ReverseOrder, (string)ViewBag.Sortby)</th>
-        <th>@Html.FilterLink(BaseURL, "תאריך יצירה", "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
-        <th>@Html.FilterLink(BaseURL, "שם הספק", "supplier", ReverseOrder, (string)ViewBag.Sortby)</th>
-        <th>@Html.FilterLink(BaseURL, "מחיר כולל", "price", ReverseOrder, (string)ViewBag.Sortby)</th>
-        <th>@Html.FilterLink(BaseURL, "סטאטוס", "status", ReverseOrder, (string)ViewBag.Sortby)</th>
+            if (ViewBag.ShowUserName)
+            {
+                <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם המזמין", "username", ReverseOrder, (string)ViewBag.Sortby)</th>
+            }
+        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "תאריך יצירה", "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
+        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם הספק", "supplier", ReverseOrder, (string)ViewBag.Sortby)</th>
+        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "מחיר כולל", "price", ReverseOrder, (string)ViewBag.Sortby)</th>
+        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "סטאטוס", "status", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
-        <th>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </th>
+            if (ViewBag.ShowUserName)
+            {
+                <th>
+                    שם המזמין
+                </th>
+            }
         <th>
             @Html.DisplayNameFor(model => model.CreationDate)
         </th>
@@ -58,9 +62,12 @@
                 <input type="radio" id="checkbox-@item.Id" value="@item.Id" name="selectedOrder" />
                 </td>
             }
-        <td>
-            @Html.DisplayTextFor(modelItem => item.User.FirstName) @Html.DisplayTextFor(modelItem => item.User.LastName)
-        </td>
+        @if (ViewBag.ShowUserName)
+        {
+            <td>
+                @Html.DisplayTextFor(modelItem => item.User.FirstName) @Html.DisplayTextFor(modelItem => item.User.LastName)
+            </td>
+        }
         <td>
             @Html.DisplayTextFor(modelItem => item.CreationDate)
         </td>
@@ -74,9 +81,21 @@
             @Html.DisplayTextFor(modelItem => item.Orders_Statuses.Name)
         </td>
         <td>
-            @Html.ActionLink("ערןך", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("הצג", "Details", new { id=item.Id }) |
-            @Html.ActionLink("מחק", "Delete", new { id=item.Id })
+            @Html.ActionLink("הצג", "Details", new { id=item.Id })
+            @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
+            {
+                <text>|</text> @Html.ActionLink("ערוך", "Edit", new { id=item.Id })
+                <text>|</text> @Html.ActionLink("מחק", "Delete", new { id=item.Id })
+                if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersApprover))
+                {
+                    <text>|</text> @Html.ActionLink("עדכן סטאטוס", "ModifyStatus", new { id=item.Id })
+                }
+            }
+            @if (item.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
+            {
+                <text>|</text> @Html.ActionLink("הדפס הזמנה", "DownloadOrderAsPdf", new { id = item.Id })
+            }
+
         </td>
     </tr>
 }
@@ -84,5 +103,5 @@
 @if ((bool)ViewBag.IsPaged)
 { 
     <br />  
-    @Html.Pagination(BaseURL, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
 }

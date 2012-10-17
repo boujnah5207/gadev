@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Timers;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -71,9 +72,26 @@ namespace Mvc4.OpenId.Sample.Security
                     User user = userRep.GetList().SingleOrDefault(x => x.Email == logInResult.User.Email);
                     if (user != null)
                     {
-                        logInResult.IsRegistered = true;
-                        logInResult.User.UserId = user.Id;
-                        return logInResult;
+                        if (user.IsActive)
+                        {
+                            if (user.FirstName != logInResult.User.FirstName || user.LastName != logInResult.User.LastName)
+                            {
+                                user.FirstName = logInResult.User.FirstName;
+                                user.LastName = logInResult.User.LastName;
+                                userRep.Update(user);
+                            }
+
+                            logInResult.IsRegistered = true;
+                            logInResult.User.UserId = user.Id;
+                            return logInResult;
+                        }
+                        else
+                        {
+                            logInResult.IsRegistered = false;
+                            logInResult.IsCanceled = true;
+                            logInResult.User.UserId = user.Id;
+                            return logInResult;
+                        }
                     }
                     else
                     {
@@ -207,8 +225,35 @@ namespace Mvc4.OpenId.Sample.Security
                     {
                         var user = OpenIdUser.FromCookieString(authenticatedCookieValue);
 
-                        HttpContext.Current.Session.Add("User", user);
+                        if (user != null && user.IsActive)
+                        {
+                            HttpContext.Current.Session.Add("User", user);
+                        }
+                        else
+                        {
+                            HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
+                            myCookie.Expires = DateTime.Now.AddDays(-1d);
+                            httpContext.Response.Cookies.Add(myCookie);
+                        }
                     }
+                }
+            }
+            else
+            {
+                OpenIdUser sessionUser = (OpenIdUser)HttpContext.Current.Session["User"];
+                User databaseUser;
+                using (UsersRepository userRep = new UsersRepository())
+                {
+                    databaseUser = userRep.GetEntity(sessionUser.UserId);
+                }
+
+                if (databaseUser == null || !databaseUser.IsActive)
+                {
+                    HttpContext.Current.Session.Remove("User");
+
+                    HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
+                    myCookie.Expires = DateTime.Now.AddDays(-1d);
+                    HttpContext.Current.Response.Cookies.Add(myCookie);
                 }
             }
             
