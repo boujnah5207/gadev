@@ -408,13 +408,13 @@
     <Content Include="Views\Orders\PrintOrderToScreen.cshtml" />
     <Content Include="Views\Orders\List.cshtml" />
     <Content Include="Views\Orders\Search.cshtml" />
-    <Content Include="Views\Orders\UploadSingleFile.cshtml" />
     <Content Include="Views\Orders\SearchForm.cshtml" />
     <Content Include="Views\Shared\Error_NoLayout.cshtml" />
     <Content Include="Views\Account\LogOff.cshtml" />
     <Content Include="Views\Users\List.cshtml" />
     <Content Include="Views\Users\Search.cshtml" />
     <Content Include="Views\Users\SearchForm.cshtml" />
+    <Content Include="Views\Orders\UploadInvoiceFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

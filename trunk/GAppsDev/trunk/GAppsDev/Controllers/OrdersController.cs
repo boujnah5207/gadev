@@ -272,7 +272,7 @@ namespace GAppsDev.Controllers
 
         // This action renders the form
         [OpenIdAuthorize]
-        public ActionResult UploadSingleFile()
+        public ActionResult UploadInvoiceFile()
         {
             return View();
         }
@@ -280,16 +280,27 @@ namespace GAppsDev.Controllers
         // This action handles the form POST and the upload
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadSingleFile(HttpPostedFileBase file)
+        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, int? orderId)
         {
             // Verify that the user selected a file
             if (file != null && file.ContentLength > 0)
             {
                 // extract only the fielname
-                var fileName = Path.GetFileName(file.FileName);
+                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
                 // store the file inside ~/App_Data/uploads folder
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads/Invoices"), fileName);
                 file.SaveAs(path);
+            }
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository())
+            {
+                order = ordersRep.GetEntity((int)orderId);
+
+                if (order != null)
+                {
+                    order.StatusId = (int)StatusType.InvoiceScannedPendingReceipt;
+                    ordersRep.Update(order);
+                }
             }
             // redirect back to the index action to show the form once again
             return RedirectToAction("Index");
