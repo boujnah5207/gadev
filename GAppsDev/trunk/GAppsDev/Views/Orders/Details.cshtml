@@ -106,10 +106,11 @@
     
     @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
     {
-        using (Html.BeginForm("UploadSingleFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        using (Html.BeginForm("UploadInvoiceFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            @Html.Hidden("orderId", Model.Order.Id)
             <div class="display-field">
-            העלאת חשבונית
+                העלאת חשבונית   
             </div>
             <input type="file" name="file" />
             <input type="submit" value="OK" />
