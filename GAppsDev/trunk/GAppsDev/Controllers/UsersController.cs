@@ -142,11 +142,17 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                List<SelectListItemFromDB> usersList = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "ללא מאשר הזמנות" } };
+                using (UsersRepository usersRep = new UsersRepository())
+                {
+                    usersList.AddRange(usersRep.GetList().Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                }
 
                 roleNames.Remove(RoleType.None.ToString());
                 roleNames.Remove(RoleType.SuperAdmin.ToString());
 
                 ViewBag.RolesList = roleNames;
+                ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
 
                 return View();
             }

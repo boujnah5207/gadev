@@ -195,7 +195,12 @@ namespace GAppsDev.Controllers
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId && (x.Orders_Statuses.Id == (int)StatusType.Pending || x.Orders_Statuses.Id == (int)StatusType.PendingOrderCreator));
+                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User")
+                        .Where(x => 
+                            x.CompanyId == CurrentUser.CompanyId && 
+                            x.NextOrderApproverId == CurrentUser.UserId &&
+                            (x.Orders_Statuses.Id == (int)StatusType.Pending || x.Orders_Statuses.Id == (int)StatusType.PendingOrderCreator)
+                            );
 
                     int numberOfItems = orders.Count();
                     int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
@@ -316,7 +321,13 @@ namespace GAppsDev.Controllers
                 {
                     Order order = ordersRepository.GetEntity(modifiedOrder.Order.Id);
                     order.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
-                    if (selectedStatus == "אשר הזמנה") order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                    if (selectedStatus == "אשר הזמנה")
+                    {
+                        if(CurrentUser.OrdersApproverId.HasValue)
+                            order.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                        else
+                            order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                    }
                     if (selectedStatus == "דחה הזמנה") order.StatusId = (int)StatusType.Declined;
                     if (selectedStatus == "החזר למשתמש") order.StatusId = (int)StatusType.PendingOrderCreator;
                     ordersRepository.Update(order);
@@ -407,10 +418,18 @@ namespace GAppsDev.Controllers
                     order.StatusId = WAITING_FOR_APPROVAL_STATUS;
                     order.OrderApproverNotes = String.Empty;
                     order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
+                    order.NextOrderApproverId = CurrentUser.OrdersApproverId;
 
                     bool wasOrderCreated;
                     using (OrdersRepository orderRep = new OrdersRepository())
                     {
+                        int? lastOrderNumber = orderRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Max(x => x.OrderNumber);
+                        
+                        if (lastOrderNumber.HasValue)
+                            order.OrderNumber = lastOrderNumber + 1;
+                        else
+                            order.OrderNumber = 1;
+
                         wasOrderCreated = orderRep.Create(order);
                     }
 
