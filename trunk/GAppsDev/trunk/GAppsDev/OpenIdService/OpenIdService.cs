@@ -108,6 +108,7 @@ namespace Mvc4.OpenId.Sample.Security
                                 CreationTime = DateTime.Now,
                                 LastLogInTime = DateTime.Now,
                                 Roles = pendingUser.Roles,
+                                OrdersApproverId = pendingUser.OrdersApproverId,
                                 IsActive = true
                             };
 

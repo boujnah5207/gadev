@@ -20,6 +20,7 @@ namespace GAppsDev.OpenIdService
         public string LastName { get; set; }
         public string FullName { get { return FirstName + " " + LastName; } }
         public int Roles { get; set; }
+        public int? OrdersApproverId { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
         public DateTime LastActionTime { get; set; }
@@ -112,6 +113,7 @@ namespace GAppsDev.OpenIdService
                                     LastLogInTime = loggingUser.LastLogInTime,
                                     IsSignedByProvider = false,
                                     ClaimedIdentifier = claimedIdentifier,
+                                    OrdersApproverId = loggingUser.OrdersApproverId,
                                     IsActive = loggingUser.IsActive
                                 };
                             }

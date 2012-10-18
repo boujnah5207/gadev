@@ -19,23 +19,26 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Locations", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Location), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Deprtments", "Deprtment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Deprtment), "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Deprtments_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Deprtment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Deprtment), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Locations_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Location), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Inventory", "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Inventory), "Inventory1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Locations", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Location), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 
 #endregion
 
@@ -86,22 +89,6 @@ namespace DB
         #endregion
     
         #region ObjectSet Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Inventory> Inventories
-        {
-            get
-            {
-                if ((_Inventories == null))
-                {
-                    _Inventories = base.CreateObjectSet<Inventory>("Inventories");
-                }
-                return _Inventories;
-            }
-        }
-        private ObjectSet<Inventory> _Inventories;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -186,22 +173,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Order> Orders
-        {
-            get
-            {
-                if ((_Orders == null))
-                {
-                    _Orders = base.CreateObjectSet<Order>("Orders");
-                }
-                return _Orders;
-            }
-        }
-        private ObjectSet<Order> _Orders;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Orders_OrderToItem> Orders_OrderToItem
         {
             get
@@ -234,22 +205,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<PendingUser> PendingUsers
-        {
-            get
-            {
-                if ((_PendingUsers == null))
-                {
-                    _PendingUsers = base.CreateObjectSet<PendingUser>("PendingUsers");
-                }
-                return _PendingUsers;
-            }
-        }
-        private ObjectSet<PendingUser> _PendingUsers;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Company> Companies
         {
             get
@@ -262,6 +217,54 @@ namespace DB
             }
         }
         private ObjectSet<Company> _Companies;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Supplier> Suppliers
+        {
+            get
+            {
+                if ((_Suppliers == null))
+                {
+                    _Suppliers = base.CreateObjectSet<Supplier>("Suppliers");
+                }
+                return _Suppliers;
+            }
+        }
+        private ObjectSet<Supplier> _Suppliers;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Inventory> Inventories
+        {
+            get
+            {
+                if ((_Inventories == null))
+                {
+                    _Inventories = base.CreateObjectSet<Inventory>("Inventories");
+                }
+                return _Inventories;
+            }
+        }
+        private ObjectSet<Inventory> _Inventories;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PendingUser> PendingUsers
+        {
+            get
+            {
+                if ((_PendingUsers == null))
+                {
+                    _PendingUsers = base.CreateObjectSet<PendingUser>("PendingUsers");
+                }
+                return _PendingUsers;
+            }
+        }
+        private ObjectSet<PendingUser> _PendingUsers;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -282,30 +285,22 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Supplier> Suppliers
+        public ObjectSet<Order> Orders
         {
             get
             {
-                if ((_Suppliers == null))
+                if ((_Orders == null))
                 {
-                    _Suppliers = base.CreateObjectSet<Supplier>("Suppliers");
+                    _Orders = base.CreateObjectSet<Order>("Orders");
                 }
-                return _Suppliers;
+                return _Orders;
             }
         }
-        private ObjectSet<Supplier> _Suppliers;
+        private ObjectSet<Order> _Orders;
 
         #endregion
 
         #region AddTo Methods
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Inventories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToInventories(Inventory inventory)
-        {
-            base.AddObject("Inventories", inventory);
-        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the Locations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -348,14 +343,6 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Orders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToOrders(Order order)
-        {
-            base.AddObject("Orders", order);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Orders_OrderToItem EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToOrders_OrderToItem(Orders_OrderToItem orders_OrderToItem)
@@ -372,19 +359,35 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the PendingUsers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToPendingUsers(PendingUser pendingUser)
-        {
-            base.AddObject("PendingUsers", pendingUser);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Companies EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToCompanies(Company company)
         {
             base.AddObject("Companies", company);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Suppliers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSuppliers(Supplier supplier)
+        {
+            base.AddObject("Suppliers", supplier);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Inventories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToInventories(Inventory inventory)
+        {
+            base.AddObject("Inventories", inventory);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PendingUsers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPendingUsers(PendingUser pendingUser)
+        {
+            base.AddObject("PendingUsers", pendingUser);
         }
     
         /// <summary>
@@ -396,11 +399,11 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Suppliers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Orders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToSuppliers(Supplier supplier)
+        public void AddToOrders(Order order)
         {
-            base.AddObject("Suppliers", supplier);
+            base.AddObject("Orders", order);
         }
 
         #endregion
@@ -837,28 +840,6 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Inventory")]
-        public EntityCollection<Inventory> Inventories
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Locations_Companies", "Location")]
         public EntityCollection<Location> Locations
         {
@@ -881,18 +862,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Order")]
-        public EntityCollection<Order> Orders
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Inventory")]
+        public EntityCollection<Inventory> Inventories
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory", value);
                 }
             }
         }
@@ -937,6 +918,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("designModel.FK_Users_Companies", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Order")]
+        public EntityCollection<Order> Orders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order", value);
                 }
             }
         }
@@ -1310,19 +1313,19 @@ namespace DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        /// <param name="timeStamp">Initial value of the TimeStamp property.</param>
         /// <param name="itemId">Initial value of the ItemId property.</param>
         /// <param name="locationId">Initial value of the LocationId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Inventory CreateInventory(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime timeStamp, global::System.Int32 itemId, global::System.Int32 locationId, global::System.DateTime creationDate)
+        /// <param name="isOutOfInventory">Initial value of the IsOutOfInventory property.</param>
+        public static Inventory CreateInventory(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 itemId, global::System.Int32 locationId, global::System.DateTime creationDate, global::System.Boolean isOutOfInventory)
         {
             Inventory inventory = new Inventory();
             inventory.Id = id;
             inventory.CompanyId = companyId;
-            inventory.TimeStamp = timeStamp;
             inventory.ItemId = itemId;
             inventory.LocationId = locationId;
             inventory.CreationDate = creationDate;
+            inventory.IsOutOfInventory = isOutOfInventory;
             return inventory;
         }
 
@@ -1380,30 +1383,6 @@ namespace DB
         private global::System.Int32 _CompanyId;
         partial void OnCompanyIdChanging(global::System.Int32 value);
         partial void OnCompanyIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime TimeStamp
-        {
-            get
-            {
-                return _TimeStamp;
-            }
-            set
-            {
-                OnTimeStampChanging(value);
-                ReportPropertyChanging("TimeStamp");
-                _TimeStamp = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TimeStamp");
-                OnTimeStampChanged();
-            }
-        }
-        private global::System.DateTime _TimeStamp;
-        partial void OnTimeStampChanging(global::System.DateTime value);
-        partial void OnTimeStampChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1476,11 +1455,301 @@ namespace DB
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String AssignedTo
+        {
+            get
+            {
+                return _AssignedTo;
+            }
+            set
+            {
+                OnAssignedToChanging(value);
+                ReportPropertyChanging("AssignedTo");
+                _AssignedTo = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AssignedTo");
+                OnAssignedToChanged();
+            }
+        }
+        private global::System.String _AssignedTo;
+        partial void OnAssignedToChanging(global::System.String value);
+        partial void OnAssignedToChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SerialNumber
+        {
+            get
+            {
+                return _SerialNumber;
+            }
+            set
+            {
+                OnSerialNumberChanging(value);
+                ReportPropertyChanging("SerialNumber");
+                _SerialNumber = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SerialNumber");
+                OnSerialNumberChanged();
+            }
+        }
+        private global::System.String _SerialNumber;
+        partial void OnSerialNumberChanging(global::System.String value);
+        partial void OnSerialNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> WarrentyPeriodStart
+        {
+            get
+            {
+                return _WarrentyPeriodStart;
+            }
+            set
+            {
+                OnWarrentyPeriodStartChanging(value);
+                ReportPropertyChanging("WarrentyPeriodStart");
+                _WarrentyPeriodStart = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("WarrentyPeriodStart");
+                OnWarrentyPeriodStartChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _WarrentyPeriodStart;
+        partial void OnWarrentyPeriodStartChanging(Nullable<global::System.DateTime> value);
+        partial void OnWarrentyPeriodStartChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> WarrentyPeriodEnd
+        {
+            get
+            {
+                return _WarrentyPeriodEnd;
+            }
+            set
+            {
+                OnWarrentyPeriodEndChanging(value);
+                ReportPropertyChanging("WarrentyPeriodEnd");
+                _WarrentyPeriodEnd = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("WarrentyPeriodEnd");
+                OnWarrentyPeriodEndChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _WarrentyPeriodEnd;
+        partial void OnWarrentyPeriodEndChanging(Nullable<global::System.DateTime> value);
+        partial void OnWarrentyPeriodEndChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Notes
+        {
+            get
+            {
+                return _Notes;
+            }
+            set
+            {
+                OnNotesChanging(value);
+                ReportPropertyChanging("Notes");
+                _Notes = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Notes");
+                OnNotesChanged();
+            }
+        }
+        private global::System.String _Notes;
+        partial void OnNotesChanging(global::System.String value);
+        partial void OnNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> RelatedInventoryItem
+        {
+            get
+            {
+                return _RelatedInventoryItem;
+            }
+            set
+            {
+                OnRelatedInventoryItemChanging(value);
+                ReportPropertyChanging("RelatedInventoryItem");
+                _RelatedInventoryItem = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RelatedInventoryItem");
+                OnRelatedInventoryItemChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _RelatedInventoryItem;
+        partial void OnRelatedInventoryItemChanging(Nullable<global::System.Int32> value);
+        partial void OnRelatedInventoryItemChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.String _Status;
+        partial void OnStatusChanging(global::System.String value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOutOfInventory
+        {
+            get
+            {
+                return _IsOutOfInventory;
+            }
+            set
+            {
+                OnIsOutOfInventoryChanging(value);
+                ReportPropertyChanging("IsOutOfInventory");
+                _IsOutOfInventory = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOutOfInventory");
+                OnIsOutOfInventoryChanged();
+            }
+        }
+        private global::System.Boolean _IsOutOfInventory;
+        partial void OnIsOutOfInventoryChanging(global::System.Boolean value);
+        partial void OnIsOutOfInventoryChanged();
 
         #endregion
 
     
         #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Company")]
+        public Company Company
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Company> CompanyReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Inventory", "Inventory1")]
+        public EntityCollection<Inventory> Inventory1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Inventory", "Inventory1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Inventory", "Inventory1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Inventory", "Inventory")]
+        public Inventory Inventory2
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Inventory>("designModel.FK_Inventory_Inventory", "Inventory").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Inventory>("designModel.FK_Inventory_Inventory", "Inventory").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Inventory> Inventory2Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Inventory>("designModel.FK_Inventory_Inventory", "Inventory");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Inventory>("designModel.FK_Inventory_Inventory", "Inventory", value);
+                }
+            }
+        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1557,44 +1826,6 @@ namespace DB
                 }
             }
         }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Company")]
-        public Company Company
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Company> CompanyReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Inventory_Companies", "Company", value);
-                }
-            }
-        }
 
         #endregion
 
@@ -1617,13 +1848,15 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="address">Initial value of the Address property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.String address, global::System.DateTime creationDate)
+        /// <param name="name">Initial value of the Name property.</param>
+        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.String address, global::System.DateTime creationDate, global::System.String name)
         {
             Location location = new Location();
             location.Id = id;
             location.CompanyId = companyId;
             location.Address = address;
             location.CreationDate = creationDate;
+            location.Name = name;
             return location;
         }
 
@@ -1729,33 +1962,35 @@ namespace DB
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
 
         #endregion
 
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Locations", "Inventory")]
-        public EntityCollection<Inventory> Inventories
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Locations", "Inventory");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Locations", "Inventory", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1791,6 +2026,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Locations_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Locations", "Inventory")]
+        public EntityCollection<Inventory> Inventories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Locations", "Inventory");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Locations", "Inventory", value);
                 }
             }
         }
@@ -2054,11 +2311,97 @@ namespace DB
         private global::System.String _OrderApproverNotes;
         partial void OnOrderApproverNotesChanging(global::System.String value);
         partial void OnOrderApproverNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> NextOrderApproverId
+        {
+            get
+            {
+                return _NextOrderApproverId;
+            }
+            set
+            {
+                OnNextOrderApproverIdChanging(value);
+                ReportPropertyChanging("NextOrderApproverId");
+                _NextOrderApproverId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("NextOrderApproverId");
+                OnNextOrderApproverIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _NextOrderApproverId;
+        partial void OnNextOrderApproverIdChanging(Nullable<global::System.Int32> value);
+        partial void OnNextOrderApproverIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _OrderNumber;
+        partial void OnOrderNumberChanging(Nullable<global::System.Int32> value);
+        partial void OnOrderNumberChanged();
 
         #endregion
 
     
         #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Company")]
+        public Company Company
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Company> CompanyReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Orders_Companies", "Company", value);
+                }
+            }
+        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2126,16 +2469,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Company")]
-        public Company Company
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Suppliers", "Supplier")]
+        public Supplier Supplier
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier").Value = value;
             }
         }
         /// <summary>
@@ -2143,17 +2486,17 @@ namespace DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Company> CompanyReference
+        public EntityReference<Supplier> SupplierReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_Companies", "Company");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Orders_Companies", "Company", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier", value);
                 }
             }
         }
@@ -2192,44 +2535,6 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Orders_Users", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Suppliers", "Supplier")]
-        public Supplier Supplier
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Supplier> SupplierReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Supplier>("designModel.FK_Orders_Suppliers", "Supplier", value);
                 }
             }
         }
@@ -2405,28 +2710,6 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Items", "Inventory")]
-        public EntityCollection<Inventory> Inventories
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem")]
         public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
         {
@@ -2477,6 +2760,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Supplier>("designModel.FK_Orders_Items_Suppliers", "Supplier", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Items", "Inventory")]
+        public EntityCollection<Inventory> Inventories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory", value);
                 }
             }
         }
@@ -2990,6 +3295,30 @@ namespace DB
         private global::System.Int32 _Roles;
         partial void OnRolesChanging(global::System.Int32 value);
         partial void OnRolesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> OrdersApproverId
+        {
+            get
+            {
+                return _OrdersApproverId;
+            }
+            set
+            {
+                OnOrdersApproverIdChanging(value);
+                ReportPropertyChanging("OrdersApproverId");
+                _OrdersApproverId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrdersApproverId");
+                OnOrdersApproverIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _OrdersApproverId;
+        partial void OnOrdersApproverIdChanging(Nullable<global::System.Int32> value);
+        partial void OnOrdersApproverIdChanged();
 
         #endregion
 
@@ -3030,6 +3359,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_PendingUsers_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Users", "User")]
+        public User User
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_PendingUsers_Users", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_PendingUsers_Users", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_PendingUsers_Users", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_PendingUsers_Users", "User", value);
                 }
             }
         }
@@ -3800,6 +4167,30 @@ namespace DB
         private global::System.Boolean _IsActive;
         partial void OnIsActiveChanging(global::System.Boolean value);
         partial void OnIsActiveChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> OrdersApproverId
+        {
+            get
+            {
+                return _OrdersApproverId;
+            }
+            set
+            {
+                OnOrdersApproverIdChanging(value);
+                ReportPropertyChanging("OrdersApproverId");
+                _OrdersApproverId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrdersApproverId");
+                OnOrdersApproverIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _OrdersApproverId;
+        partial void OnOrdersApproverIdChanging(Nullable<global::System.Int32> value);
+        partial void OnOrdersApproverIdChanged();
 
         #endregion
 
@@ -3862,6 +4253,88 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Cooky>("designModel.FK_Cookies_Users", "Cooky", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Users", "PendingUser")]
+        public EntityCollection<PendingUser> PendingUsers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Users", "PendingUser");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Users", "PendingUser", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Users", "User1")]
+        public EntityCollection<User> Users1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("designModel.FK_Users_Users", "User1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("designModel.FK_Users_Users", "User1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Users", "User")]
+        public User User1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_Users", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_Users", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> User1Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_Users", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Users_Users", "User", value);
                 }
             }
         }
