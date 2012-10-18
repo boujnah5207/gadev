@@ -423,10 +423,10 @@ namespace GAppsDev.Controllers
                     bool wasOrderCreated;
                     using (OrdersRepository orderRep = new OrdersRepository())
                     {
-                        int? lastOrderNumber = orderRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Max(x => x.OrderNumber);
+                        int? lastOrderNumber = orderRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select( x => (int?)x.OrderNumber).Max();
                         
                         if (lastOrderNumber.HasValue)
-                            order.OrderNumber = lastOrderNumber + 1;
+                            order.OrderNumber = lastOrderNumber.Value + 1;
                         else
                             order.OrderNumber = 1;
 

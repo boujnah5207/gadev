@@ -192,6 +192,12 @@ namespace GAppsDev.Controllers
                         {
                             return Error(Errors.DATABASE_ERROR);
                         }
+
+                        bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+                        bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+
+                        if (userExists || pendingUserExists)
+                            return Error(Errors.USERS_EXIST_ERROR);
                     }
 
                     if (companyUserCount >= companyUserLimit)

@@ -36,6 +36,7 @@ namespace GAppsDev.Models.ErrorModels
 
         //Users Errors
         public const string USERS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. המשתמש לא נשמר במערכת.";
+        public const string USERS_EXIST_ERROR = "משתמש עם אימייל זהה כבר רשום במערכת.";
         public const string USERS_GET_ERROR = "קרתה שגיאה בזמן משיכת המשתמשים מבסיס הנתונים. אנא נסה שוב.";
         public const string USERS_LIMIT_REACHED = "חברתך הגיעה לגבול מספר המשתמשים שלה. אין אפשרות ליצור משתמשים חדשים.";
         public const string USERS_DELETE_ERROR = "לא הייתה אפשרות להסיר את המשתמש. אנא נסה שוב.";
