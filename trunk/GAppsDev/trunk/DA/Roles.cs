@@ -11,9 +11,9 @@ namespace DA
     public enum RoleType : int
     {
         None = 0,
-        Employee = 1,
-        OrdersApprover = 2 | Viewer,
-        Viewer = 4,
+        OrdersWriter = 1,
+        OrdersApprover = 2 | OrdersViewer,
+        OrdersViewer = 4,
         SystemManager = 8,
         SuperAdmin = int.MaxValue
     }
@@ -64,6 +64,46 @@ namespace DA
             }
 
             return allRoles;
+        }
+
+        public static string Describe(this RoleType e)
+        {
+            var allRoleType = Enum.GetValues(typeof(RoleType));
+            StringBuilder builder = new StringBuilder();
+            string description = String.Empty;
+
+            foreach (var role in allRoleType)
+            {
+                switch ((RoleType)role)
+                {
+                    case RoleType.OrdersWriter:
+                        if (Roles.HasRole(e, (RoleType)role))
+                            builder.Append("יוצר הזמנות, ");
+                        break;
+                    case RoleType.OrdersApprover:
+                        if (Roles.HasRole(e, (RoleType)role))
+                            builder.Append("מאשר הזמנות, ");
+                        break;
+                    case RoleType.OrdersViewer:
+                        if (Roles.HasRole(e, (RoleType)role))
+                            builder.Append("צופה בהזמנות, ");
+                        break;
+                    case RoleType.SystemManager:
+                        if (Roles.HasRole(e, (RoleType)role))
+                            builder.Append("מנהל מערכת, ");
+                        break;
+                    case RoleType.SuperAdmin:
+                        if (Roles.HasRole(e, (RoleType)role))
+                            builder.Append("אדמיניסטרטור ראשי, ");
+                        break;
+                }
+            }
+
+            description = builder.ToString();
+            if (description.Length != 0)
+                description = description.Remove(description.Length - 2);
+
+            return description;
         }
     }
 }

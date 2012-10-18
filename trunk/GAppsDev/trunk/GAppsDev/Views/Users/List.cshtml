@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<DB.User>
+@using DA
 
 @{
     string ReverseOrder;
@@ -60,7 +61,7 @@
             @Html.DisplayTextFor(modelItem => item.FirstName) @Html.DisplayTextFor(modelItem => item.LastName)
         </td>
         <td>
-            @(((DA.RoleType)item.Roles))
+            @(((DA.RoleType)item.Roles).Describe())
         </td>
         <td>
             @Html.DisplayTextFor(modelItem => item.Email)

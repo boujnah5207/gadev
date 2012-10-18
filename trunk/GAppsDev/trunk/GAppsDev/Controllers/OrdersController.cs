@@ -37,7 +37,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
-            if (Authorized(RoleType.Viewer))
+            if (Authorized(RoleType.OrdersViewer))
             {
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
@@ -116,7 +116,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
@@ -331,7 +331,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult PrintOrderToScreen(int id)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 Order order = db.Orders.Single(o => o.Id == id);
                 if (order == null)
@@ -397,7 +397,7 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Authorized(RoleType.Employee))
+                if (Authorized(RoleType.OrdersWriter))
                 {
                     List<Orders_OrderToItem> ItemsList = ItemsFromString(itemsString, 0);
 
@@ -489,7 +489,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
                 using (OrdersRepository orderRep = new OrdersRepository())
@@ -537,7 +537,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Edit(Order order, string itemsString)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 if (ModelState.IsValid)
                 {
@@ -674,7 +674,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 OrderModel model = new OrderModel();
 
@@ -720,7 +720,7 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
                 using (OrdersRepository orderRep = new OrdersRepository())
@@ -786,7 +786,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult UploadInvoice(int id = 0)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
                 using (OrdersRepository orderRep = new OrdersRepository())
@@ -832,9 +832,9 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Search()
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
-                if (!Authorized(RoleType.Viewer))
+                if (!Authorized(RoleType.OrdersViewer))
                 {
                     ViewBag.UserId = CurrentUser.UserId;
                 }
@@ -851,7 +851,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Search(OrdersSearchValuesModel model)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 List<Order> matchingOrders;
                 List<Order> TextMatchOrders = new List<Order>();
@@ -865,7 +865,7 @@ namespace GAppsDev.Controllers
 
                     ordersQuery = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
                     
-                    if (Authorized(RoleType.Viewer))
+                    if (Authorized(RoleType.OrdersViewer))
                     {
                         if (model.UserId.HasValue && model.UserId.Value != -1)
                             ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);

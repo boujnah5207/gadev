@@ -47,7 +47,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 List<Supplier> allSuppliers;
                 using(SuppliersRepository suppliersRep = new SuppliersRepository())
@@ -92,7 +92,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult PopOutCreate()
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 return PartialView();
             }
@@ -104,7 +104,7 @@ namespace GAppsDev.Controllers
 
         public JsonResult AjaxCreate(Orders_Items orderItem)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 bool wasCreated;
                 using (OrderItemsRepository itemRep = new OrderItemsRepository())
@@ -185,7 +185,7 @@ namespace GAppsDev.Controllers
 
         public JsonResult GetBySupplier(int id)
         {
-            if (Authorized(RoleType.Employee))
+            if (Authorized(RoleType.OrdersWriter))
             {
                 List<AjaxOrderItem> allItems;
                 using (OrderItemsRepository itemRep = new OrderItemsRepository())
