@@ -19,26 +19,31 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Deprtments", "Deprtment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Deprtment), "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Deprtments_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Deprtment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Deprtment), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Locations_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Location), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Income_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budget_Income", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_Income), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budget_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_Expenses), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Deprtments_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budget_Departments", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_Departments), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Locations_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Location), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Inventory", "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Inventory), "Inventory1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Locations", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Location), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Deprtments", "Budget_Departments", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget_Departments), "Budget_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_Expenses), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Budget_Deprtments", "Budget_Departments", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budget_Departments), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget_Expenses), "Budget_ExpensesToIncome", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_ExpensesToIncome), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget_Income), "Budget_ExpensesToIncome", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budget_ExpensesToIncome), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget_ExpensesToIncome), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 
 #endregion
 
@@ -93,6 +98,38 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Company> Companies
+        {
+            get
+            {
+                if ((_Companies == null))
+                {
+                    _Companies = base.CreateObjectSet<Company>("Companies");
+                }
+                return _Companies;
+            }
+        }
+        private ObjectSet<Company> _Companies;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Inventory> Inventories
+        {
+            get
+            {
+                if ((_Inventories == null))
+                {
+                    _Inventories = base.CreateObjectSet<Inventory>("Inventories");
+                }
+                return _Inventories;
+            }
+        }
+        private ObjectSet<Inventory> _Inventories;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Location> Locations
         {
             get
@@ -125,18 +162,66 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Budget> Budgets
+        public ObjectSet<Budget_Departments> Budget_Departments
         {
             get
             {
-                if ((_Budgets == null))
+                if ((_Budget_Departments == null))
                 {
-                    _Budgets = base.CreateObjectSet<Budget>("Budgets");
+                    _Budget_Departments = base.CreateObjectSet<Budget_Departments>("Budget_Departments");
                 }
-                return _Budgets;
+                return _Budget_Departments;
             }
         }
-        private ObjectSet<Budget> _Budgets;
+        private ObjectSet<Budget_Departments> _Budget_Departments;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Budget_Expenses> Budget_Expenses
+        {
+            get
+            {
+                if ((_Budget_Expenses == null))
+                {
+                    _Budget_Expenses = base.CreateObjectSet<Budget_Expenses>("Budget_Expenses");
+                }
+                return _Budget_Expenses;
+            }
+        }
+        private ObjectSet<Budget_Expenses> _Budget_Expenses;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Budget_ExpensesToIncome> Budget_ExpensesToIncome
+        {
+            get
+            {
+                if ((_Budget_ExpensesToIncome == null))
+                {
+                    _Budget_ExpensesToIncome = base.CreateObjectSet<Budget_ExpensesToIncome>("Budget_ExpensesToIncome");
+                }
+                return _Budget_ExpensesToIncome;
+            }
+        }
+        private ObjectSet<Budget_ExpensesToIncome> _Budget_ExpensesToIncome;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Budget_Income> Budget_Income
+        {
+            get
+            {
+                if ((_Budget_Income == null))
+                {
+                    _Budget_Income = base.CreateObjectSet<Budget_Income>("Budget_Income");
+                }
+                return _Budget_Income;
+            }
+        }
+        private ObjectSet<Budget_Income> _Budget_Income;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -157,18 +242,18 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Deprtment> Deprtments
+        public ObjectSet<Order> Orders
         {
             get
             {
-                if ((_Deprtments == null))
+                if ((_Orders == null))
                 {
-                    _Deprtments = base.CreateObjectSet<Deprtment>("Deprtments");
+                    _Orders = base.CreateObjectSet<Order>("Orders");
                 }
-                return _Deprtments;
+                return _Orders;
             }
         }
-        private ObjectSet<Deprtment> _Deprtments;
+        private ObjectSet<Order> _Orders;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -205,18 +290,18 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Company> Companies
+        public ObjectSet<PendingUser> PendingUsers
         {
             get
             {
-                if ((_Companies == null))
+                if ((_PendingUsers == null))
                 {
-                    _Companies = base.CreateObjectSet<Company>("Companies");
+                    _PendingUsers = base.CreateObjectSet<PendingUser>("PendingUsers");
                 }
-                return _Companies;
+                return _PendingUsers;
             }
         }
-        private ObjectSet<Company> _Companies;
+        private ObjectSet<PendingUser> _PendingUsers;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -237,38 +322,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Inventory> Inventories
-        {
-            get
-            {
-                if ((_Inventories == null))
-                {
-                    _Inventories = base.CreateObjectSet<Inventory>("Inventories");
-                }
-                return _Inventories;
-            }
-        }
-        private ObjectSet<Inventory> _Inventories;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<PendingUser> PendingUsers
-        {
-            get
-            {
-                if ((_PendingUsers == null))
-                {
-                    _PendingUsers = base.CreateObjectSet<PendingUser>("PendingUsers");
-                }
-                return _PendingUsers;
-            }
-        }
-        private ObjectSet<PendingUser> _PendingUsers;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<User> Users
         {
             get
@@ -281,26 +334,26 @@ namespace DB
             }
         }
         private ObjectSet<User> _Users;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Order> Orders
-        {
-            get
-            {
-                if ((_Orders == null))
-                {
-                    _Orders = base.CreateObjectSet<Order>("Orders");
-                }
-                return _Orders;
-            }
-        }
-        private ObjectSet<Order> _Orders;
 
         #endregion
 
         #region AddTo Methods
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Companies EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCompanies(Company company)
+        {
+            base.AddObject("Companies", company);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Inventories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToInventories(Inventory inventory)
+        {
+            base.AddObject("Inventories", inventory);
+        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the Locations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -319,11 +372,35 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Budgets EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Budget_Departments EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToBudgets(Budget budget)
+        public void AddToBudget_Departments(Budget_Departments budget_Departments)
         {
-            base.AddObject("Budgets", budget);
+            base.AddObject("Budget_Departments", budget_Departments);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Budget_Expenses EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBudget_Expenses(Budget_Expenses budget_Expenses)
+        {
+            base.AddObject("Budget_Expenses", budget_Expenses);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Budget_ExpensesToIncome EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBudget_ExpensesToIncome(Budget_ExpensesToIncome budget_ExpensesToIncome)
+        {
+            base.AddObject("Budget_ExpensesToIncome", budget_ExpensesToIncome);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Budget_Income EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBudget_Income(Budget_Income budget_Income)
+        {
+            base.AddObject("Budget_Income", budget_Income);
         }
     
         /// <summary>
@@ -335,11 +412,11 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Deprtments EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Orders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToDeprtments(Deprtment deprtment)
+        public void AddToOrders(Order order)
         {
-            base.AddObject("Deprtments", deprtment);
+            base.AddObject("Orders", order);
         }
     
         /// <summary>
@@ -359,11 +436,11 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Companies EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the PendingUsers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToCompanies(Company company)
+        public void AddToPendingUsers(PendingUser pendingUser)
         {
-            base.AddObject("Companies", company);
+            base.AddObject("PendingUsers", pendingUser);
         }
     
         /// <summary>
@@ -375,35 +452,11 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Inventories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToInventories(Inventory inventory)
-        {
-            base.AddObject("Inventories", inventory);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the PendingUsers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToPendingUsers(PendingUser pendingUser)
-        {
-            base.AddObject("PendingUsers", pendingUser);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Users EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToUsers(User user)
         {
             base.AddObject("Users", user);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Orders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToOrders(Order order)
-        {
-            base.AddObject("Orders", order);
         }
 
         #endregion
@@ -417,30 +470,28 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Budget")]
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Budget_Departments")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Budget : EntityObject
+    public partial class Budget_Departments : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Budget object.
+        /// Create a new Budget_Departments object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        /// <param name="year">Initial value of the Year property.</param>
-        /// <param name="departmentId">Initial value of the DepartmentId property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 year, global::System.Int32 departmentId, global::System.DateTime creationDate)
+        public static Budget_Departments CreateBudget_Departments(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 name, global::System.DateTime creationDate)
         {
-            Budget budget = new Budget();
-            budget.Id = id;
-            budget.CompanyId = companyId;
-            budget.Year = year;
-            budget.DepartmentId = departmentId;
-            budget.CreationDate = creationDate;
-            return budget;
+            Budget_Departments budget_Departments = new Budget_Departments();
+            budget_Departments.Id = id;
+            budget_Departments.CompanyId = companyId;
+            budget_Departments.Name = name;
+            budget_Departments.CreationDate = creationDate;
+            return budget_Departments;
         }
 
         #endregion
@@ -473,6 +524,257 @@ namespace DB
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CompanyId
+        {
+            get
+            {
+                return _CompanyId;
+            }
+            set
+            {
+                OnCompanyIdChanging(value);
+                ReportPropertyChanging("CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompanyId");
+                OnCompanyIdChanged();
+            }
+        }
+        private global::System.Int32 _CompanyId;
+        partial void OnCompanyIdChanging(global::System.Int32 value);
+        partial void OnCompanyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.Int32 _Name;
+        partial void OnNameChanging(global::System.Int32 value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Deprtments_Companies", "Company")]
+        public Company Company
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Company> CompanyReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Deprtments", "Budget_Expenses")]
+        public EntityCollection<Budget_Expenses> Budget_Expenses
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_Expenses>("designModel.FK_Budget_Deprtments", "Budget_Expenses");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_Expenses>("designModel.FK_Budget_Deprtments", "Budget_Expenses", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Budget_Deprtments", "User")]
+        public EntityCollection<User> Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("designModel.FK_Users_Budget_Deprtments", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("designModel.FK_Users_Budget_Deprtments", "User", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Budget_Expenses")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Budget_Expenses : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Budget_Expenses object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        /// <param name="companyId">Initial value of the CompanyId property.</param>
+        /// <param name="year">Initial value of the Year property.</param>
+        /// <param name="departmentId">Initial value of the DepartmentId property.</param>
+        /// <param name="sectionName">Initial value of the SectionName property.</param>
+        /// <param name="amount">Initial value of the Amount property.</param>
+        public static Budget_Expenses CreateBudget_Expenses(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Int32 departmentId, global::System.String sectionName, global::System.Decimal amount)
+        {
+            Budget_Expenses budget_Expenses = new Budget_Expenses();
+            budget_Expenses.Id = id;
+            budget_Expenses.CreationDate = creationDate;
+            budget_Expenses.CompanyId = companyId;
+            budget_Expenses.Year = year;
+            budget_Expenses.DepartmentId = departmentId;
+            budget_Expenses.SectionName = sectionName;
+            budget_Expenses.Amount = amount;
+            return budget_Expenses;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -551,67 +853,53 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime CreationDate
+        public global::System.String SectionName
         {
             get
             {
-                return _CreationDate;
+                return _SectionName;
             }
             set
             {
-                OnCreationDateChanging(value);
-                ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreationDate");
-                OnCreationDateChanged();
+                OnSectionNameChanging(value);
+                ReportPropertyChanging("SectionName");
+                _SectionName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("SectionName");
+                OnSectionNameChanged();
             }
         }
-        private global::System.DateTime _CreationDate;
-        partial void OnCreationDateChanging(global::System.DateTime value);
-        partial void OnCreationDateChanged();
+        private global::System.String _SectionName;
+        partial void OnSectionNameChanging(global::System.String value);
+        partial void OnSectionNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Amount
+        {
+            get
+            {
+                return _Amount;
+            }
+            set
+            {
+                OnAmountChanging(value);
+                ReportPropertyChanging("Amount");
+                _Amount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Amount");
+                OnAmountChanged();
+            }
+        }
+        private global::System.Decimal _Amount;
+        partial void OnAmountChanging(global::System.Decimal value);
+        partial void OnAmountChanged();
 
         #endregion
 
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Deprtments", "Deprtment")]
-        public Deprtment Deprtment
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Deprtment>("designModel.FK_Budget_Deprtments", "Deprtment").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Deprtment>("designModel.FK_Budget_Deprtments", "Deprtment").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Deprtment> DeprtmentReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Deprtment>("designModel.FK_Budget_Deprtments", "Deprtment");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Deprtment>("designModel.FK_Budget_Deprtments", "Deprtment", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -647,6 +935,554 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budget_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Deprtments", "Budget_Departments")]
+        public Budget_Departments Budget_Departments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Budget_Deprtments", "Budget_Departments").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Budget_Deprtments", "Budget_Departments").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget_Departments> Budget_DepartmentsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Budget_Deprtments", "Budget_Departments");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget_Departments>("designModel.FK_Budget_Deprtments", "Budget_Departments", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_ExpensesToIncome")]
+        public EntityCollection<Budget_ExpensesToIncome> Budget_ExpensesToIncome
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_ExpensesToIncome>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_ExpensesToIncome");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_ExpensesToIncome>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_ExpensesToIncome", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Budget_ExpensesToIncome")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Budget_ExpensesToIncome : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Budget_ExpensesToIncome object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        /// <param name="incomeId">Initial value of the IncomeId property.</param>
+        /// <param name="expenseId">Initial value of the ExpenseId property.</param>
+        public static Budget_ExpensesToIncome CreateBudget_ExpensesToIncome(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 incomeId, global::System.Int32 expenseId)
+        {
+            Budget_ExpensesToIncome budget_ExpensesToIncome = new Budget_ExpensesToIncome();
+            budget_ExpensesToIncome.Id = id;
+            budget_ExpensesToIncome.CreationDate = creationDate;
+            budget_ExpensesToIncome.IncomeId = incomeId;
+            budget_ExpensesToIncome.ExpenseId = expenseId;
+            return budget_ExpensesToIncome;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 IncomeId
+        {
+            get
+            {
+                return _IncomeId;
+            }
+            set
+            {
+                OnIncomeIdChanging(value);
+                ReportPropertyChanging("IncomeId");
+                _IncomeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IncomeId");
+                OnIncomeIdChanged();
+            }
+        }
+        private global::System.Int32 _IncomeId;
+        partial void OnIncomeIdChanging(global::System.Int32 value);
+        partial void OnIncomeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ExpenseId
+        {
+            get
+            {
+                return _ExpenseId;
+            }
+            set
+            {
+                OnExpenseIdChanging(value);
+                ReportPropertyChanging("ExpenseId");
+                _ExpenseId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ExpenseId");
+                OnExpenseIdChanged();
+            }
+        }
+        private global::System.Int32 _ExpenseId;
+        partial void OnExpenseIdChanging(global::System.Int32 value);
+        partial void OnExpenseIdChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses")]
+        public Budget_Expenses Budget_Expenses
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Expenses>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Expenses>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget_Expenses> Budget_ExpensesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Expenses>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget_Expenses>("designModel.FK_Budget_ExpensesToIncome_Budget_Expenses", "Budget_Expenses", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income")]
+        public Budget_Income Budget_Income
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Income>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Income>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget_Income> Budget_IncomeReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Income>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget_Income>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_Income", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Budget_ExpensesToIncome", "Order")]
+        public EntityCollection<Order> Orders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Budget_ExpensesToIncome", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Budget_ExpensesToIncome", "Order", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Budget_Income")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Budget_Income : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Budget_Income object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        /// <param name="companyId">Initial value of the CompanyId property.</param>
+        /// <param name="year">Initial value of the Year property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="amount">Initial value of the Amount property.</param>
+        public static Budget_Income CreateBudget_Income(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.String name, global::System.Decimal amount)
+        {
+            Budget_Income budget_Income = new Budget_Income();
+            budget_Income.Id = id;
+            budget_Income.CreationDate = creationDate;
+            budget_Income.CompanyId = companyId;
+            budget_Income.Year = year;
+            budget_Income.Name = name;
+            budget_Income.Amount = amount;
+            return budget_Income;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CompanyId
+        {
+            get
+            {
+                return _CompanyId;
+            }
+            set
+            {
+                OnCompanyIdChanging(value);
+                ReportPropertyChanging("CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompanyId");
+                OnCompanyIdChanged();
+            }
+        }
+        private global::System.Int32 _CompanyId;
+        partial void OnCompanyIdChanging(global::System.Int32 value);
+        partial void OnCompanyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Year
+        {
+            get
+            {
+                return _Year;
+            }
+            set
+            {
+                OnYearChanging(value);
+                ReportPropertyChanging("Year");
+                _Year = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Year");
+                OnYearChanged();
+            }
+        }
+        private global::System.Int32 _Year;
+        partial void OnYearChanging(global::System.Int32 value);
+        partial void OnYearChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Amount
+        {
+            get
+            {
+                return _Amount;
+            }
+            set
+            {
+                OnAmountChanging(value);
+                ReportPropertyChanging("Amount");
+                _Amount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Amount");
+                OnAmountChanged();
+            }
+        }
+        private global::System.Decimal _Amount;
+        partial void OnAmountChanging(global::System.Decimal value);
+        partial void OnAmountChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Income_Companies", "Company")]
+        public Company Company
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budget_Income_Companies", "Company").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budget_Income_Companies", "Company").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Company> CompanyReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budget_Income_Companies", "Company");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budget_Income_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budget_ExpensesToIncome")]
+        public EntityCollection<Budget_ExpensesToIncome> Budget_ExpensesToIncome
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_ExpensesToIncome>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_ExpensesToIncome");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_ExpensesToIncome>("designModel.FK_Budget_ExpensesToIncome_Budget_Income", "Budget_ExpensesToIncome", value);
                 }
             }
         }
@@ -796,18 +1632,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Companies", "Budget")]
-        public EntityCollection<Budget> Budgets
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Income_Companies", "Budget_Income")]
+        public EntityCollection<Budget_Income> Budget_Income
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget>("designModel.FK_Budget_Companies", "Budget");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_Income>("designModel.FK_Budget_Income_Companies", "Budget_Income");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget>("designModel.FK_Budget_Companies", "Budget", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_Income>("designModel.FK_Budget_Income_Companies", "Budget_Income", value);
                 }
             }
         }
@@ -818,18 +1654,62 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Deprtments_Companies", "Deprtment")]
-        public EntityCollection<Deprtment> Deprtments
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Companies", "Budget_Expenses")]
+        public EntityCollection<Budget_Expenses> Budget_Expenses
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Deprtment>("designModel.FK_Deprtments_Companies", "Deprtment");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_Expenses>("designModel.FK_Budget_Companies", "Budget_Expenses");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Deprtment>("designModel.FK_Deprtments_Companies", "Deprtment", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_Expenses>("designModel.FK_Budget_Companies", "Budget_Expenses", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Deprtments_Companies", "Budget_Departments")]
+        public EntityCollection<Budget_Departments> Budget_Departments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget_Departments>("designModel.FK_Deprtments_Companies", "Budget_Departments");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget_Departments>("designModel.FK_Deprtments_Companies", "Budget_Departments", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Inventory")]
+        public EntityCollection<Inventory> Inventories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory", value);
                 }
             }
         }
@@ -862,18 +1742,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Companies", "Inventory")]
-        public EntityCollection<Inventory> Inventories
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Order")]
+        public EntityCollection<Order> Orders
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Companies", "Inventory", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order", value);
                 }
             }
         }
@@ -918,28 +1798,6 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("designModel.FK_Users_Companies", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Order")]
-        public EntityCollection<Order> Orders
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Companies", "Order", value);
                 }
             }
         }
@@ -1102,205 +1960,6 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Deprtment")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Deprtment : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Deprtment object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="companyId">Initial value of the CompanyId property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Deprtment CreateDeprtment(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 name, global::System.DateTime creationDate)
-        {
-            Deprtment deprtment = new Deprtment();
-            deprtment.Id = id;
-            deprtment.CompanyId = companyId;
-            deprtment.Name = name;
-            deprtment.CreationDate = creationDate;
-            return deprtment;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CompanyId
-        {
-            get
-            {
-                return _CompanyId;
-            }
-            set
-            {
-                OnCompanyIdChanging(value);
-                ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CompanyId");
-                OnCompanyIdChanged();
-            }
-        }
-        private global::System.Int32 _CompanyId;
-        partial void OnCompanyIdChanging(global::System.Int32 value);
-        partial void OnCompanyIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.Int32 _Name;
-        partial void OnNameChanging(global::System.Int32 value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime CreationDate
-        {
-            get
-            {
-                return _CreationDate;
-            }
-            set
-            {
-                OnCreationDateChanging(value);
-                ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreationDate");
-                OnCreationDateChanged();
-            }
-        }
-        private global::System.DateTime _CreationDate;
-        partial void OnCreationDateChanging(global::System.DateTime value);
-        partial void OnCreationDateChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budget_Deprtments", "Budget")]
-        public EntityCollection<Budget> Budgets
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budget>("designModel.FK_Budget_Deprtments", "Budget");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budget>("designModel.FK_Budget_Deprtments", "Budget", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Deprtments_Companies", "Company")]
-        public Company Company
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Company> CompanyReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Deprtments_Companies", "Company", value);
-                }
-            }
-        }
-
-        #endregion
-
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Inventory")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -1312,19 +1971,19 @@ namespace DB
         /// Create a new Inventory object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="itemId">Initial value of the ItemId property.</param>
         /// <param name="locationId">Initial value of the LocationId property.</param>
-        /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="isOutOfInventory">Initial value of the IsOutOfInventory property.</param>
-        public static Inventory CreateInventory(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 itemId, global::System.Int32 locationId, global::System.DateTime creationDate, global::System.Boolean isOutOfInventory)
+        public static Inventory CreateInventory(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 itemId, global::System.Int32 locationId, global::System.Boolean isOutOfInventory)
         {
             Inventory inventory = new Inventory();
             inventory.Id = id;
+            inventory.CreationDate = creationDate;
             inventory.CompanyId = companyId;
             inventory.ItemId = itemId;
             inventory.LocationId = locationId;
-            inventory.CreationDate = creationDate;
             inventory.IsOutOfInventory = isOutOfInventory;
             return inventory;
         }
@@ -1359,6 +2018,30 @@ namespace DB
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1435,26 +2118,26 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime CreationDate
+        public global::System.String OrderId
         {
             get
             {
-                return _CreationDate;
+                return _OrderId;
             }
             set
             {
-                OnCreationDateChanging(value);
-                ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreationDate");
-                OnCreationDateChanged();
+                OnOrderIdChanging(value);
+                ReportPropertyChanging("OrderId");
+                _OrderId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("OrderId");
+                OnOrderIdChanged();
             }
         }
-        private global::System.DateTime _CreationDate;
-        partial void OnCreationDateChanging(global::System.DateTime value);
-        partial void OnCreationDateChanged();
+        private global::System.String _OrderId;
+        partial void OnOrderIdChanging(global::System.String value);
+        partial void OnOrderIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1846,16 +2529,18 @@ namespace DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        /// <param name="address">Initial value of the Address property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        /// <param name="city">Initial value of the City property.</param>
+        /// <param name="address">Initial value of the Address property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.String address, global::System.DateTime creationDate, global::System.String name)
+        public static Location CreateLocation(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.String city, global::System.String address, global::System.String name)
         {
             Location location = new Location();
             location.Id = id;
             location.CompanyId = companyId;
-            location.Address = address;
             location.CreationDate = creationDate;
+            location.City = city;
+            location.Address = address;
             location.Name = name;
             return location;
         }
@@ -1920,30 +2605,6 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Address
-        {
-            get
-            {
-                return _Address;
-            }
-            set
-            {
-                OnAddressChanging(value);
-                ReportPropertyChanging("Address");
-                _Address = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Address");
-                OnAddressChanged();
-            }
-        }
-        private global::System.String _Address;
-        partial void OnAddressChanging(global::System.String value);
-        partial void OnAddressChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.DateTime CreationDate
         {
             get
@@ -1962,6 +2623,54 @@ namespace DB
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String City
+        {
+            get
+            {
+                return _City;
+            }
+            set
+            {
+                OnCityChanging(value);
+                ReportPropertyChanging("City");
+                _City = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("City");
+                OnCityChanged();
+            }
+        }
+        private global::System.String _City;
+        partial void OnCityChanging(global::System.String value);
+        partial void OnCityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Address
+        {
+            get
+            {
+                return _Address;
+            }
+            set
+            {
+                OnAddressChanging(value);
+                ReportPropertyChanging("Address");
+                _Address = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Address");
+                OnAddressChanged();
+            }
+        }
+        private global::System.String _Address;
+        partial void OnAddressChanging(global::System.String value);
+        partial void OnAddressChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2072,22 +2781,24 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="price">Initial value of the Price property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
-        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.Decimal price, global::System.Int32 statusId, global::System.Int32 orderNumber)
+        /// <param name="budgetAllocationId">Initial value of the BudgetAllocationId property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.Decimal price, global::System.Int32 statusId, global::System.Int32 budgetAllocationId)
         {
             Order order = new Order();
             order.Id = id;
             order.CompanyId = companyId;
             order.UserId = userId;
+            order.OrderNumber = orderNumber;
             order.CreationDate = creationDate;
             order.SupplierId = supplierId;
             order.Price = price;
             order.StatusId = statusId;
-            order.OrderNumber = orderNumber;
+            order.BudgetAllocationId = budgetAllocationId;
             return order;
         }
 
@@ -2169,6 +2880,30 @@ namespace DB
         private global::System.Int32 _UserId;
         partial void OnUserIdChanging(global::System.Int32 value);
         partial void OnUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
+        partial void OnOrderNumberChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2343,24 +3078,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 OrderNumber
+        public global::System.Int32 BudgetAllocationId
         {
             get
             {
-                return _OrderNumber;
+                return _BudgetAllocationId;
             }
             set
             {
-                OnOrderNumberChanging(value);
-                ReportPropertyChanging("OrderNumber");
-                _OrderNumber = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrderNumber");
-                OnOrderNumberChanged();
+                OnBudgetAllocationIdChanging(value);
+                ReportPropertyChanging("BudgetAllocationId");
+                _BudgetAllocationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BudgetAllocationId");
+                OnBudgetAllocationIdChanged();
             }
         }
-        private global::System.Int32 _OrderNumber;
-        partial void OnOrderNumberChanging(global::System.Int32 value);
-        partial void OnOrderNumberChanged();
+        private global::System.Int32 _BudgetAllocationId;
+        partial void OnBudgetAllocationIdChanging(global::System.Int32 value);
+        partial void OnBudgetAllocationIdChanged();
 
         #endregion
 
@@ -2401,6 +3136,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Orders_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome")]
+        public Budget_ExpensesToIncome Budget_ExpensesToIncome
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_ExpensesToIncome>("designModel.FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_ExpensesToIncome>("designModel.FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget_ExpensesToIncome> Budget_ExpensesToIncomeReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_ExpensesToIncome>("designModel.FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget_ExpensesToIncome>("designModel.FK_Orders_Budget_ExpensesToIncome", "Budget_ExpensesToIncome", value);
                 }
             }
         }
@@ -2712,18 +3485,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem")]
-        public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Items", "Inventory")]
+        public EntityCollection<Inventory> Inventories
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory", value);
                 }
             }
         }
@@ -2772,18 +3545,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Items", "Inventory")]
-        public EntityCollection<Inventory> Inventories
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem")]
+        public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Items", "Inventory", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_OrderToItem>("designModel.FK_Orders_OrderToItem_Orders_Items", "Orders_OrderToItem", value);
                 }
             }
         }
@@ -3924,24 +4697,24 @@ namespace DB
         /// Create a new User object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="creationTime">Initial value of the CreationTime property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="email">Initial value of the Email property.</param>
         /// <param name="firstName">Initial value of the FirstName property.</param>
         /// <param name="lastName">Initial value of the LastName property.</param>
         /// <param name="roles">Initial value of the Roles property.</param>
-        /// <param name="creationTime">Initial value of the CreationTime property.</param>
         /// <param name="lastLogInTime">Initial value of the LastLogInTime property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.Int32 companyId, global::System.String email, global::System.String firstName, global::System.String lastName, global::System.Int32 roles, global::System.DateTime creationTime, global::System.DateTime lastLogInTime, global::System.Boolean isActive)
+        public static User CreateUser(global::System.Int32 id, global::System.DateTime creationTime, global::System.Int32 companyId, global::System.String email, global::System.String firstName, global::System.String lastName, global::System.Int32 roles, global::System.DateTime lastLogInTime, global::System.Boolean isActive)
         {
             User user = new User();
             user.Id = id;
+            user.CreationTime = creationTime;
             user.CompanyId = companyId;
             user.Email = email;
             user.FirstName = firstName;
             user.LastName = lastName;
             user.Roles = roles;
-            user.CreationTime = creationTime;
             user.LastLogInTime = lastLogInTime;
             user.IsActive = isActive;
             return user;
@@ -3977,6 +4750,30 @@ namespace DB
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationTime
+        {
+            get
+            {
+                return _CreationTime;
+            }
+            set
+            {
+                OnCreationTimeChanging(value);
+                ReportPropertyChanging("CreationTime");
+                _CreationTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationTime");
+                OnCreationTimeChanged();
+            }
+        }
+        private global::System.DateTime _CreationTime;
+        partial void OnCreationTimeChanging(global::System.DateTime value);
+        partial void OnCreationTimeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4077,6 +4874,30 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> DepartmentId
+        {
+            get
+            {
+                return _DepartmentId;
+            }
+            set
+            {
+                OnDepartmentIdChanging(value);
+                ReportPropertyChanging("DepartmentId");
+                _DepartmentId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DepartmentId");
+                OnDepartmentIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _DepartmentId;
+        partial void OnDepartmentIdChanging(Nullable<global::System.Int32> value);
+        partial void OnDepartmentIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Int32 Roles
@@ -4097,30 +4918,6 @@ namespace DB
         private global::System.Int32 _Roles;
         partial void OnRolesChanging(global::System.Int32 value);
         partial void OnRolesChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime CreationTime
-        {
-            get
-            {
-                return _CreationTime;
-            }
-            set
-            {
-                OnCreationTimeChanging(value);
-                ReportPropertyChanging("CreationTime");
-                _CreationTime = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreationTime");
-                OnCreationTimeChanged();
-            }
-        }
-        private global::System.DateTime _CreationTime;
-        partial void OnCreationTimeChanging(global::System.DateTime value);
-        partial void OnCreationTimeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4243,6 +5040,44 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Budget_Deprtments", "Budget_Departments")]
+        public Budget_Departments Budget_Departments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Users_Budget_Deprtments", "Budget_Departments").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Users_Budget_Deprtments", "Budget_Departments").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget_Departments> Budget_DepartmentsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget_Departments>("designModel.FK_Users_Budget_Deprtments", "Budget_Departments");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget_Departments>("designModel.FK_Users_Budget_Deprtments", "Budget_Departments", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Cookies_Users", "Cooky")]
         public EntityCollection<Cooky> Cookies
         {
@@ -4255,6 +5090,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Cooky>("designModel.FK_Cookies_Users", "Cooky", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users", "Order")]
+        public EntityCollection<Order> Orders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Users", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Users", "Order", value);
                 }
             }
         }
@@ -4337,28 +5194,6 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Users_Users", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users", "Order")]
-        public EntityCollection<Order> Orders
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Users", "Order");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Users", "Order", value);
                 }
             }
         }
