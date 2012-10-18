@@ -1,0 +1,36 @@
+﻿@model DB.Budget_ExpensesToIncome
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Budget_ExpensesToIncome</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Budget_Income.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Budget_Income.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Budget_Expenses.SectionName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Budget_Expenses.SectionName)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

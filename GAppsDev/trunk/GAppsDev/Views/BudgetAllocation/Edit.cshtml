@@ -1,0 +1,53 @@
+﻿@model DB.Budget_ExpensesToIncome
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Budget_ExpensesToIncome</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreationDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreationDate)
+            @Html.ValidationMessageFor(model => model.CreationDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IncomeId, "Budget_Income")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IncomeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.IncomeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpenseId, "Budget_Expenses")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ExpenseId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ExpenseId)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
