@@ -2076,7 +2076,8 @@ namespace DB
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="price">Initial value of the Price property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.Decimal price, global::System.Int32 statusId)
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.DateTime creationDate, global::System.Int32 supplierId, global::System.Decimal price, global::System.Int32 statusId, global::System.Int32 orderNumber)
         {
             Order order = new Order();
             order.Id = id;
@@ -2086,6 +2087,7 @@ namespace DB
             order.SupplierId = supplierId;
             order.Price = price;
             order.StatusId = statusId;
+            order.OrderNumber = orderNumber;
             return order;
         }
 
@@ -2339,9 +2341,9 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> OrderNumber
+        public global::System.Int32 OrderNumber
         {
             get
             {
@@ -2356,8 +2358,8 @@ namespace DB
                 OnOrderNumberChanged();
             }
         }
-        private Nullable<global::System.Int32> _OrderNumber;
-        partial void OnOrderNumberChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
         partial void OnOrderNumberChanged();
 
         #endregion

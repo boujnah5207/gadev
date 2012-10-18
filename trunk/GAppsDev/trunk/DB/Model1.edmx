@@ -188,7 +188,7 @@
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="OrderApproverNotes" Type="nvarchar" MaxLength="50" />
           <Property Name="NextOrderApproverId" Type="int" />
-          <Property Name="OrderNumber" Type="int" />
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders_OrderToItem">
           <Key>
@@ -962,7 +962,7 @@
           <Property Type="Int32" Name="StatusId" Nullable="false" />
           <Property Type="String" Name="OrderApproverNotes" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="NextOrderApproverId" />
-          <Property Type="Int32" Name="OrderNumber" />
+          <Property Type="Int32" Name="OrderNumber" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
@@ -1251,7 +1251,7 @@
         <edmx:AssociationConnector Association="designModel.FK_Cookies_Users" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Users" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="13.125" PointY="21.5" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="13.875" PointY="21.75" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Orders_Statuses" />
