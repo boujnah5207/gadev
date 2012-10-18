@@ -247,6 +247,11 @@ namespace Mvc4.OpenId.Sample.Security
                     databaseUser = userRep.GetEntity(sessionUser.UserId);
                 }
 
+                if (databaseUser != null)
+                {
+                    sessionUser.Roles = databaseUser.Roles;
+                }
+
                 if (databaseUser == null || !databaseUser.IsActive)
                 {
                     HttpContext.Current.Session.Remove("User");
