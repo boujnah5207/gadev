@@ -41,8 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BudgetsExpensesRepository.cs" />
+    <Compile Include="BudgetsExpensesToIncomesRepository.cs" />
+    <Compile Include="BudgetsIncomesRepository.cs" />
+    <Compile Include="BudgetsRepository.cs" />
     <Compile Include="CompaniesRepository.cs" />
     <Compile Include="CookiesRepository.cs" />
+    <Compile Include="DepartmentsRepository.cs" />
     <Compile Include="InventoryRepository.cs" />
     <Compile Include="LocationsRepository.cs" />
     <Compile Include="MD5Encryptor.cs" />
