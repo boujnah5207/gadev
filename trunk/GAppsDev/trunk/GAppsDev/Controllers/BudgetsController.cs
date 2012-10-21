@@ -9,34 +9,34 @@ using DB;
 
 namespace GAppsDev.Controllers
 {
-    public class DepartmentsController : Controller
+    public class BudgetsController : Controller
     {
         private Entities db = new Entities();
 
         //
-        // GET: /Departments/
+        // GET: /Budgets/
 
         public ActionResult Index()
         {
-            var departments = db.Departments.Include("Company");
-            return View(departments.ToList());
+            var budgets = db.Budgets.Include("Company");
+            return View(budgets.ToList());
         }
 
         //
-        // GET: /Departments/Details/5
+        // GET: /Budgets/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            Department department = db.Departments.Single(d => d.Id == id);
-            if (department == null)
+            Budget budget = db.Budgets.Single(b => b.Id == id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(budget);
         }
 
         //
-        // GET: /Departments/Create
+        // GET: /Budgets/Create
 
         public ActionResult Create()
         {
@@ -45,74 +45,74 @@ namespace GAppsDev.Controllers
         }
 
         //
-        // POST: /Departments/Create
+        // POST: /Budgets/Create
 
         [HttpPost]
-        public ActionResult Create(Department department)
+        public ActionResult Create(Budget budget)
         {
             if (ModelState.IsValid)
             {
-                db.Departments.AddObject(department);
+                db.Budgets.AddObject(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
-            return View(department);
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", budget.CompanyId);
+            return View(budget);
         }
 
         //
-        // GET: /Departments/Edit/5
+        // GET: /Budgets/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            Department department = db.Departments.Single(d => d.Id == id);
-            if (department == null)
+            Budget budget = db.Budgets.Single(b => b.Id == id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
-            return View(department);
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", budget.CompanyId);
+            return View(budget);
         }
 
         //
-        // POST: /Departments/Edit/5
+        // POST: /Budgets/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Department department)
+        public ActionResult Edit(Budget budget)
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Attach(department);
-                db.ObjectStateManager.ChangeObjectState(department, EntityState.Modified);
+                db.Budgets.Attach(budget);
+                db.ObjectStateManager.ChangeObjectState(budget, EntityState.Modified);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
-            return View(department);
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", budget.CompanyId);
+            return View(budget);
         }
 
         //
-        // GET: /Departments/Delete/5
+        // GET: /Budgets/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            Department department = db.Departments.Single(d => d.Id == id);
-            if (department == null)
+            Budget budget = db.Budgets.Single(b => b.Id == id);
+            if (budget == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(budget);
         }
 
         //
-        // POST: /Departments/Delete/5
+        // POST: /Budgets/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Department department = db.Departments.Single(d => d.Id == id);
-            db.Departments.DeleteObject(department);
+            Budget budget = db.Budgets.Single(b => b.Id == id);
+            db.Budgets.DeleteObject(budget);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

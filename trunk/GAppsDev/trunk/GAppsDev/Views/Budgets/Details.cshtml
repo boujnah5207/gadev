@@ -1,4 +1,4 @@
-﻿@model DB.Budget_Expenses
+﻿@model DB.Budget
 
 @{
     ViewBag.Title = "Details";
@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <fieldset>
-    <legend>Budget_Expenses</legend>
+    <legend>Budget</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.CreationDate)
@@ -31,24 +31,10 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Budget_Departments.Id)
+         @Html.DisplayNameFor(model => model.IsActive)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Budget_Departments.Id)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SectionName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SectionName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Amount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Amount)
+        @Html.DisplayFor(model => model.IsActive)
     </div>
 </fieldset>
 <p>

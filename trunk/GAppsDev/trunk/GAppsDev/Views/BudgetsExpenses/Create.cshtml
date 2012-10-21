@@ -1,4 +1,4 @@
-﻿@model DB.Budget_Expenses
+﻿@model DB.Budgets_Expenses
 
 @{
     ViewBag.Title = "Create";
@@ -10,7 +10,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Budget_Expenses</legend>
+        <legend>Budgets_Expenses</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.CreationDate)
@@ -21,26 +21,18 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyId, "Company")
+            @Html.LabelFor(model => model.BudgetId)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("CompanyId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CompanyId)
+            @Html.EditorFor(model => model.BudgetId)
+            @Html.ValidationMessageFor(model => model.BudgetId)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Year)
+            @Html.LabelFor(model => model.DepartmentId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Year)
-            @Html.ValidationMessageFor(model => model.Year)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DepartmentId, "Budget_Departments")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("DepartmentId", String.Empty)
+            @Html.EditorFor(model => model.DepartmentId)
             @Html.ValidationMessageFor(model => model.DepartmentId)
         </div>
 
