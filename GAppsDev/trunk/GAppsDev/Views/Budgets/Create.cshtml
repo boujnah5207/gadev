@@ -1,18 +1,16 @@
-﻿@model DB.Budget_Expenses
+﻿@model DB.Budget
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
 }
 
-<h2>Edit</h2>
+<h2>Create</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Budget_Expenses</legend>
-
-        @Html.HiddenFor(model => model.Id)
+        <legend>Budget</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.CreationDate)
@@ -39,31 +37,15 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.DepartmentId, "Budget_Departments")
+            @Html.LabelFor(model => model.IsActive)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("DepartmentId", String.Empty)
-            @Html.ValidationMessageFor(model => model.DepartmentId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SectionName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SectionName)
-            @Html.ValidationMessageFor(model => model.SectionName)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Amount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Amount)
-            @Html.ValidationMessageFor(model => model.Amount)
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive)
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Create" />
         </p>
     </fieldset>
 }

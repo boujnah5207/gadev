@@ -1,4 +1,4 @@
-﻿@model DB.Department
+﻿@model DB.Budgets_ExpensesToIncomes
 
 @{
     ViewBag.Title = "Edit";
@@ -10,25 +10,9 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Department</legend>
+        <legend>Budgets_ExpensesToIncomes</legend>
 
         @Html.HiddenFor(model => model.Id)
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyId, "Company")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("CompanyId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CompanyId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.CreationDate)
@@ -36,6 +20,22 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.CreationDate)
             @Html.ValidationMessageFor(model => model.CreationDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IncomeId, "Budgets_Incomes")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IncomeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.IncomeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExpenseId, "Budgets_Expenses")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ExpenseId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ExpenseId)
         </div>
 
         <p>

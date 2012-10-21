@@ -1,4 +1,4 @@
-﻿@model DB.Budget_Income
+﻿@model DB.Budgets_Incomes
 
 @{
     ViewBag.Title = "Delete";
@@ -8,7 +8,7 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <fieldset>
-    <legend>Budget_Income</legend>
+    <legend>Budgets_Incomes</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.CreationDate)
@@ -18,17 +18,10 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Company.Name)
+         @Html.DisplayNameFor(model => model.Budget.Id)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Year)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Year)
+        @Html.DisplayFor(model => model.Budget.Id)
     </div>
 
     <div class="display-label">

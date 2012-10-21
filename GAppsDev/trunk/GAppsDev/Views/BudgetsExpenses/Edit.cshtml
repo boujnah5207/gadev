@@ -1,16 +1,18 @@
-﻿@model DB.Budget_Income
+﻿@model DB.Budgets_Expenses
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create</h2>
+<h2>Edit</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Budget_Income</legend>
+        <legend>Budgets_Expenses</legend>
+
+        @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.CreationDate)
@@ -21,27 +23,27 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyId, "Company")
+            @Html.LabelFor(model => model.BudgetId)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("CompanyId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CompanyId)
+            @Html.EditorFor(model => model.BudgetId)
+            @Html.ValidationMessageFor(model => model.BudgetId)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Year)
+            @Html.LabelFor(model => model.DepartmentId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Year)
-            @Html.ValidationMessageFor(model => model.Year)
+            @Html.EditorFor(model => model.DepartmentId)
+            @Html.ValidationMessageFor(model => model.DepartmentId)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.SectionName)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+            @Html.EditorFor(model => model.SectionName)
+            @Html.ValidationMessageFor(model => model.SectionName)
         </div>
 
         <div class="editor-label">
@@ -53,7 +55,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Save" />
         </p>
     </fieldset>
 }
