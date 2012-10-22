@@ -1,0 +1,132 @@
+﻿@model DB.Inventory
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Inventory</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreationDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreationDate)
+            @Html.ValidationMessageFor(model => model.CreationDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyId, "Company")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CompanyId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CompanyId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ItemId, "Orders_Items")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ItemId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ItemId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LocationId, "Location")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LocationId", String.Empty)
+            @Html.ValidationMessageFor(model => model.LocationId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrderId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OrderId)
+            @Html.ValidationMessageFor(model => model.OrderId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AssignedTo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AssignedTo)
+            @Html.ValidationMessageFor(model => model.AssignedTo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SerialNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SerialNumber)
+            @Html.ValidationMessageFor(model => model.SerialNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WarrentyPeriodStart)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.WarrentyPeriodStart)
+            @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WarrentyPeriodEnd)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.WarrentyPeriodEnd)
+            @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Notes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RelatedInventoryItem, "Inventory2")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("RelatedInventoryItem", String.Empty)
+            @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsOutOfInventory)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsOutOfInventory)
+            @Html.ValidationMessageFor(model => model.IsOutOfInventory)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

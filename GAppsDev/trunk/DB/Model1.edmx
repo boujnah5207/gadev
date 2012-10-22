@@ -62,6 +62,10 @@
             <End Role="Locations" EntitySet="Locations" />
             <End Role="Inventory" EntitySet="Inventory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_Orders" Association="designModel.Store.FK_Inventory_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_Locations_Companies" Association="designModel.Store.FK_Locations_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Locations" EntitySet="Locations" />
@@ -137,7 +141,7 @@
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="ItemId" Type="int" Nullable="false" />
           <Property Name="LocationId" Type="int" Nullable="false" />
-          <Property Name="OrderId" Type="nchar" MaxLength="10" />
+          <Property Name="OrderId" Type="int" />
           <Property Name="AssignedTo" Type="nvarchar" MaxLength="50" />
           <Property Name="SerialNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="WarrentyPeriodStart" Type="datetime2" />
@@ -429,6 +433,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Inventory_Orders">
+          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="0..1" />
+          <End Role="Inventory" Type="designModel.Store.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Locations_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
           <End Role="Locations" Type="designModel.Store.Locations" Multiplicity="*" />
@@ -658,6 +674,10 @@
             <End Role="Location" EntitySet="Locations" />
             <End Role="Inventory" EntitySet="Inventories" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inventory_Orders" Association="designModel.FK_Inventory_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Inventory" EntitySet="Inventories" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.FK_Orders_Items_Suppliers">
             <End Role="Supplier" EntitySet="Suppliers" />
             <End Role="Orders_Items" EntitySet="Orders_Items" />
@@ -740,7 +760,7 @@
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
           <Property Type="Int32" Name="ItemId" Nullable="false" />
           <Property Type="Int32" Name="LocationId" Nullable="false" />
-          <Property Type="String" Name="OrderId" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="OrderId" />
           <Property Type="String" Name="AssignedTo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SerialNumber" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="WarrentyPeriodStart" Precision="7" />
@@ -754,6 +774,7 @@
           <NavigationProperty Name="Inventory2" Relationship="designModel.FK_Inventory_Inventory" FromRole="Inventory1" ToRole="Inventory" />
           <NavigationProperty Name="Orders_Items" Relationship="designModel.FK_Inventory_Items" FromRole="Inventory" ToRole="Orders_Items" />
           <NavigationProperty Name="Location" Relationship="designModel.FK_Inventory_Locations" FromRole="Inventory" ToRole="Location" />
+          <NavigationProperty Name="Order" Relationship="designModel.FK_Inventory_Orders" FromRole="Inventory" ToRole="Order" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -866,6 +887,7 @@
           <Property Type="Int32" Name="NextOrderApproverId" />
           <Property Type="Int32" Name="BudgetAllocationId" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
+          <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
           <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Order" ToRole="Budgets_ExpensesToIncomes" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
@@ -1070,6 +1092,18 @@
             </Principal>
             <Dependent Role="Inventory">
               <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventory_Orders">
+          <End Type="designModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="designModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1474,22 +1508,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="10.233275071826427" PointY="28.2271767837122" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="10.890826457594907" PointY="12.56386617411108" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="4.6383479017011577" PointY="31.584724947616795" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="6.0992957326114619" PointY="20.326349387097334" />
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="11.227073141945095" PointY="27.125445646757932" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="2.5783828955974353" PointY="24.769012879938359" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="7.3498952776891624" PointY="30.529241099268777" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="5.5997111357747169" PointY="14.36523655725887" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="11.71514159613994" PointY="23.08951657595556" />
-        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="4.7985570397221284" PointY="10.233430047628204" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.115172888205933" PointY="5.08503838120263" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="8.6911876353859832" PointY="3.5985625701018433" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="8.2998671700711668" PointY="22.118617306518654" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="6.0905376384456353" PointY="13.1130101294783" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="6.3953092314281079" PointY="0.13843135542163224" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="1.7458363928579894" PointY="11.55987056137988" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="11.586476733715495" PointY="3.0910683735697848" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="1.0436684326472079" PointY="7.6045966630822965" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="6.1824873733252694" PointY="15.787403814395612" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="1.3632425281048017" PointY="28.443022890222736" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="3.8721495773047909" PointY="2.9586451812454708" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="7.0067522260391861" PointY="14.580886922115873" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="5.1589004216524312" PointY="29.96695068383913" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="0.29493615603769952" PointY="30.579755394989512" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="5.4142845950155909" PointY="15.107487298132613" />
+        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="6.4733803842558428" PointY="15.709320761128012" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="3.4183142406019913" PointY="8.25972365227515" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="3.55921249629893" PointY="19.332038322152588" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="0.93610237954934239" PointY="30.980232730032984" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="8.6308653860496669" PointY="0.50343148433763141" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="3.5441275460385384" PointY="12.821863970170666" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="4.3072915041387505" PointY="4.2487541903968689" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Deprtments_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Companies" />
@@ -1500,6 +1534,7 @@
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Inventory" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Items" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Locations" />
+        <edmx:AssociationConnector Association="designModel.FK_Inventory_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Items_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders_Items" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />

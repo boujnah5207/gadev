@@ -1,0 +1,56 @@
+﻿@model GAppsDev.Models.AddToInventoryModel
+
+@{
+    ViewBag.Title = "הוסף למלאי";
+}
+
+@section ExtraScripts{
+    <script src="~/Scripts/AddToInventoryScript.js"></script>
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<fieldset>
+    <legend>פריטים בהזמנה</legend>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.OrderId)
+        
+        <div id="ItemsContainer">
+            @for (int i = 0; i < Model.OrderItems.Count; i++ )
+            {
+                <fieldset id="ItemId-@(Model.OrderItems[i].Id)">
+                    <legend>@Model.OrderItems[i].Orders_Items.Title</legend>
+                    <div id="expandingGroup-@(Model.OrderItems[i].Id)" class="expanding-div" >
+                        <div id="expandingDiv-@(Model.OrderItems[i].Id)-0" class="expanding-div" style="display:none;" >
+                            <input type="hidden" name="InventoryItems[@i][0].ItemId" value="@Model.OrderItems[i].Id" />
+                            <label>מיקום: </label> @Html.DropDownList("InventoryItems[" + i + "][0].LocationId", Model.LocationsList, new { id="locationList-" + Model.OrderItems[i].Id + "-" + i, @class="locationList" })
+                            <label>משוייך ל: </label> <input type="text" name="InventoryItems[@i][0].AssignedTo" />
+                            <label>מספר סידורי: </label> <input type="text" name="InventoryItems[@i][0].SerialNumber" />
+                            <br /> <span>תקופת אחריות: </span> <br />
+                            <label>מ- </label> <input type="text" name="InventoryItems[@i][0].WarrentyPeriodStart" /> - <input type="text" name="InventoryItems[@i][0].WarrentyPeriodEnd" />
+                            <label>הערות: </label> <textarea name="InventoryItems[@i][0].Notes" ></textarea>
+                            <label>מצב: </label> <input type="text" name="InventoryItems[@i][0].Status" />
+                        </div>
+                    </div>
+                    <span>מספר פריטים: @Model.OrderItems[i].Quantity</span>
+                    <input id="expandingBtn-@(Model.OrderItems[i].Id)-0" type="button" value="הצג פרטים" onClick="expand(@(Model.OrderItems[i].Id),0)" />
+                    <input id="splitBtn-@(Model.OrderItems[i].Id)-0" type="button" value="פצל פריטים" onClick="split(@(Model.OrderItems[i].Id), @i, @(Model.OrderItems[i].Quantity))" />
+                </fieldset>
+            }
+        </div>
+        
+        <p>
+            <input type="submit" value="הכנס פריטים למלאי" />
+        </p>
+    }
+</fieldset>

@@ -148,6 +148,8 @@
     <Compile Include="Controllers\BudgetsIncomesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Models\Error\ErrorModel.cs" />
     <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
+    <Compile Include="Models\Order\AddToInventoryModel.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
     <Compile Include="Models\Search\UsersSearchFormModel.cs" />
     <Compile Include="Models\Search\UsersSearchValuesModel.cs" />
@@ -340,6 +343,7 @@
     <Content Include="Rotativa\Rotativa.dll" />
     <Content Include="Rotativa\ssleay32.dll" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\AddToInventoryScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -445,6 +449,17 @@
     <Content Include="Views\BudgetsIncomes\Create.cshtml" />
     <Content Include="Views\BudgetsIncomes\Edit.cshtml" />
     <Content Include="Views\BudgetsIncomes\Delete.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\Details.cshtml" />
+    <Content Include="Views\Inventory\Create.cshtml" />
+    <Content Include="Views\Inventory\Edit.cshtml" />
+    <Content Include="Views\Inventory\Delete.cshtml" />
+    <Content Include="Views\Locations\Index.cshtml" />
+    <Content Include="Views\Locations\Details.cshtml" />
+    <Content Include="Views\Locations\Create.cshtml" />
+    <Content Include="Views\Locations\Edit.cshtml" />
+    <Content Include="Views\Locations\Delete.cshtml" />
+    <Content Include="Views\Orders\AddToInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

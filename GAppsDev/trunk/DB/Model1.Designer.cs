@@ -29,6 +29,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Inventory", "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Inventory), "Inventory1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Locations", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Location), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Order), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Income_Budget", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
@@ -2196,7 +2197,7 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String OrderId
+        public Nullable<global::System.Int32> OrderId
         {
             get
             {
@@ -2206,13 +2207,13 @@ namespace DB
             {
                 OnOrderIdChanging(value);
                 ReportPropertyChanging("OrderId");
-                _OrderId = StructuralObject.SetValidValue(value, true);
+                _OrderId = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("OrderId");
                 OnOrderIdChanged();
             }
         }
-        private global::System.String _OrderId;
-        partial void OnOrderIdChanging(global::System.String value);
+        private Nullable<global::System.Int32> _OrderId;
+        partial void OnOrderIdChanging(Nullable<global::System.Int32> value);
         partial void OnOrderIdChanged();
     
         /// <summary>
@@ -2582,6 +2583,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Location>("designModel.FK_Inventory_Locations", "Location", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Orders", "Order")]
+        public Order Order
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Inventory_Orders", "Order").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Inventory_Orders", "Order").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Order> OrderReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Inventory_Orders", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Order>("designModel.FK_Inventory_Orders", "Order", value);
                 }
             }
         }
@@ -3212,6 +3251,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Orders_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Inventory_Orders", "Inventory")]
+        public EntityCollection<Inventory> Inventories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Inventory>("designModel.FK_Inventory_Orders", "Inventory");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Orders", "Inventory", value);
                 }
             }
         }

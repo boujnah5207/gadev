@@ -16,6 +16,7 @@ namespace GAppsDev.Controllers
     public class AccountController : BaseController
     {
         private readonly OpenIdMembershipService openidemembership;
+
         public AccountController()
         {
             openidemembership = new OpenIdMembershipService();
@@ -26,6 +27,7 @@ namespace GAppsDev.Controllers
         {
             LogInResult result;
             result = openidemembership.GetUser();
+
             if (result.IsAuthenticated)
             {
                 if (result.IsRegistered || result.IsNewUser)
@@ -36,11 +38,11 @@ namespace GAppsDev.Controllers
                 }
                 else if (result.IsCanceled)
                 {
-                    return View("Error_NoLayout", new ErrorModel("חשבון משתשתמש זה בוטל. אנא פנה למנהל המערכת."));
+                    return View("Error_NoLayout", new ErrorModel(Errors.USER_WAS_CANCELED));
                 }
                 else
                 {
-                    return View("Error_NoLayout", new ErrorModel("חשבון משתשתמש זה אינו רשום במערכת."));
+                    return View("Error_NoLayout", new ErrorModel(Errors.USER_NOT_REGISTERD));
                 }
             }
 
