@@ -1,0 +1,107 @@
+﻿@model DB.Inventory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Inventory</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Company.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Company.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Orders_Items.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Orders_Items.Title)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Location.City)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Location.City)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OrderId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OrderId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AssignedTo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AssignedTo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SerialNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SerialNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.WarrentyPeriodStart)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WarrentyPeriodStart)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.WarrentyPeriodEnd)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WarrentyPeriodEnd)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Notes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Inventory2.OrderId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Inventory2.OrderId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Status)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsOutOfInventory)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsOutOfInventory)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

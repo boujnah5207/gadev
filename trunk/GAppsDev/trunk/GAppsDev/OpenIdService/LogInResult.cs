@@ -8,6 +8,7 @@ namespace GAppsDev.OpenIdService
     public class LogInResult
     {
         public bool IsAuthenticated { get; set; }
+
         public bool IsNewUser { get; set; }
         public bool IsRegistered { get; set; }
         public bool IsCanceled { get; set; }

@@ -42,7 +42,11 @@ namespace GAppsDev.Models.ErrorModels
         public const string USERS_DELETE_ERROR = "לא הייתה אפשרות להסיר את המשתמש. אנא נסה שוב.";
         public const string USER_CANNOT_DELETE_SELF = "למשתמש אין אפשרות להסיר את עצמו.";
         public const string USER_NOT_FOUND = "לא הייתה אפשרות למצוא משתמש בבסיס הנתונים.";
+        public const string USER_WAS_CANCELED = "חשבון משתשתמש זה בוטל. אנא פנה למנהל המערכת.";
+        public const string USER_NOT_REGISTERD = "חשבון משתשתמש זה אינו רשום במערכת.";
 
+        //Inventory Errors
+        public const string INVENTORY_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי.";
 
     }
 }
