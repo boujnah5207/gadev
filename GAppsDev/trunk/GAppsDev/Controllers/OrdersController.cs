@@ -315,6 +315,41 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        public ActionResult UploadReceiptFile()
+        {
+            return View();
+        }
+
+        // This action handles the form POST and the upload
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult UploadReceiptFile(HttpPostedFileBase file, int? orderId)
+        {
+            // Verify that the user selected a file
+            if (file != null && file.ContentLength > 0)
+            {
+                // extract only the fielname
+                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                // store the file inside ~/App_Data/uploads folder
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads/Receipts"), fileName);
+                file.SaveAs(path);
+            }
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository())
+            {
+                order = ordersRep.GetEntity((int)orderId);
+
+                if (order != null)
+                {
+                    order.StatusId = (int)StatusType.ReceiptScanned;
+                    ordersRep.Update(order);
+                }
+            }
+            // redirect back to the index action to show the form once again
+            return RedirectToAction("Index");
+        }
+
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
         {
