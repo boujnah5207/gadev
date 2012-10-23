@@ -42,22 +42,6 @@
                             {
                             <li>@Html.ActionLink("ניהול משתמשים", "Index", "Users")</li>
                             }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
-                            {
-                            <li>@Html.ActionLink("ניהול תקציב", "Index", "Budgets")</li>
-                            }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
-                            {
-                            <li>@Html.ActionLink("ניהול הכנסות", "Index", "BudgetsIncomes")</li>
-                            }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
-                            {
-                            <li>@Html.ActionLink("ניהול הוצאות", "Index", "BudgetsExpenses")</li>
-                            }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
-                            {
-                            <li>@Html.ActionLink("התאמת הכנסות להוצאות", "Index", "BudgetsExpensesToIncomes")</li>
-                            }
                         </ul>
                     </nav>
                 </div>
