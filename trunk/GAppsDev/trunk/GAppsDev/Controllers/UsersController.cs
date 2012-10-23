@@ -148,7 +148,7 @@ namespace GAppsDev.Controllers
                 using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (UsersRepository usersRep = new UsersRepository())
                 {
-                    usersList.AddRange(usersRep.GetList().Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                     departmentsList = new SelectList(departmentsRep.GetList().ToList(), "Id", "Name");
                 }
 

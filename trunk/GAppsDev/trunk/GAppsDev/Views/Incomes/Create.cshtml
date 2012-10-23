@@ -13,18 +13,10 @@
         <legend>Budgets_Incomes</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CreationDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreationDate)
-            @Html.ValidationMessageFor(model => model.CreationDate)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.BudgetId, "Budget")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("BudgetId", String.Empty)
+            @Html.DropDownList("BudgetId")
             @Html.ValidationMessageFor(model => model.BudgetId)
         </div>
 
@@ -32,7 +24,7 @@
             @Html.LabelFor(model => model.BudgetIncomeTypeId, "Budgets_Incomes_types")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("BudgetIncomeTypeId", String.Empty)
+            @Html.DropDownList("BudgetIncomeTypeId")
             @Html.ValidationMessageFor(model => model.BudgetIncomeTypeId)
         </div>
 

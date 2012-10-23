@@ -49,6 +49,8 @@
     <Compile Include="CookiesRepository.cs" />
     <Compile Include="DepartmentsRepository.cs" />
     <Compile Include="ExpensesToIncomeRepository.cs" />
+    <Compile Include="IncomeTypesRepository.cs" />
+    <Compile Include="InstitutionsRepository.cs" />
     <Compile Include="InventoryRepository.cs" />
     <Compile Include="LocationsRepository.cs" />
     <Compile Include="MD5Encryptor.cs" />

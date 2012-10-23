@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using BaseLibraries;
 using DB;
 
 namespace DA
 {
-    public class BudgetsIncomesRepository : BaseRepository<Budgets_Incomes, Entities>, IDisposable
+    public class InstitutionsRepository : BaseRepository<Budgets_Incomes_Institutions, Entities>, IDisposable
     {
-        public override bool Create(Budgets_Incomes entity)
+        public override bool Create(Budgets_Incomes_Institutions entity)
         {
             entity.CreationDate = DateTime.Now;
             return base.Create(entity);
