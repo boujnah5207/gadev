@@ -71,6 +71,9 @@ namespace GAppsDev.Controllers
                                 default:
                                     orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
                                     break;
+                                case "number":
+                                    orders = orderFunction(x => x.OrderNumber);
+                                    break;
                                 case "creation":
                                     orders = orderFunction(x => x.CreationDate);
                                     break;
@@ -391,9 +394,11 @@ namespace GAppsDev.Controllers
         public ActionResult Create()
         {
             using (OrderItemsRepository itemsRep = new OrderItemsRepository())
+            using (ExpensesToIncomeRepository expensesToIncomeRep = new ExpensesToIncomeRepository())
             using (SuppliersRepository suppliersRep = new SuppliersRepository())
             {
                 ViewBag.SupplierId = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
+                ViewBag.SupplierId = new SelectList(expensesToIncomeRep.GetList("Budget_Expenses").ToList(), "Id", "Budget_Expenses.SectionName");
             }
 
             return View();
@@ -850,6 +855,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        [ChildActionOnly]
         public ActionResult AddToInventory(int id = 0)
         {
             if (Authorized(RoleType.OrdersApprover))
@@ -877,7 +883,7 @@ namespace GAppsDev.Controllers
                         {
                             model.OrderId = order.Id;
                             model.LocationsList = new SelectList(locations, "Id", "Name");
-                            return View(model);
+                            return PartialView(model);
                         }
                         else
                         {

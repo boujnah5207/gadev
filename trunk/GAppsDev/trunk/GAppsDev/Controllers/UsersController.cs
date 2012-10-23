@@ -38,9 +38,9 @@ namespace GAppsDev.Controllers
                 using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
                 {
-                    activeUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
+                    activeUsers = usersRep.GetList("Department").Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
                     model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                    model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+                    model.NonActiveUsers = usersRep.GetList("Department").Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
 
                     if (model.ActiveUsers != null && model.PendingUsers != null && model.NonActiveUsers != null)
                     {
@@ -142,10 +142,14 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                List<SelectListItemFromDB> usersList = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "ללא מאשר הזמנות" } };
+                List<SelectListItemFromDB> usersList = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+                SelectList departmentsList;
+
+                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (UsersRepository usersRep = new UsersRepository())
                 {
                     usersList.AddRange(usersRep.GetList().Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                    departmentsList = new SelectList(departmentsRep.GetList().ToList(), "Id", "Name");
                 }
 
                 roleNames.Remove(RoleType.None.ToString());
@@ -153,6 +157,7 @@ namespace GAppsDev.Controllers
 
                 ViewBag.RolesList = roleNames;
                 ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
+                ViewBag.DepartmentsList = departmentsList;
 
                 return View();
             }
@@ -702,7 +707,7 @@ namespace GAppsDev.Controllers
             {
                 using (UsersRepository usersRep = new UsersRepository())
                 {
-                    IQueryable<User> usersQuery = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
+                    IQueryable<User> usersQuery = usersRep.GetList("Budget_Departments").Where(x => x.CompanyId == CurrentUser.CompanyId);
 
                     if (usersQuery != null)
                     {
