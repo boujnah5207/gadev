@@ -2,10 +2,18 @@
     ViewBag.Title = "UploadInvoiceFile";
 }
 
-<h2>UploadInvoice</h2>
-@using (Html.BeginForm("UploadSingleFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <input type="file" name="file" />
-    <input type="submit" value="OK" />
+@section ExtraScripts{
+    <script src="~/Scripts/AddToInventoryScript.js"></script>
 }
 
+@using (Html.BeginForm("UploadInvoiceFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+    
+    <h2>סרוק חשבונית</h2>
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+    
+    <h2>הכנסה למלאי</h2>
+    @Html.Action("AddToInventory", new { ViewBag.OrderID})
+}

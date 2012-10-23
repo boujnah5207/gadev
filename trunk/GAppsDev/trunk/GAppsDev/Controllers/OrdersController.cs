@@ -22,9 +22,9 @@ namespace GAppsDev.Controllers
     {
         private const int WAITING_FOR_APPROVAL_STATUS = 1;
         private const int APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE = 3;
-        private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 7;
+        private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 6;
 
-        const int ITEMS_PER_PAGE = 7;
+        const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
         const string DEFAULT_ORDER = "DESC";
@@ -280,38 +280,228 @@ namespace GAppsDev.Controllers
 
         // This action renders the form
         [OpenIdAuthorize]
-        public ActionResult UploadInvoiceFile()
+        public ActionResult UploadInvoiceFile(int id = 0)
         {
-            return View();
+            if (Authorized(RoleType.SystemManager))
+            {
+                Order order;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    order = ordersRep.GetEntity(id);
+                }
+
+                if (order != null)
+                {
+                    if (order.CompanyId == CurrentUser.CompanyId)
+                    {
+                        if (order.StatusId == APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                        {
+                            ViewBag.OrderID = id;
+                            return View();
+                        }
+                        else if (order.StatusId < APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                        {
+                            return Error(Errors.ORDER_NOT_APPROVED);
+                        }
+                        else
+                        {
+                            return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+                }
+                else
+                {
+                    return Error(Errors.ORDER_NOT_FOUND);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         // This action handles the form POST and the upload
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, int? orderId)
+        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, AddToInventoryModel model, int? orderId)
         {
-            // Verify that the user selected a file
-            if (file != null && file.ContentLength > 0)
+            if (Authorized(RoleType.SystemManager))
             {
-                // extract only the fielname
-                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
-                // store the file inside ~/App_Data/uploads folder
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads/Invoices"), fileName);
-                file.SaveAs(path);
-            }
-            Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository())
-            {
-                order = ordersRep.GetEntity((int)orderId);
-
-                if (order != null)
+                if (file != null && file.ContentLength > 0)
                 {
-                    order.StatusId = (int)StatusType.InvoiceScannedPendingReceipt;
-                    ordersRep.Update(order);
+                    List<Inventory> createdItems = new List<Inventory>();
+                    bool noCreationErrors = true;
+
+                    Order order;
+                    List<Location> locations;
+
+                    using (InventoryRepository inventoryRep = new InventoryRepository())
+                    using (LocationsRepository locationsRep = new LocationsRepository())
+                    using (OrdersRepository ordersRep = new OrdersRepository())
+                    {
+                        order = ordersRep.GetEntity(model.OrderId, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+
+                        if (order != null)
+                        {
+                            if (order.CompanyId == CurrentUser.CompanyId)
+                            {
+                                if (order.StatusId == APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                                {
+                                    locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+
+                                    if (locations != null)
+                                    {
+                                        foreach (SplittedInventoryItem splitedItem in model.InventoryItems)
+                                        {
+                                            if (!noCreationErrors)
+                                                break;
+
+                                            if (!splitedItem.AddToInventory)
+                                                continue;
+
+                                            int itemId = splitedItem.ItemsToAdd[0].ItemId;
+                                            Orders_OrderToItem originalItem = order.Orders_OrderToItem.FirstOrDefault(x => x.Id == itemId);
+                                            bool isValidList = originalItem != null && splitedItem.ItemsToAdd.All(x => x.ItemId == itemId);
+
+                                            if (isValidList)
+                                            {
+                                                if (splitedItem.ItemsToAdd.Count == 1)
+                                                {
+                                                    Inventory listItem = splitedItem.ItemsToAdd[0];
+
+                                                    if (locations.Any(x => x.Id == listItem.LocationId))
+                                                    {
+                                                        for (int i = 0; i < originalItem.Quantity; i++)
+                                                        {
+                                                            Inventory newItem = new Inventory()
+                                                            {
+                                                                AssignedTo = listItem.AssignedTo,
+                                                                LocationId = listItem.LocationId,
+                                                                Notes = listItem.Notes,
+                                                                SerialNumber = listItem.SerialNumber,
+                                                                Status = listItem.Status,
+                                                                WarrentyPeriodStart = listItem.WarrentyPeriodStart,
+                                                                WarrentyPeriodEnd = listItem.WarrentyPeriodEnd,
+                                                                ItemId = originalItem.ItemId,
+                                                                OrderId = order.Id,
+                                                                CompanyId = CurrentUser.CompanyId,
+                                                                IsOutOfInventory = false,
+                                                            };
+
+                                                            if (inventoryRep.Create(newItem))
+                                                            {
+                                                                createdItems.Add(newItem);
+                                                            }
+                                                            else
+                                                            {
+                                                                noCreationErrors = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else if (
+                                                    originalItem.Quantity == splitedItem.ItemsToAdd.Count
+                                                    )
+                                                {
+                                                    foreach (var item in splitedItem.ItemsToAdd)
+                                                    {
+                                                        if (locations.Any(x => x.Id == item.LocationId))
+                                                        {
+                                                            item.ItemId = originalItem.ItemId;
+                                                            item.OrderId = order.Id;
+                                                            item.CompanyId = CurrentUser.CompanyId;
+                                                            item.IsOutOfInventory = false;
+
+                                                            if (inventoryRep.Create(item))
+                                                            {
+                                                                createdItems.Add(item);
+                                                            }
+                                                            else
+                                                            {
+                                                                noCreationErrors = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            noCreationErrors = false;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    noCreationErrors = false;
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                noCreationErrors = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if (noCreationErrors)
+                                        {
+                                            var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                                            var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
+                                            file.SaveAs(path);
+
+                                            order.StatusId = (int)StatusType.InvoiceScannedPendingReceipt;
+                                            ordersRep.Update(order);
+
+                                            return RedirectToAction("Index");
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in createdItems)
+                                            {
+                                                inventoryRep.Delete(item.Id);
+                                            }
+
+                                            return Error(Errors.INVENTORY_CREATE_ERROR);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Error(Errors.DATABASE_ERROR);
+                                    }
+                                }
+                                else if (order.StatusId < APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                                {
+                                    return Error(Errors.ORDER_NOT_APPROVED);
+                                }
+                                else
+                                {
+                                    return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.NO_PERMISSION);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.ORDER_NOT_FOUND);
+                        }
+                    }
+                }
+                else
+                {
+                    return Error(Errors.INVALID_FORM);
                 }
             }
-            // redirect back to the index action to show the form once again
-            return RedirectToAction("Index");
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         [OpenIdAuthorize]
@@ -945,6 +1135,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult AddToInventory(AddToInventoryModel model)
         {
+            /*
             if (Authorized(RoleType.OrdersApprover))
             {
                 List<Inventory> createdItems = new List<Inventory>();
@@ -969,22 +1160,22 @@ namespace GAppsDev.Controllers
 
                             if (locations != null)
                             {
-                                if (model.InventoryItems.Count > 0 && model.InventoryItems.All(x => x.Count > 0))
+                                if (model.InventoryItems.Count > 0 && model.InventoryItems.All(x => x.ItemsToAdd.Count > 0))
                                 {
-                                    foreach (List<Inventory> splitedItem in model.InventoryItems)
+                                    foreach (SplittedInventoryItem splitedItem in model.InventoryItems)
                                     {
-                                        if(!noCreationErrors)
+                                        if (!noCreationErrors)
                                             break;
 
-                                        int itemId = splitedItem[0].ItemId;
+                                        int itemId = splitedItem.ItemsToAdd[0].ItemId;
                                         Orders_OrderToItem originalItem = order.Orders_OrderToItem.FirstOrDefault(x => x.Id == itemId);
-                                        bool isValidForm = originalItem != null && splitedItem.All(x => x.ItemId == itemId);
+                                        bool isValidForm = originalItem != null && splitedItem.ItemsToAdd.All(x => x.ItemId == itemId);
 
                                         if (isValidForm)
                                         {
-                                            if (splitedItem.Count == 1)
+                                            if (splitedItem.ItemsToAdd.Count == 1)
                                             {
-                                                if (locations.Any(x => x.Id == splitedItem[0].LocationId))
+                                                if (locations.Any(x => x.Id == splitedItem.ItemsToAdd[0].LocationId))
                                                 {
                                                     for (int i = 0; i < originalItem.Quantity; i++)
                                                     {
@@ -1097,6 +1288,8 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
+            */
+            return View();
         }
 
         [OpenIdAuthorize]

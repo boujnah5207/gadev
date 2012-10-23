@@ -48,5 +48,11 @@ namespace GAppsDev.Models.ErrorModels
         //Inventory Errors
         public const string INVENTORY_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי.";
 
+        //Budgets Errors
+        public const string BUDGETS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. התקציב לא נשמר במערכת.";
+        public const string BUDGETS_YEAR_PASSED = "לא ניתן ליצור תקציב לשנים קודמות.";
+        public const string BUDGETS_YEAR_EXISTS = "נוצר כבר תקציב לשנה זאת.";
+
+
     }
 }

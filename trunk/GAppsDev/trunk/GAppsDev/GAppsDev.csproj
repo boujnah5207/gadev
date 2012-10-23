@@ -142,9 +142,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\BudgetsIncomesController.cs" />
+    <Compile Include="Controllers\BudgetAllocationsController.cs" />
+    <Compile Include="Controllers\BudgetsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IncomesController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
@@ -155,6 +158,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BudgetModels\CreateBudgetModel.cs" />
     <Compile Include="Models\Error\ErrorModel.cs" />
     <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
@@ -341,6 +345,7 @@
     <Content Include="Rotativa\ssleay32.dll" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\AddToInventoryScript.js" />
+    <Content Include="Scripts\CreateBudgetScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -437,6 +442,26 @@
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Delete.cshtml" />
     <Content Include="Views\Orders\AddToInventory.cshtml" />
+    <Content Include="Views\Budgets\Index.cshtml" />
+    <Content Include="Views\Budgets\Details.cshtml" />
+    <Content Include="Views\Budgets\Create.cshtml" />
+    <Content Include="Views\Budgets\Edit.cshtml" />
+    <Content Include="Views\Budgets\Delete.cshtml" />
+    <Content Include="Views\Incomes\Index.cshtml" />
+    <Content Include="Views\Incomes\Details.cshtml" />
+    <Content Include="Views\Incomes\Create.cshtml" />
+    <Content Include="Views\Incomes\Edit.cshtml" />
+    <Content Include="Views\Incomes\Delete.cshtml" />
+    <Content Include="Views\Expenses\Index.cshtml" />
+    <Content Include="Views\Expenses\Details.cshtml" />
+    <Content Include="Views\Expenses\Create.cshtml" />
+    <Content Include="Views\Expenses\Edit.cshtml" />
+    <Content Include="Views\Expenses\Delete.cshtml" />
+    <Content Include="Views\BudgetAllocations\Index.cshtml" />
+    <Content Include="Views\BudgetAllocations\Details.cshtml" />
+    <Content Include="Views\BudgetAllocations\Create.cshtml" />
+    <Content Include="Views\BudgetAllocations\Edit.cshtml" />
+    <Content Include="Views\BudgetAllocations\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

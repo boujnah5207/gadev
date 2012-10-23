@@ -7,7 +7,6 @@ using DB;
 
 namespace DA
 {
-    [Flags]
     public enum StatusType : int
     {
         Pending = 1,
@@ -15,7 +14,6 @@ namespace DA
         ApprovedPendingInvoice = 3,
         InvoiceScannedPendingReceipt = 4,
         ReceiptScanned = 5,
-        ReceiptScannedItemsAddedToInventory = 6,
-        PendingOrderCreator = 7
+        PendingOrderCreator = 6
     }
 }
