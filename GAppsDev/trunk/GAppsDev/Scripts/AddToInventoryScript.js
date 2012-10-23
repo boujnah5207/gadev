@@ -1,9 +1,11 @@
 ﻿var splitedItems;
+var removedItems;
 var locationList;
 
 $(function () {
 
     splitedItems = new Array();
+    removedItems = new Array();
     locationList = $($(".locationList")[0]).clone();
 });
 
@@ -89,4 +91,30 @@ function unSplit(id) {
         newExpandBtn.replaceWith(splitedItems[id].oldExpandBtn);
         newSplitBtn.replaceWith(splitedItems[id].oldSplitBtn);
     }
+}
+
+function expandRemoved() {
+    $("#removedItems").slideToggle(500, null);
+}
+
+function remove(id) {
+    var oldItem = $("#ItemId-" + id);
+    var oldItemTitle = oldItem.find("legend").html();
+
+    removedItems[id] = oldItem;
+    oldItem.remove();
+
+    $("#removedItems").append($("<div id='removedItem-" + id + "'><span>" + oldItemTitle + "</span><input type='button' value='החזר פריט לרשימה' onClick='unRemove(" + id + ")' /></div>"));
+}
+
+function unRemove(id) {
+    var removedItem = $("#removedItem-" + id);
+    var itemsContainer = $("#ItemsContainer");
+
+    console.log(removedItem);
+    console.log(itemsContainer);
+    console.log(removedItems[id]);
+
+    removedItem.remove();
+    itemsContainer.append(removedItems[id]);
 }

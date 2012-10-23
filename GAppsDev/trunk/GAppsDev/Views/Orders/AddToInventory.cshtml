@@ -1,28 +1,11 @@
 ﻿@model GAppsDev.Models.AddToInventoryModel
 
-@{
-    ViewBag.Title = "הוסף למלאי";
-}
-
 @section ExtraScripts{
     <script src="~/Scripts/AddToInventoryScript.js"></script>
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
-
 <fieldset>
-    <legend>פריטים בהזמנה</legend>
-    @using (Html.BeginForm())
-    {
-        @Html.ValidationSummary(true)
+    <legend>הוספה למלאי</legend>
         @Html.HiddenFor(model => model.OrderId)
         
         <div id="ItemsContainer">
@@ -45,12 +28,19 @@
                     <span>מספר פריטים: @Model.OrderItems[i].Quantity</span>
                     <input id="expandingBtn-@(Model.OrderItems[i].Id)-0" type="button" value="הצג פרטים" onClick="expand(@(Model.OrderItems[i].Id),0)" />
                     <input id="splitBtn-@(Model.OrderItems[i].Id)-0" type="button" value="פצל פריטים" onClick="split(@(Model.OrderItems[i].Id), @i, @(Model.OrderItems[i].Quantity))" />
+                    <input id="removeBtn-@(Model.OrderItems[i].Id)-0" type="button" value="אינו פריט מלאי" onClick="remove(@(Model.OrderItems[i].Id), @i, @(Model.OrderItems[i].Quantity))" />
                 </fieldset>
             }
         </div>
-        
+        <fieldset>
+            <legend>פריטים שהוסרו</legend>
+
+            <div id="removedItems" style="display:none;">
+
+            </div>
+             <input id="expandRemovedItems" type="button" value="הצג פריטים שהוסרו" onClick="expandRemoved()" />
+        </fieldset>
         <p>
-            <input type="submit" value="הכנס פריטים למלאי" />
+            <input type="submit" value="אשר והמשך" />
         </p>
-    }
 </fieldset>

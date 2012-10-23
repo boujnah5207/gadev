@@ -21,6 +21,7 @@
         }
         @if ((bool)ViewBag.IsOrdered)
         {
+        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "מחלקה", "department", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם המשתמש", "username", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "הרשאה", "roles", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "אימייל", "email", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -29,6 +30,9 @@
         }
         else
         { 
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentId)
+        </th>
         <th>
             שם המשתמש
         </th>
@@ -57,6 +61,9 @@
                 <input type="radio" id="checkbox-@item.Id" value="@item.Id" name="selectedUser" />
                 </td>
             }
+        <td>
+            @Html.DisplayTextFor(modelItem => item.Department.Name)
+        </td>
         <td>
             @Html.DisplayTextFor(modelItem => item.FirstName) @Html.DisplayTextFor(modelItem => item.LastName)
         </td>

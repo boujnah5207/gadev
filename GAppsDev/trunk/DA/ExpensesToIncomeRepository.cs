@@ -7,7 +7,7 @@ using DB;
 
 namespace DA
 {
-    public class DepartmentsRepository : BaseRepository<Department, Entities>
+    public class ExpensesToIncomeRepository : BaseRepository<Budgets_ExpensesToIncomes, Entities>
     {
 
     }

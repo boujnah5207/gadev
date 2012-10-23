@@ -72,30 +72,37 @@ namespace DA
             StringBuilder builder = new StringBuilder();
             string description = String.Empty;
 
-            foreach (var role in allRoleType)
+            if (e == RoleType.SuperAdmin)
             {
-                switch ((RoleType)role)
+                return "אדמיניסטרטור ראשי";
+            }
+            else
+            {
+                foreach (var role in allRoleType)
                 {
-                    case RoleType.OrdersWriter:
-                        if (Roles.HasRole(e, (RoleType)role))
-                            builder.Append("יוצר הזמנות, ");
-                        break;
-                    case RoleType.OrdersApprover:
-                        if (Roles.HasRole(e, (RoleType)role))
-                            builder.Append("מאשר הזמנות, ");
-                        break;
-                    case RoleType.OrdersViewer:
-                        if (Roles.HasRole(e, (RoleType)role))
-                            builder.Append("צופה בהזמנות, ");
-                        break;
-                    case RoleType.SystemManager:
-                        if (Roles.HasRole(e, (RoleType)role))
-                            builder.Append("מנהל מערכת, ");
-                        break;
-                    case RoleType.SuperAdmin:
-                        if (Roles.HasRole(e, (RoleType)role))
-                            builder.Append("אדמיניסטרטור ראשי, ");
-                        break;
+                    switch ((RoleType)role)
+                    {
+                        case RoleType.OrdersWriter:
+                            if (Roles.HasRole(e, (RoleType)role))
+                                builder.Append("יוצר הזמנות, ");
+                            break;
+                        case RoleType.OrdersApprover:
+                            if (Roles.HasRole(e, (RoleType)role))
+                                builder.Append("מאשר הזמנות, ");
+                            break;
+                        case RoleType.OrdersViewer:
+                            if (Roles.HasRole(e, (RoleType)role))
+                                builder.Append("צופה בהזמנות, ");
+                            break;
+                        case RoleType.SystemManager:
+                            if (Roles.HasRole(e, (RoleType)role))
+                                builder.Append("מנהל מערכת, ");
+                            break;
+                        case RoleType.SuperAdmin:
+                            if (Roles.HasRole(e, (RoleType)role))
+                                builder.Append("אדמיניסטרטור ראשי, ");
+                            break;
+                    }
                 }
             }
 
