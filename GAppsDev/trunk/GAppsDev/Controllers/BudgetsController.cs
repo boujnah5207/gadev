@@ -90,7 +90,7 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.BUDGETS_CREATE_ERROR);
+                        return Error(Errors.BUDGETS_YEAR_PASSED);
                     }
                 }
                 else

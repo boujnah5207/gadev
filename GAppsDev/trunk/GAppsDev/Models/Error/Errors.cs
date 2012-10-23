@@ -53,6 +53,10 @@ namespace GAppsDev.Models.ErrorModels
         public const string BUDGETS_YEAR_PASSED = "לא ניתן ליצור תקציב לשנים קודמות.";
         public const string BUDGETS_YEAR_EXISTS = "נוצר כבר תקציב לשנה זאת.";
 
+        //Incomes Errors
+        public const string INCOME_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההכנסה לא נשמרה במערכת.";
+        public const string INCOME_GET_ERROR = "קרתה שגיאה בזמן הגישה להכנסות בבסיס הנתונים. אנא נסה שוב.";
+
 
     }
 }
