@@ -1,0 +1,57 @@
+﻿@model DB.Budgets_Incomes
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Budgets_Incomes</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Budget.Id)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Budget.Id)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Budgets_Incomes_types.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Budgets_Incomes_types.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Budgets_Incomes_Institutions.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Budgets_Incomes_Institutions.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CustomName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CustomName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Amount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

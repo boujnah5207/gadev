@@ -103,7 +103,7 @@
                 
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                     {
-                    <text>|</text> @Html.ActionLink("העלאת חשבונית", "UploadInvoice", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink("העלאת חשבונית", "UploadInvoiceFile", new { id = item.Id })
                     }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingReceipt)
