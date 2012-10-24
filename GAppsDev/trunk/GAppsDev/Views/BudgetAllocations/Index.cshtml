@@ -7,8 +7,9 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    תקציב: @Html.DropDownList("BudgetId", (SelectList)ViewBag.BudgetId, new { id= "BudgetId" }) <input type="button" value="צור הקצאה חדשה"  onClick="redirectToCreate()" />
 </p>
+
 <table>
     <tr>
         <th>
@@ -49,3 +50,9 @@
 }
 
 </table>
+
+<script>
+    function redirectToCreate() {
+        window.location = "@Url.Action("Create")" + "\\" + $("#BudgetId").val();
+    }
+</script>

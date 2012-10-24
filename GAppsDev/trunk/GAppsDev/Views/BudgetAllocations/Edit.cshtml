@@ -15,18 +15,10 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CreationDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreationDate)
-            @Html.ValidationMessageFor(model => model.CreationDate)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.IncomeId, "Budgets_Incomes")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IncomeId", String.Empty)
+            @Html.DropDownList("IncomeId")
             @Html.ValidationMessageFor(model => model.IncomeId)
         </div>
 
@@ -34,7 +26,7 @@
             @Html.LabelFor(model => model.ExpenseId, "Budgets_Expenses")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ExpenseId", String.Empty)
+            @Html.DropDownList("ExpenseId")
             @Html.ValidationMessageFor(model => model.ExpenseId)
         </div>
 

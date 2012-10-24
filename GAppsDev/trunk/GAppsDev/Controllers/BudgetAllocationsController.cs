@@ -14,6 +14,8 @@ namespace GAppsDev.Controllers
 {
     public class BudgetAllocationsController : BaseController
     {
+        public const string YOUR_ALLOCATION_WAS_REVOKED = "מערכת: הקצאה זאת בוטלה.";
+
         private Entities db = new Entities();
 
         //
@@ -22,8 +24,31 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var budgets_expensestoincomes = db.Budgets_ExpensesToIncomes.Include("Budgets_Expenses").Include("Budgets_Incomes");
-            return View(budgets_expensestoincomes.ToList());
+            if (Authorized(RoleType.SystemManager))
+            {
+                List<Budgets_ExpensesToIncomes> model;
+                List<SelectListItemDB> budgetsList;
+
+                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                {
+                    model = allocationsRep.GetList("Budgets_Expenses", "Budgets_Incomes").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+
+                    budgetsList = budgetRep.GetList()
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Select(a => new { Id = a.Id, Name = a.Year })
+                        .AsEnumerable()
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .ToList();
+                }
+
+                ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
+                return View(model);
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -35,6 +60,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_ExpensesToIncomes allocation;
+
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
                     allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
@@ -133,61 +159,130 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budget budget;
-                Budgets_Incomes income;
-                Budgets_Expenses expense;
-
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
-                using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
-                using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                if (ModelState.IsValid)
                 {
-                    budget = budgetsRep.GetEntity(id);
+                    Budget budget;
+                    Budgets_Incomes income;
+                    Budgets_Expenses expense;
 
-                    if (budget != null)
+                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                    using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                    using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
+                    using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
                     {
-                        if (budget.CompanyId == CurrentUser.CompanyId)
+                        budget = budgetsRep.GetEntity(id);
+
+                        if (budget != null)
                         {
-                            if (!budget.IsViewOnly)
+                            if (budget.CompanyId == CurrentUser.CompanyId)
                             {
-                                income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
-                                expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
-
-                                if (income != null && expense != null)
+                                if (!budget.IsViewOnly)
                                 {
-                                    if (income.BudgetId == budget.Id && expense.BudgetId == budget.Id)
+                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
+                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
+
+                                    if (income != null && expense != null)
                                     {
-                                        decimal? allocatedToExpense;
-                                        decimal? allocatedToIncome;
+                                        if (income.BudgetId == budget.Id && expense.BudgetId == budget.Id)
+                                        {
+                                            decimal? allocatedToExpense;
+                                            decimal? allocatedToIncome;
 
-                                        allocatedToIncome = allocationsRep.GetList()
-                                             .Where(x => x.IncomeId == income.Id)
-                                             .Sum(allocation => (decimal?)allocation.Amount);
+                                            allocatedToIncome = allocationsRep.GetList()
+                                                 .Where(x => x.IncomeId == income.Id)
+                                                 .Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
-                                            return Error(Errors.INCOME_FULL_ALLOCATION);
+                                            if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
+                                                return Error(Errors.INCOME_FULL_ALLOCATION);
 
-                                        allocatedToExpense = allocationsRep.GetList()
-                                            .Where(x => x.ExpenseId == expense.Id)
-                                            .Sum(allocation => (decimal?)allocation.Amount);
+                                            allocatedToExpense = allocationsRep.GetList()
+                                                .Where(x => x.ExpenseId == expense.Id)
+                                                .Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
-                                            return Error(Errors.EXPENSES_FULL_ALLOCATION);
+                                            if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
+                                                return Error(Errors.EXPENSES_FULL_ALLOCATION);
 
-                                        budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
-                                        allocationsRep.Create(budgets_expensestoincomes);
+                                            budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
+                                            allocationsRep.Create(budgets_expensestoincomes);
+                                        }
+                                        else
+                                        {
+                                            return Error(Errors.INVALID_FORM);
+                                        }
                                     }
                                     else
                                     {
-                                        return Error(Errors.INVALID_FORM);
+                                        return Error(Errors.DATABASE_ERROR);
                                     }
+
+                                    return RedirectToAction("Index");
                                 }
                                 else
                                 {
-                                    return Error(Errors.DATABASE_ERROR);
+                                    return Error(Errors.BUDGETS_YEAR_PASSED);
                                 }
+                            }
+                            else
+                            {
+                                return Error(Errors.NO_PERMISSION);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.DATABASE_ERROR);
+                        }
+                    }
+                }
+                else
+                {
+                    return Error(ModelState);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
 
-                                return RedirectToAction("Index");
+        //
+        // GET: /BudgetAllocations/Edit/5
+
+        [OpenIdAuthorize]
+        public ActionResult Edit(int id = 0)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                Budgets_ExpensesToIncomes allocation;
+                List<SelectListItemDB> incomesList;
+                List<SelectListItemDB> expensesList;
+
+                using (BudgetsExpensesToIncomesRepository allocationRep = new BudgetsExpensesToIncomesRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
+                {
+                    allocation = allocationRep.GetEntity(id);
+
+                    if (allocation != null)
+                    {
+                        if (allocation.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (!allocation.Budget.IsViewOnly)
+                            {
+                                incomesList = incomesRep.GetList()
+                                    .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == allocation.BudgetId)
+                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                    .ToList();
+
+                                expensesList = expensesRep.GetList()
+                                    .Where(expense => expense.CompanyId == CurrentUser.CompanyId && expense.BudgetId == allocation.BudgetId)
+                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                    .ToList();
+
+                                ViewBag.IncomeId = new SelectList(incomesList, "Id", "Name", allocation.IncomeId);
+                                ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name", allocation.ExpenseId);
+
+                                return View(allocation);
                             }
                             else
                             {
@@ -212,38 +307,112 @@ namespace GAppsDev.Controllers
         }
 
         //
-        // GET: /BudgetAllocations/Edit/5
-
-        [OpenIdAuthorize]
-        public ActionResult Edit(int id = 0)
-        {
-            Budgets_ExpensesToIncomes budgets_expensestoincomes = db.Budgets_ExpensesToIncomes.Single(b => b.Id == id);
-            if (budgets_expensestoincomes == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ExpenseId = new SelectList(db.Budgets_Expenses, "Id", "CustomName", budgets_expensestoincomes.ExpenseId);
-            ViewBag.IncomeId = new SelectList(db.Budgets_Incomes, "Id", "CustomName", budgets_expensestoincomes.IncomeId);
-            return View(budgets_expensestoincomes);
-        }
-
-        //
         // POST: /BudgetAllocations/Edit/5
 
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(Budgets_ExpensesToIncomes budgets_expensestoincomes)
         {
-            if (ModelState.IsValid)
+            if (Authorized(RoleType.SystemManager))
             {
-                db.Budgets_ExpensesToIncomes.Attach(budgets_expensestoincomes);
-                db.ObjectStateManager.ChangeObjectState(budgets_expensestoincomes, EntityState.Modified);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    Budgets_ExpensesToIncomes allocation;
+                    Budgets_Incomes income;
+                    Budgets_Expenses expense;
+
+                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                    using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                    using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
+                    using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                    using (OrdersRepository ordersRep = new OrdersRepository())
+                    {
+                        allocation = allocationsRep.GetEntity(budgets_expensestoincomes.Id);
+
+                        if (allocation != null)
+                        {
+                            if (allocation.CompanyId == CurrentUser.CompanyId)
+                            {
+                                if (!allocation.Budget.IsViewOnly)
+                                {
+                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
+                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
+
+                                    if (income != null && expense != null)
+                                    {
+                                        if (income.BudgetId == allocation.BudgetId && expense.BudgetId == allocation.BudgetId)
+                                        {
+                                            decimal? totalUsed;
+                                            decimal? allocatedToExpense;
+                                            decimal? allocatedToIncome;
+
+                                            totalUsed = ordersRep.GetList()
+                                                .Where(order => order.BudgetAllocationId == budgets_expensestoincomes.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                                .Sum(x => (decimal?)x.Price);
+
+                                            if ((totalUsed ?? 0) > budgets_expensestoincomes.Amount)
+                                                return Error(Errors.ALLOCATIONS_AMOUNT_IS_USED);
+
+                                            allocatedToIncome = allocationsRep.GetList()
+                                                 .Where(x => x.IncomeId == income.Id && x.Id != budgets_expensestoincomes.Id)
+                                                 .Sum(alloc => (decimal?)alloc.Amount);
+
+                                            if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
+                                                return Error(Errors.INCOME_FULL_ALLOCATION);
+
+                                            allocatedToExpense = allocationsRep.GetList()
+                                                .Where(x => x.ExpenseId == expense.Id && x.Id != budgets_expensestoincomes.Id)
+                                                .Sum(alloc => (decimal?)alloc.Amount);
+
+                                            if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
+                                                return Error(Errors.EXPENSES_FULL_ALLOCATION);
+
+                                            allocation.IncomeId = budgets_expensestoincomes.IncomeId;
+                                            allocation.ExpenseId = budgets_expensestoincomes.ExpenseId;
+                                            allocation.Amount = budgets_expensestoincomes.Amount;
+
+                                            Budgets_ExpensesToIncomes update = allocationsRep.Update(allocation);
+
+                                            if (update != null)
+                                                return RedirectToAction("Index");
+                                            else
+                                                return Error(Errors.ALLOCATIONS_GET_ERROR);
+                                        }
+                                        else
+                                        {
+                                            return Error(Errors.INVALID_FORM);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Error(Errors.DATABASE_ERROR);
+                                    }
+                                }
+                                else
+                                {
+                                    return Error(Errors.BUDGETS_YEAR_PASSED);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.NO_PERMISSION);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.ALLOCATIONS_GET_ERROR);
+                        }
+                    }
+                }
+                else
+                {
+                    return Error(ModelState);
+                }
             }
-            ViewBag.ExpenseId = new SelectList(db.Budgets_Expenses, "Id", "CustomName", budgets_expensestoincomes.ExpenseId);
-            ViewBag.IncomeId = new SelectList(db.Budgets_Incomes, "Id", "CustomName", budgets_expensestoincomes.IncomeId);
-            return View(budgets_expensestoincomes);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -252,12 +421,43 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            Budgets_ExpensesToIncomes budgets_expensestoincomes = db.Budgets_ExpensesToIncomes.Single(b => b.Id == id);
-            if (budgets_expensestoincomes == null)
+            if (Authorized(RoleType.SystemManager))
             {
-                return HttpNotFound();
+                Budgets_ExpensesToIncomes allocation;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
+                {
+                    allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
+
+                    if (allocation != null)
+                    {
+                        if (allocation.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
+                            {
+                                return View(allocation);
+                            }
+                            else
+                            {
+                                return Error(Errors.ALLOCATIONS_HAS_APPROVED_ORDERS);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.INCOME_GET_ERROR);
+                    }
+                }
             }
-            return View(budgets_expensestoincomes);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -267,10 +467,70 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Budgets_ExpensesToIncomes budgets_expensestoincomes = db.Budgets_ExpensesToIncomes.Single(b => b.Id == id);
-            db.Budgets_ExpensesToIncomes.DeleteObject(budgets_expensestoincomes);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Authorized(RoleType.SystemManager))
+            {
+                Budgets_ExpensesToIncomes allocation;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
+                {
+                    allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
+
+                    if (allocation != null)
+                    {
+                        if (allocation.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
+                            {
+                                bool noErrors = true;
+                                List<Order> allocationOrders = allocation.Orders.ToList();
+
+                                foreach (var item in allocationOrders)
+                                {
+                                    item.BudgetAllocationId = null;
+                                    item.StatusId = (int)StatusType.Declined;
+                                    item.OrderApproverNotes = YOUR_ALLOCATION_WAS_REVOKED;
+                                    item.NextOrderApproverId = null;
+
+                                    if (ordersRep.Update(item) == null)
+                                        noErrors = false;
+                                }
+
+                                List<int> allocationPermission = allocation.Budgets_PermissionsToAllocation.Select(x => x.Id).ToList();
+                                foreach (var itemId in allocationPermission)
+                                {
+                                    if (!allocationsPermissionsRep.Delete(itemId))
+                                        noErrors = false;
+                                }
+
+                                if (!allocationsRep.Delete(allocation.Id))
+                                    noErrors = false;
+
+                                if (noErrors)
+                                    return RedirectToAction("Index");
+                                else
+                                    return Error(Errors.ALLOCATIONS_DELETE_ERROR);
+                            }
+                            else
+                            {
+                                return Error(Errors.ALLOCATIONS_HAS_APPROVED_ORDERS);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.INCOME_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         protected override void Dispose(bool disposing)
