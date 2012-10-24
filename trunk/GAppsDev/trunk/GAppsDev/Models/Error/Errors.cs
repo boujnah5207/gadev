@@ -69,6 +69,13 @@ namespace GAppsDev.Models.ErrorModels
         public const string EXPENSES_FULL_ALLOCATION = "לא נותר מספיק סכום להוצאה שצויינה על מנת להקצות את הסכום שבוקש.";
         public const string EXPENSES_DELETE_HAS_APPROVED_ORDERS = "להוצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההוצאה.";
 
+        //Allocations Errors
+        public const string ALLOCATIONS_AMOUNT_IS_USED = "סך ההזמנות מהקצאה זאת עולה על סכום ההקצאה שצויין.";
+        public const string ALLOCATIONS_GET_ERROR = "קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב.";
+        public const string ALLOCATIONS_EDIT_ERROR = "קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב.";
+        public const string ALLOCATIONS_HAS_APPROVED_ORDERS = "להקצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההקצאה.";
+        public const string ALLOCATIONS_DELETE_ERROR = "קרתה שגיאה בזמן הסרת ההקצאה, הפעולה לא הושלמה.";
+
         //Projects Errors
         public const string PROJECTS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפרוייקט לא נשמר במערכת.";
         public const string PROJECTS_GET_ERROR = "קרתה שגיאה בזמן הגישה לפרוייקטים בבסיס הנתונים. אנא נסה שוב.";
@@ -76,5 +83,12 @@ namespace GAppsDev.Models.ErrorModels
         //SubProjects Errors
         public const string SUB_PROJECTS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. התת-פרוייקט לא נשמר במערכת.";
         public const string SUB_PROJECTS_GET_ERROR = "קרתה שגיאה בזמן הגישה לתת-פרוייקטים בבסיס הנתונים. אנא נסה שוב.";
+
+        //Permissions Errors
+        public const string PERMISSIONS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההרשאה לא נשמר במערכת.";
+        public const string PERMISSIONS_GET_ERROR = "קרתה שגיאה בזמן הגישה להרשאות בבסיס הנתונים. אנא נסה שוב.";
+        public const string PERMISSIONS_DELETE_ERROR = "קרתה שגיאה בזמן הסרת ההרשאה, הפעולה לא הושלמה.";
+
+
     }
 }

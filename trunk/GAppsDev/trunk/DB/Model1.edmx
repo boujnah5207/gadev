@@ -65,6 +65,10 @@
             <End Role="Projects_SubProject" EntitySet="Projects_SubProject" />
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
           </AssociationSet>
+          <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Budgets" Association="designModel.Store.FK_Budgets_ExpensesToIncomes_Budgets">
+            <End Role="Budgets" EntitySet="Budgets" />
+            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Companies" Association="designModel.Store.FK_Budgets_ExpensesToIncomes_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
@@ -295,6 +299,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BudgetId" Type="int" Nullable="false" />
           <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="IncomeId" Type="int" Nullable="false" />
           <Property Name="ExpenseId" Type="int" Nullable="false" />
@@ -390,7 +395,7 @@
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="OrderApproverNotes" Type="nvarchar" MaxLength="50" />
           <Property Name="NextOrderApproverId" Type="int" />
-          <Property Name="BudgetAllocationId" Type="int" Nullable="false" />
+          <Property Name="BudgetAllocationId" Type="int" />
         </EntityType>
         <EntityType Name="Orders_OrderToItem">
           <Key>
@@ -584,6 +589,18 @@
             </Principal>
             <Dependent Role="Budgets_Expenses">
               <PropertyRef Name="SubProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_ExpensesToIncomes_Budgets">
+          <End Role="Budgets" Type="designModel.Store.Budgets" Multiplicity="1" />
+          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_ExpensesToIncomes">
+              <PropertyRef Name="BudgetId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -876,7 +893,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Budget_ExpensesToIncome">
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="1" />
+          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="0..1" />
           <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_ExpensesToIncomes">
@@ -1127,6 +1144,10 @@
             <End Role="Budget" EntitySet="Budgets" />
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
           </AssociationSet>
+          <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Budgets" Association="designModel.FK_Budgets_ExpensesToIncomes_Budgets">
+            <End Role="Budget" EntitySet="Budgets" />
+            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Expenses" Association="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses">
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
             <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
@@ -1309,6 +1330,7 @@
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budget_Companies1" FromRole="Budget" ToRole="Company" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_Income_Budget" FromRole="Budget" ToRole="Budgets_Incomes" />
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budgets_Expenses_Budgets" FromRole="Budget" ToRole="Budgets_Expenses" />
+          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budget" ToRole="Budgets_ExpensesToIncomes" />
         </EntityType>
         <EntityType Name="Budgets_Expenses">
           <Key>
@@ -1336,11 +1358,13 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="Int32" Name="BudgetId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
           <Property Type="Int32" Name="IncomeId" Nullable="false" />
           <Property Type="Int32" Name="ExpenseId" Nullable="false" />
           <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Companies" FromRole="Budgets_ExpensesToIncomes" ToRole="Company" />
+          <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budgets_ExpensesToIncomes" ToRole="Budget" />
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_Expenses" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_Incomes" />
           <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_PermissionsToAllocation" />
@@ -1459,7 +1483,7 @@
           <Property Type="Int32" Name="StatusId" Nullable="false" />
           <Property Type="String" Name="OrderApproverNotes" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="NextOrderApproverId" />
-          <Property Type="Int32" Name="BudgetAllocationId" Nullable="false" />
+          <Property Type="Int32" Name="BudgetAllocationId" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
           <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Order" ToRole="Budgets_ExpensesToIncomes" />
@@ -1849,6 +1873,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Budgets_ExpensesToIncomes_Budgets">
+          <End Type="designModel.Budget" Role="Budget" Multiplicity="1" />
+          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budget">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_ExpensesToIncomes">
+              <PropertyRef Name="BudgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Budget_ExpensesToIncome_Budget_Expenses">
           <End Type="designModel.Budgets_Expenses" Role="Budgets_Expenses" Multiplicity="1" />
           <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
@@ -1922,7 +1958,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Budget_ExpensesToIncome">
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="1" />
+          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="0..1" />
           <End Type="designModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_ExpensesToIncomes">
@@ -2203,6 +2239,7 @@
                 <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
                 <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -2424,29 +2461,29 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="4.3197482695429343" PointY="23.724013801535598" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="9.88226799568267" PointY="24.385094251663002" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="0.29742971076510366" PointY="25.255569663483449" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="2.0867616320432916" PointY="27.300037545757387" />
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.952047207836085" PointY="13.00815731892742" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="4.2618495301631514" PointY="5.2065916383669677" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="6.9926683711785209" PointY="31.645391791893818" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="5.5160023204591138" PointY="23.046444829109333" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="7.829055992806822" PointY="17.61192699596841" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="11.87595257716065" PointY="0.0012294352060320951" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="3.012436566414515" PointY="31.385672196459804" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="6.571148394872969" PointY="2.6191179168499623" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="2.2907003547487315" PointY="2.6554422539917018" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="5.1304303431559495" PointY="7.049369249050212" />
-        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="1.0316312429642451" PointY="31.85351252549026" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.83499275093665" PointY="22.402520786226969" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="2.4366916224531323" PointY="29.64005029091614" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="2.6330517747593354" PointY="26.535222229797032" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="10.74852179118829" PointY="6.0440077809821853" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="6.39795757755542" PointY="20.945933336832528" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="5.6737545997247825" PointY="29.216055973067906" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="9.2555666459983055" PointY="23.553515147209872" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="10.918098594489553" PointY="10.244867165686966" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="6.4721961442717344" PointY="4.6612569562444728" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="5.8354056597852173" PointY="4.488816933934026" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="8.5670262689548675" PointY="14.317829362264755" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="2.9572284905972093" PointY="0.69386880132084194" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="7.5555001439319458" PointY="16.49839518242441" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="10.284946694171497" PointY="8.3318364062960431" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="2.3066353249860159" PointY="28.855048684801464" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="1.5558393958750365" PointY="26.773622540185983" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="3.7719943280201376" PointY="10.781470646514311" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="1.4054682428974044" PointY="20.949601928214356" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="3.9966719634815453" PointY="6.9094218792903339" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="2.0114165758767242" PointY="12.660624346072146" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="11.76888689574268" PointY="21.08692389218459" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="2.7993642458689232" PointY="28.097997454972006" />
+        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="3.5966167559831481" PointY="7.0945064756528042" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="0.84417914824754892" PointY="18.270133459135021" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="6.9673170200396877" PointY="26.090119478334728" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="3.2288556747272872" PointY="12.839437237400299" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="5.5056353423305016" PointY="17.712233059905579" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="11.508124910065963" PointY="21.062238196405694" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="11.674913422984496" PointY="0.663035437773464" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="3.1234175130368289" PointY="10.579240923085829" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="10.342084513205144" PointY="0.2190338821238996" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Companies" />
@@ -2470,6 +2507,7 @@
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders_Items" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Departments" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_ParentProject" />

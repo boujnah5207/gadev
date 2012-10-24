@@ -202,7 +202,6 @@ namespace GAppsDev.Controllers
             {
                 Projects_ParentProject project;
 
-                using (OrdersRepository orderssRep = new OrdersRepository())
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 {
                     project = projectsRep.GetEntity(id);
@@ -254,7 +253,7 @@ namespace GAppsDev.Controllers
                             Projects_ParentProject update = projectsRep.Update(project);
 
                             if (update != null)
-                                return View(project);
+                                return RedirectToAction("Index");
                             else
                                 return Error(Errors.PROJECTS_GET_ERROR);
                         }
