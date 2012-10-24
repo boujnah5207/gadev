@@ -623,6 +623,8 @@ namespace GAppsDev.Controllers
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
+                using (BudgetsExpensesRepository budgetsExpensesRepository = new BudgetsExpensesRepository())
+
 
                 {
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
@@ -639,6 +641,18 @@ namespace GAppsDev.Controllers
                                 .ToList()
                                 );
                     }
+
+                    List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
+                    foreach(var allocation in allocations)
+                    {
+                        expenses.AddRange(
+                            budgetsExpensesRepository.GetList()
+                                .Where(x => x.Id == allocation.ExpenseId)
+                                .ToList()
+                                );
+                    }
+
+                    ViewBag.BudgetExpensesList = new SelectList(expenses.ToList(), "id", "Amount");
                 }
 
                 return View();
