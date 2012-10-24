@@ -618,15 +618,32 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            using (OrderItemsRepository itemsRep = new OrderItemsRepository())
-            using (ExpensesToIncomeRepository expensesToIncomeRep = new ExpensesToIncomeRepository())
-            using (SuppliersRepository suppliersRep = new SuppliersRepository())
+            if (Authorized(RoleType.OrdersWriter))
             {
-                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().ToList(), "Id", "Name");
-                ViewBag.SupplierId = new SelectList(expensesToIncomeRep.GetList("Budget_Expenses").ToList(), "Id", "Budget_Expenses.SectionName");
-            }
+                using (SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
+                using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
 
-            return View();
+                {
+                    ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+
+                    List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
+                    List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    
+                    foreach(var permission in permissions)
+                    {
+                        allocations.AddRange(
+                            budgetsPermissionsToAllocationRepository.GetList()
+                                .Where(x => x.BudgetsPermissionsId == permission.Id)
+                                .Select( x => x.Budgets_ExpensesToIncomes)
+                                .ToList()
+                                );
+                    }
+                }
+
+                return View();
+            }
+            return Error(Errors.NO_PERMISSION);
         }
 
         //
@@ -649,7 +666,7 @@ namespace GAppsDev.Controllers
                     order.OrderApproverNotes = String.Empty;
                     order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
                     order.NextOrderApproverId = CurrentUser.OrdersApproverId;
-                    order.BudgetAllocationId = 2;
+                    order.BudgetAllocationId = 3;
 
                     bool wasOrderCreated;
                     using (OrdersRepository orderRep = new OrdersRepository())

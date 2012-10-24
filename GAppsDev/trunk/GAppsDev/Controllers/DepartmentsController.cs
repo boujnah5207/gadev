@@ -6,19 +6,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DB;
+using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class DepartmentsController : Controller
+    public class DepartmentsController : BaseController
     {
         private Entities db = new Entities();
 
         //
         // GET: /Departments/
-
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var departments = db.Departments.Include("Company");
+            var departments = db.Departments.Include("Company").Where(x=>x.CompanyId == CurrentUser.CompanyId);
             return View(departments.ToList());
         }
 

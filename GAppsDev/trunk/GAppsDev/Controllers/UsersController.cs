@@ -149,7 +149,7 @@ namespace GAppsDev.Controllers
                 using (UsersRepository usersRep = new UsersRepository())
                 {
                     usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
-                    departmentsList = new SelectList(departmentsRep.GetList().ToList(), "Id", "Name");
+                    departmentsList = new SelectList(departmentsRep.GetList().Where(x=>x.CompanyId==CurrentUser.CompanyId).ToList(), "Id", "Name");
                 }
 
                 roleNames.Remove(RoleType.None.ToString());
@@ -225,6 +225,8 @@ namespace GAppsDev.Controllers
                         }
                     }
                     user.Roles = (int)combinedRoles;
+                    if (user.OrdersApproverId == -1)
+                        user.OrdersApproverId = null;
 
                     bool wasUserCreated;
                     using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())

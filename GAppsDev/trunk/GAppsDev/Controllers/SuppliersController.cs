@@ -70,6 +70,7 @@ namespace GAppsDev.Controllers
                     bool wasCreated;
                     using (SuppliersRepository supplierRep = new SuppliersRepository())
                     {
+                        supplier.CompanyId = CurrentUser.CompanyId;
                         wasCreated = supplierRep.Create(supplier);
                     }
 
@@ -106,6 +107,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.OrdersWriter))
             {
+                supplier.CompanyId = CurrentUser.CompanyId;
                 bool wasCreated;
                 using (SuppliersRepository supplierRep = new SuppliersRepository())
                 {
@@ -189,6 +191,7 @@ namespace GAppsDev.Controllers
                 using (SuppliersRepository suppRep = new SuppliersRepository())
                 {
                     allSuppliers = suppRep.GetList()
+                        .Where(x=>x.CompanyId==CurrentUser.CompanyId)
                         .Select(
                             supp => new AjaxSupplier()
                             {
