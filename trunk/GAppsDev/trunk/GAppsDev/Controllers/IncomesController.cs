@@ -77,7 +77,7 @@ namespace GAppsDev.Controllers
                 {
                     List<SelectListItemFromDB> budgetsList = budgetRep.GetList()
                         .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
-                        .Select(a => new { Id = a.Id, Name =a.Year })
+                        .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
@@ -175,15 +175,67 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            Budgets_Incomes budgets_incomes = db.Budgets_Incomes.Single(b => b.Id == id);
-            if (budgets_incomes == null)
+            if (Authorized(RoleType.SystemManager))
             {
-                return HttpNotFound();
+                Budgets_Incomes income;
+
+                using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
+                using (InstitutionsRepository institutionsRep = new InstitutionsRepository())
+                {
+                    income = incomesRep.GetEntity(id);
+
+                    try
+                    {
+                        List<SelectListItemFromDB> budgetsList = budgetRep.GetList()
+                            .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                            .Select(a => new { Id = a.Id, Name = a.Year })
+                            .AsEnumerable()
+                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name.ToString() })
+                            .ToList();
+
+                        List<SelectListItemFromDB> incomeTypesList = incomeTypesRep.GetList()
+                            .Where(type => type.CompanyId == CurrentUser.CompanyId)
+                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                            .ToList();
+
+                        List<SelectListItemFromDB> institutionsList = institutionsRep.GetList()
+                            .Where(type => type.CompanyId == CurrentUser.CompanyId)
+                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                            .ToList();
+                        institutionsList.Insert(0, new SelectListItemFromDB() { Id = null, Name = "" });
+
+                        ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name", income.BudgetId);
+                        ViewBag.BudgetIncomeTypeId = new SelectList(incomeTypesList, "Id", "Name", income.BudgetIncomeTypeId);
+                        ViewBag.BudgetsIncomeInstitutions = new SelectList(institutionsList, "Id", "Name", income.BudgetsIncomeInstitutions);
+                    }
+                    catch
+                    {
+                        return Error(Errors.DATABASE_ERROR);
+                    }
+                }
+
+                if (income != null)
+                {
+                    if (income.CompanyId == CurrentUser.CompanyId)
+                    {
+                        return View(income);
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+                }
+                else
+                {
+                    return Error(Errors.INCOME_GET_ERROR);
+                }
             }
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "Id", budgets_incomes.BudgetId);
-            ViewBag.BudgetIncomeTypeId = new SelectList(db.Budgets_Incomes_types, "Id", "Name", budgets_incomes.BudgetIncomeTypeId);
-            ViewBag.BudgetsIncomeInstitutions = new SelectList(db.Budgets_Incomes_Institutions, "Id", "Name", budgets_incomes.BudgetsIncomeInstitutions);
-            return View(budgets_incomes);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -193,17 +245,91 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Edit(Budgets_Incomes budgets_incomes)
         {
-            if (ModelState.IsValid)
+            if (Authorized(RoleType.SystemManager))
             {
-                db.Budgets_Incomes.Attach(budgets_incomes);
-                db.ObjectStateManager.ChangeObjectState(budgets_incomes, EntityState.Modified);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    Budgets_Incomes incomeFromDB;
+                    Budget budget;
+                    Budgets_Incomes_types incomeType;
+                    Budgets_Incomes_Institutions institution;
+
+                    using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                    using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
+                    using (BudgetsRepository budgetRep = new BudgetsRepository())
+                    using (InstitutionsRepository InstitutionsRep = new InstitutionsRepository())
+                    {
+                        incomeFromDB = incomesRep.GetEntity(budgets_incomes.Id);
+                        budget = budgetRep.GetEntity(budgets_incomes.BudgetId);
+                        incomeType = incomeTypesRep.GetEntity(budgets_incomes.BudgetIncomeTypeId);
+
+                        if (budgets_incomes.BudgetsIncomeInstitutions.HasValue)
+                            institution = InstitutionsRep.GetEntity(budgets_incomes.BudgetsIncomeInstitutions.Value);
+                        else
+                            institution = null;
+
+                        if (incomeFromDB != null)
+                        {
+                            if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution != null))
+                            {
+                                if (incomeFromDB.CompanyId == CurrentUser.CompanyId && budget.CompanyId == CurrentUser.CompanyId && incomeType.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
+                                {
+                                    if (incomeFromDB.Budget.IsViewOnly)
+                                        return Error(Errors.BUDGETS_YEAR_PASSED);
+
+                                    if (budgets_incomes.Amount < incomeFromDB.Amount)
+                                    {
+                                        decimal? allocatedIncome;
+                                        using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                                        using (OrdersRepository orderRep = new OrdersRepository())
+                                        {
+                                            allocatedIncome = allocationsRep.GetList()
+                                                .Where(x => x.IncomeId == incomeFromDB.Id)
+                                                .Sum(allocation => (decimal?)allocation.Amount);
+                                        }
+
+                                        if (allocatedIncome.HasValue && allocatedIncome > budgets_incomes.Amount)
+                                            return Error(Errors.INCOME_ALLOCATIONS_EXEEDS_AMOUNT);
+                                    }
+
+                                    incomeFromDB.BudgetId = budgets_incomes.BudgetId;
+                                    incomeFromDB.BudgetIncomeTypeId = budgets_incomes.BudgetIncomeTypeId;
+                                    incomeFromDB.BudgetsIncomeInstitutions = budgets_incomes.BudgetsIncomeInstitutions;
+                                    incomeFromDB.CustomName = budgets_incomes.CustomName;
+                                    incomeFromDB.Amount = budgets_incomes.Amount;
+
+                                    Budgets_Incomes update = incomesRep.Update(incomeFromDB);
+
+                                    if (update != null)
+                                        return RedirectToAction("Index");
+                                    else
+                                        return Error(Errors.INCOME_CREATE_ERROR);
+                                }
+                                else
+                                {
+                                    return Error(Errors.NO_PERMISSION);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.DATABASE_ERROR);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.INCOME_GET_ERROR);
+                        }
+                    }
+                }
+                else
+                {
+                    return Error(ModelState);
+                }
             }
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "Id", budgets_incomes.BudgetId);
-            ViewBag.BudgetIncomeTypeId = new SelectList(db.Budgets_Incomes_types, "Id", "Name", budgets_incomes.BudgetIncomeTypeId);
-            ViewBag.BudgetsIncomeInstitutions = new SelectList(db.Budgets_Incomes_Institutions, "Id", "Name", budgets_incomes.BudgetsIncomeInstitutions);
-            return View(budgets_incomes);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
