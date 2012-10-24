@@ -144,6 +144,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BudgetAllocationsController.cs" />
     <Compile Include="Controllers\BudgetsController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -462,6 +463,11 @@
     <Content Include="Views\BudgetAllocations\Create.cshtml" />
     <Content Include="Views\BudgetAllocations\Edit.cshtml" />
     <Content Include="Views\BudgetAllocations\Delete.cshtml" />
+    <Content Include="Views\Companies\Index.cshtml" />
+    <Content Include="Views\Companies\Details.cshtml" />
+    <Content Include="Views\Companies\Create.cshtml" />
+    <Content Include="Views\Companies\Edit.cshtml" />
+    <Content Include="Views\Companies\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
