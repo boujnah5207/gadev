@@ -116,6 +116,7 @@
                         using (Html.BeginForm("UploadReceiptFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
                             <text>העלאת קבלה</text> 
+                    <input type="hidden" name="orderId" value="@item.Id" /> 
                     <input type="file" name="file"  />
                     <input type="submit" value="OK" />
                         }

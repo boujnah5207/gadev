@@ -14,10 +14,11 @@ namespace DA
         OrdersWriter = 1,
         OrdersApprover = 2 | OrdersViewer,
         OrdersViewer = 4,
-        SystemManager = 8,
+        SystemManager = 8 | OrdersViewer | OrdersWriter,
+        UsersManager = 16,
+        admin = 32 | UsersManager | SystemManager | OrdersApprover | OrdersWriter,
         SuperAdmin = int.MaxValue
     }
-
     public static class Roles
     {
         public static bool HasRole(int userRoles, RoleType role)
