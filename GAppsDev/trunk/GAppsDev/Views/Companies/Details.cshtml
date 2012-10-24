@@ -1,0 +1,99 @@
+﻿@model DB.Company
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Company</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UsersLimit)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UsersLimit)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Domain)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Domain)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.City)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.City)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Street)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Street)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.HouseNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HouseNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BankAccount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BankAccount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BankBranch)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BankBranch)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BankNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BankNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TelephoneNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TelephoneNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CompanyNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyNumber)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

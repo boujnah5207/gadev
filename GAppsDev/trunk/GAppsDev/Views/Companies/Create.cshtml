@@ -1,0 +1,123 @@
+﻿@model DB.Company
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Company</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CreationDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CreationDate)
+            @Html.ValidationMessageFor(model => model.CreationDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UsersLimit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UsersLimit)
+            @Html.ValidationMessageFor(model => model.UsersLimit)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Domain)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Domain)
+            @Html.ValidationMessageFor(model => model.Domain)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.City)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.City)
+            @Html.ValidationMessageFor(model => model.City)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Street)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Street)
+            @Html.ValidationMessageFor(model => model.Street)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HouseNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HouseNumber)
+            @Html.ValidationMessageFor(model => model.HouseNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BankAccount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BankAccount)
+            @Html.ValidationMessageFor(model => model.BankAccount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BankBranch)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BankBranch)
+            @Html.ValidationMessageFor(model => model.BankBranch)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BankNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BankNumber)
+            @Html.ValidationMessageFor(model => model.BankNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TelephoneNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TelephoneNumber)
+            @Html.ValidationMessageFor(model => model.TelephoneNumber)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyNumber)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CompanyNumber)
+            @Html.ValidationMessageFor(model => model.CompanyNumber)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
