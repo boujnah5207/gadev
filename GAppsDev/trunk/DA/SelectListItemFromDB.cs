@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DA
 {
-    public class SelectListItemFromDB
+    public class SelectListItemDB
     {
         public int? Id { get; set; }
         public string Name { get; set; }

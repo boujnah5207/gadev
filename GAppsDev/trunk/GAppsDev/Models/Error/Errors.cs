@@ -50,13 +50,31 @@ namespace GAppsDev.Models.ErrorModels
 
         //Budgets Errors
         public const string BUDGETS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. התקציב לא נשמר במערכת.";
-        public const string BUDGETS_YEAR_PASSED = "לא ניתן ליצור\\לערוך תקציב לשנים קודמות.";
+        public const string BUDGETS_GET_ERROR = "קרתה שגיאה בזמן הגישה לתקציבים בבסיס הנתונים. אנא נסה שוב.";
+        public const string BUDGETS_YEAR_PASSED = "לא ניתן ליצור או לערוך תקציב לשנים קודמות.";
         public const string BUDGETS_YEAR_EXISTS = "נוצר כבר תקציב לשנה זאת.";
+        public const string BUDGETS_ALREADY_ACTIVE = "תקציב זה כבר פעיל.";
 
         //Incomes Errors
         public const string INCOME_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההכנסה לא נשמרה במערכת.";
         public const string INCOME_GET_ERROR = "קרתה שגיאה בזמן הגישה להכנסות בבסיס הנתונים. אנא נסה שוב.";
         public const string INCOME_ALLOCATIONS_EXEEDS_AMOUNT = "להכנסה זאת כבר הוקצה להוצאה סכום העולה על סך ההכנסה החדש. ההכנסה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב.";
+        public const string INCOME_FULL_ALLOCATION = "לא נותר מספיק סכום להכנסה שצויינה על מנת להקצות את הסכום שבוקש.";
+        public const string INCOME_DELETE_HAS_APPROVED_ORDERS = "להכנסה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההכנסה.";
 
+        //Expenses Errors
+        public const string EXPENSES_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההוצאה לא נשמרה במערכת.";
+        public const string EXPENSES_GET_ERROR = "קרתה שגיאה בזמן הגישה להוצאות בבסיס הנתונים. אנא נסה שוב.";
+        public const string EXPENSES_ALLOCATIONS_EXEEDS_AMOUNT = "להוצאה זאת כבר הוקצה להוצאה סכום העולה על סך ההוצאה החדש. ההוצאה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב.";
+        public const string EXPENSES_FULL_ALLOCATION = "לא נותר מספיק סכום להוצאה שצויינה על מנת להקצות את הסכום שבוקש.";
+        public const string EXPENSES_DELETE_HAS_APPROVED_ORDERS = "להוצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההוצאה.";
+
+        //Projects Errors
+        public const string PROJECTS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפרוייקט לא נשמר במערכת.";
+        public const string PROJECTS_GET_ERROR = "קרתה שגיאה בזמן הגישה לפרוייקטים בבסיס הנתונים. אנא נסה שוב.";
+
+        //SubProjects Errors
+        public const string SUB_PROJECTS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. התת-פרוייקט לא נשמר במערכת.";
+        public const string SUB_PROJECTS_GET_ERROR = "קרתה שגיאה בזמן הגישה לתת-פרוייקטים בבסיס הנתונים. אנא נסה שוב.";
     }
 }

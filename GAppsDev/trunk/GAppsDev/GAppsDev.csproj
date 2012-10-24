@@ -153,6 +153,10 @@
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PermissionsAllocationsController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\SubProjectsController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="ExtendedClasses\ExtendedClasses.cs" />
@@ -468,6 +472,27 @@
     <Content Include="Views\Companies\Create.cshtml" />
     <Content Include="Views\Companies\Edit.cshtml" />
     <Content Include="Views\Companies\Delete.cshtml" />
+    <Content Include="Views\Budgets\Activate.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Projects\Create.cshtml" />
+    <Content Include="Views\Projects\Edit.cshtml" />
+    <Content Include="Views\Projects\Delete.cshtml" />
+    <Content Include="Views\SubProjects\Index.cshtml" />
+    <Content Include="Views\SubProjects\Details.cshtml" />
+    <Content Include="Views\SubProjects\Create.cshtml" />
+    <Content Include="Views\SubProjects\Edit.cshtml" />
+    <Content Include="Views\SubProjects\Delete.cshtml" />
+    <Content Include="Views\Permissions\Index.cshtml" />
+    <Content Include="Views\Permissions\Details.cshtml" />
+    <Content Include="Views\Permissions\Create.cshtml" />
+    <Content Include="Views\Permissions\Edit.cshtml" />
+    <Content Include="Views\Permissions\Delete.cshtml" />
+    <Content Include="Views\PermissionsAllocations\Index.cshtml" />
+    <Content Include="Views\PermissionsAllocations\Details.cshtml" />
+    <Content Include="Views\PermissionsAllocations\Create.cshtml" />
+    <Content Include="Views\PermissionsAllocations\Edit.cshtml" />
+    <Content Include="Views\PermissionsAllocations\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

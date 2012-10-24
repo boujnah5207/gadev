@@ -44,6 +44,8 @@
                             }
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
+                            <li>@Html.ActionLink("פרוייקטים", "Index", "Projects")</li>
+                            <li>@Html.ActionLink("תת-פרוייקטים", "Index", "SubProjects")</li>
                             <li>@Html.ActionLink("תקציב", "Index", "Budgets")</li>
                             <li>@Html.ActionLink("הכנסות", "Index", "Incomes")</li>
                             <li>@Html.ActionLink("הוצאות", "Index", "Expenses")</li>

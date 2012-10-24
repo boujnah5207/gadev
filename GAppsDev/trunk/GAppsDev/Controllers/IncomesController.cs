@@ -75,21 +75,21 @@ namespace GAppsDev.Controllers
                 using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
                 using (InstitutionsRepository institutionsRep = new InstitutionsRepository())
                 {
-                    List<SelectListItemFromDB> budgetsList = budgetRep.GetList()
+                    List<SelectListItemDB> budgetsList = budgetRep.GetList()
                         .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
-                        .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
 
-                    List<SelectListItemFromDB> incomeTypesList = incomeTypesRep.GetList()
+                    List<SelectListItemDB> incomeTypesList = incomeTypesRep.GetList()
                         .Where(type => type.CompanyId == CurrentUser.CompanyId)
-                        .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
-                    List<SelectListItemFromDB> institutionsList = institutionsRep.GetList()
+                    List<SelectListItemDB> institutionsList = institutionsRep.GetList()
                         .Where(type => type.CompanyId == CurrentUser.CompanyId)
-                        .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
                     ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
@@ -138,6 +138,8 @@ namespace GAppsDev.Controllers
                         if (budget.CompanyId == CurrentUser.CompanyId && incomeType.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
                         {
                             bool wasCreated;
+                            budgets_incomes.CompanyId = CurrentUser.CompanyId;
+
                             using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                             {
                                 wasCreated = incomesRep.Create(budgets_incomes);
@@ -186,25 +188,28 @@ namespace GAppsDev.Controllers
                 {
                     income = incomesRep.GetEntity(id);
 
+                    if (income.Budget.IsViewOnly)
+                        return Error(Errors.BUDGETS_YEAR_PASSED);
+
                     try
                     {
-                        List<SelectListItemFromDB> budgetsList = budgetRep.GetList()
+                        List<SelectListItemDB> budgetsList = budgetRep.GetList()
                             .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
                             .Select(a => new { Id = a.Id, Name = a.Year })
                             .AsEnumerable()
-                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name.ToString() })
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                             .ToList();
 
-                        List<SelectListItemFromDB> incomeTypesList = incomeTypesRep.GetList()
+                        List<SelectListItemDB> incomeTypesList = incomeTypesRep.GetList()
                             .Where(type => type.CompanyId == CurrentUser.CompanyId)
-                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                             .ToList();
 
-                        List<SelectListItemFromDB> institutionsList = institutionsRep.GetList()
+                        List<SelectListItemDB> institutionsList = institutionsRep.GetList()
                             .Where(type => type.CompanyId == CurrentUser.CompanyId)
-                            .Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.Name })
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                             .ToList();
-                        institutionsList.Insert(0, new SelectListItemFromDB() { Id = null, Name = "" });
+                        institutionsList.Insert(0, new SelectListItemDB() { Id = null, Name = "" });
 
                         ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name", income.BudgetId);
                         ViewBag.BudgetIncomeTypeId = new SelectList(incomeTypesList, "Id", "Name", income.BudgetIncomeTypeId);
@@ -281,7 +286,6 @@ namespace GAppsDev.Controllers
                                     {
                                         decimal? allocatedIncome;
                                         using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
-                                        using (OrdersRepository orderRep = new OrdersRepository())
                                         {
                                             allocatedIncome = allocationsRep.GetList()
                                                 .Where(x => x.IncomeId == incomeFromDB.Id)
@@ -338,12 +342,49 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            Budgets_Incomes budgets_incomes = db.Budgets_Incomes.Single(b => b.Id == id);
-            if (budgets_incomes == null)
+            if (Authorized(RoleType.SystemManager))
             {
-                return HttpNotFound();
+                Budgets_Incomes income;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                {
+                    income = incomesRep.GetEntity(id, "Budget", "Budgets_Incomes_types", "Budgets_Incomes_Institutions");
+
+                    if (income != null)
+                    {
+                        if (income.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (income.Budget.IsViewOnly)
+                                return Error(Errors.BUDGETS_YEAR_PASSED);
+
+                            if (
+                                !ordersRep.GetList()
+                                .Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id)
+                                .Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                )
+                            {
+                                return View(income);
+                            }
+                            else
+                            {
+                                return Error(Errors.INCOME_DELETE_HAS_APPROVED_ORDERS);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.INCOME_GET_ERROR);
+                    }
+                }
             }
-            return View(budgets_incomes);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -353,10 +394,78 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Budgets_Incomes budgets_incomes = db.Budgets_Incomes.Single(b => b.Id == id);
-            db.Budgets_Incomes.DeleteObject(budgets_incomes);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Authorized(RoleType.SystemManager))
+            {
+                Budgets_Incomes income;
+                using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (BudgetsPermissionsToAllocationRepository permissionAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+                {
+                    income = incomesRep.GetEntity(id, "Budget", "Budgets_Incomes_types", "Budgets_Incomes_Institutions");
+
+                    if (income != null)
+                    {
+                        if (income.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (income.Budget.IsViewOnly)
+                                return Error(Errors.BUDGETS_YEAR_PASSED);
+
+                            List<Budgets_ExpensesToIncomes> incomeAllocations;
+                            List<Budgets_PermissionsToAllocation> incomePermissions;
+                            List<Order> incomeOrders = ordersRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id).ToList();
+
+                            if (!incomeOrders.Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice))
+                            {
+                                try
+                                {
+                                    incomeAllocations = allocationsRep.GetList().Where(x => x.IncomeId == income.Id).ToList();
+                                    incomePermissions = permissionAllocationsRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id).ToList();
+
+                                    foreach (var item in incomeOrders)
+                                    {
+                                        ordersRep.Delete(item.Id);
+                                    }
+
+                                    foreach (var item in incomePermissions)
+                                    {
+                                        permissionAllocationsRep.Delete(item.Id);
+                                    }
+
+                                    foreach (var item in incomeAllocations)
+                                    {
+                                        allocationsRep.Delete(item.Id);
+                                    }
+
+                                    incomesRep.Delete(income.Id);
+                                }
+                                catch
+                                {
+                                    return Error(Errors.DATABASE_ERROR);
+                                }
+
+                                return RedirectToAction("Index");
+                            }
+                            else
+                            {
+                                return Error(Errors.INCOME_DELETE_HAS_APPROVED_ORDERS);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.INCOME_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         protected override void Dispose(bool disposing)

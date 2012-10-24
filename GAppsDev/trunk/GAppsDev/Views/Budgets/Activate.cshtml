@@ -1,0 +1,37 @@
+﻿@model DB.Budget
+
+@{
+    ViewBag.Title = "הפעל תקציב";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<h3>האם אתה בטוח שברצונך להפעיל את התקציב?</h3>
+<br />
+<span>אין אפשרות לבטל פעולה זאת, הפעלת תקציב זה תבטל את התקציב הקודם!</span> <br />
+<br />
+<fieldset>
+    <legend>תקציב שנתי</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Year)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Year)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="הפעל תקציב" /> |
+        @Html.ActionLink("חזור", "Index")
+    </p>
+}

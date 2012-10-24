@@ -15,18 +15,10 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CreationDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreationDate)
-            @Html.ValidationMessageFor(model => model.CreationDate)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.BudgetId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.BudgetId)
+            @Html.DropDownList("BudgetId")
             @Html.ValidationMessageFor(model => model.BudgetId)
         </div>
 
@@ -34,7 +26,7 @@
             @Html.LabelFor(model => model.DepartmentId, "Department")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("DepartmentId", String.Empty)
+            @Html.DropDownList("DepartmentId")
             @Html.ValidationMessageFor(model => model.DepartmentId)
         </div>
 
@@ -42,7 +34,7 @@
             @Html.LabelFor(model => model.ParentProjectId, "Projects_ParentProject")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ParentProjectId", String.Empty)
+            @Html.DropDownList("ParentProjectId")
             @Html.ValidationMessageFor(model => model.ParentProjectId)
         </div>
 
@@ -50,7 +42,7 @@
             @Html.LabelFor(model => model.SubProjectId, "Projects_SubProject")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("SubProjectId", String.Empty)
+            @Html.DropDownList("SubProjectId")
             @Html.ValidationMessageFor(model => model.SubProjectId)
         </div>
 

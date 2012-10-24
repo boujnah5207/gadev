@@ -142,13 +142,13 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                List<SelectListItemFromDB> usersList = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+                List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
                 SelectList departmentsList;
 
                 using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (UsersRepository usersRep = new UsersRepository())
                 {
-                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                     departmentsList = new SelectList(departmentsRep.GetList().Where(x=>x.CompanyId==CurrentUser.CompanyId).ToList(), "Id", "Name");
                 }
 
