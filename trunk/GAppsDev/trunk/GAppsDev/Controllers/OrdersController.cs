@@ -1478,8 +1478,8 @@ namespace GAppsDev.Controllers
             using (SuppliersRepository suppliersRep = new SuppliersRepository())
             using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
             {
-                List<SelectListItemFromDB> usersAsSelectItems = new List<SelectListItemFromDB>() { new SelectListItemFromDB() { Id = -1, Name = "כל המזמינים" } };
-                usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemFromDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "כל המזמינים" } };
+                usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                 model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
 
                 List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = "כל הספקים" } };

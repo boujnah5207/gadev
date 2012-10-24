@@ -32,12 +32,34 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            Budget budget = db.Budgets.Single(b => b.Id == id);
-            if (budget == null)
+            if (Authorized(RoleType.SystemManager))
             {
-                return HttpNotFound();
+                Budget budget;
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                {
+                    budget = budgetsRep.GetEntity(id);
+                }
+
+                if (budget != null)
+                {
+                    if (budget.CompanyId == CurrentUser.CompanyId)
+                    {
+                        return View(budget);
+                    }
+                    else
+                    {
+                        return Error(Errors.NO_PERMISSION);
+                    }
+                }
+                else
+                {
+                    return Error(Errors.BUDGETS_GET_ERROR);
+                }
             }
-            return View(budget);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -79,7 +101,7 @@ namespace GAppsDev.Controllers
 
                             if (yearExists)
                                 return Error(Errors.BUDGETS_YEAR_EXISTS);
-                            
+
                             wasCreated = budgetRep.Create(budget);
                         }
 
@@ -162,6 +184,69 @@ namespace GAppsDev.Controllers
             db.Budgets.DeleteObject(budget);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult Activate(int id = 0)
+        {
+            Budget budget = db.Budgets.Single(b => b.Id == id);
+            if (budget == null)
+            {
+                return HttpNotFound();
+            }
+            return View(budget);
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost, ActionName("Activate")]
+        public ActionResult ActivateConfirmed(int id)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                Budget budget;
+                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                {
+                    budget = budgetRep.GetEntity(id);
+
+                    if (budget != null)
+                    {
+                        if (!budget.IsViewOnly)
+                        {
+                            if (!budget.IsActive)
+                            {
+                                Budget oldBudget = budgetRep.GetList().SingleOrDefault(x => x.IsActive);
+
+                                if (oldBudget != null)
+                                {
+                                    oldBudget.IsActive = false;
+                                    budgetRep.Update(oldBudget);
+                                }
+
+                                budget.IsActive = true;
+                                budgetRep.Update(budget);
+
+                                return RedirectToAction("Index");
+                            }
+                            else
+                            {
+                                return Error(Errors.BUDGETS_ALREADY_ACTIVE);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.BUDGETS_YEAR_PASSED);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.BUDGETS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         protected override void Dispose(bool disposing)
