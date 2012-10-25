@@ -245,7 +245,7 @@ namespace GAppsDev.Controllers
                                 foreach (var budget in budgets)
                                 {
                                     List<SelectListItemDB> allocationsList = budget.Budgets_ExpensesToIncomes
-                                        .Select(a => new { Id = a.Id, Name = a.Id })
+                                        .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
                                         .AsEnumerable()
                                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                                         .ToList();

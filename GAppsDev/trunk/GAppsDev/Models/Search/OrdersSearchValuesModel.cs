@@ -9,6 +9,7 @@ namespace GAppsDev.Models.Search
     public class OrdersSearchValuesModel
     {
         public int? UserId { get; set; }
+        public int? OrderNumber { get; set; }
         public int? SupplierId { get; set; }
         public int? StatusId { get; set; }
 

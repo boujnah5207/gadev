@@ -26,7 +26,7 @@
                     {
                         <div class="budget-@i" id="permissionAllocation-@i-@i2">
                             <input type="hidden" id="isActiveField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].IsActive" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].IsActive.ToString()" />
-                            <input type="hidden" id="allocationField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomeId" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
+                            <input type="hidden" class="existingAllocations" id="allocationField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomeId" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
 
                             <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Amount</span> -
                             <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Incomes.CustomName</span> --->
