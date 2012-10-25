@@ -11,6 +11,7 @@ using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.Search;
 using GAppsDev.Models.UserModels;
 using Mvc4.OpenId.Sample.Security;
+using System.Globalization;
 
 namespace GAppsDev.Controllers
 {
@@ -28,10 +29,11 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult LanguageSet()
         {
-                using (LanguagesRepository languagesRepository = new LanguagesRepository())
+            using (UsersRepository userRepository = new UsersRepository())
+            using (LanguagesRepository languagesRepository = new LanguagesRepository())
                 {
-
-                    return View();
+                    int lanId = userRepository.GetEntity(CurrentUser.UserId).LanguageId;
+                    return View(new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", lanId));
                 }
         }
         [OpenIdAuthorize]
@@ -43,6 +45,7 @@ namespace GAppsDev.Controllers
                 User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
                 user.LanguageId = languageId;
                 usersRep.Update(user);
+                CurrentUser.LanguageCode = user.Language.Code;
                 return RedirectToAction("index", "Home");
             }
         }

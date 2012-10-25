@@ -156,6 +156,12 @@
   <data name="Projects" xml:space="preserve">
     <value>Projects</value>
   </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
   <data name="SubProject" xml:space="preserve">
     <value>Sub Project</value>
   </data>
