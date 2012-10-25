@@ -27,7 +27,7 @@ namespace GAppsDev.Controllers
         const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
-        const string DEFAULT_ORDER = "DESC";
+        const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
 
@@ -35,7 +35,7 @@ namespace GAppsDev.Controllers
         // GET: /Orders/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
         {
             if (Authorized(RoleType.OrdersViewer))
             {
@@ -60,7 +60,7 @@ namespace GAppsDev.Controllers
                         {
                             Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
-                            if (order == DEFAULT_ORDER)
+                            if (order == DEFAULT_DESC_ORDER)
                                 orderFunction = x => orders.OrderByDescending(x);
                             else
                                 orderFunction = x => orders.OrderBy(x);
@@ -117,7 +117,7 @@ namespace GAppsDev.Controllers
         // GET: /Orders/Details/5
 
         [OpenIdAuthorize]
-        public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
+        public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
         {
             if (Authorized(RoleType.OrdersWriter))
             {
@@ -142,7 +142,7 @@ namespace GAppsDev.Controllers
                         {
                             Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
-                            if (order == DEFAULT_ORDER)
+                            if (order == DEFAULT_DESC_ORDER)
                                 orderFunction = x => orders.OrderBy(x);
                             else
                                 orderFunction = x => orders.OrderByDescending(x);
@@ -191,7 +191,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
+        public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
         {
             if (Authorized(RoleType.OrdersApprover))
             {
@@ -219,7 +219,7 @@ namespace GAppsDev.Controllers
                     {
                         Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
-                        if (order == DEFAULT_ORDER)
+                        if (order == DEFAULT_DESC_ORDER)
                             orderFunction = x => orders.OrderBy(x);
                         else
                             orderFunction = x => orders.OrderByDescending(x);

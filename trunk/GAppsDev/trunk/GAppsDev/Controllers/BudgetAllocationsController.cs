@@ -35,7 +35,7 @@ namespace GAppsDev.Controllers
                     model = allocationsRep.GetList("Budgets_Expenses", "Budgets_Incomes").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
 
                     budgetsList = budgetRep.GetList()
-                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -110,28 +110,21 @@ namespace GAppsDev.Controllers
                     {
                         if (budget.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (!budget.IsViewOnly)
-                            {
-                                incomesList = incomesRep.GetList()
-                                    .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == budget.Id)
-                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
-                                    .ToList();
+                            incomesList = incomesRep.GetList()
+                                .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == budget.Id)
+                                .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                .ToList();
 
-                                expensesList = expensesRep.GetList()
-                                    .Where(expense => expense.CompanyId == CurrentUser.CompanyId && expense.BudgetId == budget.Id)
-                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
-                                    .ToList();
+                            expensesList = expensesRep.GetList()
+                                .Where(expense => expense.CompanyId == CurrentUser.CompanyId && expense.BudgetId == budget.Id)
+                                .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                .ToList();
 
-                                ViewBag.BudgetId = id;
-                                ViewBag.IncomeId = new SelectList(incomesList, "Id", "Name");
-                                ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name");
+                            ViewBag.BudgetId = id;
+                            ViewBag.IncomeId = new SelectList(incomesList, "Id", "Name");
+                            ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name");
 
-                                return View();
-                            }
-                            else
-                            {
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-                            }
+                            return View();
                         }
                         else
                         {
@@ -176,51 +169,46 @@ namespace GAppsDev.Controllers
                         {
                             if (budget.CompanyId == CurrentUser.CompanyId)
                             {
-                                if (!budget.IsViewOnly)
+
+                                income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
+                                expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
+
+                                if (income != null && expense != null)
                                 {
-                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
-                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
-
-                                    if (income != null && expense != null)
+                                    if (income.BudgetId == budget.Id && expense.BudgetId == budget.Id)
                                     {
-                                        if (income.BudgetId == budget.Id && expense.BudgetId == budget.Id)
-                                        {
-                                            decimal? allocatedToExpense;
-                                            decimal? allocatedToIncome;
+                                        decimal? allocatedToExpense;
+                                        decimal? allocatedToIncome;
 
-                                            allocatedToIncome = allocationsRep.GetList()
-                                                 .Where(x => x.IncomeId == income.Id)
-                                                 .Sum(allocation => (decimal?)allocation.Amount);
+                                        allocatedToIncome = allocationsRep.GetList()
+                                             .Where(x => x.IncomeId == income.Id)
+                                             .Sum(allocation => (decimal?)allocation.Amount);
 
-                                            if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
-                                                return Error(Errors.INCOME_FULL_ALLOCATION);
+                                        if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
+                                            return Error(Errors.INCOME_FULL_ALLOCATION);
 
-                                            allocatedToExpense = allocationsRep.GetList()
-                                                .Where(x => x.ExpenseId == expense.Id)
-                                                .Sum(allocation => (decimal?)allocation.Amount);
+                                        allocatedToExpense = allocationsRep.GetList()
+                                            .Where(x => x.ExpenseId == expense.Id)
+                                            .Sum(allocation => (decimal?)allocation.Amount);
 
-                                            if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
-                                                return Error(Errors.EXPENSES_FULL_ALLOCATION);
+                                        if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
+                                            return Error(Errors.EXPENSES_FULL_ALLOCATION);
 
-                                            budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
-                                            allocationsRep.Create(budgets_expensestoincomes);
-                                        }
-                                        else
-                                        {
-                                            return Error(Errors.INVALID_FORM);
-                                        }
+                                        budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
+                                        allocationsRep.Create(budgets_expensestoincomes);
                                     }
                                     else
                                     {
-                                        return Error(Errors.DATABASE_ERROR);
+                                        return Error(Errors.INVALID_FORM);
                                     }
-
-                                    return RedirectToAction("Index");
                                 }
                                 else
                                 {
-                                    return Error(Errors.BUDGETS_YEAR_PASSED);
+                                    return Error(Errors.DATABASE_ERROR);
                                 }
+
+                                return RedirectToAction("Index");
+
                             }
                             else
                             {
@@ -267,8 +255,7 @@ namespace GAppsDev.Controllers
                     {
                         if (allocation.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (!allocation.Budget.IsViewOnly)
-                            {
+                            
                                 incomesList = incomesRep.GetList()
                                     .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == allocation.BudgetId)
                                     .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
@@ -283,11 +270,7 @@ namespace GAppsDev.Controllers
                                 ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name", allocation.ExpenseId);
 
                                 return View(allocation);
-                            }
-                            else
-                            {
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-                            }
+                            
                         }
                         else
                         {
@@ -333,8 +316,6 @@ namespace GAppsDev.Controllers
                         {
                             if (allocation.CompanyId == CurrentUser.CompanyId)
                             {
-                                if (!allocation.Budget.IsViewOnly)
-                                {
                                     income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
                                     expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
 
@@ -387,11 +368,6 @@ namespace GAppsDev.Controllers
                                     {
                                         return Error(Errors.DATABASE_ERROR);
                                     }
-                                }
-                                else
-                                {
-                                    return Error(Errors.BUDGETS_YEAR_PASSED);
-                                }
                             }
                             else
                             {

@@ -115,6 +115,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comma separeted.
+        /// </summary>
+        public static string CommaSepareted {
+            get {
+                return ResourceManager.GetString("CommaSepareted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company.
         /// </summary>
         public static string Company {
@@ -228,6 +237,15 @@ namespace Loc {
         public static string MyOrders {
             get {
                 return ResourceManager.GetString("MyOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No order was found.
+        /// </summary>
+        public static string NoOrdersWereFound {
+            get {
+                return ResourceManager.GetString("NoOrdersWereFound", resourceCulture);
             }
         }
         

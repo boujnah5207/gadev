@@ -77,7 +77,7 @@ namespace GAppsDev.Controllers
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                 {
                     List<SelectListItemDB> budgetsList = budgetRep.GetList()
-                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -206,9 +206,6 @@ namespace GAppsDev.Controllers
                     {
                         if (expense.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (expense.Budget.IsViewOnly)
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-
                             List<SelectListItemDB> budgetsList;
                             List<SelectListItemDB> departmentsList;
                             List<SelectListItemDB> projectsList;
@@ -217,7 +214,7 @@ namespace GAppsDev.Controllers
                             try
                             {
                                 budgetsList = budgetRep.GetList()
-                                    .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                                    .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                                     .Select(a => new { Id = a.Id, Name = a.Year })
                                     .AsEnumerable()
                                     .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -305,9 +302,6 @@ namespace GAppsDev.Controllers
                                 {
                                     if (project.IsActive && subProject.IsActive)
                                     {
-                                        if (expenseFromDB.Budget.IsViewOnly)
-                                            return Error(Errors.BUDGETS_YEAR_PASSED);
-
                                         if (budgets_expenses.Amount < expenseFromDB.Amount)
                                         {
                                             decimal? allocatedToExpense;
@@ -386,9 +380,7 @@ namespace GAppsDev.Controllers
                     {
                         if (expense.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (expense.Budget.IsViewOnly)
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-
+                            
                             if (
                                 !ordersRep.GetList()
                                 .Where(x => x.Budgets_ExpensesToIncomes.ExpenseId == expense.Id)
@@ -440,9 +432,6 @@ namespace GAppsDev.Controllers
                     {
                         if (expense.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (expense.Budget.IsViewOnly)
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-
                             List<Budgets_ExpensesToIncomes> expenseAllocations;
                             List<Budgets_PermissionsToAllocation> expensePermissions;
                             List<Order> expenseOrders = ordersRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.ExpenseId == expense.Id).ToList();

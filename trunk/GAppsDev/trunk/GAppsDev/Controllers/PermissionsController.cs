@@ -89,7 +89,7 @@ namespace GAppsDev.Controllers
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
                 {
                     budgetsList = budgetRep.GetList()
-                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -236,7 +236,7 @@ namespace GAppsDev.Controllers
                     {
                         if (model.Permission.CompanyId == CurrentUser.CompanyId)
                         {
-                            budgets = budgetsRep.GetList().Where( x => x.CompanyId == CurrentUser.CompanyId && !x.IsViewOnly).ToList();
+                            budgets = budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.Year >= (DateTime.Now.Year - 1)).ToList();
 
                             if (budgets != null)
                             {

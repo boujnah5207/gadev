@@ -210,31 +210,24 @@ namespace GAppsDev.Controllers
 
                     if (budget != null)
                     {
-                        if (!budget.IsViewOnly)
+                        if (!budget.IsActive)
                         {
-                            if (!budget.IsActive)
+                            Budget oldBudget = budgetRep.GetList().SingleOrDefault(x => x.IsActive);
+
+                            if (oldBudget != null)
                             {
-                                Budget oldBudget = budgetRep.GetList().SingleOrDefault(x => x.IsActive);
-
-                                if (oldBudget != null)
-                                {
-                                    oldBudget.IsActive = false;
-                                    budgetRep.Update(oldBudget);
-                                }
-
-                                budget.IsActive = true;
-                                budgetRep.Update(budget);
-
-                                return RedirectToAction("Index");
+                                oldBudget.IsActive = false;
+                                budgetRep.Update(oldBudget);
                             }
-                            else
-                            {
-                                return Error(Errors.BUDGETS_ALREADY_ACTIVE);
-                            }
+
+                            budget.IsActive = true;
+                            budgetRep.Update(budget);
+
+                            return RedirectToAction("Index");
                         }
                         else
                         {
-                            return Error(Errors.BUDGETS_YEAR_PASSED);
+                            return Error(Errors.BUDGETS_ALREADY_ACTIVE);
                         }
                     }
                     else
