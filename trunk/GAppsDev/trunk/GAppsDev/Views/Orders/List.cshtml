@@ -20,15 +20,15 @@
         }
         @if ((bool)ViewBag.IsOrdered)
         {
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "מספר הזמנה", "number", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderNumber, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
             if (ViewBag.ShowUserName)
             {
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם המזמין", "username", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderCreatorName, "username", ReverseOrder, (string)ViewBag.Sortby)</th>
             }
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "תאריך יצירה", "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם הספק", "supplier", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "מחיר כולל", "price", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, "סטאטוס", "status", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.CreationDate, "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.SupplierName, "supplier", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Price, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Status, "status", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
