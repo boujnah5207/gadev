@@ -88,6 +88,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to List.
+        /// </summary>
+        public static string BackToList {
+            get {
+                return ResourceManager.GetString("BackToList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget.
         /// </summary>
         public static string Budget {
@@ -129,6 +138,15 @@ namespace Loc {
         public static string Disconnect {
             get {
                 return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -214,6 +232,33 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string Notes {
+            get {
+                return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Approver Notes.
+        /// </summary>
+        public static string OrderApproverNotes {
+            get {
+                return ResourceManager.GetString("OrderApproverNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Creator Name.
         /// </summary>
         public static string OrderCreatorName {
@@ -237,6 +282,15 @@ namespace Loc {
         public static string OrderNumber {
             get {
                 return ResourceManager.GetString("OrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Status Name.
+        /// </summary>
+        public static string OrderStatusName {
+            get {
+                return ResourceManager.GetString("OrderStatusName", resourceCulture);
             }
         }
         

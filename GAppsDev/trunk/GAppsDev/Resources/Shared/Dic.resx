@@ -228,7 +228,22 @@
   <data name="ItemName" xml:space="preserve">
     <value>Item Name</value>
   </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="OrderApproverNotes" xml:space="preserve">
+    <value>Order Approver Notes</value>
+  </data>
+  <data name="OrderStatusName" xml:space="preserve">
+    <value>Order Status Name</value>
   </data>
 </root>
