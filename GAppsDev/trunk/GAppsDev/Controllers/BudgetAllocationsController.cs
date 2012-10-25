@@ -195,7 +195,13 @@ namespace GAppsDev.Controllers
                                             return Error(Errors.EXPENSES_FULL_ALLOCATION);
 
                                         budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
-                                        allocationsRep.Create(budgets_expensestoincomes);
+                                        budgets_expensestoincomes.BudgetId = budget.Id;
+                                        budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
+
+                                        if (allocationsRep.Create(budgets_expensestoincomes))
+                                            return RedirectToAction("Index");
+                                        else
+                                            return Error(Errors.DATABASE_ERROR);
                                     }
                                     else
                                     {
