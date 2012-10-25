@@ -156,6 +156,12 @@
   <data name="Projects" xml:space="preserve">
     <value>פרוייקטים</value>
   </data>
+  <data name="Send" xml:space="preserve">
+    <value>שלח</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>שלח</value>
+  </data>
   <data name="SubProject" xml:space="preserve">
     <value>תת-פרוייקטים</value>
   </data>
