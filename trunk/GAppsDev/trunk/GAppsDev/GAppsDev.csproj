@@ -515,6 +515,7 @@
     </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
     <Content Include="Views\Users\LanguageSet.cshtml" />
+    <Content Include="Views\Users\AddPermission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

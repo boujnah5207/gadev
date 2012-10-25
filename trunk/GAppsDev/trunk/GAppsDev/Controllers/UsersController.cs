@@ -31,10 +31,10 @@ namespace GAppsDev.Controllers
         {
             using (UsersRepository userRepository = new UsersRepository())
             using (LanguagesRepository languagesRepository = new LanguagesRepository())
-                {
-                    int lanId = userRepository.GetEntity(CurrentUser.UserId).LanguageId;
-                    return View(new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", lanId));
-                }
+            {
+                int lanId = userRepository.GetEntity(CurrentUser.UserId).LanguageId;
+                return View(new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", lanId));
+            }
         }
         [OpenIdAuthorize]
         [HttpPost]
@@ -159,27 +159,18 @@ namespace GAppsDev.Controllers
         // GET: /Users/Create
 
         [OpenIdAuthorize]
-        public ActionResult Create()
+        public ActionResult AddPermission(int userId = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
-                List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
-                SelectList departmentsList;
-
-                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
-                using (UsersRepository usersRep = new UsersRepository())
+                List<Budgets_Permissions> permissions;
+                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
                 {
-                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
-                    departmentsList = new SelectList(departmentsRep.GetList().Where(x=>x.CompanyId==CurrentUser.CompanyId).ToList(), "Id", "Name");
+                    permissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
                 }
 
-                roleNames.Remove(RoleType.None.ToString());
-                roleNames.Remove(RoleType.SuperAdmin.ToString());
-
-                ViewBag.RolesList = roleNames;
-                ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
-                ViewBag.DepartmentsList = departmentsList;
+                ViewBag.PermissionId = new SelectList(permissions, "Id", "Name");
+                ViewBag.UserId = userId;
 
                 return View();
             }
@@ -194,72 +185,51 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult Create(PendingUser user, string[] roleNames)
+        public ActionResult AddPermission(int userId = 0, int PermissionId = 0)
         {
             if (ModelState.IsValid)
             {
                 if (Authorized(RoleType.SystemManager))
                 {
-                    int companyUserCount = 0;
-                    int companyUserLimit = 0;
-
                     using (UsersRepository usersRep = new UsersRepository())
-                    using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
-                    using (CompaniesRepository companiesRep = new CompaniesRepository())
+                    using (BudgetsUsersToPermissionsRepository userPermissionsRep = new BudgetsUsersToPermissionsRepository())
                     {
-                        try
+                        Budgets_UsersToPermissions existingPermission = userPermissionsRep.GetList().SingleOrDefault(x => x.PermissionId == PermissionId);
+                        User user = usersRep.GetEntity(userId);
+
+                        if(user != null)
                         {
-                            companyUserCount =
-                                usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).Count() +
-                                pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count();
-                            
-                            companyUserLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
-                        }
-                        catch
-                        {
-                            return Error(Errors.DATABASE_ERROR);
-                        }
+                            if(user.CompanyId == CurrentUser.CompanyId)
+                            {
+                                if (existingPermission == null)
+                                {
+                                    Budgets_UsersToPermissions newPermission = new Budgets_UsersToPermissions()
+                                    {
+                                        UserId = user.Id,
+                                        PermissionId = PermissionId,
+                                        CompanyId = CurrentUser.CompanyId
+                                    };
 
-                        bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
-                        bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
-
-                        if (userExists || pendingUserExists)
-                            return Error(Errors.USERS_EXIST_ERROR);
-                    }
-
-                    if (companyUserCount >= companyUserLimit)
-                        return Error(Errors.USERS_LIMIT_REACHED);
-
-                    user.CompanyId = CurrentUser.CompanyId;
-                    user.CreationDate = DateTime.Now;
-
-                    RoleType combinedRoles = RoleType.None;
-                    foreach (string roleName in roleNames)
-                    {
-                        RoleType role;
-                        if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
-                        {
-                            combinedRoles = Roles.CombineRoles(combinedRoles, role);
+                                    if (userPermissionsRep.Create(newPermission))
+                                        return RedirectToAction("Index");
+                                    else
+                                        return Error(Errors.USERS_CREATE_ERROR);
+                                }
+                                else
+                                {
+                                    return Error(Errors.USER_ALREADY_HAS_PERMISSIONS);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.NO_PERMISSION);
+                            }
                         }
                         else
                         {
-                            return Error(Errors.INVALID_FORM);
+                            return Error(Errors.DATABASE_ERROR);
                         }
                     }
-                    user.Roles = (int)combinedRoles;
-                    if (user.OrdersApproverId == -1)
-                        user.OrdersApproverId = null;
-
-                    bool wasUserCreated;
-                    using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
-                    {
-                        wasUserCreated = pendingUserRep.Create(user);
-                    }
-
-                    if (wasUserCreated)
-                        return RedirectToAction("Index");
-                    else
-                        return Error(Errors.USERS_CREATE_ERROR);
                 }
                 else
                 {
@@ -272,21 +242,24 @@ namespace GAppsDev.Controllers
             }
         }
 
+
+
+
         //
         // GET: /Users/Edit/5
 
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            if(Authorized(RoleType.SystemManager))
+            if (Authorized(RoleType.SystemManager))
             {
                 User user;
-                using(UserRepository userRep = new UserRepository())
+                using (UserRepository userRep = new UserRepository())
                 {
                     user = userRep.GetEntity(id);
                 }
 
-                if(user != null)
+                if (user != null)
                 {
                     if (user.CompanyId != CurrentUser.CompanyId)
                         return Error(Errors.NO_PERMISSION);
@@ -296,7 +269,7 @@ namespace GAppsDev.Controllers
                     roleNames.Remove(RoleType.SuperAdmin.ToString());
                     ViewBag.RolesList = roleNames;
 
-                    ViewBag.ExistingRoles = 
+                    ViewBag.ExistingRoles =
                         Roles.GetAllRoles((RoleType)user.Roles)
                         .Select(x => x.ToString())
                         .ToList();
@@ -743,7 +716,7 @@ namespace GAppsDev.Controllers
 
                         if (model.Role.HasValue && model.Role.Value != -1)
                             usersQuery = usersQuery.Where(x => ((RoleType)x.Roles & (RoleType)model.Role.Value) == (RoleType)model.Role.Value);
-                        
+
                         if (!String.IsNullOrEmpty(model.Email))
                             usersQuery = usersQuery.Where(x => x.Email == model.Email);
 
@@ -786,7 +759,7 @@ namespace GAppsDev.Controllers
 
             ViewBag.IsExpanding = isExpanding;
             ViewBag.IsCollapsed = isCollapsed;
-            
+
             return PartialView(model);
         }
 

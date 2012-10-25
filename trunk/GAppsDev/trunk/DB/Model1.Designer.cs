@@ -3266,15 +3266,15 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
-        /// <param name="budgetsPermissions">Initial value of the BudgetsPermissions property.</param>
-        public static Budgets_UsersToPermissions CreateBudgets_UsersToPermissions(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.Int32 userId, global::System.Int32 budgetsPermissions)
+        /// <param name="permissionId">Initial value of the PermissionId property.</param>
+        public static Budgets_UsersToPermissions CreateBudgets_UsersToPermissions(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.Int32 userId, global::System.Int32 permissionId)
         {
             Budgets_UsersToPermissions budgets_UsersToPermissions = new Budgets_UsersToPermissions();
             budgets_UsersToPermissions.Id = id;
             budgets_UsersToPermissions.CompanyId = companyId;
             budgets_UsersToPermissions.CreationDate = creationDate;
             budgets_UsersToPermissions.UserId = userId;
-            budgets_UsersToPermissions.BudgetsPermissions = budgetsPermissions;
+            budgets_UsersToPermissions.PermissionId = permissionId;
             return budgets_UsersToPermissions;
         }
 
@@ -3386,24 +3386,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 BudgetsPermissions
+        public global::System.Int32 PermissionId
         {
             get
             {
-                return _BudgetsPermissions;
+                return _PermissionId;
             }
             set
             {
-                OnBudgetsPermissionsChanging(value);
-                ReportPropertyChanging("BudgetsPermissions");
-                _BudgetsPermissions = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("BudgetsPermissions");
-                OnBudgetsPermissionsChanged();
+                OnPermissionIdChanging(value);
+                ReportPropertyChanging("PermissionId");
+                _PermissionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PermissionId");
+                OnPermissionIdChanged();
             }
         }
-        private global::System.Int32 _BudgetsPermissions;
-        partial void OnBudgetsPermissionsChanging(global::System.Int32 value);
-        partial void OnBudgetsPermissionsChanged();
+        private global::System.Int32 _PermissionId;
+        partial void OnPermissionIdChanging(global::System.Int32 value);
+        partial void OnPermissionIdChanged();
 
         #endregion
 
