@@ -1370,6 +1370,9 @@ namespace GAppsDev.Controllers
                         ViewBag.UserId = CurrentUser.UserId;
                     }
 
+                    if (model.OrderNumber.HasValue && model.OrderNumber.Value != -1)
+                        ordersQuery = ordersQuery.Where(x => x.OrderNumber == model.OrderNumber.Value);
+
                     if (model.SupplierId.HasValue && model.SupplierId.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.SupplierId == model.SupplierId.Value);
 
