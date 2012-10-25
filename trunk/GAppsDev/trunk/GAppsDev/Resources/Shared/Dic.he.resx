@@ -225,4 +225,19 @@
   <data name="SupplierName" xml:space="preserve">
     <value>שם הספק</value>
   </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>חזור לרשימה</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>ערוך</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>הערות</value>
+  </data>
+  <data name="OrderApproverNotes" xml:space="preserve">
+    <value>הערות מנהל</value>
+  </data>
+  <data name="OrderStatusName" xml:space="preserve">
+    <value>סטאטוס הזמנה</value>
+  </data>
 </root>

@@ -20,12 +20,12 @@
 
     <div class="display-label">
         @Loc.Dic.OrderCreatorName
-        </div>
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.User.FirstName)
         @Html.DisplayFor(model => model.Order.User.LastName)
     </div>
-    
+
     <div class="display-label">
         @Loc.Dic.Email
     </div>
@@ -41,7 +41,7 @@
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Supplier.Name)
+        @Loc.Dic.SupplierName
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Supplier.Name)
@@ -49,13 +49,13 @@
 
     <table>
         <tr class="display-label">
-            <th>שם הפריט
+            <th>@Loc.Dic.ItemName
             </th>
-            <th>תיאור הפריט
+            <th>@Loc.Dic.ItemDescription
             </th>
-            <th>מחיר בודד
+            <th>@Loc.Dic.Price
             </th>
-            <th>כמות
+            <th>@Loc.Dic.Amount
             </th>
         </tr>
         @foreach (var item in Model.OrderToItem)
@@ -78,36 +78,39 @@
     </table>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Notes)
+        @Loc.Dic.Notes
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Notes)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Price)
+        @Loc.Dic.Price
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Price)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Orders_Statuses.Name)
+        @Loc.Dic.OrderStatusName
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
+        @Loc.Dic.OrderApproverNotes
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
-    
-   
+
+
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Order.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Order.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
+    {
+        @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Order.Id }) 
+    }
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

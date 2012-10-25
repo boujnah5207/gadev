@@ -508,6 +508,8 @@
     <Content Include="Views\PermissionsAllocations\Edit.cshtml" />
     <Content Include="Views\PermissionsAllocations\Delete.cshtml" />
     <Content Include="Views\Localization\Localization.cshtml" />
+    <Content Include="Views\Localization\Localization.cshtml" />
+    <Content Include="Views\Users\LanguageSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
