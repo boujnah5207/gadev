@@ -38,8 +38,8 @@ function addItem(budgetIndex) {
         if(!itemExists) {
             var newItem = $(
                 "<div class='budget-" + budgetIndex + "' id='permissionAllocation-" + budgetIndex + "-" + nextNumber + "'>" +
-                            "<input type='hidden' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
-                            "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomeId' value='" + allocationId + "' />" +
+                            "<input type='hidden' class='isActiveField' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
+                            "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
                             "<span>" + allocationText + "<\span>" +
                             "<input type='button'  value='הסר' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
                         "</div>"
@@ -55,10 +55,13 @@ function addItem(budgetIndex) {
 
 function removeItem(budgetIndex, allocationIndex) {
     var container = $("#permissionAllocation-" + budgetIndex + "-" + allocationIndex);
+    var isActiveField = $("#isActiveField-" + budgetIndex + "-" + allocationIndex);
     var isActive = $("#isActiveField-" + budgetIndex + "-" + allocationIndex).val();
     var BudgetId = $("#BudgetField-" + budgetIndex + "-" + allocationIndex).val();
     var PermissionId = $("#PermissionField-" + budgetIndex + "-" + allocationIndex).val();
     var allocationId = $("#allocationField-" + budgetIndex + "-" + allocationIndex).val();
+
+    isActiveField.val("false");
 
     var existingRemovedItem = getRemovedItem(allocationIndex);
     if (existingRemovedItem == null) {
@@ -86,6 +89,9 @@ function unRemove(allocationId) {
         console.log(itemIndex);
 
         $(removedItems).splice(itemIndex, 1);
+        console.log(existingRemovedItem.oldItem.find(".isActiveField"));
+        existingRemovedItem.oldItem.find(".isActiveField").val("true");
+
         console.log(removedItems);
     }
 }
