@@ -1,0 +1,11 @@
+﻿@model SelectList
+@{
+    ViewBag.Title = "LanguageSet";
+}
+
+<h2>LanguageSet</h2>
+@using (Html.BeginForm())
+{
+    @Html.DropDownList("LanguageId", (SelectList)Model)
+    <input type="submit" value="@Loc.Dic.Submit" />
+}
