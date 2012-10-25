@@ -118,7 +118,8 @@ namespace GAppsDev.OpenIdService
                                     ClaimedIdentifier = claimedIdentifier,
                                     OrdersApproverId = loggingUser.OrdersApproverId,
                                     DepartmentId = loggingUser.DepartmentId,
-                                    IsActive = loggingUser.IsActive
+                                    IsActive = loggingUser.IsActive,
+                                    Language = loggingUser.Language
                                 };
                             }
                         }
