@@ -189,6 +189,36 @@
   <data name="ItemName" xml:space="preserve">
     <value>שם הפריט</value>
   </data>
+  <data name="From" xml:space="preserve">
+    <value>מ</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>הסתר</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>מספר הזמנה</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>מחיר</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>חפש</value>
+  </data>
+  <data name="SearchForWordsInNotes" xml:space="preserve">
+    <value>חפש את המילים הבאות בהערות</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>הצג</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>סטאטוס</value>
+  </data>
+  <data name="Supplier" xml:space="preserve">
+    <value>ספק</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>עד</value>
+  </data>
   <data name="OrderCreatorName" xml:space="preserve">
     <value>שם המזמין</value>
   </data>
