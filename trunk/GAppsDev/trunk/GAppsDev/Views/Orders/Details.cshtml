@@ -1,7 +1,7 @@
 ﻿@model GAppsDev.Models.OrderModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Loc.Dic.OrderDetails;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,15 +16,16 @@
 }
 
 <fieldset>
-    <legend>Order</legend>
+    <legend>@Loc.Dic.OrderDetails</legend>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Company.Name)
-    </div>
+        @Loc.Dic.OrderCreatorName
+        </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Company.Name)
+        @Html.DisplayFor(model => model.Order.User.FirstName)
+        @Html.DisplayFor(model => model.Order.User.LastName)
     </div>
-
+    
     <div class="display-label">
         @Html.DisplayNameFor(model => model.Order.User.Email)
     </div>

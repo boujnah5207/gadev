@@ -4,6 +4,9 @@
     padding: 0;
 }
 
+.display-label {
+    font-weight:bold;
+}
 body {
     background-color: #fff;
     border-top: solid 10px #000;

@@ -171,4 +171,10 @@
   <data name="Welcome" xml:space="preserve">
     <value>Hi</value>
   </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>Order Details</value>
+  </data>
+  <data name="OrderCreatorName" xml:space="preserve">
+    <value>Order Creator Name</value>
+  </data>
 </root>

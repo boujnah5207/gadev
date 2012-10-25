@@ -142,6 +142,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order Creator Name.
+        /// </summary>
+        public static string OrderCreatorName {
+            get {
+                return ResourceManager.GetString("OrderCreatorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Details.
+        /// </summary>
+        public static string OrderDetails {
+            get {
+                return ResourceManager.GetString("OrderDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending Orders.
         /// </summary>
         public static string PendingOrders {
