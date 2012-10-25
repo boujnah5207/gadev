@@ -162,7 +162,7 @@
   <data name="UsersManagment" xml:space="preserve">
     <value>ניהול משתמשים</value>
   </data>
-  <data name="welcome" xml:space="preserve">
+  <data name="Welcome" xml:space="preserve">
     <value>ברוך הבא</value>
   </data>
 </root>
