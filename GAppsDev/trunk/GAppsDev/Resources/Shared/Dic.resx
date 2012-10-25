@@ -228,6 +228,12 @@
   <data name="ItemName" xml:space="preserve">
     <value>Item Name</value>
   </data>
+  <data name="CommaSepareted" xml:space="preserve">
+    <value>Comma separeted</value>
+  </data>
+  <data name="NoOrdersWereFound" xml:space="preserve">
+    <value>No order was found</value>
+  </data>
   <data name="BackToList" xml:space="preserve">
     <value>Back to List</value>
   </data>

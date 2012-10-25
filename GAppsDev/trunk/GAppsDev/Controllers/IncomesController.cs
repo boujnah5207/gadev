@@ -76,7 +76,7 @@ namespace GAppsDev.Controllers
                 using (InstitutionsRepository institutionsRep = new InstitutionsRepository())
                 {
                     List<SelectListItemDB> budgetsList = budgetRep.GetList()
-                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -188,13 +188,10 @@ namespace GAppsDev.Controllers
                 {
                     income = incomesRep.GetEntity(id);
 
-                    if (income.Budget.IsViewOnly)
-                        return Error(Errors.BUDGETS_YEAR_PASSED);
-
                     try
                     {
                         List<SelectListItemDB> budgetsList = budgetRep.GetList()
-                            .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                            .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
                             .Select(a => new { Id = a.Id, Name = a.Year })
                             .AsEnumerable()
                             .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
@@ -279,9 +276,6 @@ namespace GAppsDev.Controllers
                             {
                                 if (incomeFromDB.CompanyId == CurrentUser.CompanyId && budget.CompanyId == CurrentUser.CompanyId && incomeType.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
                                 {
-                                    if (incomeFromDB.Budget.IsViewOnly)
-                                        return Error(Errors.BUDGETS_YEAR_PASSED);
-
                                     if (budgets_incomes.Amount < incomeFromDB.Amount)
                                     {
                                         decimal? allocatedIncome;
@@ -354,9 +348,6 @@ namespace GAppsDev.Controllers
                     {
                         if (income.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (income.Budget.IsViewOnly)
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-
                             if (
                                 !ordersRep.GetList()
                                 .Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id)
@@ -408,9 +399,6 @@ namespace GAppsDev.Controllers
                     {
                         if (income.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (income.Budget.IsViewOnly)
-                                return Error(Errors.BUDGETS_YEAR_PASSED);
-
                             List<Budgets_ExpensesToIncomes> incomeAllocations;
                             List<Budgets_PermissionsToAllocation> incomePermissions;
                             List<Order> incomeOrders = ordersRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id).ToList();

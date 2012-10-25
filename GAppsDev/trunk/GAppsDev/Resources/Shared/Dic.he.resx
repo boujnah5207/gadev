@@ -225,6 +225,15 @@
   <data name="SupplierName" xml:space="preserve">
     <value>שם הספק</value>
   </data>
+  <data name="AdvancedSearch" xml:space="preserve">
+    <value>חיפוש מתקדם</value>
+  </data>
+  <data name="CommaSepareted" xml:space="preserve">
+    <value>הפרד בפסיקים</value>
+  </data>
+  <data name="NoOrdersWereFound" xml:space="preserve">
+    <value>לא נמצאו הזמנות</value>
+  </data>
   <data name="BackToList" xml:space="preserve">
     <value>חזור לרשימה</value>
   </data>

@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<DB.Order>
 
 @{
-    ViewBag.Title = "כל ההזמנות";
+    ViewBag.Title = Loc.Dic.AllOrders;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/SearchScript.js"></script>
 }
 
@@ -27,5 +28,5 @@
 }
 else
 {
-    <span class="no-properties">לא נמצאו הזמנות.</span> 
+    <span class="no-properties">@Loc.Dic.NoOrdersWereFound</span> 
 }

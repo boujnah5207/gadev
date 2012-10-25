@@ -6,14 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class LocalizationController : Controller
+    public class LocalizationController : BaseController
     {
         //
         // GET: /Localization/
 
+        [OpenIdAuthorize]
         public JavaScriptResult LocalizeJavascript(string get = null)
         {
             StringBuilder builder = new StringBuilder();
@@ -24,7 +26,7 @@ namespace GAppsDev.Controllers
                 string[] terms = get.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var item in terms)
                 {
-                    builder.AppendLine(String.Format("var local.{0} = '{1}';", item, Loc.Dic.ResourceManager.GetString(item)));
+                    builder.AppendLine(String.Format("local.{0} = '{1}';", item, Loc.Dic.ResourceManager.GetString(item, CultureInfo.CurrentCulture)));
                 }
             }
             else

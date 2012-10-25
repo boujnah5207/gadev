@@ -6,11 +6,11 @@ $(function () {
     ExpandingSearchBox = $("#ExpandingSearchBox");
 
     expandSearchButton.click(function () {
-        if (expandSearchButton.val() == "הצג") {
-            expandSearchButton.val("הסתר")
+        if (expandSearchButton.val() == local.Show) {
+            expandSearchButton.val(local.Hide)
         }
         else {
-            expandSearchButton.val("הצג")
+            expandSearchButton.val(local.Show)
         }
 
         ExpandingSearchBox.slideToggle(300);

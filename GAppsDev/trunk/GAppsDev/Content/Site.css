@@ -15,12 +15,14 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
-    direction:rtl;
-    text-align:right;
 }
 
 .selectedSupplier {
     font-size:20px;
+    font-weight:bold;
+}
+
+.bold {
     font-weight:bold;
 }
 
@@ -166,7 +168,6 @@ footer {
     display: block;
     font-size: .85em;
     margin: 0 0 10px;
-    text-align: right;
 }
 
     #login a {
@@ -212,7 +213,6 @@ ul#menu {
     font-weight: 600;
     margin: 0 0 5px;
     padding: 0;
-    text-align: right;
 }
 
     ul#menu li {

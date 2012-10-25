@@ -723,8 +723,7 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="year">Initial value of the Year property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        /// <param name="isViewOnly">Initial value of the IsViewOnly property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive, global::System.Boolean isViewOnly)
+        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive)
         {
             Budget budget = new Budget();
             budget.Id = id;
@@ -732,7 +731,6 @@ namespace DB
             budget.CompanyId = companyId;
             budget.Year = year;
             budget.IsActive = isActive;
-            budget.IsViewOnly = isViewOnly;
             return budget;
         }
 
@@ -862,30 +860,6 @@ namespace DB
         private global::System.Boolean _IsActive;
         partial void OnIsActiveChanging(global::System.Boolean value);
         partial void OnIsActiveChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsViewOnly
-        {
-            get
-            {
-                return _IsViewOnly;
-            }
-            set
-            {
-                OnIsViewOnlyChanging(value);
-                ReportPropertyChanging("IsViewOnly");
-                _IsViewOnly = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsViewOnly");
-                OnIsViewOnlyChanged();
-            }
-        }
-        private global::System.Boolean _IsViewOnly;
-        partial void OnIsViewOnlyChanging(global::System.Boolean value);
-        partial void OnIsViewOnlyChanged();
 
         #endregion
 

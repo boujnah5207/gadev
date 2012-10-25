@@ -293,8 +293,10 @@
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\jquery-ui-1.8.24.custom.css" />
+    <Content Include="Content\ltr.css" />
     <Content Include="Content\openid-shadow.css" />
     <Content Include="Content\openid.css" />
+    <Content Include="Content\rtl.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -508,6 +510,9 @@
     <Content Include="Views\PermissionsAllocations\Edit.cshtml" />
     <Content Include="Views\PermissionsAllocations\Delete.cshtml" />
     <Content Include="Views\Localization\Localization.cshtml" />
+    <Content Include="Views\Permissions\EditAllocations.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
     <Content Include="Views\Users\LanguageSet.cshtml" />
   </ItemGroup>

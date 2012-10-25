@@ -9,7 +9,18 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
-        
+
+        @if(ViewBag.CurrentUser != null)
+        {
+            if (ViewBag.CurrentUser.LanguageCode == "he" || ViewBag.CurrentUser.LanguageCode == "ar")
+            {
+                <link href="~/Content/rtl.css" rel="stylesheet" />
+            }
+            else if (ViewBag.CurrentUser.LanguageCode == "en" || ViewBag.CurrentUser.LanguageCode == "ru")
+            {
+                <link href="~/Content/ltr.css" rel="stylesheet" />
+            }
+        }
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
         @RenderSection("ExtraScripts", false)
