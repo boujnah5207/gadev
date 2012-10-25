@@ -1,7 +1,7 @@
 ﻿@model GAppsDev.Models.Search.OrdersSearchFormModel
 
 <fieldset>
-    <legend>חיפוש מתקדם</legend>
+    <legend>@Loc.Dic.AdvancedSearch</legend>
     <div id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
 
     @using (Html.BeginForm("Search", "Orders"))
@@ -15,12 +15,19 @@
             else
             {
                 <div class="editor-label">
-                <span>שם המזמין:</span>
+                <span>@Loc.Dic.OrderCreatorName:</span>
                 </div>
                 <div class="editor-field">
                         @Html.DropDownList("UserId", Model.UsersList)
                 </div>
             }
+            
+            <div class="editor-label">
+                <span>@Loc.Dic.OrderNumber:</span>
+            </div>
+            <div class="editor-field">
+                    @Html.TextBox("OrderNumber")
+            </div>
             
             if (ViewBag.StatusId != null)
             {
@@ -29,7 +36,7 @@
             else
             {
                 <div class="editor-label">
-                <span>סטאטוס:</span>
+                <span>@Loc.Dic.Status:</span>
                 </div>
                 <div class="editor-field">
                     @Html.DropDownList("StatusId", Model.StatusesList)
@@ -43,7 +50,7 @@
             else
             {
                 <div class="editor-label">
-                <span>ספק:</span>
+                <span>@Loc.Dic.Supplier:</span>
                 </div>
                 <div class="editor-field">
                     @Html.DropDownList("SupplierId", Model.SuppliersList)
@@ -51,33 +58,33 @@
             }
 
             <div class="editor-label">
-                <span>מחיר:</span>
+                <span>@Loc.Dic.Price:</span>
             </div>
             <div class="editor-field">
-                 מ- @Html.TextBox("PriceMin") עד- @Html.TextBox("PriceMax")
+                 @Loc.Dic.From- @Html.TextBox("PriceMin") @Loc.Dic.To- @Html.TextBox("PriceMax")
             </div>
             
             <div class="editor-label">
-                <span>תאריך יצירה (DD/MM/YYYY):</span>
+                <span>@Loc.Dic.CreationDate (DD/MM/YYYY):</span>
             </div>
             <div class="editor-field">
                 מ- @Html.TextBox("CreationMin") עד- @Html.TextBox("CreationMax")
             </div>
             
             <div class="editor-label">
-                <span>חפש את המילים הבאות בהערות:</span>
+                <span>@Loc.Dic.SearchForWordsInNotes:</span>
             </div>
             <div class="editor-field">
                 @Html.TextBox("NoteText")
             </div>
         
             <p>
-                <input type="submit" value="חפש"/>
+                <input type="submit" value="@Loc.Dic.Search"/>
             </p>
     }
     </div>
     @if (ViewBag.IsExpanding)
     { 
-        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){<text>הצג</text>}else {<text>הסתר</text>}" /> 
+        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){@Loc.Dic.Show}else {@Loc.Dic.Hide}" /> 
     }
 </fieldset>
