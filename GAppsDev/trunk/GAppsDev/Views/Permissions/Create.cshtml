@@ -4,6 +4,8 @@
     ViewBag.Title = "Create";
 }
 
+<script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
+
 <h2>Create</h2>
 
 @using (Html.BeginForm()) {
@@ -23,6 +25,32 @@
         <p>
             <input type="submit" value="Create" />
         </p>
+    </fieldset>
+    
+    <fieldset>
+        <legend>הוסף הרשאות</legend>
+
+        <p>
+            תקציב: @Html.DropDownList("BudgetId", (SelectList)ViewBag.BudgetId, new { id= "BudgetId" }) <input id="selectBudgetBtn" type="button" value="בחר והמשך"  onClick="loadForm()" />
+        </p>
+
+        <fieldset>
+            <legend>הרשאות לשנת</legend>
+
+            <div class="editor-field">
+                <div id="AddNewItemContainer">
+                    פריט: <span id="loadingMessage">טוען פריטים ... </span>
+                    כמות :
+                    <input style="width: 50px" id="itemQuantity" type="text" />
+                    מחיר ליחידה :
+                    <input style="width: 50px" id="itemPrice" type="text" />
+                    מחיר כולל :
+                    <input class="display" id="itemFinalPrice" type="text" disabled="disabled" />
+                    <input id="AddNewItemButton" type="button" value="הוסף" />
+                    <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()" />
+                </div>
+            </div>
+        </fieldset>
     </fieldset>
 }
 

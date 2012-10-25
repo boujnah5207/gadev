@@ -150,6 +150,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncomesController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\AddToInventoryModel.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
+    <Compile Include="Models\PermissionModels\PermissionAllocationsModel.cs" />
     <Compile Include="Models\Search\UsersSearchFormModel.cs" />
     <Compile Include="Models\Search\UsersSearchValuesModel.cs" />
     <Compile Include="Models\Search\OrdersSearchValuesModel.cs" />
@@ -362,7 +364,9 @@
     <Content Include="Scripts\AddToInventoryScript.js" />
     <Content Include="Scripts\CreateBudgetScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
+    <Content Include="Scripts\CreatePermissionScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
+    <Content Include="Scripts\EditPermissionAllocationScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -503,6 +507,8 @@
     <Content Include="Views\PermissionsAllocations\Create.cshtml" />
     <Content Include="Views\PermissionsAllocations\Edit.cshtml" />
     <Content Include="Views\PermissionsAllocations\Delete.cshtml" />
+    <Content Include="Views\Localization\Localization.cshtml" />
+    <Content Include="Views\Permissions\EditAllocations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
