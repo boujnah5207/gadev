@@ -174,7 +174,16 @@
   <data name="OrderDetails" xml:space="preserve">
     <value>Order Details</value>
   </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="OrderCreatorName" xml:space="preserve">
     <value>Order Creator Name</value>
+  </data>
+  <data name="SupplierName" xml:space="preserve">
+    <value>Supplier Name</value>
   </data>
 </root>
