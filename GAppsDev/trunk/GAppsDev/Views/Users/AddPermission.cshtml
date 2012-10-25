@@ -1,0 +1,8 @@
+﻿@{
+    ViewBag.Title = "AddPermission";
+}
+
+<h2>AddPermission</h2>
+
+<input type="hidden" name="userId" value="@ViewBag.UserId" />
+@Loc.Dic.Permissions: @Html.DropDownList("PermissionId");

@@ -44,6 +44,7 @@ namespace GAppsDev.Models.ErrorModels
         public const string USER_NOT_FOUND = "לא הייתה אפשרות למצוא משתמש בבסיס הנתונים.";
         public const string USER_WAS_CANCELED = "חשבון משתשתמש זה בוטל. אנא פנה למנהל המערכת.";
         public const string USER_NOT_REGISTERD = "חשבון משתשתמש זה אינו רשום במערכת.";
+        public const string USER_ALREADY_HAS_PERMISSIONS = "למשתמש כבר יש  את ההרשאה שצויינה.";
 
         //Inventory Errors
         public const string INVENTORY_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי.";
