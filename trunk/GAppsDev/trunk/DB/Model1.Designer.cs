@@ -42,12 +42,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Income_Budget", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
-<<<<<<< .mine
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_PermissionsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_PermissionsToAllocation), true)]
-=======
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
->>>>>>> .r88
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Expenses), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Departments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Department), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Projects_ParentProject", "Projects_ParentProject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Projects_ParentProject), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
@@ -952,7 +948,6 @@ namespace DB
                 }
             }
         }
-<<<<<<< .mine
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -997,30 +992,6 @@ namespace DB
                 }
             }
         }
-=======
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budgets_ExpensesToIncomes")]
-        public EntityCollection<Budgets_ExpensesToIncomes> Budgets_ExpensesToIncomes
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_ExpensesToIncomes>("designModel.FK_Budgets_ExpensesToIncomes_Budgets", "Budgets_ExpensesToIncomes");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_ExpensesToIncomes>("designModel.FK_Budgets_ExpensesToIncomes_Budgets", "Budgets_ExpensesToIncomes", value);
-                }
-            }
-        }
->>>>>>> .r88
 
         #endregion
 
