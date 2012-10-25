@@ -13,6 +13,7 @@ using DotNetOpenAuth.OpenId.Extensions.AttributeExchange;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using GAppsDev.OpenIdService;
+using System.Globalization;
 
 namespace Mvc4.OpenId.Sample.Security
 {
@@ -239,6 +240,7 @@ namespace Mvc4.OpenId.Sample.Security
                         }
                     }
                 }
+               
             }
             else
             {
@@ -263,7 +265,15 @@ namespace Mvc4.OpenId.Sample.Security
                     HttpContext.Current.Response.Cookies.Add(myCookie);
                 }
             }
-            
+            if (HttpContext.Current.Session["User"] != null)
+            {
+
+                //Create culture info object 
+                CultureInfo ci = new CultureInfo(((OpenIdUser)HttpContext.Current.Session["User"]).Language);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+                System.Threading.Thread.CurrentThread.CurrentCulture =
+             CultureInfo.CreateSpecificCulture(ci.Name);
+            }
             return HttpContext.Current.Session["User"] != null;
         }
     }
