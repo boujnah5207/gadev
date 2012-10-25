@@ -295,22 +295,56 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult EditAllocations(Budgets_Permissions budgets_permissions)
+        public ActionResult EditAllocations(PermissionAllocationsModel model)
         {
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Permissions permissionFromDB;
+                List<Budgets_ExpensesToIncomes> existingPermissionAllocations;
+
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+                using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
-                    permissionFromDB = permissionsRep.GetEntity(budgets_permissions.Id);
+                    permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
+                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_ExpensesToIncomes).ToList();
 
                     if (permissionFromDB != null)
                     {
                         if (permissionFromDB.CompanyId == CurrentUser.CompanyId)
                         {
-                            permissionFromDB.Name = budgets_permissions.Name;
+                            foreach (var budgetAllocation in model.BudgetAllocationsList)
+	                        {
+                                Budget budgetFromDB = budgetsRep.GetEntity(budgetAllocation.Budget.Id);
 
-                            permissionsRep.Update(permissionFromDB);
+                                if(budgetFromDB != null && budgetFromDB.CompanyId == CurrentUser.CompanyId)
+                                {
+                                    foreach (var allocation in budgetAllocation.PermissionAllocations)
+	                                {
+		                                if(allocation.IsActive)
+                                        {
+                                            if(!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                                            {
+                                                allocation.Allocation.BudgetId = budgetFromDB.Id;
+                                                allocation.Allocation.BudgetsPermissionsId = permissionFromDB.Id;
+                                                permissionsAllocationsRep.Create(allocation.Allocation);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                                            {
+                                                permissionsAllocationsRep.Delete(allocation.Allocation.Id);
+                                            }
+                                        }
+	                                }
+                                }
+                                else
+                                {
+                                    return Error("");
+                                }
+	                        }
 
                             return RedirectToAction("Index");
                         }

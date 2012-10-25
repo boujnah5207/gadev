@@ -11,6 +11,11 @@ namespace GAppsDev.Models.PermissionModels
     {
         public Budgets_Permissions Permission { get; set; }
         public List<BudgetAllocations> BudgetAllocationsList { get; set; }
+
+        public PermissionAllocationsModel()
+        {
+            BudgetAllocationsList = new List<BudgetAllocations>();
+        }
     }
 
     public class BudgetAllocations
@@ -18,6 +23,11 @@ namespace GAppsDev.Models.PermissionModels
         public Budget Budget{ get; set; }
         public SelectList AllocationsList { get; set; }
         public List<PermissionAllocation> PermissionAllocations { get; set; }
+
+        public BudgetAllocations()
+        {
+            PermissionAllocations = new List<PermissionAllocation>();
+        }
     }
 
     public class PermissionAllocation
