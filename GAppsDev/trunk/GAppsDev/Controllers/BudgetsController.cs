@@ -212,7 +212,7 @@ namespace GAppsDev.Controllers
                     {
                         if (!budget.IsActive)
                         {
-                            Budget oldBudget = budgetRep.GetList().SingleOrDefault(x => x.IsActive);
+                            Budget oldBudget = budgetRep.GetList().Where( b => b.CompanyId == CurrentUser.CompanyId).SingleOrDefault(x => x.IsActive);
 
                             if (oldBudget != null)
                             {
