@@ -83,7 +83,6 @@ namespace GAppsDev.Controllers
                         .ToList();
 
                     List<SelectListItemDB> incomeTypesList = incomeTypesRep.GetList()
-                        .Where(type => type.CompanyId == CurrentUser.CompanyId)
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
