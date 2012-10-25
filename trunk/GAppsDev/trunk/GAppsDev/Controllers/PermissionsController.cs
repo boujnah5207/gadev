@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using DA;
 using DB;
 using GAppsDev.Models.ErrorModels;
+using GAppsDev.Models.PermissionModels;
 using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
@@ -22,7 +23,21 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            return View(db.Budgets_Permissions.ToList());
+            if (Authorized(RoleType.SystemManager))
+            {
+                List<Budgets_Permissions> model;
+
+                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+                {
+                    model = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                }
+
+                return View(model);
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -69,6 +84,19 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
+                List<SelectListItemDB> budgetsList;
+
+                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                {
+                    budgetsList = budgetRep.GetList()
+                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && !budget.IsViewOnly)
+                        .Select(a => new { Id = a.Id, Name = a.Year })
+                        .AsEnumerable()
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .ToList();
+                }
+
+                ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
                 return View();
             }
             else
@@ -190,6 +218,119 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [OpenIdAuthorize]
+        public ActionResult EditAllocations(int id = 0)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                PermissionAllocationsModel model = new PermissionAllocationsModel();
+                List<Budget> budgets;
+
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+                using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+                {
+                    model.Permission = permissionsRep.GetEntity(id);
+
+                    if (model.Permission != null)
+                    {
+                        if (model.Permission.CompanyId == CurrentUser.CompanyId)
+                        {
+                            budgets = budgetsRep.GetList().Where( x => x.CompanyId == CurrentUser.CompanyId && !x.IsViewOnly).ToList();
+
+                            if (budgets != null)
+                            {
+                                model.BudgetAllocationsList = new List<BudgetAllocations>();
+
+                                foreach (var budget in budgets)
+                                {
+                                    List<SelectListItemDB> allocationsList = budget.Budgets_ExpensesToIncomes
+                                        .Select(a => new { Id = a.Id, Name = a.Id })
+                                        .AsEnumerable()
+                                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                                        .ToList();
+
+                                    List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_ExpensesToIncomes", "Budgets_ExpensesToIncomes.Budgets_Incomes", "Budgets_ExpensesToIncomes.Budgets_Expenses")
+                                        .Where(x => x.BudgetId == budget.Id)
+                                        .AsEnumerable()
+                                        .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
+                                        .ToList();
+
+                                    BudgetAllocations newBudgetAllocations = new BudgetAllocations()
+                                    {
+                                        Budget = budget,
+                                        AllocationsList = new SelectList(allocationsList, "Id", "Name"),
+                                        PermissionAllocations = permissionsToAllocations
+                                    };
+
+                                    model.BudgetAllocationsList.Add(newBudgetAllocations);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.DATABASE_ERROR);
+                            }
+
+                            return View(model);
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.PERMISSIONS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        //
+        // POST: /Permissions/Edit/5
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult EditAllocations(Budgets_Permissions budgets_permissions)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                Budgets_Permissions permissionFromDB;
+                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+                {
+                    permissionFromDB = permissionsRep.GetEntity(budgets_permissions.Id);
+
+                    if (permissionFromDB != null)
+                    {
+                        if (permissionFromDB.CompanyId == CurrentUser.CompanyId)
+                        {
+                            permissionFromDB.Name = budgets_permissions.Name;
+
+                            permissionsRep.Update(permissionFromDB);
+
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.PERMISSIONS_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
         //
         // GET: /Permissions/Delete/5
 
@@ -250,7 +391,7 @@ namespace GAppsDev.Controllers
                         if (permission.CompanyId == CurrentUser.CompanyId)
                         {
                             bool noErrors = true;
-                            List<int> permissionAllocations = permission.Budgets_PermissionsToAllocation.Select( x => x.Id).ToList();
+                            List<int> permissionAllocations = permission.Budgets_PermissionsToAllocation.Select(x => x.Id).ToList();
                             List<int> usersPermissions = permission.Budgets_UsersToPermissions.Select(x => x.Id).ToList();
 
                             foreach (var itemId in permissionAllocations)

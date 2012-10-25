@@ -1,0 +1,10 @@
+﻿@{
+    Layout = null;
+}
+
+@{ <text>var local = {};</text> }
+
+@foreach (var item in (List<string>)ViewBag.translations)
+{
+    <text>var local.@item = </text><text>@Loc.Dic.ResourceManager.GetString(item)</text> 
+}

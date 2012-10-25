@@ -1,0 +1,43 @@
+﻿@model GAppsDev.Models.PermissionModels.PermissionAllocationsModel
+
+@{
+    ViewBag.Title = "EditAllocations";
+}
+
+@section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
+    <script src="~/Scripts/EditPermissionAllocationScript.js"></script>
+}
+
+<h2>EditAllocations</h2>
+
+@for (int i = 0; i < Model.BudgetAllocationsList.Count; i++)
+{
+    <fieldset>
+        <legend>budget - @Model.BudgetAllocationsList[i].Budget.Year</legend>
+
+        <div id="expandingDiv-@i" style="display:none;">
+            @Html.DropDownList("budgetAllocationsList-" + i, (SelectList)Model.BudgetAllocationsList[i].AllocationsList, new { id = "budgetAllocations-" + i }) <input id="addAllocationBtn-@i" type="button" value="Add allocation" onClick="addItem(@i)"/>
+            <fieldset>
+                <legend>allocations</legend>
+
+                <div id="budgetContainer-@i">
+                    @for (int i2 = 0; i2 < Model.BudgetAllocationsList[i].PermissionAllocations.Count; i2++)
+                    {
+                        <div class="budget-@i" id="permissionAllocation-@i-@i2">
+                            <input type="hidden" id="isActiveField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].IsActive" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].IsActive.ToString()" />
+                            <input type="hidden" id="allocationField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomeId" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
+
+                            <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Amount</span> -
+                            <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Incomes.CustomName</span> --->
+                            <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Expenses.CustomName</span>
+                        
+                            <input type="button"  value="הסר" onClick="removeItem(@i,@i2) "/>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <input type="button" value="הצג" onClick="expandDiv(this, 'expandingDiv-@i') " />
+    </fieldset>
+}
