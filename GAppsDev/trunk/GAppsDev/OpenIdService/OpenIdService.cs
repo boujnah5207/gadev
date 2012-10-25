@@ -36,7 +36,7 @@ namespace Mvc4.OpenId.Sample.Security
         public IAuthenticationRequest ValidateAtOpenIdProvider(string openIdIdentifier)
         {
             IAuthenticationRequest openIdRequest = openId.CreateRequest(Identifier.Parse(openIdIdentifier));
-            
+
             var fetch = new FetchRequest();
             fetch.Attributes.AddRequired(WellKnownAttributes.Contact.Email);
             fetch.Attributes.AddRequired(WellKnownAttributes.Name.First);
@@ -67,7 +67,7 @@ namespace Mvc4.OpenId.Sample.Security
             {
                 logInResult.User = new OpenIdUser(fetchResponse, response.ClaimedIdentifier);
 
-                using(UserRepository userRep = new UserRepository())
+                using (UserRepository userRep = new UserRepository())
                 using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
                 {
                     User user = userRep.GetList().SingleOrDefault(x => x.Email == logInResult.User.Email);
@@ -151,21 +151,21 @@ namespace Mvc4.OpenId.Sample.Security
 
             using (CookiesRepository cookiesRep = new CookiesRepository())
             {
-                    Cooky existingCookie = cookiesRep.GetList().FirstOrDefault(x => x.UserId == user.UserId);
+                Cooky existingCookie = cookiesRep.GetList().FirstOrDefault(x => x.UserId == user.UserId);
 
-                    if (existingCookie != null)
-                    {
-                        if (cookiesRep.Delete(existingCookie.Id) == false)
-                            return null;
-                    }
-                    Cooky newCookie = new Cooky()
-                    {
-                        UserId = user.UserId,
-                        HashValue = hashValue
-                    };
-                    
-                    if(cookiesRep.Create(newCookie) == false)
+                if (existingCookie != null)
+                {
+                    if (cookiesRep.Delete(existingCookie.Id) == false)
                         return null;
+                }
+                Cooky newCookie = new Cooky()
+                {
+                    UserId = user.UserId,
+                    HashValue = hashValue
+                };
+
+                if (cookiesRep.Create(newCookie) == false)
+                    return null;
             }
 
             //var ticket = new FormsAuthenticationTicket(1, user.FullName, DateTime.Now, DateTime.Now.AddDays(7), true, user.GetCookieString(hashValue));
@@ -240,7 +240,7 @@ namespace Mvc4.OpenId.Sample.Security
                         }
                     }
                 }
-               
+
             }
             else
             {
@@ -267,12 +267,14 @@ namespace Mvc4.OpenId.Sample.Security
             }
             if (HttpContext.Current.Session["User"] != null)
             {
+                
+                    //Create culture info object 
 
-                //Create culture info object 
-                CultureInfo ci = new CultureInfo(((OpenIdUser)HttpContext.Current.Session["User"]).Language);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
-                System.Threading.Thread.CurrentThread.CurrentCulture =
-             CultureInfo.CreateSpecificCulture(ci.Name);
+                    CultureInfo ci = new CultureInfo(((OpenIdUser)HttpContext.Current.Session["User"]).LanguageCode);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+                    System.Threading.Thread.CurrentThread.CurrentCulture =
+                    CultureInfo.CreateSpecificCulture(ci.Name);
+                
             }
             return HttpContext.Current.Session["User"] != null;
         }

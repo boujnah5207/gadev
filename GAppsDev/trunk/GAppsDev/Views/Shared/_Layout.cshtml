@@ -28,30 +28,30 @@
                         <ul id="menu">
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
                             {
-                                <li>@Html.ActionLink("ההזמנות שלי", "MyOrders", "Orders")</li>
+                                <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders")</li>
                             }
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
                             {
-                                <li>@Html.ActionLink("כל ההזמנות", "Index", "Orders")</li>
+                                <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders")</li>
                             }
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
                             {
-                                <li>@Html.ActionLink("אישור הזמנות", "PendingOrders", "Orders")</li>
+                                <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders")</li>
                             }
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
-                            <li>@Html.ActionLink("ניהול משתמשים", "Index", "Users")</li>
+                            <li>@Html.ActionLink(Loc.Dic.UsersManagment, "Index", "Users")</li>
                             }
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
-                            <li>@Html.ActionLink("פרוייקטים", "Index", "Projects")</li>
-                            <li>@Html.ActionLink("תת-פרוייקטים", "Index", "SubProjects")</li>
-                            <li>@Html.ActionLink("תקציב", "Index", "Budgets")</li>
-                            <li>@Html.ActionLink("הכנסות", "Index", "Incomes")</li>
-                            <li>@Html.ActionLink("הוצאות", "Index", "Expenses")</li>
-                            <li>@Html.ActionLink("הקצאות תקציביות", "Index", "BudgetAllocations")</li>
-                            <li>@Html.ActionLink("סוגי הרשאות תקציביות", "Index", "Permissions")</li>
-                            <li>@Html.ActionLink("הגדרת הרשאות תקציביות", "Index", "PermissionsAllocations")</li>
+                            <li>@Html.ActionLink(Loc.Dic.Projects, "Index", "Projects")</li>
+                            <li>@Html.ActionLink(Loc.Dic.SubProject, "Index", "SubProjects")</li>
+                            <li>@Html.ActionLink(Loc.Dic.Budget, "Budgets")</li>
+                            <li>@Html.ActionLink(Loc.Dic.Incomes, "Index", "Incomes")</li>
+                            <li>@Html.ActionLink(Loc.Dic.Expenses, "Index", "Expenses")</li>
+                            <li>@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations")</li>
+                            <li>@Html.ActionLink(Loc.Dic.Permissions, "Index", "Permissions")</li>
+                            <li>@Html.ActionLink(Loc.Dic.PermissionsAllocations, "Index", "PermissionsAllocations")</li>
                             }
                         </ul>
                     </nav>
