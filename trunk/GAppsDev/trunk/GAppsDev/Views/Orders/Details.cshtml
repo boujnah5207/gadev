@@ -27,14 +27,14 @@
     </div>
     
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.User.Email)
+        @Loc.Dic.Email
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.User.Email)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.CreationDate)
+        @Loc.Dic.CreationDate
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.CreationDate)
@@ -105,18 +105,7 @@
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
     
-    @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
-    {
-        using (Html.BeginForm("UploadInvoiceFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.Hidden("orderId", Model.Order.Id)
-            <div class="display-field">
-                העלאת חשבונית   
-            </div>
-            <input type="file" name="file" />
-            <input type="submit" value="OK" />
-        }
-    }
+   
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Order.Id }) |
