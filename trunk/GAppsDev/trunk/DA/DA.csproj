@@ -55,6 +55,7 @@
     <Compile Include="IncomeTypesRepository.cs" />
     <Compile Include="InstitutionsRepository.cs" />
     <Compile Include="InventoryRepository.cs" />
+    <Compile Include="LanguagesRepository.cs" />
     <Compile Include="LocationsRepository.cs" />
     <Compile Include="MD5Encryptor.cs" />
     <Compile Include="OrderItemsRepository.cs" />

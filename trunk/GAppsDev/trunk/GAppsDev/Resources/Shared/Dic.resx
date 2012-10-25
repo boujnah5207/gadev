@@ -117,7 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="welcome" xml:space="preserve">
-    <value>wwee</value>
+  <data name="AllOrders" xml:space="preserve">
+    <value>All Orders</value>
+  </data>
+  <data name="Budget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="BudgetAllocations" xml:space="preserve">
+    <value>Budget Allocations</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="Expenses" xml:space="preserve">
+    <value>Expenses</value>
+  </data>
+  <data name="Incomes" xml:space="preserve">
+    <value>Incomes</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="MyOrders" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="PendingOrders" xml:space="preserve">
+    <value>Pending Orders</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Budget Permissions Types</value>
+  </data>
+  <data name="PermissionsAllocations" xml:space="preserve">
+    <value>Configure Budget Allocations</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="SubProject" xml:space="preserve">
+    <value>Sub Project</value>
+  </data>
+  <data name="UsersManagment" xml:space="preserve">
+    <value>Users Managment</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Hi</value>
   </data>
 </root>

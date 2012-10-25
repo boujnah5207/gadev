@@ -25,7 +25,27 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Users/
+        [OpenIdAuthorize]
+        public ActionResult LanguageSet()
+        {
+                using (LanguagesRepository languagesRepository = new LanguagesRepository())
+                {
 
+                    return View();
+                }
+        }
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult LanguageSet(int languageId)
+        {
+            using (UsersRepository usersRep = new UsersRepository())
+            {
+                User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
+                user.LanguageId = languageId;
+                usersRep.Update(user);
+                return RedirectToAction("index", "Home");
+            }
+        }
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
@@ -33,7 +53,6 @@ namespace GAppsDev.Controllers
             {
                 AllUsersModel model = new AllUsersModel();
                 IEnumerable<User> activeUsers;
-
                 using (UsersRepository usersRep = new UsersRepository())
                 using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                 using (CompaniesRepository companiesRep = new CompaniesRepository())

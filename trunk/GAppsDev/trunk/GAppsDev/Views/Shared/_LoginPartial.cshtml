@@ -1,11 +1,11 @@
 ﻿@if (Session["User"] != null)
 {
     <text>
-        @Loc.Dic.welcome, @ViewBag.CurrentUser.FullName, חברת @Html.ActionLink((string)ViewBag.CurrentUser.CompanyName, "Details", "Companies", new { id = (int)ViewBag.CurrentUser.CompanyId }, null)!
+        @Loc.Dic.Welcome, @ViewBag.CurrentUser.FullName, @Loc.Dic.Company @Html.ActionLink((string)ViewBag.CurrentUser.CompanyName, "Details", "Companies", new { id = (int)ViewBag.CurrentUser.CompanyId }, null)!
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            <a href="javascript:document.getElementById('logoutForm').submit()">התנתק</a>
+            <a href="javascript:document.getElementById('logoutForm').submit()">@Loc.Dic.Disconnect</a>
 }
     </text>
 } else {
-    <span>@Html.ActionLink("התחבר", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</span>
+    <span>@Html.ActionLink(@Loc.Dic.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</span>
 }

@@ -61,11 +61,146 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to wwee.
+        ///   Looks up a localized string similar to All Orders.
         /// </summary>
-        public static string welcome {
+        public static string AllOrders {
             get {
-                return ResourceManager.GetString("welcome", resourceCulture);
+                return ResourceManager.GetString("AllOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget.
+        /// </summary>
+        public static string Budget {
+            get {
+                return ResourceManager.GetString("Budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget Allocations.
+        /// </summary>
+        public static string BudgetAllocations {
+            get {
+                return ResourceManager.GetString("BudgetAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company.
+        /// </summary>
+        public static string Company {
+            get {
+                return ResourceManager.GetString("Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string Disconnect {
+            get {
+                return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expenses.
+        /// </summary>
+        public static string Expenses {
+            get {
+                return ResourceManager.GetString("Expenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomes.
+        /// </summary>
+        public static string Incomes {
+            get {
+                return ResourceManager.GetString("Incomes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Orders.
+        /// </summary>
+        public static string MyOrders {
+            get {
+                return ResourceManager.GetString("MyOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Orders.
+        /// </summary>
+        public static string PendingOrders {
+            get {
+                return ResourceManager.GetString("PendingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget Permissions Types.
+        /// </summary>
+        public static string Permissions {
+            get {
+                return ResourceManager.GetString("Permissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Budget Allocations.
+        /// </summary>
+        public static string PermissionsAllocations {
+            get {
+                return ResourceManager.GetString("PermissionsAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        public static string Projects {
+            get {
+                return ResourceManager.GetString("Projects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub Project.
+        /// </summary>
+        public static string SubProject {
+            get {
+                return ResourceManager.GetString("SubProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users Managment.
+        /// </summary>
+        public static string UsersManagment {
+            get {
+                return ResourceManager.GetString("UsersManagment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }

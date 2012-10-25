@@ -26,7 +26,7 @@ namespace GAppsDev.OpenIdService
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
         public DateTime LastActionTime { get; set; }
-        public string Language { get; set; }
+        public string LanguageCode { get; set; }
         public bool IsActive { get; set; }
 
         public bool IsSignedByProvider { get; set; }
@@ -119,7 +119,7 @@ namespace GAppsDev.OpenIdService
                                     OrdersApproverId = loggingUser.OrdersApproverId,
                                     DepartmentId = loggingUser.DepartmentId,
                                     IsActive = loggingUser.IsActive,
-                                    Language = loggingUser.Language
+                                    LanguageCode = loggingUser.Language.Code
                                 };
                             }
                         }
