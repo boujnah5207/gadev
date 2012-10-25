@@ -133,6 +133,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New Order.
+        /// </summary>
+        public static string CreateNewOrder {
+            get {
+                return ResourceManager.GetString("CreateNewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
         public static string CreationDate {
@@ -255,6 +264,15 @@ namespace Loc {
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Orders Found.
+        /// </summary>
+        public static string NoOrdersFound {
+            get {
+                return ResourceManager.GetString("NoOrdersFound", resourceCulture);
             }
         }
         

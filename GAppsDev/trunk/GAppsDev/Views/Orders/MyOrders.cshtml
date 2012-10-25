@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<DB.Order>
 
 @{
-    ViewBag.Title = "ההזמנות שלי";
+    ViewBag.Title = Loc.Dic.MyOrders;
 }
 
 @section ExtraScripts{
@@ -21,7 +21,7 @@
 @Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.UserId })
 
 <p>
-    @Html.ActionLink("יצירת הזמנה חדשה", "Create")
+    @Html.ActionLink(Loc.Dic.CreateNewOrder, "Create")
 </p>
 
 @if (Model.Count() != 0)
@@ -30,5 +30,5 @@
 }
 else
 {
-    <span class="no-properties">לא נמצאו הזמנות.</span> 
+    <span class="no-properties">@Loc.Dic.NoOrdersFound</span> 
 }

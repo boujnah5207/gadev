@@ -249,4 +249,10 @@
   <data name="OrderStatusName" xml:space="preserve">
     <value>סטאטוס הזמנה</value>
   </data>
+  <data name="CreateNewOrder" xml:space="preserve">
+    <value>יצירת הזמנה חדשה</value>
+  </data>
+  <data name="NoOrdersFound" xml:space="preserve">
+    <value>לא נמצאו הזמנות</value>
+  </data>
 </root>
