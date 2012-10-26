@@ -31,6 +31,12 @@ namespace GAppsDev.Controllers
 
         private Entities db = new Entities();
 
+        [OpenIdAuthorize]
+        public ActionResult Home()
+        {
+            return View();
+        }
+
         //
         // GET: /Orders/
 
@@ -1432,6 +1438,12 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
+        }
+
+        [ChildActionOnly]
+        public ActionResult Partial1()
+        {
+            return PartialView();
         }
 
         [ChildActionOnly]

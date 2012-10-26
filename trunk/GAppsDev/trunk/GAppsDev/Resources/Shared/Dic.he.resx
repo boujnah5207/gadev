@@ -300,4 +300,16 @@
   <data name="TelephoneNumber" xml:space="preserve">
     <value>מספר טלפון</value>
   </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>מלאי</value>
+  </data>
+  <data name="Managment" xml:space="preserve">
+    <value>ניהול</value>
+  </data>
+  <data name="Procurement" xml:space="preserve">
+    <value>רכש</value>
+  </data>
+  <data name="InventoryList" xml:space="preserve">
+    <value>רשימת מלאי</value>
+  </data>
 </root>

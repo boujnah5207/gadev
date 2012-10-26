@@ -516,6 +516,12 @@
     <Content Include="Views\Localization\Localization.cshtml" />
     <Content Include="Views\Users\LanguageSet.cshtml" />
     <Content Include="Views\Users\AddPermission.cshtml" />
+    <Content Include="Views\Orders\Home.cshtml" />
+    <Content Include="Views\Companies\Home.cshtml" />
+    <Content Include="Views\Budgets\Home.cshtml" />
+    <Content Include="Views\Inventory\Home.cshtml" />
+    <Content Include="Views\Orders\Partial1.cshtml" />
+    <Content Include="Views\Inventory\Partial1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -571,11 +577,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>7080</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8122/</IISUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

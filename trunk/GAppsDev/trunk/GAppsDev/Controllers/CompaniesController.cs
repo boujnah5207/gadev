@@ -18,6 +18,12 @@ namespace GAppsDev.Controllers
         // GET: /Companies/
 
         [OpenIdAuthorize]
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
             return View(db.Companies.ToList().Where(x=>x.Id == CurrentUser.CompanyId));

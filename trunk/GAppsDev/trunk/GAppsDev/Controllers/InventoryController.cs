@@ -6,12 +6,24 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DB;
+using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
     public class InventoryController : Controller
     {
         private Entities db = new Entities();
+        [OpenIdAuthorize]
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult Partial1()
+        {
+            return PartialView();
+        }
 
         //
         // GET: /Inventory/

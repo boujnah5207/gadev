@@ -300,4 +300,16 @@
   <data name="TelephoneNumber" xml:space="preserve">
     <value>Telephone Number</value>
   </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="Managment" xml:space="preserve">
+    <value>Managment</value>
+  </data>
+  <data name="Procurement" xml:space="preserve">
+    <value>Procurement</value>
+  </data>
+  <data name="InventoryList" xml:space="preserve">
+    <value>Inventory List</value>
+  </data>
 </root>

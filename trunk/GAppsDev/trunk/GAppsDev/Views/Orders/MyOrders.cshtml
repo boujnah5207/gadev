@@ -1,12 +1,14 @@
-﻿@model IEnumerable<DB.Order>
+﻿@Html.Action("Partial1")
+
+@model IEnumerable<DB.Order>
 
 @{
-    ViewBag.Title = Loc.Dic.MyOrders;
+    ViewBag.Title = Loc.Dic.Procurement;
 }
 
 @section ExtraScripts{
     <script src="~/Scripts/SearchScript.js"></script>
-}
+} 
 
 @section featured {
     <section class="featured">

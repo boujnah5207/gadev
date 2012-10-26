@@ -277,6 +277,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        public static string Inventory {
+            get {
+                return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory List.
+        /// </summary>
+        public static string InventoryList {
+            get {
+                return ResourceManager.GetString("InventoryList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Description.
         /// </summary>
         public static string ItemDescription {
@@ -309,6 +327,15 @@ namespace Loc {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Managment.
+        /// </summary>
+        public static string Managment {
+            get {
+                return ResourceManager.GetString("Managment", resourceCulture);
             }
         }
         
@@ -462,6 +489,15 @@ namespace Loc {
         public static string Price {
             get {
                 return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procurement.
+        /// </summary>
+        public static string Procurement {
+            get {
+                return ResourceManager.GetString("Procurement", resourceCulture);
             }
         }
         
