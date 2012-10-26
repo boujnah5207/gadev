@@ -36,7 +36,44 @@
                         @Html.Partial("_LoginPartial")
                     </section>
                     <nav>
-                        <ul id="menu">
+                        <div id="mainMenu">
+                            <ul>
+                                <li><a href="#">הזמנות</a>
+                                    <ul>
+                                        <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders")</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">ניהול משתמשים</a>
+                                    <ul>
+                                        <li>@Html.ActionLink(Loc.Dic.UsersManagment, "Index", "Users")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.Permissions, "Index", "Permissions")</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">חברה</a>
+                                    <ul>
+                                        <li>@Html.ActionLink(Loc.Dic.Departments, "Index", "Departments")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.Projects, "Index", "Projects")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.SubProject, "Index", "SubProjects")</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">תקציב</a>
+                                    <ul>
+                                        <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Budgets")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.Incomes, "Index", "Incomes")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.Expenses, "Index", "Expenses")</li>
+                                        <li>@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations")</li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">מלאי</a>
+                                    <ul>
+                                        <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Inventory")</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul id="menu" style="display:none;">
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
                             {
                                 <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders")</li>

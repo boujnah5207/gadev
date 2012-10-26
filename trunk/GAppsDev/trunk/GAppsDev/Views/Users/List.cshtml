@@ -82,6 +82,7 @@
         <td>
             @Html.ActionLink("הצג", "Details", new { id=item.Id }) |
             @Html.ActionLink("ערוך", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("הוסף הרשאה", "AddPermission", new { id=item.Id }) |
             @Html.ActionLink("בטל", "Delete", new { id=item.Id })
         </td>
     </tr>
