@@ -151,6 +151,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Departments.
+        /// </summary>
+        public static string Departments {
+            get {
+                return ResourceManager.GetString("Departments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnect.
         /// </summary>
         public static string Disconnect {
@@ -232,6 +241,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language Set.
+        /// </summary>
+        public static string LanguageSet {
+            get {
+                return ResourceManager.GetString("LanguageSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string Login {
@@ -250,15 +268,6 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No order was found.
-        /// </summary>
-        public static string NoOrdersWereFound {
-            get {
-                return ResourceManager.GetString("NoOrdersWereFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -273,6 +282,15 @@ namespace Loc {
         public static string NoOrdersFound {
             get {
                 return ResourceManager.GetString("NoOrdersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No order was found.
+        /// </summary>
+        public static string NoOrdersWereFound {
+            get {
+                return ResourceManager.GetString("NoOrdersWereFound", resourceCulture);
             }
         }
         
@@ -336,6 +354,15 @@ namespace Loc {
         public static string PendingOrders {
             get {
                 return ResourceManager.GetString("PendingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission.
+        /// </summary>
+        public static string Permission {
+            get {
+                return ResourceManager.GetString("Permission", resourceCulture);
             }
         }
         
@@ -462,6 +489,15 @@ namespace Loc {
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Perferences.
+        /// </summary>
+        public static string UserPerferences {
+            get {
+                return ResourceManager.GetString("UserPerferences", resourceCulture);
             }
         }
         
