@@ -270,4 +270,34 @@
   <data name="Orders" xml:space="preserve">
     <value>הזמנות</value>
   </data>
+  <data name="BankAccountNumber" xml:space="preserve">
+    <value>מספר חשבון בנק</value>
+  </data>
+  <data name="BankBranch" xml:space="preserve">
+    <value>סניף בנק</value>
+  </data>
+  <data name="BankNumber" xml:space="preserve">
+    <value>מספר בנק</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>עיר</value>
+  </data>
+  <data name="CompanyDetails" xml:space="preserve">
+    <value>פרטי החברה</value>
+  </data>
+  <data name="CompanyNumber" xml:space="preserve">
+    <value>מספר חברה</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>שם</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>מספר</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>רחוב</value>
+  </data>
+  <data name="TelephoneNumber" xml:space="preserve">
+    <value>מספר טלפון</value>
+  </data>
 </root>

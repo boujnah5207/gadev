@@ -97,6 +97,33 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank Account Number.
+        /// </summary>
+        public static string BankAccountNumber {
+            get {
+                return ResourceManager.GetString("BankAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Branch.
+        /// </summary>
+        public static string BankBranch {
+            get {
+                return ResourceManager.GetString("BankBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Number.
+        /// </summary>
+        public static string BankNumber {
+            get {
+                return ResourceManager.GetString("BankNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget.
         /// </summary>
         public static string Budget {
@@ -115,6 +142,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comma separeted.
         /// </summary>
         public static string CommaSepareted {
@@ -129,6 +165,24 @@ namespace Loc {
         public static string Company {
             get {
                 return ResourceManager.GetString("Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Details.
+        /// </summary>
+        public static string CompanyDetails {
+            get {
+                return ResourceManager.GetString("CompanyDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Number.
+        /// </summary>
+        public static string CompanyNumber {
+            get {
+                return ResourceManager.GetString("CompanyNumber", resourceCulture);
             }
         }
         
@@ -304,6 +358,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Approver Notes.
         /// </summary>
         public static string OrderApproverNotes {
@@ -457,6 +520,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Street.
+        /// </summary>
+        public static string Street {
+            get {
+                return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Submit.
         /// </summary>
         public static string Submit {
@@ -489,6 +561,15 @@ namespace Loc {
         public static string SupplierName {
             get {
                 return ResourceManager.GetString("SupplierName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telephone Number.
+        /// </summary>
+        public static string TelephoneNumber {
+            get {
+                return ResourceManager.GetString("TelephoneNumber", resourceCulture);
             }
         }
         
