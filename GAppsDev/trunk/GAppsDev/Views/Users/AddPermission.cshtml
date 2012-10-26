@@ -4,5 +4,13 @@
 
 <h2>AddPermission</h2>
 
-<input type="hidden" name="userId" value="@ViewBag.UserId" />
-@Loc.Dic.Permissions: @Html.DropDownList("PermissionId");
+@using(Html.BeginForm()) {
+
+    <input type="hidden" name="userId" value="@ViewBag.UserId" />
+    @Loc.Dic.Permissions<text>:</text> @Html.DropDownList("PermissionId")
+                        
+    <p>
+        <input type="submit"  value="Add permission" />
+    </p>
+}
+

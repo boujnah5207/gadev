@@ -159,7 +159,7 @@ namespace GAppsDev.Controllers
         // GET: /Users/Create
 
         [OpenIdAuthorize]
-        public ActionResult AddPermission(int userId = 0)
+        public ActionResult AddPermission(int id = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -170,7 +170,7 @@ namespace GAppsDev.Controllers
                 }
 
                 ViewBag.PermissionId = new SelectList(permissions, "Id", "Name");
-                ViewBag.UserId = userId;
+                ViewBag.UserId = id;
 
                 return View();
             }
@@ -241,9 +241,6 @@ namespace GAppsDev.Controllers
                 return Error(ModelState);
             }
         }
-
-
-
 
         //
         // GET: /Users/Edit/5

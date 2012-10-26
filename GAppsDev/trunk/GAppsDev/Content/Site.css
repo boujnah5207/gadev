@@ -112,6 +112,83 @@ h5, h6 {
         padding: 0;
         text-decoration: none;
     }
+    
+/* CSS Menu
+----------------------------------------------------------*/
+
+#mainMenu ul {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0 0 5px;
+    padding: 0;
+}
+#mainMenu ul li {
+    display: inline-block;
+    position: relative;
+    padding: 5px, 10px;
+    margin: 5px, 10px;
+}
+
+#mainMenu ul li :hover {
+    background-color:none;
+
+}
+
+#mainMenu li ul {
+    display: none;
+    margin: 0;
+}
+#mainMenu ul li a {
+    display: block;
+    color: #999;
+    text-decoration: none;
+    white-space: nowrap;
+}
+#mainMenu ul li a:hover {
+    background-color:none;
+}
+#mainMenu li:hover ul {
+    display: block;
+    background-color:#505050;
+    position: absolute;
+}
+#mainMenu li:hover li {
+    background-color:none;
+    float: none;
+}
+#mainMenu li:hover a { 
+    background-color:#505050;
+    text-decoration: none;
+}
+#mainMenu li:hover li a:hover {
+    
+    background-color:#606060;
+    background-color:none;
+}
+
+ul#menu {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0 0 5px;
+    padding: 0;
+}
+
+    ul#menu li {
+        display: inline;
+        list-style: none;
+        padding-left: 15px;
+    }
+
+        ul#menu li a {
+            background: none;
+            color: #999;
+            text-decoration: none;
+        }
+
+        ul#menu li a:hover {
+            color: #333;
+            text-decoration: none;
+        }
 
 
 /* main layout
