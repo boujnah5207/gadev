@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdvancedSearch" xml:space="preserve">
+    <value>חיפוש מתקדם</value>
+  </data>
   <data name="AllOrders" xml:space="preserve">
     <value>כל ההזמנות</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>חזור לרשימה</value>
   </data>
   <data name="Budget" xml:space="preserve">
     <value>תקציב</value>
@@ -126,68 +135,32 @@
   <data name="BudgetAllocations" xml:space="preserve">
     <value>הקצאות תקציביות</value>
   </data>
+  <data name="CommaSepareted" xml:space="preserve">
+    <value>הפרד בפסיקים</value>
+  </data>
   <data name="Company" xml:space="preserve">
     <value>חברת</value>
   </data>
-  <data name="Disconnect" xml:space="preserve">
-    <value>התנתק</value>
-  </data>
-  <data name="Expenses" xml:space="preserve">
-    <value>הוצאות</value>
-  </data>
-  <data name="Incomes" xml:space="preserve">
-    <value>הכנסות</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>התחבר</value>
-  </data>
-  <data name="MyOrders" xml:space="preserve">
-    <value>ההזמנות שלי</value>
-  </data>
-  <data name="PendingOrders" xml:space="preserve">
-    <value>הזמנות ממתינות</value>
-  </data>
-  <data name="Permissions" xml:space="preserve">
-    <value>סוגי הרשאות תקציביות</value>
-  </data>
-  <data name="PermissionsAllocations" xml:space="preserve">
-    <value>הגדרת הרשאות תקציביות</value>
-  </data>
-  <data name="Projects" xml:space="preserve">
-    <value>פרוייקטים</value>
-  </data>
-  <data name="Send" xml:space="preserve">
-    <value>שלח</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>שלח</value>
-  </data>
-  <data name="SubProject" xml:space="preserve">
-    <value>תת-פרוייקטים</value>
-  </data>
-  <data name="UsersManagment" xml:space="preserve">
-    <value>ניהול משתמשים</value>
-  </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>ברוך הבא</value>
-  </data>
-  <data name="OrderDetails" xml:space="preserve">
-    <value>פרטי הזמנה</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>כמות</value>
+  <data name="CreateNewOrder" xml:space="preserve">
+    <value>יצירת הזמנה חדשה</value>
   </data>
   <data name="CreationDate" xml:space="preserve">
     <value>תאריך יצירה</value>
   </data>
+  <data name="Departments" xml:space="preserve">
+    <value>מחלקות</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>התנתק</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>ערוך</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>דואר אלקטרוני</value>
   </data>
-  <data name="ItemDescription" xml:space="preserve">
-    <value>תיאור הפריט</value>
-  </data>
-  <data name="ItemName" xml:space="preserve">
-    <value>שם הפריט</value>
+  <data name="Expenses" xml:space="preserve">
+    <value>הוצאות</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>מ</value>
@@ -195,50 +168,29 @@
   <data name="Hide" xml:space="preserve">
     <value>הסתר</value>
   </data>
-  <data name="OrderNumber" xml:space="preserve">
-    <value>מספר הזמנה</value>
+  <data name="Incomes" xml:space="preserve">
+    <value>הכנסות</value>
   </data>
-  <data name="Price" xml:space="preserve">
-    <value>מחיר</value>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>תיאור הפריט</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>חפש</value>
+  <data name="ItemName" xml:space="preserve">
+    <value>שם הפריט</value>
   </data>
-  <data name="SearchForWordsInNotes" xml:space="preserve">
-    <value>חפש את המילים הבאות בהערות</value>
+  <data name="LanguageSet" xml:space="preserve">
+    <value>שינוי שפת תצוגה</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>הצג</value>
+  <data name="Login" xml:space="preserve">
+    <value>התחבר</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>סטאטוס</value>
+  <data name="MyOrders" xml:space="preserve">
+    <value>ההזמנות שלי</value>
   </data>
-  <data name="Supplier" xml:space="preserve">
-    <value>ספק</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>עד</value>
-  </data>
-  <data name="OrderCreatorName" xml:space="preserve">
-    <value>שם המזמין</value>
-  </data>
-  <data name="SupplierName" xml:space="preserve">
-    <value>שם הספק</value>
-  </data>
-  <data name="AdvancedSearch" xml:space="preserve">
-    <value>חיפוש מתקדם</value>
-  </data>
-  <data name="CommaSepareted" xml:space="preserve">
-    <value>הפרד בפסיקים</value>
+  <data name="NoOrdersFound" xml:space="preserve">
+    <value>לא נמצאו הזמנות</value>
   </data>
   <data name="NoOrdersWereFound" xml:space="preserve">
     <value>לא נמצאו הזמנות</value>
-  </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>חזור לרשימה</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>ערוך</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>הערות</value>
@@ -246,13 +198,73 @@
   <data name="OrderApproverNotes" xml:space="preserve">
     <value>הערות מנהל</value>
   </data>
+  <data name="OrderCreatorName" xml:space="preserve">
+    <value>שם המזמין</value>
+  </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>פרטי הזמנה</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>מספר הזמנה</value>
+  </data>
   <data name="OrderStatusName" xml:space="preserve">
     <value>סטאטוס הזמנה</value>
   </data>
-  <data name="CreateNewOrder" xml:space="preserve">
-    <value>יצירת הזמנה חדשה</value>
+  <data name="PendingOrders" xml:space="preserve">
+    <value>הזמנות ממתינות</value>
   </data>
-  <data name="NoOrdersFound" xml:space="preserve">
-    <value>לא נמצאו הזמנות</value>
+  <data name="Permission" xml:space="preserve">
+    <value>הרשאה</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>סוגי הרשאות תקציביות</value>
+  </data>
+  <data name="PermissionsAllocations" xml:space="preserve">
+    <value>הגדרת הרשאות תקציביות</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>מחיר</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>פרוייקטים</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>חפש</value>
+  </data>
+  <data name="SearchForWordsInNotes" xml:space="preserve">
+    <value>חפש את המילים הבאות בהערות</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>שלח</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>הצג</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>סטאטוס</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>שלח</value>
+  </data>
+  <data name="SubProject" xml:space="preserve">
+    <value>תת-פרוייקטים</value>
+  </data>
+  <data name="Supplier" xml:space="preserve">
+    <value>ספק</value>
+  </data>
+  <data name="SupplierName" xml:space="preserve">
+    <value>שם הספק</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>עד</value>
+  </data>
+  <data name="UserPerferences" xml:space="preserve">
+    <value>העדפות משתמש</value>
+  </data>
+  <data name="UsersManagment" xml:space="preserve">
+    <value>ניהול משתמשים</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>ברוך הבא</value>
   </data>
 </root>

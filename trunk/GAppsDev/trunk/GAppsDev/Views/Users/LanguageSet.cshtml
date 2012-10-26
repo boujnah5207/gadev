@@ -1,9 +1,17 @@
 ﻿@model SelectList
 @{
-    ViewBag.Title = "LanguageSet";
+    ViewBag.Title = Loc.Dic.UserPerferences;
 }
-
-<h2>LanguageSet</h2>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+<h3>@Loc.Dic.LanguageSet</h3>
 @using (Html.BeginForm())
 {
     @Html.DropDownList("LanguageId", (SelectList)Model)
