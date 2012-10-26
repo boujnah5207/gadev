@@ -267,4 +267,7 @@
   <data name="Welcome" xml:space="preserve">
     <value>ברוך הבא</value>
   </data>
+  <data name="Orders" xml:space="preserve">
+    <value>הזמנות</value>
+  </data>
 </root>

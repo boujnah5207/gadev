@@ -270,4 +270,7 @@
   <data name="Welcome" xml:space="preserve">
     <value>Hi</value>
   </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
 </root>
