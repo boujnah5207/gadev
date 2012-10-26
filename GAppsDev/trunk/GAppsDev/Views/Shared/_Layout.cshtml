@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
 
-        @if(ViewBag.CurrentUser != null)
+    @if (ViewBag.CurrentUser != null)
         {
             if (ViewBag.CurrentUser.LanguageCode == "he" || ViewBag.CurrentUser.LanguageCode == "ar")
             {
@@ -38,54 +38,25 @@
                     <nav>
                         <div id="mainMenu">
                             <ul>
-                                <li><a href="#">הזמנות</a>
-                                    <ul>
-                                        <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders")</li><br />
-                                    </ul>
+                            <li>
+                                @Html.ActionLink(Loc.Dic.Procurement, "Home", "Orders")
                                 </li>
-                                <li><a href="#">ניהול משתמשים</a>
-                                    <ul>
-                                        <li>@Html.ActionLink(Loc.Dic.UsersManagment, "Index", "Users")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.Permissions, "Index", "Permissions")</li><br />
-                                    </ul>
+                            <li>|</li>
+                            <li>
+                                @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory")
                                 </li>
-                                <li><a href="#">חברה</a>
-                                    <ul>
-                                        <li>@Html.ActionLink(Loc.Dic.Departments, "Index", "Departments")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.Projects, "Index", "Projects")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.SubProject, "Index", "SubProjects")</li><br />
-                                    </ul>
+                            <li>|</li>
+                            <li>
+                                @Html.ActionLink(Loc.Dic.Budget, "Home", "Budgets")
                                 </li>
-                                <li><a href="#">תקציב</a>
-                                    <ul>
-                                        <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Budgets")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.Incomes, "Index", "Incomes")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.Expenses, "Index", "Expenses")</li><br />
-                                        <li>@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations")</li><br />
-                                    </ul>
-                                </li>
-                                <li><a href="#">מלאי</a>
-                                    <ul>
-                                        <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Inventory")</li>
-                                    </ul>
+                            <li>|</li>
+                            <li>
+                                @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies")
                                 </li>
                             </ul>
                         </div>
-                        <ul id="menu" style="display:none;">
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
-                            {
-                                <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders")</li>
-                            }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
-                            {
-                                <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders")</li>
-                            }
-                            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
-                            {
-                                <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders")</li>
-                            }
+                    <ul id="menu" style="display: none;">
+
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
                             <li>@Html.ActionLink(Loc.Dic.UsersManagment, "Index", "Users")</li>
@@ -116,7 +87,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - <span style="color:#33CCFF">pq</span>dev{}</p>
+                <p>&copy; @DateTime.Now.Year - <span style="color: #33CCFF">pq</span>dev{}</p>
                 </div>
             </div>
         </footer>

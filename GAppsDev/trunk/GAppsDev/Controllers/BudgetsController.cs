@@ -16,8 +16,11 @@ namespace GAppsDev.Controllers
     {
         private Entities db = new Entities();
 
-        //
-        // GET: /Budgets/
+        [OpenIdAuthorize]
+        public ActionResult Home()
+        {
+            return View();
+        }
 
         [OpenIdAuthorize]
         public ActionResult Index()
