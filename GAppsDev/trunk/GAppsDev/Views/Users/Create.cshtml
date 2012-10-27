@@ -3,16 +3,8 @@
 @{
     ViewBag.Title = "משתמש חדש";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
 
 @using (Html.BeginForm()) {
