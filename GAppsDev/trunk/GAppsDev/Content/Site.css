@@ -141,7 +141,7 @@ h5, h6 {
 #mainMenu ul {
     margin:0;
     padding: 3px 3px 0 10px;
-    background-color: #a6dbed;
+    background-color: none;
 }
 
 #mainMenu ul li {
@@ -203,7 +203,7 @@ h5, h6 {
 #subMenu
 {
     font-size: 0.9em;
-    background-color: #a6dbed;
+    background-color: none;
     padding: 10px 0px;
 }
 
@@ -352,12 +352,7 @@ ul#menu {
 }
 
     .featured .content-wrapper {
-        background-color: #7ac0da;
-        background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
-        background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        background-color: none;
         color: #3e5667;
     }
 

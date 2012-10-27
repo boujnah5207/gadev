@@ -2,18 +2,12 @@
 
 @{
     ViewBag.Title = Loc.Dic.OrderDetails;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "MyOrders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
+
 
 <fieldset>
     <legend>@Loc.Dic.OrderDetails</legend>
