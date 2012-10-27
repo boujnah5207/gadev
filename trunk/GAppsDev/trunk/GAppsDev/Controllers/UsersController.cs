@@ -155,6 +155,121 @@ namespace GAppsDev.Controllers
             return View(user);
         }
 
+
+        [OpenIdAuthorize]
+        public ActionResult Create()
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+                SelectList departmentsList;
+
+                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
+                using (UsersRepository usersRep = new UsersRepository())
+                {
+                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                    departmentsList = new SelectList(departmentsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+                }
+
+                roleNames.Remove(RoleType.None.ToString());
+                roleNames.Remove(RoleType.SuperAdmin.ToString());
+
+                ViewBag.RolesList = roleNames;
+                ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
+                ViewBag.DepartmentsList = departmentsList;
+
+                return View();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        //
+        // POST: /Users/Create
+
+        [HttpPost]
+        [OpenIdAuthorize]
+        public ActionResult Create(PendingUser user, string[] roleNames)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Authorized(RoleType.SystemManager))
+                {
+                    int companyUserCount = 0;
+                    int companyUserLimit = 0;
+
+                    using (UsersRepository usersRep = new UsersRepository())
+                    using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
+                    using (CompaniesRepository companiesRep = new CompaniesRepository())
+                    {
+                        try
+                        {
+                            companyUserCount =
+                                usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).Count() +
+                                pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count();
+
+                            companyUserLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
+                        }
+                        catch
+                        {
+                            return Error(Errors.DATABASE_ERROR);
+                        }
+
+                        bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+                        bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+
+                        if (userExists || pendingUserExists)
+                            return Error(Errors.USERS_EXIST_ERROR);
+                    }
+
+                    if (companyUserCount >= companyUserLimit)
+                        return Error(Errors.USERS_LIMIT_REACHED);
+
+                    user.CompanyId = CurrentUser.CompanyId;
+                    user.CreationDate = DateTime.Now;
+
+                    RoleType combinedRoles = RoleType.None;
+                    foreach (string roleName in roleNames)
+                    {
+                        RoleType role;
+                        if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                        {
+                            combinedRoles = Roles.CombineRoles(combinedRoles, role);
+                        }
+                        else
+                        {
+                            return Error(Errors.INVALID_FORM);
+                        }
+                    }
+                    user.Roles = (int)combinedRoles;
+                    if (user.OrdersApproverId == -1)
+                        user.OrdersApproverId = null;
+
+                    bool wasUserCreated;
+                    using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
+                    {
+                        wasUserCreated = pendingUserRep.Create(user);
+                    }
+
+                    if (wasUserCreated)
+                        return RedirectToAction("Index");
+                    else
+                        return Error(Errors.USERS_CREATE_ERROR);
+                }
+                else
+                {
+                    return Error(Errors.NO_PERMISSION);
+                }
+            }
+            else
+            {
+                return Error(ModelState);
+            }
+        }
+
         //
         // GET: /Users/Create
 
