@@ -25,7 +25,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
         @RenderSection("ExtraScripts", false)
     </head>
-    <body>
+    <body id="@(ViewBag.PageName ?? "mainBodyId")" class="@(ViewBag.SubPageName ?? "mainBodyClass")">
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
@@ -38,20 +38,20 @@
                     <nav>
                         <div id="mainMenu">
                             <ul>
-                            <li>
-                                @Html.ActionLink(Loc.Dic.Procurement, "Home", "Orders")
+                            <li id="OrdersPage">
+                                @Html.ActionLink(Loc.Dic.Procurement, "Home", "Orders", null, new { id= "OrdersLink" })
                                 </li>
                             <li>|</li>
-                            <li>
-                                @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory")
+                            <li id="InventoryPage">
+                                @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory", null, new { id= "InventoryLink" })
                                 </li>
                             <li>|</li>
-                            <li>
-                                @Html.ActionLink(Loc.Dic.Budget, "Home", "Budgets")
+                            <li id="BudgetsPage">
+                                @Html.ActionLink(Loc.Dic.Budget, "Home", "Budgets", null, new { id= "BudgetsLink" })
                                 </li>
                             <li>|</li>
-                            <li>
-                                @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies")
+                            <li id="CompaniesPage">
+                                @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id= "ManagmentLink" })
                                 </li>
                             </ul>
                         </div>
@@ -79,7 +79,17 @@
             </div>
         </header>
         <div id="body">
-            @RenderSection("featured", required: false)
+            <section class="featured">
+                <div class="content-wrapper">
+                @if (ViewBag.noSubMenu == null)
+                { 
+                    <div id="subMenu">@Html.Partial("SubMenu_" + (string)ViewBag.PageName)</div> 
+                }
+                    <hgroup class="title">
+                        <h1>@ViewBag.Title</h1>
+                    </hgroup>
+                </div>
+            </section>
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
             </section>

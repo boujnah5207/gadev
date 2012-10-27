@@ -43,7 +43,7 @@ function beginForm() {
     //suppliersList.attr("disabled", true);
 
     selectedSupplier = {};
-    selectedSupplier.ID = suppliersList.val();
+    selectedSupplier.ID = $("#suppliersList option:selected").val();
     hiddenSupplierField.val(selectedSupplier.ID);
     selectedSupplier.Name = $("#suppliersList option:selected").text();
 
@@ -58,18 +58,22 @@ function beginForm() {
         if (response.gotData) {
             InitializeItemsList(response.data);
 
-            itemDropDownList = $("#ItemDropDownList");
             addItemButton.click(function () {
-                if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
-                    addNewItem(
-                        itemDropDownList.val(),
-                        itemDropDownList.find(" :selected").text(),
-                        itemQuantityField.val(),
-                        itemPriceField.val()
-                        );
+                if ($("#ItemDropDownList option:selected") != null) {
+                    if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
+                        addNewItem(
+                            $("#ItemDropDownList option:selected").val(),
+                            $("#ItemDropDownList option:selected").text(),
+                            itemQuantityField.val(),
+                            itemPriceField.val()
+                            );
+                    }
+                    else {
+                        alert("אנא הכנס כמות ומחיר ונסה שוב.");
+                    }
                 }
                 else {
-                    alert("אנא הכנס כמות ומחיר ונסה שוב.");
+                    alert("אנא בחר פריט או צור פריט חדש.");
                 }
             });
         }
@@ -83,6 +87,8 @@ function beginForm() {
 }
 
 function addSupplier() {
+    var newSupplierId = 0;
+
     $.ajax({
         type: "POST",
         url: "/Suppliers/PopOutCreate/",
@@ -111,6 +117,7 @@ function addSupplier() {
                 data: newSupplier
             }).done(function (response) {
                 if (response.success) {
+                    newSupplierId = response.newSupplierId;
                     alert("הספק נוצר בהצלחה.");
                 }
                 else {
@@ -135,7 +142,7 @@ function addSupplier() {
                     if (response.gotData) {
                         UpdateSupplierList(response.data);
 
-                        $('#suppliersList option:last-child').attr('selected', 'selected');
+                        $('#suppliersList option[value="' + newSupplierId + '"]').attr('selected', 'selected');
                     }
                 });
             }
@@ -144,6 +151,7 @@ function addSupplier() {
 }
 
 function addOrderItem() {
+    var newItemId = 0;
     $.ajax({
         type: "POST",
         url: "/OrderItems/PopOutCreate/",
@@ -161,6 +169,7 @@ function addOrderItem() {
                 data: newOrderItem
             }).done(function (response) {
                 if (response.success) {
+                    newItemId = response.newItemId;
                     alert("הפריט נוצר בהצלחה.");
                 }
                 else {
@@ -184,7 +193,7 @@ function addOrderItem() {
                 }).done(function (response) {
                     if (response.gotData) {
                         UpdateItemsList(response.data);
-
+                        $('#ItemDropDownList option[value="' + newItemId + '"]').attr('selected', 'selected');
                         createItemDialogContainer.dialog("destroy");
                         createItemDialogContainer.remove();
                     }

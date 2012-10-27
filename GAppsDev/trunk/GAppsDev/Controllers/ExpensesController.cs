@@ -489,6 +489,12 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [ChildActionOnly]
+        public ActionResult SubMenu()
+        {
+            return PartialView();
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

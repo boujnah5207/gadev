@@ -189,11 +189,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NoOrdersFound" xml:space="preserve">
-    <value>No Orders Found</value>
-  </data>
   <data name="NoOrdersWereFound" xml:space="preserve">
-    <value>No order was found</value>
+    <value>No orders were found</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
@@ -220,7 +217,7 @@
     <value>Permission</value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>Budget Permissions Types</value>
+    <value>Budget Permissions</value>
   </data>
   <data name="PermissionsAllocations" xml:space="preserve">
     <value>Configure Budget Allocations</value>
@@ -311,5 +308,35 @@
   </data>
   <data name="InventoryList" xml:space="preserve">
     <value>Inventory List</value>
+  </data>
+  <data name="BudgetAllocation" xml:space="preserve">
+    <value>Budget Allocation</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="AllBudgetAllocations" xml:space="preserve">
+    <value>All Budget Allocations</value>
+  </data>
+  <data name="AllBudgets" xml:space="preserve">
+    <value>All Budgets</value>
+  </data>
+  <data name="AllExpenses" xml:space="preserve">
+    <value>All Expenses</value>
+  </data>
+  <data name="AllIncomes" xml:space="preserve">
+    <value>All Incomes</value>
+  </data>
+  <data name="AllDepartments" xml:space="preserve">
+    <value>All Departments</value>
+  </data>
+  <data name="AllProjects" xml:space="preserve">
+    <value>All Projects</value>
+  </data>
+  <data name="AllSubProjects" xml:space="preserve">
+    <value>All Sub-Projects</value>
+  </data>
+  <data name="OrdersSearch" xml:space="preserve">
+    <value>Orders Search</value>
   </data>
 </root>

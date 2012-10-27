@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<DB.Department>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Loc.Dic.AllDepartments;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllDepartments";
 }
-
-<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")

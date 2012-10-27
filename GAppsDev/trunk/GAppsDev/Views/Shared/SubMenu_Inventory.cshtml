@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = Loc.Dic.Inventory;
+}
+
+@{
+    ViewBag.CurrentUser = (GAppsDev.OpenIdService.OpenIdUser)Session["User"];
+}
+<nav>
+    <div id="mainMenu">
+        <ul>
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
+            {
+                <li>
+                    @Html.ActionLink(Loc.Dic.InventoryList, "index", "Inventory", null, new { id = "AllInventory" })
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

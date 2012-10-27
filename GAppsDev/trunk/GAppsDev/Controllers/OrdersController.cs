@@ -149,12 +149,15 @@ namespace GAppsDev.Controllers
                             Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
                             if (order == DEFAULT_DESC_ORDER)
-                                orderFunction = x => orders.OrderBy(x);
-                            else
                                 orderFunction = x => orders.OrderByDescending(x);
+                            else
+                                orderFunction = x => orders.OrderBy(x);
 
                             switch (sortby)
                             {
+                                case "number":
+                                    orders = orderFunction(x => x.CreationDate);
+                                    break;
                                 case "creation":
                                     orders = orderFunction(x => x.CreationDate);
                                     break;
@@ -630,8 +633,6 @@ namespace GAppsDev.Controllers
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 using (BudgetsExpensesRepository budgetsExpensesRepository = new BudgetsExpensesRepository())
-
-
                 {
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
 
@@ -642,12 +643,13 @@ namespace GAppsDev.Controllers
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BudgetsPermissionsId == permission.Id)
+                                .Where(x => x.BudgetsPermissionsId == permission.Budgets_Permissions.Id)
                                 .Select( x => x.Budgets_ExpensesToIncomes)
                                 .ToList()
                                 );
                     }
 
+                    /*
                     List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
                     foreach(var allocation in allocations)
                     {
@@ -657,8 +659,9 @@ namespace GAppsDev.Controllers
                                 .ToList()
                                 );
                     }
+                    */
 
-                    ViewBag.BudgetExpensesList = new SelectList(expenses.ToList(), "id", "Amount");
+                    ViewBag.BudgetAllocationId = new SelectList(allocations, "id", "Amount");
                 }
 
                 return View();
@@ -780,8 +783,37 @@ namespace GAppsDev.Controllers
             {
                 Order order;
                 using (OrdersRepository orderRep = new OrdersRepository())
+                using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
+                using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
                     order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+
+                    List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
+                    List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+
+                    foreach (var permission in permissions)
+                    {
+                        allocations.AddRange(
+                            budgetsPermissionsToAllocationRepository.GetList()
+                                .Where(x => x.BudgetsPermissionsId == permission.Budgets_Permissions.Id)
+                                .Select(x => x.Budgets_ExpensesToIncomes)
+                                .ToList()
+                                );
+                    }
+
+                    /*
+                    List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
+                    foreach(var allocation in allocations)
+                    {
+                        expenses.AddRange(
+                            budgetsExpensesRepository.GetList()
+                                .Where(x => x.Id == allocation.ExpenseId)
+                                .ToList()
+                                );
+                    }
+                    */
+
+                    ViewBag.BudgetAllocationId = new SelectList(allocations, "id", "Amount", order.BudgetAllocationId);
                 }
 
                 if (order.UserId == CurrentUser.UserId)
@@ -902,7 +934,7 @@ namespace GAppsDev.Controllers
                                                 noErrors = false;
                                         }
 
-                                        if (order.Notes != orderFromDatabase.Notes)
+                                        if (order.Notes != orderFromDatabase.Notes || order.BudgetAllocationId != orderFromDatabase.BudgetAllocationId)
                                         {
                                             using (OrdersRepository ordersRep = new OrdersRepository())
                                             {
@@ -1356,6 +1388,13 @@ namespace GAppsDev.Controllers
                 List<Order> matchingOrders;
                 List<Order> TextMatchOrders = new List<Order>();
 
+                ViewBag.UserId = model.UserId;
+                ViewBag.StatusId = model.StatusId;
+                ViewBag.SupplierId = model.SupplierId;
+                ViewBag.HideUserField = model.HideUserField;
+                ViewBag.HideStatusField = model.HideStatusField;
+                ViewBag.HideSupplierField = model.HideSupplierField;
+
                 using (OrdersRepository ordersRep = new OrdersRepository())
                 using (UsersRepository usersRep = new UsersRepository())
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
@@ -1375,6 +1414,9 @@ namespace GAppsDev.Controllers
                         ordersQuery = ordersQuery.Where(x => x.UserId == CurrentUser.UserId);
                         ViewBag.UserId = CurrentUser.UserId;
                     }
+
+                    if (model.BudgetId.HasValue && model.BudgetId.Value != -1)
+                        ordersQuery = ordersQuery.Where(x => x.Budgets_ExpensesToIncomes.BudgetId == model.BudgetId.Value);
 
                     if (model.OrderNumber.HasValue && model.OrderNumber.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.OrderNumber == model.OrderNumber.Value);
@@ -1427,11 +1469,13 @@ namespace GAppsDev.Controllers
                         }
                     }
 
-                    return View(TextMatchOrders);
+                    model.Matches = TextMatchOrders;
+                    return View(model);
                 }
                 else
                 {
-                    return View(matchingOrders);
+                    model.Matches = matchingOrders;
+                    return View(model);
                 }
             }
             else
@@ -1441,7 +1485,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Partial1()
+        public ActionResult SubMenu()
         {
             return PartialView();
         }
@@ -1485,17 +1529,20 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult SearchForm(bool isExpanding, bool isCollapsed, int? userId = null, int? statusId = null, int? supplierId = null)
+        public ActionResult SearchForm(OrdersSearchValuesModel model, bool isExpanding, bool isCollapsed, int? userId = null, int? statusId = null, int? supplierId = null, bool hideUserField = false, bool hideStatusField = false, bool hideSupplierField = false)
         {
-            OrdersSearchFormModel model = new OrdersSearchFormModel();
-
             using (UsersRepository usersRep = new UsersRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
             using (SuppliersRepository suppliersRep = new SuppliersRepository())
             using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
             {
                 List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "כל המזמינים" } };
                 usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                 model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
+
+                List<SelectListItemDB> budgetsAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "כל התקציבים" } };
+                budgetsAsSelectItems.AddRange(budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new { Id = x.Id, Name = x.Year }).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() }));
+                model.BudgetsList = new SelectList(budgetsAsSelectItems, "Id", "Name");
 
                 List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = "כל הספקים" } };
                 suppliersSelectList.AddRange(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList());
@@ -1511,6 +1558,9 @@ namespace GAppsDev.Controllers
             ViewBag.UserId = userId;
             ViewBag.StatusId = statusId;
             ViewBag.SupplierId = supplierId;
+            ViewBag.HideUserField = hideUserField;
+            ViewBag.HideStatusField = hideStatusField;
+            ViewBag.HideSupplierField = hideSupplierField;
             return PartialView(model);
         }
 

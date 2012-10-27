@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<DB.Inventory>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Loc.Dic.Inventory;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageName = "Inventory";
+    ViewBag.SubPageName = "AllInventory";
 }
-
-<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")

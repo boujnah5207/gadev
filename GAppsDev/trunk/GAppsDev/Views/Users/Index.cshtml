@@ -1,22 +1,14 @@
 ﻿@model GAppsDev.Models.UserModels.AllUsersModel
 
 @{
-    ViewBag.Title = "ניהול משתמשים";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.UsersManagment;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
 
 @section ExtraScripts{
     <script src="~/Scripts/SearchScript.js"></script>
-}
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
 }
 
 <fieldset id="userLimit">

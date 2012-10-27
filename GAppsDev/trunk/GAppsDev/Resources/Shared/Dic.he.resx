@@ -186,9 +186,6 @@
   <data name="MyOrders" xml:space="preserve">
     <value>ההזמנות שלי</value>
   </data>
-  <data name="NoOrdersFound" xml:space="preserve">
-    <value>לא נמצאו הזמנות</value>
-  </data>
   <data name="NoOrdersWereFound" xml:space="preserve">
     <value>לא נמצאו הזמנות</value>
   </data>
@@ -217,7 +214,7 @@
     <value>הרשאה</value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>סוגי הרשאות תקציביות</value>
+    <value>הרשאות תקציביות</value>
   </data>
   <data name="PermissionsAllocations" xml:space="preserve">
     <value>הגדרת הרשאות תקציביות</value>
@@ -311,5 +308,35 @@
   </data>
   <data name="InventoryList" xml:space="preserve">
     <value>רשימת מלאי</value>
+  </data>
+  <data name="BudgetAllocation" xml:space="preserve">
+    <value>הקצאה תקציבית</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>תוצאות חיפוש</value>
+  </data>
+  <data name="AllBudgetAllocations" xml:space="preserve">
+    <value>כל ההוצאות התקציביות</value>
+  </data>
+  <data name="AllBudgets" xml:space="preserve">
+    <value>כל התקציבים</value>
+  </data>
+  <data name="AllExpenses" xml:space="preserve">
+    <value>כל ההוצאות</value>
+  </data>
+  <data name="AllIncomes" xml:space="preserve">
+    <value>כל ההכנסות</value>
+  </data>
+  <data name="AllDepartments" xml:space="preserve">
+    <value>כל המחלקות</value>
+  </data>
+  <data name="AllProjects" xml:space="preserve">
+    <value>כל הפרוייקטים</value>
+  </data>
+  <data name="AllSubProjects" xml:space="preserve">
+    <value>כל תתי הפרוייקטים</value>
+  </data>
+  <data name="OrdersSearch" xml:space="preserve">
+    <value>חיפוש הזמנות</value>
   </data>
 </root>

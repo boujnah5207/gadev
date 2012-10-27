@@ -1,26 +1,17 @@
-﻿@Html.Action("Partial1")
-
-@model IEnumerable<DB.Order>
+﻿@model IEnumerable<DB.Order>
 
 @{
-    ViewBag.Title = Loc.Dic.Procurement;
+    ViewBag.Title = Loc.Dic.MyOrders;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "MyOrders";
 }
 
 @section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/SearchScript.js"></script>
-} 
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
 }
 
-@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.UserId })
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.UserId, hideUserField = true })
 
 <p>
     @Html.ActionLink(Loc.Dic.CreateNewOrder, "Create")
@@ -32,5 +23,5 @@
 }
 else
 {
-    <span class="no-properties">@Loc.Dic.NoOrdersFound</span> 
+    <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
 }
