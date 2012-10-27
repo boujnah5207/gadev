@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "שגיאה";
+    ViewBag.PageName = "Error";
+    ViewBag.NoSubMenu = true;
 
     string HtmlNewLine = System.Environment.NewLine + "<br />";
     string HtmlErrorMessage = Model.ErrorMessage.Replace(System.Environment.NewLine, HtmlNewLine);
