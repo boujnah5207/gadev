@@ -578,20 +578,28 @@ namespace GAppsDev.Controllers
         }
 
         //[OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(int id, string languageCode = "en")
+        public ActionResult PrintOrderToScreen(int id, string languageCode = "he")
         {
             CultureInfo ci = new CultureInfo(languageCode);
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
 
-            Order order = db.Orders.Single(o => o.Id == id);
-            if (order == null)
+            PrintOrderModel model = new PrintOrderModel();
+
+            using(OrdersRepository ordersRep = new OrdersRepository())
+            using(OrderToItemRepository orderItemsRep = new OrderToItemRepository())
+            {
+                model.Order = ordersRep.GetEntity(id, "User", "Company", "Supplier");
+                model.Items = orderItemsRep.GetList("Orders_Items").Where( x => x.OrderId == id).ToList();
+            }
+
+            if (model.Order == null)
             {
                 return HttpNotFound();
             }
 
-            return View(order);
+            return View(model);
         }
 
         [OpenIdAuthorize]
