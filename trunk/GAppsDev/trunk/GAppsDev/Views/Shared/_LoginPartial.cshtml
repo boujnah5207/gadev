@@ -1,7 +1,7 @@
 ﻿@if (Session["User"] != null)
 {
     <text>
-        @Loc.Dic.Welcome, @Html.ActionLink((string)ViewBag.CurrentUser.FullName,"LanguageSet","Users",null,null) ! @Loc.Dic.Company @Html.ActionLink((string)ViewBag.CurrentUser.CompanyName, "Details", "Companies", new { id = (int)ViewBag.CurrentUser.CompanyId }, null) |
+        @Loc.Dic.Welcome, @Html.ActionLink((string)ViewBag.CurrentUser.FullName,"LanguageSet","Users",null,null) ! @Loc.Dic.Department @ViewBag.CurrentUser.DepartmentName, @Loc.Dic.Company @Html.ActionLink((string)ViewBag.CurrentUser.CompanyName, "Details", "Companies", new { id = (int)ViewBag.CurrentUser.CompanyId }, null) |
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
             <a href="javascript:document.getElementById('logoutForm').submit()">@Loc.Dic.Disconnect</a>
 }
