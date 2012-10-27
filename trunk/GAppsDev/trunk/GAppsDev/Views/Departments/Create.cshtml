@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = "Create";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "Departments";
+}
+    
+        
 }
 
 <h2>Create</h2>
@@ -13,14 +18,6 @@
         <legend>Department</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CompanyId, "Company")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("CompanyId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CompanyId)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
@@ -28,13 +25,6 @@
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreationDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreationDate)
-            @Html.ValidationMessageFor(model => model.CreationDate)
-        </div>
 
         <p>
             <input type="submit" value="Create" />
