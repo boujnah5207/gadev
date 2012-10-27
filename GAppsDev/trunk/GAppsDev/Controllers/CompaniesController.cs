@@ -26,7 +26,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            return View(db.Companies.ToList().Where(x=>x.Id == CurrentUser.CompanyId));
+            return View(db.Companies.Where(x => x.Id == CurrentUser.CompanyId).ToList());
         }
 
         //

@@ -22,7 +22,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var budgets_expenses = db.Budgets_Expenses.Include("Department").Include("Projects_ParentProject").Include("Projects_SubProject");
+            var budgets_expenses = db.Budgets_Expenses.Include("Department").Include("Projects_ParentProject").Include("Projects_SubProject").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(budgets_expenses.ToList());
         }
 

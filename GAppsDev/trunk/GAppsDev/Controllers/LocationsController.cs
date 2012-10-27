@@ -9,7 +9,7 @@ using DB;
 
 namespace GAppsDev.Controllers
 {
-    public class LocationsController : Controller
+    public class LocationsController : BaseController
     {
         private Entities db = new Entities();
 
@@ -18,7 +18,7 @@ namespace GAppsDev.Controllers
 
         public ActionResult Index()
         {
-            var locations = db.Locations.Include("Company");
+            var locations = db.Locations.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(locations.ToList());
         }
 

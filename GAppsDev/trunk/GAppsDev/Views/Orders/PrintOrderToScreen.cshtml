@@ -7,7 +7,11 @@
 
 @section ExtraCss{
     <link href="~/Content/site.css" rel="stylesheet" />
-    
+    <style>
+        body { border:none; }
+        .itemTitle { text-decoration:underline }
+        .itemDetail { margin: 0 5px }
+    </style>
     @if (ViewBag.LanguageCode == "he" || ViewBag.LanguageCode == "ar")
     {
         <link href="~/Content/rtl.css" rel="stylesheet" />
@@ -20,7 +24,6 @@
 
 <fieldset>
     <legend>@Loc.Dic.ProcurementOrder</legend>
-    <br />
 
     <span class="bold">@Loc.Dic.CompanyName:</span> <span>@Html.DisplayFor(model => model.Order.Company.Name)</span>
     <br />
@@ -34,7 +37,7 @@
     <br />
     <span class="bold">@Loc.Dic.Notes:</span><br />
     <span>@Html.DisplayFor(model => model.Order.Notes)</span>
-    <br />
+    <br /><br />
 
     <fieldset>
         <legend>@Loc.Dic.OrderItems</legend>
@@ -42,14 +45,16 @@
         @foreach (var item in Model.Items)
         {
             <div class="orderItemContainer">
-                <span class="bold">@Loc.Dic.OrderItemTitle:</span> @item.Orders_Items.Title
-                <span class="bold">@Loc.Dic.OrderItemSubTitle:</span> @item.Orders_Items.SubTitle
-                <span class="bold">@Loc.Dic.Quantity:</span> @item.Quantity
-                <span class="bold">@Loc.Dic.SingleItemPrice:</span> @item.SingleItemPrice
-                <span class="bold">@Loc.Dic.Total:</span> @(item.SingleItemPrice * item.Quantity)
+                &nbsp;&nbsp;<span class="bold itemTitle">@Loc.Dic.OrderItemTitle:</span> <span>@item.Orders_Items.Title</span><br />
+                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.OrderItemSubTitle:</span> <span>@item.Orders_Items.SubTitle</span><br />
+                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.Quantity:</span> <span>@item.Quantity</span><br />
+                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.SingleItemPrice:</span> <span>@item.SingleItemPrice</span><br />
+                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.Total:</span> <span>@(item.SingleItemPrice * item.Quantity)</span><br />
             </div>
+            <br />
         }
     </fieldset>
+    <br />
 
     <div class="floatToSide">
         <span class="bold">@Loc.Dic.Price:</span> <span>@Html.DisplayFor(model => model.Order.Price)</span>

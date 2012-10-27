@@ -25,7 +25,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var budgets = db.Budgets.Include("Company");
+            var budgets = db.Budgets.Include("Company").Where(x => x.Id == CurrentUser.CompanyId);
             return View(budgets.ToList());
         }
 

@@ -23,7 +23,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            return View(db.Suppliers.ToList());
+            return View(db.Suppliers.Where(x => x.CompanyId == CurrentUser.CompanyId).ToList());
         }
 
         //
