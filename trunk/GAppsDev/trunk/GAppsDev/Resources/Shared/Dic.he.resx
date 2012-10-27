@@ -339,4 +339,22 @@
   <data name="OrdersSearch" xml:space="preserve">
     <value>חיפוש הזמנות</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>מחק</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>פרטים</value>
+  </data>
+  <data name="PrintOrder" xml:space="preserve">
+    <value>הדפס הזמנה</value>
+  </data>
+  <data name="UpdateStatus" xml:space="preserve">
+    <value>עדכן סטאטוס</value>
+  </data>
+  <data name="UploadInvoice" xml:space="preserve">
+    <value>העלאת חשבונית</value>
+  </data>
+  <data name="UploadReceipt" xml:space="preserve">
+    <value>העלאת קבלה</value>
+  </data>
 </root>

@@ -87,38 +87,38 @@
                 @Html.DisplayTextFor(modelItem => item.CreationDate)
             </td>
             <td>
-                @Html.ActionLink("הצג", "Details", new { id = item.Id })
+                @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
                 {
-                    <text>|</text> @Html.ActionLink("ערוך", "Edit", new { id = item.Id })
-                    <text>|</text> @Html.ActionLink("מחק", "Delete", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersApprover))
                     {
-                    <text>|</text> @Html.ActionLink("עדכן סטאטוס", "ModifyStatus", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.UpdateStatus, "ModifyStatus", new { id = item.Id })
                     }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
                 {
-                    <text>|</text> @Html.ActionLink("הדפס הזמנה", "DownloadOrderAsPdf", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                     {
-                    <text>|</text> @Html.ActionLink("העלאת חשבונית", "UploadInvoiceFile", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
                     }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingReceipt)
                 {
-                    <text>|</text> @Html.ActionLink("הדפס הזמנה", "DownloadOrderAsPdf", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                     {
                     <text>|</text> 
-                        using (Html.BeginForm("UploadReceiptFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        using (Html.BeginForm(Loc.Dic.UploadReceipt, "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
-                            <text>העלאת קבלה</text> 
-                    <input type="hidden" name="orderId" value="@item.Id" /> 
-                    <input type="file" name="file"  />
-                    <input type="submit" value="OK" />
+                            <text>Loc.Dic.UploadReceipt</text> 
+                            <input type="hidden" name="orderId" value="@item.Id" /> 
+                            <input type="file" name="file"  />
+                            <input type="submit" value="OK" />
                         }
                     }
                 }
