@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model GAppsDev.Models.PrintOrderModel
 
 @{
     Layout = "~/Views/Shared/_EmptyLayout.cshtml";
@@ -6,65 +6,74 @@
 }
 
 <fieldset>
-    <legend>Order</legend>
+    <legend>@Loc.Dic.ProcurementOrder</legend>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CompanyId)
+         @Loc.Dic.CompanyName:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CompanyId)
+        @Html.DisplayFor(model => model.Order.Company.Name)
     </div>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserId)
+         @Loc.Dic.CompanyNumber:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UserId)
+        @Html.DisplayFor(model => model.Order.Company.CompanyNumber)
     </div>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
+         @Loc.Dic.OrderCreatorName:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
+        @Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)
     </div>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SupplierId)
+         @Loc.Dic.OrderDate:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.SupplierId)
+        @Model.Order.CreationDate.ToShortDateString()
     </div>
+    <br />
+
+    <span class="bold"> @Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => model.Order.Supplier.Name)</span>
+    <br />
+
+    <fieldset>
+        <legend>@Loc.Dic.OrderItems</legend>
+
+        @foreach (var item in Model.Items)
+        {
+            <div class="orderItemContainer">
+                <span class="bold">@Loc.Dic.OrderItemTitle:</span> @item.Orders_Items.Title
+                <span class="bold">@Loc.Dic.OrderItemSubTitle:</span> @item.Orders_Items.SubTitle
+                <span class="bold">@Loc.Dic.Quantity:</span> @item.Quantity
+                <span class="bold">@Loc.Dic.SingleItemPrice:</span> @item.SingleItemPrice
+                <span class="bold">@Loc.Dic.Total:</span> @(item.SingleItemPrice * item.Quantity)
+            </div>
+        }
+    </fieldset>
+
+    
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Notes)
+         @Loc.Dic.Price:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Notes)
+        @Html.DisplayFor(model => model.Order.Price)
     </div>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Price)
+         @Loc.Dic.Notes:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Price)
+        @Html.DisplayFor(model => model.Order.Notes)
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.StatusId)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.StatusId)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.OrderApproverNotes)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OrderApproverNotes)
-    </div>
+    <br />
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

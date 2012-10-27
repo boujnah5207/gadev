@@ -357,4 +357,37 @@
   <data name="UploadReceipt" xml:space="preserve">
     <value>Upload Receipt</value>
   </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Order Date</value>
+  </data>
+  <data name="OrderItems" xml:space="preserve">
+    <value>Order Items</value>
+  </data>
+  <data name="OrderItemSubTitle" xml:space="preserve">
+    <value>Sub Title</value>
+  </data>
+  <data name="OrderItemTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ProcurementOrder" xml:space="preserve">
+    <value>Procurement Order</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="SingleItemPrice" xml:space="preserve">
+    <value>Single Item Price</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
 </root>

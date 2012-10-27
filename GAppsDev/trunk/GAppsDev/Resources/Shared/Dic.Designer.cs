@@ -250,6 +250,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company Name.
+        /// </summary>
+        public static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Number.
         /// </summary>
         public static string CompanyNumber {
@@ -475,6 +484,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Approver Notes.
         /// </summary>
         public static string OrderApproverNotes {
@@ -493,11 +511,47 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order Date.
+        /// </summary>
+        public static string OrderDate {
+            get {
+                return ResourceManager.GetString("OrderDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Details.
         /// </summary>
         public static string OrderDetails {
             get {
                 return ResourceManager.GetString("OrderDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Items.
+        /// </summary>
+        public static string OrderItems {
+            get {
+                return ResourceManager.GetString("OrderItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub Title.
+        /// </summary>
+        public static string OrderItemSubTitle {
+            get {
+                return ResourceManager.GetString("OrderItemSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string OrderItemTitle {
+            get {
+                return ResourceManager.GetString("OrderItemTitle", resourceCulture);
             }
         }
         
@@ -601,11 +655,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Procurement Order.
+        /// </summary>
+        public static string ProcurementOrder {
+            get {
+                return ResourceManager.GetString("ProcurementOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Projects.
         /// </summary>
         public static string Projects {
             get {
                 return ResourceManager.GetString("Projects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         
@@ -651,6 +723,15 @@ namespace Loc {
         public static string Show {
             get {
                 return ResourceManager.GetString("Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Single Item Price.
+        /// </summary>
+        public static string SingleItemPrice {
+            get {
+                return ResourceManager.GetString("SingleItemPrice", resourceCulture);
             }
         }
         
@@ -727,6 +808,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Status.
         /// </summary>
         public static string UpdateStatus {
@@ -750,6 +840,15 @@ namespace Loc {
         public static string UploadReceipt {
             get {
                 return ResourceManager.GetString("UploadReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

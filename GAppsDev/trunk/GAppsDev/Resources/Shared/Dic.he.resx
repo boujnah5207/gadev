@@ -357,4 +357,37 @@
   <data name="UploadReceipt" xml:space="preserve">
     <value>העלאת קבלה</value>
   </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>שם חברה</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>הזמנה</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>תאריך הזמנה</value>
+  </data>
+  <data name="OrderItems" xml:space="preserve">
+    <value>פריטי הזמנה</value>
+  </data>
+  <data name="OrderItemSubTitle" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="OrderItemTitle" xml:space="preserve">
+    <value>שם פריט</value>
+  </data>
+  <data name="ProcurementOrder" xml:space="preserve">
+    <value>הזמנת רכש</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="SingleItemPrice" xml:space="preserve">
+    <value>מחיר לפריט יחיד</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>סך הכל</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>שם משתמש</value>
+  </data>
 </root>
