@@ -277,11 +277,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Departments.
         /// </summary>
         public static string Departments {
             get {
                 return ResourceManager.GetString("Departments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
             }
         }
         
@@ -565,6 +583,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print Order.
+        /// </summary>
+        public static string PrintOrder {
+            get {
+                return ResourceManager.GetString("PrintOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Procurement.
         /// </summary>
         public static string Procurement {
@@ -696,6 +723,33 @@ namespace Loc {
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Status.
+        /// </summary>
+        public static string UpdateStatus {
+            get {
+                return ResourceManager.GetString("UpdateStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Invoice.
+        /// </summary>
+        public static string UploadInvoice {
+            get {
+                return ResourceManager.GetString("UploadInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Receipt.
+        /// </summary>
+        public static string UploadReceipt {
+            get {
+                return ResourceManager.GetString("UploadReceipt", resourceCulture);
             }
         }
         
