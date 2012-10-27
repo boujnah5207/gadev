@@ -390,4 +390,7 @@
   <data name="UserName" xml:space="preserve">
     <value>שם משתמש</value>
   </data>
+  <data name="Department" xml:space="preserve">
+    <value>אגף</value>
+  </data>
 </root>
