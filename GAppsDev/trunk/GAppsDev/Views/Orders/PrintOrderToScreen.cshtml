@@ -5,43 +5,35 @@
     ViewBag.Title = "PrintOrderToScreen";
 }
 
+@section ExtraCss{
+    <link href="~/Content/site.css" rel="stylesheet" />
+    
+    @if (ViewBag.LanguageCode == "he" || ViewBag.LanguageCode == "ar")
+    {
+        <link href="~/Content/rtl.css" rel="stylesheet" />
+    }
+    else if (ViewBag.LanguageCode == "en" || ViewBag.LanguageCode == "ru")
+    {
+        <link href="~/Content/ltr.css" rel="stylesheet" />
+    }
+}
+
 <fieldset>
     <legend>@Loc.Dic.ProcurementOrder</legend>
     <br />
 
-    <div class="display-label">
-         @Loc.Dic.CompanyName:
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Company.Name)
-    </div>
+    <span class="bold">@Loc.Dic.CompanyName:</span> <span>@Html.DisplayFor(model => model.Order.Company.Name)</span>
     <br />
-
-    <div class="display-label">
-         @Loc.Dic.CompanyNumber:
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Company.CompanyNumber)
-    </div>
+    <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => model.Order.Company.CompanyNumber)</span>
     <br />
-
-    <div class="display-label">
-         @Loc.Dic.OrderCreatorName:
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)
-    </div>
+    <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)</span>
     <br />
-
-    <div class="display-label">
-         @Loc.Dic.OrderDate:
-    </div>
-    <div class="display-field">
-        @Model.Order.CreationDate.ToShortDateString()
-    </div>
+    <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.Order.CreationDate.ToShortDateString()</span>
     <br />
-
-    <span class="bold"> @Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => model.Order.Supplier.Name)</span>
+    <span class="bold">@Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => model.Order.Supplier.Name)</span>
+    <br />
+    <span class="bold">@Loc.Dic.Notes:</span><br />
+    <span>@Html.DisplayFor(model => model.Order.Notes)</span>
     <br />
 
     <fieldset>
@@ -59,21 +51,8 @@
         }
     </fieldset>
 
-    
-
-    <div class="display-label">
-         @Loc.Dic.Price:
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Price)
-    </div>
-    <br />
-
-    <div class="display-label">
-         @Loc.Dic.Notes:
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Notes)
+    <div class="floatToSide">
+        <span class="bold">@Loc.Dic.Price:</span> <span>@Html.DisplayFor(model => model.Order.Price)</span>
     </div>
     <br />
 </fieldset>
