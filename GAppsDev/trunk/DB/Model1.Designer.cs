@@ -59,6 +59,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToPermissions_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Budgets_UsersToPermissions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToPermissions), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Budget_Deprtments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Department), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
@@ -5313,6 +5314,28 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Languages", "PendingUser")]
+        public EntityCollection<PendingUser> PendingUsers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Languages", "PendingUser");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Languages", "PendingUser", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Languages", "User")]
         public EntityCollection<User> Users
         {
@@ -6773,7 +6796,8 @@ namespace DB
         /// <param name="email">Initial value of the Email property.</param>
         /// <param name="roles">Initial value of the Roles property.</param>
         /// <param name="departmentId">Initial value of the DepartmentId property.</param>
-        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles, global::System.Int32 departmentId)
+        /// <param name="languageId">Initial value of the LanguageId property.</param>
+        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles, global::System.Int32 departmentId, global::System.Int32 languageId)
         {
             PendingUser pendingUser = new PendingUser();
             pendingUser.Id = id;
@@ -6782,6 +6806,7 @@ namespace DB
             pendingUser.Email = email;
             pendingUser.Roles = roles;
             pendingUser.DepartmentId = departmentId;
+            pendingUser.LanguageId = languageId;
             return pendingUser;
         }
 
@@ -6959,6 +6984,30 @@ namespace DB
         private global::System.Int32 _DepartmentId;
         partial void OnDepartmentIdChanging(global::System.Int32 value);
         partial void OnDepartmentIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 LanguageId
+        {
+            get
+            {
+                return _LanguageId;
+            }
+            set
+            {
+                OnLanguageIdChanging(value);
+                ReportPropertyChanging("LanguageId");
+                _LanguageId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LanguageId");
+                OnLanguageIdChanged();
+            }
+        }
+        private global::System.Int32 _LanguageId;
+        partial void OnLanguageIdChanging(global::System.Int32 value);
+        partial void OnLanguageIdChanged();
 
         #endregion
 
@@ -6999,6 +7048,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_PendingUsers_Companies", "Company", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Languages", "Language")]
+        public Language Language
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Language>("designModel.FK_PendingUsers_Languages", "Language").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Language>("designModel.FK_PendingUsers_Languages", "Language").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Language> LanguageReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Language>("designModel.FK_PendingUsers_Languages", "Language");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Language>("designModel.FK_PendingUsers_Languages", "Language", value);
                 }
             }
         }

@@ -111,17 +111,13 @@ namespace Mvc4.OpenId.Sample.Security
                                 LastLogInTime = DateTime.Now,
                                 Roles = pendingUser.Roles,
                                 OrdersApproverId = pendingUser.OrdersApproverId,
+                                LanguageId = pendingUser.LanguageId,
                                 IsActive = true
                             };
 
-                            try
-                            {
-                                userRep.Create(newUser);
-                            }
-                            catch
-                            {
+
+                            if (!userRep.Create(newUser))
                                 return logInResult;
-                            }
 
                             logInResult.User.UserId = newUser.Id;
                             pendingUserRep.Delete(pendingUser.Id);

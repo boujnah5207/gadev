@@ -15,6 +15,7 @@ using Rotativa;
 using BaseLibraries;
 using System.IO;
 using GAppsDev.Models.Search;
+using System.Globalization;
 
 namespace GAppsDev.Controllers
 {
@@ -576,20 +577,21 @@ namespace GAppsDev.Controllers
             else return Error(Errors.NO_PERMISSION);
         }
 
-        [OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(int id)
+        //[OpenIdAuthorize]
+        public ActionResult PrintOrderToScreen(int id, string languageCode = "en")
         {
-            if (Authorized(RoleType.OrdersWriter))
-            {
-                Order order = db.Orders.Single(o => o.Id == id);
-                if (order == null)
-                {
-                    return HttpNotFound();
-                }
+            CultureInfo ci = new CultureInfo(languageCode);
+            System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+            CultureInfo.CreateSpecificCulture(ci.Name);
 
-                return View(order);
+            Order order = db.Orders.Single(o => o.Id == id);
+            if (order == null)
+            {
+                return HttpNotFound();
             }
-            else return Error(Errors.NO_PERMISSION);
+
+            return View(order);
         }
 
         [OpenIdAuthorize]
@@ -601,7 +603,8 @@ namespace GAppsDev.Controllers
             cookies.Add(cookieName, cookie.Value);
 
             Order order = db.Orders.Single(o => o.Id == id);
-            return new ViewAsPdf("PrintOrderToScreen", order) { FileName = "Invoice.pdf" };
+            return new ActionAsPdf("PrintOrderToScreen", new { id = id, languageCode = CurrentUser.LanguageCode }) { FileName = "Invoice.pdf" };
+            //return new ViewAsPdf("PrintOrderToScreen", order) { FileName = "Invoice.pdf" };
             //return new ViewAsPdf("PrintOrderToScreen", new { id = id }) { FileName = "Invoice.pdf", Cookies = cookies };
         }
 
