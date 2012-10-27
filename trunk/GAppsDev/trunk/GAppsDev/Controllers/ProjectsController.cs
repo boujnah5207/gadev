@@ -22,7 +22,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var projects_parentproject = db.Projects_ParentProject.Include("Company");
+            var projects_parentproject = db.Projects_ParentProject.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(projects_parentproject.ToList());
         }
 
