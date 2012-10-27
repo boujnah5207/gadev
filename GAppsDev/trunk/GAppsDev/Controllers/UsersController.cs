@@ -445,14 +445,17 @@ namespace GAppsDev.Controllers
                                 }
                             }
 
-                            user.Roles = (int)combinedRoles;
-                            user.CompanyId = userFromDatabase.CompanyId;
-                            user.IsActive = userFromDatabase.IsActive;
-                            user.LastLogInTime = userFromDatabase.LastLogInTime;
-                            user.CreationTime = userFromDatabase.CreationTime;
+                            userFromDatabase.Roles = (int)combinedRoles;
+                            userFromDatabase.CompanyId = userFromDatabase.CompanyId;
+                            userFromDatabase.IsActive = userFromDatabase.IsActive;
+                            userFromDatabase.LastLogInTime = userFromDatabase.LastLogInTime;
+                            userFromDatabase.CreationTime = userFromDatabase.CreationTime;
 
-                            userRep.Update(user);
-                            return RedirectToAction("Index");
+                            User updatedUser = userRep.Update(userFromDatabase);
+                            if (updatedUser != null)
+                                return RedirectToAction("Index");
+                            else
+                                return Error(Errors.DATABASE_ERROR);
                         }
                         else
                         {
