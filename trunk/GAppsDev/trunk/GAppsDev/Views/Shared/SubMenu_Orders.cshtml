@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.CurrentUser = (GAppsDev.OpenIdService.OpenIdUser)Session["User"];
+}
+<nav>
+    <div id="mainMenu">
+        <ul>
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
+            {
+                <li>@Html.ActionLink(Loc.Dic.MyOrders, "MyOrders", "Orders", null, new { id = "MyOrdersLink" })</li>
+            }
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
+            {
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders", null, new { id = "AllOrdersLink" })</li>
+            }
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
+            {
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders", null, new { id = "PendingOrdersLink" })</li>
+            }
+        </ul>
+    </div>
+</nav>

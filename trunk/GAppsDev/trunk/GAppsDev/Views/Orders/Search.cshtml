@@ -1,37 +1,29 @@
-﻿@model IEnumerable<DB.Order>
+﻿@model GAppsDev.Models.Search.OrdersSearchValuesModel
 
 @{
-    ViewBag.Title = "כל ההזמנות";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.OrdersSearch;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "AllOrders";
 }
 
 @section ExtraScripts{
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
-
-@Html.Action("SearchForm", new { isExpanding = false, isCollapsed= false, userId = ViewBag.UserId })
+@Html.Action("SearchForm", new { model = Model, isExpanding = false, isCollapsed= false, userId = ViewBag.UserId, statusId = ViewBag.StatusId, supplierId = ViewBag.SupplierId, hideUserField = ViewBag.HideUserField, hideStatusField = ViewBag.HideStatusField, hideSupplierField = ViewBag.HideSupplierField })
 
 @if(Model != null)
 {
     <fieldset>
-        <legend>תוצאות החיפוש</legend>
-    @if (Model.Count() != 0)
+        <legend>@Loc.Dic.SearchResults</legend>
+    @if (Model.Matches.Count() != 0)
     { 
-        @Html.Action("SimpleList", new { orders = Model })
+        @Html.Action("SimpleList", new { orders = Model.Matches })
     }
     else
     {
-        <span class="no-properties">לא נמצאו הזמנות.</span> 
+        <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
     }
     </fieldset>
 }

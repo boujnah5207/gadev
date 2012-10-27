@@ -1,22 +1,13 @@
 ﻿@model DB.Order
 
 @{
-    ViewBag.Title = "הזמנה חדשה";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "הזמנה חדשה";
+    ViewBag.noSubMenu = true;
 }
 
 @section ExtraScripts{
     <script src="~/Scripts/createOrderScript.js"></script>
-}
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
 }
 
 <fieldset>
@@ -36,6 +27,9 @@
     {
         @Html.ValidationSummary(true)
 
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId")
+        <br /><br />
+        
         <input id="SupplierId" name="SupplierId" type="hidden" value="" />
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
@@ -49,7 +43,7 @@
                 מחיר ליחידה :
                 <input style="width: 50px" id="itemPrice" type="text" />
                 מחיר כולל :
-                <input class="display" id="itemFinalPrice" type="text" disabled="disabled" />
+                <input class="display" id="itemFinalPrice" type="text" value="0" disabled="disabled" />
                 <input id="AddNewItemButton" type="button" value="הוסף" />
                 <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()" />
             </div>
@@ -63,8 +57,9 @@
             </div>
 
         </fieldset>
+        <br />
         <span>מחיר כולל: </span>
-        <input class="display" type="text" id="totalOrderPrice" disabled="disabled" />
+        <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
         <div class="editor-label">
@@ -74,15 +69,7 @@
             @Html.TextAreaFor(model => model.Notes)
             @Html.ValidationMessageFor(model => model.Notes)
         </div>
-        <br />
-        <fieldset>
-            <legend>בחירת הקצאה תקציבית</legend>
-            @Html.DropDownList("BudgetExpensesId", (SelectList)ViewBag.BudgetExpensesList)
-            BudgetAllocationId
-        </fieldset>
-        <br />
         
-
         <p>
             <input type="submit" value="שלח הזמנה" />
         </p>

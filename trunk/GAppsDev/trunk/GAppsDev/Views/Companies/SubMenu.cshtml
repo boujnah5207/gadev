@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.CurrentUser = (GAppsDev.OpenIdService.OpenIdUser)Session["User"];
+}
+<nav>
+    <div id="mainMenu">
+        <ul>
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
+            {
+                <li>@Html.ActionLink(Loc.Dic.Departments, "Index", "Departments", null, new { id = "AllDepartmentsLink" })</li>
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.Projects, "Index", "Projects", null, new { id = "AllProjectsLink" })</li>
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.SubProject, "Index", "SubProjects", null, new { id = "AllSubProjectsLink" })</li>
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.UsersManagment, "Index", "Users", null, new { id = "AllUsersLink" })</li>
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.Permissions, "Index", "Permissions", null, new { id = "AllPermissionsLink" })</li>
+            }
+        </ul>
+    </div>
+</nav>

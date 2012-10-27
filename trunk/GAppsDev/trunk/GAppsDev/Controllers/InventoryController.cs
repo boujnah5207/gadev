@@ -20,7 +20,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult Partial1()
+        public ActionResult SubMenu()
         {
             return PartialView();
         }

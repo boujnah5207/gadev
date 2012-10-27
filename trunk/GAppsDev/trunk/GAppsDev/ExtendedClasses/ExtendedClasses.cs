@@ -22,7 +22,7 @@ namespace System.Web.Mvc.Html
             }
 
             if (isCurrentSort)
-                indicator = " (" + currOrder + ")";
+                indicator = "<div class='" + currOrder + "'></div>";
             else
                 indicator = "";
 

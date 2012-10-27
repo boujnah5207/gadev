@@ -1,26 +1,18 @@
-﻿@Html.Action("Partial1")
-
-@model IEnumerable<DB.Order>
+﻿@model IEnumerable<DB.Order>
 
 @{
-    ViewBag.Title = "אישור הזמנות";
+    ViewBag.Title = Loc.Dic.PendingOrders;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "PendingOrders";
 }
 
 @section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/SearchScript.js"></script>
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
-
 @Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
+<br />
 
 @if (Model.Count() != 0)
 { 
@@ -28,5 +20,5 @@
 }
 else
 {
-    <span class="no-properties">לא נמצאו הזמנות.</span> 
+    <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
 }

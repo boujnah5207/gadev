@@ -33,7 +33,10 @@
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
-
+        
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId")
+        <br /><br />
+        
         @Html.HiddenFor( model => model.SupplierId);
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 

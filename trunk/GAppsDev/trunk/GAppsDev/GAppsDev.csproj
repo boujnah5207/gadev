@@ -276,6 +276,8 @@
     <Content Include="Content\images.small\yandex.ico" />
     <Content Include="Content\images.small\yandex.ico.gif" />
     <Content Include="Content\images.small\yandex.ico.png" />
+    <Content Include="Content\images\ASC.png" />
+    <Content Include="Content\images\DESC.png" />
     <Content Include="Content\images\openid-inputicon.gif" />
     <Content Include="Content\images\openid-providers-en.png" />
     <Content Include="Content\images\openid-providers-ru.png" />
@@ -520,8 +522,17 @@
     <Content Include="Views\Companies\Home.cshtml" />
     <Content Include="Views\Budgets\Home.cshtml" />
     <Content Include="Views\Inventory\Home.cshtml" />
-    <Content Include="Views\Orders\Partial1.cshtml" />
-    <Content Include="Views\Inventory\Partial1.cshtml" />
+    <Content Include="Views\Orders\SubMenu.cshtml" />
+    <Content Include="Views\Inventory\SubMenu.cshtml" />
+    <Content Include="Views\Budgets\SubMenu.cshtml" />
+    <Content Include="Views\Incomes\SubMenu.cshtml" />
+    <Content Include="Views\Expenses\SubMenu.cshtml" />
+    <Content Include="Views\BudgetAllocations\SubMenu.cshtml" />
+    <Content Include="Views\Companies\SubMenu.cshtml" />
+    <Content Include="Views\Shared\SubMenu_Managment.cshtml" />
+    <Content Include="Views\Shared\SubMenu_Orders.cshtml" />
+    <Content Include="Views\Shared\SubMenu_Inventory.cshtml" />
+    <Content Include="Views\Shared\SubMenu_Budgets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

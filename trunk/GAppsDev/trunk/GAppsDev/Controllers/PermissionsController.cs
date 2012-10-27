@@ -308,6 +308,7 @@ namespace GAppsDev.Controllers
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
                     permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
+                    //TODO: Error gets ALL pemissions from DB
                     existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_ExpensesToIncomes).ToList();
 
                     if (permissionFromDB != null)

@@ -1,16 +1,4 @@
-﻿@Html.ActionLink(Loc.Dic.Budget, "index", "Budgets")
-@Html.ActionLink(Loc.Dic.Incomes, "Index", "Incomes")
-@Html.ActionLink(Loc.Dic.Expenses, "Index", "Expenses")
-@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations")
-@{
+﻿@{
     ViewBag.Title = Loc.Dic.Budget;
+    ViewBag.PageName = "Budgets";
 }
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>

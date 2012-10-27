@@ -70,11 +70,74 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Budget Allocations.
+        /// </summary>
+        public static string AllBudgetAllocations {
+            get {
+                return ResourceManager.GetString("AllBudgetAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Budgets.
+        /// </summary>
+        public static string AllBudgets {
+            get {
+                return ResourceManager.GetString("AllBudgets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Departments.
+        /// </summary>
+        public static string AllDepartments {
+            get {
+                return ResourceManager.GetString("AllDepartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Expenses.
+        /// </summary>
+        public static string AllExpenses {
+            get {
+                return ResourceManager.GetString("AllExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Incomes.
+        /// </summary>
+        public static string AllIncomes {
+            get {
+                return ResourceManager.GetString("AllIncomes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Orders.
         /// </summary>
         public static string AllOrders {
             get {
                 return ResourceManager.GetString("AllOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Projects.
+        /// </summary>
+        public static string AllProjects {
+            get {
+                return ResourceManager.GetString("AllProjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Sub-Projects.
+        /// </summary>
+        public static string AllSubProjects {
+            get {
+                return ResourceManager.GetString("AllSubProjects", resourceCulture);
             }
         }
         
@@ -129,6 +192,15 @@ namespace Loc {
         public static string Budget {
             get {
                 return ResourceManager.GetString("Budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget Allocation.
+        /// </summary>
+        public static string BudgetAllocation {
+            get {
+                return ResourceManager.GetString("BudgetAllocation", resourceCulture);
             }
         }
         
@@ -358,16 +430,7 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Orders Found.
-        /// </summary>
-        public static string NoOrdersFound {
-            get {
-                return ResourceManager.GetString("NoOrdersFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No order was found.
+        ///   Looks up a localized string similar to No orders were found.
         /// </summary>
         public static string NoOrdersWereFound {
             get {
@@ -439,6 +502,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orders Search.
+        /// </summary>
+        public static string OrdersSearch {
+            get {
+                return ResourceManager.GetString("OrdersSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Status Name.
         /// </summary>
         public static string OrderStatusName {
@@ -466,7 +538,7 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Budget Permissions Types.
+        ///   Looks up a localized string similar to Budget Permissions.
         /// </summary>
         public static string Permissions {
             get {
@@ -525,6 +597,15 @@ namespace Loc {
         public static string SearchForWordsInNotes {
             get {
                 return ResourceManager.GetString("SearchForWordsInNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Results.
+        /// </summary>
+        public static string SearchResults {
+            get {
+                return ResourceManager.GetString("SearchResults", resourceCulture);
             }
         }
         

@@ -1,17 +1,9 @@
 ﻿@model IEnumerable<DB.Budget>
 
 @{
-    ViewBag.Title = "Index";
-}
-
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
+    ViewBag.Title = Loc.Dic.AllBudgets;
+    ViewBag.PageName = "Budgets";
+    ViewBag.SubPageName = "AllBudgets";
 }
 
 <p>
