@@ -2,18 +2,11 @@
 
 @{
     ViewBag.Title = "עריכת משתמש";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

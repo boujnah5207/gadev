@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using DB;
 using Mvc4.OpenId.Sample.Security;
+using DA;
 
 namespace GAppsDev.Controllers
 {
@@ -19,7 +20,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var departments = db.Departments.Include("Company").Where(x=>x.CompanyId == CurrentUser.CompanyId);
+            var departments = db.Departments.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(departments.ToList());
         }
 
@@ -41,7 +42,6 @@ namespace GAppsDev.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
             return View();
         }
 
@@ -51,14 +51,18 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Create(Department department)
         {
+
             if (ModelState.IsValid)
             {
-                db.Departments.AddObject(department);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                using (DepartmentsRepository DepartmentsRepository = new DepartmentsRepository())
+                {
+                    department.CompanyId = CurrentUser.CompanyId;
+                    db.Departments.AddObject(department);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
             return View(department);
         }
 

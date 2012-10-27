@@ -1,16 +1,10 @@
 ﻿@model SelectList
 @{
     ViewBag.Title = Loc.Dic.UserPerferences;
+    ViewBag.PageName = "";
+    ViewBag.noSubMenu = true;
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
-}
+
 <h3>@Loc.Dic.LanguageSet</h3>
 @using (Html.BeginForm())
 {
