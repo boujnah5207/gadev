@@ -599,6 +599,7 @@ namespace GAppsDev.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.LanguageCode = languageCode;
             return View(model);
         }
 

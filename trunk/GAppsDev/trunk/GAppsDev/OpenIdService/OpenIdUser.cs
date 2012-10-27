@@ -16,6 +16,7 @@ namespace GAppsDev.OpenIdService
         public int UserId { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string DepartmentName { get; set; }
         public int? DepartmentId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
@@ -118,6 +119,7 @@ namespace GAppsDev.OpenIdService
                                     ClaimedIdentifier = claimedIdentifier,
                                     OrdersApproverId = loggingUser.OrdersApproverId,
                                     DepartmentId = loggingUser.DepartmentId,
+                                    DepartmentName = loggingUser.Department.Name,
                                     IsActive = loggingUser.IsActive,
                                     LanguageCode = loggingUser.Language.Code
                                 };
