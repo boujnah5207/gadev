@@ -61,6 +61,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        public static string Activate {
+            get {
+                return ResourceManager.GetString("Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Allocation.
         /// </summary>
         public static string AddAllocation {
@@ -322,6 +340,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom Name.
+        /// </summary>
+        public static string CustomName {
+            get {
+                return ResourceManager.GetString("CustomName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -426,6 +453,24 @@ namespace Loc {
         public static string Incomes {
             get {
                 return ResourceManager.GetString("Incomes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income Type.
+        /// </summary>
+        public static string IncomeType {
+            get {
+                return ResourceManager.GetString("IncomeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Institution Income.
+        /// </summary>
+        public static string InstitutionIncome {
+            get {
+                return ResourceManager.GetString("InstitutionIncome", resourceCulture);
             }
         }
         
@@ -930,6 +975,15 @@ namespace Loc {
         public static string Welcome {
             get {
                 return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
             }
         }
     }

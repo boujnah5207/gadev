@@ -408,4 +408,22 @@
   <data name="AllPermissions" xml:space="preserve">
     <value>כל ההרשאות</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>פעיל</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>הפעל</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>שנה</value>
+  </data>
+  <data name="CustomName" xml:space="preserve">
+    <value>שם מותאם</value>
+  </data>
+  <data name="IncomeType" xml:space="preserve">
+    <value>סוג הכנסה</value>
+  </data>
+  <data name="InstitutionIncome" xml:space="preserve">
+    <value>גורם מכניס</value>
+  </data>
 </root>
