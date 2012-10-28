@@ -5,9 +5,10 @@
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "MyOrders";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var fileName = Model.Order.CompanyId.ToString() + "_" + Model.Order.Id.ToString() + ".pdf";
+    string invoicePath = Url.Content("~/App_Data/Uploads/Invoices/" + fileName);
 }
-
-
 
 <fieldset>
     <legend>@Loc.Dic.OrderDetails</legend>
@@ -99,6 +100,10 @@
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
 
+    @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingReceipt)
+    {
+        <a href="@invoicePath">@invoicePath</a>
+    }
 
 </fieldset>
 <p>

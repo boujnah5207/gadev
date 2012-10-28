@@ -251,7 +251,7 @@ namespace GAppsDev.Controllers
                                         .ToList();
 
                                     List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_ExpensesToIncomes", "Budgets_ExpensesToIncomes.Budgets_Incomes", "Budgets_ExpensesToIncomes.Budgets_Expenses")
-                                        .Where(x => x.BudgetId == budget.Id)
+                                        .Where(x => x.BudgetId == budget.Id && x.BudgetsPermissionsId == model.Permission.Id)
                                         .AsEnumerable()
                                         .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
                                         .ToList();
@@ -342,14 +342,6 @@ namespace GAppsDev.Controllers
                                             }
                                         }
 	                                }
-
-                                    foreach (var item in existingPermissionToAllocations)
-                                    {
-                                        if (!budgetAllocation.PermissionAllocations.Any(x => x.Allocation.Id == item.Id))
-                                        {
-                                            permissionsAllocationsRep.Delete(item.Id);
-                                        }
-                                    }
                                 }
                                 else
                                 {

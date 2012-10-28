@@ -358,6 +358,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="App_Data\Uploads\Invoices\1_9.pdf" />
     <None Include="Properties\PublishProfiles\profile1.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Rotativa\libeay32.dll" />
@@ -536,9 +537,7 @@
     <Content Include="Views\Shared\SubMenu_Inventory.cshtml" />
     <Content Include="Views\Shared\SubMenu_Budgets.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

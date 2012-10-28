@@ -549,6 +549,16 @@ namespace GAppsDev.Controllers
             return RedirectToAction("Index");
         }
 
+        /*
+        [OpenIdAuthorize]
+        public ActionResult DownloadInvoice(int id)
+        {
+            return File(Path.Combine(Server.MapPath("~/App_Data/Bundles"), fileName),
+            "application/java-archive",
+            fileName);
+        }
+        */
+
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
@@ -648,6 +658,7 @@ namespace GAppsDev.Controllers
                 {
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
 
+                    List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
                     List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
                     
@@ -661,6 +672,13 @@ namespace GAppsDev.Controllers
                                 );
                     }
 
+                    allocationsSelectList = allocations
+                        .Distinct()
+                        .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
+                        .AsEnumerable()
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .ToList();
+
                     /*
                     List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
                     foreach(var allocation in allocations)
@@ -673,7 +691,7 @@ namespace GAppsDev.Controllers
                     }
                     */
 
-                    ViewBag.BudgetAllocationId = new SelectList(allocations, "id", "Amount");
+                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
 
                 return View();

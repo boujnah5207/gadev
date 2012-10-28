@@ -65,7 +65,6 @@ function removeItem(budgetIndex, allocationIndex) {
 
     isActiveField.val("false");
 
-    /*
     var existingRemovedItem = getRemovedItem(allocationIndex);
     if (existingRemovedItem == null) {
         removedItems[removedItems.length] = {};
@@ -74,9 +73,6 @@ function removeItem(budgetIndex, allocationIndex) {
 
         container.toggle(0);
     }
-    */
-
-    container.remove();
 }
 
 function unRemove(allocationId) {
