@@ -7,57 +7,56 @@
 }
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
 </p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
+            @Loc.Dic.CreationDate
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Budget.Id)
+            @Loc.Dic.IncomeType
+
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Budgets_Incomes_types.Name)
+            @Loc.Dic.InstitutionIncome
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Budgets_Incomes_Institutions.Name)
+            @Loc.Dic.CustomName
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CustomName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Amount)
+            @Loc.Dic.Amount
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Budget.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Budgets_Incomes_types.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Budgets_Incomes_Institutions.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budgets_Incomes_types.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budgets_Incomes_Institutions.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -408,4 +408,22 @@
   <data name="AllPermissions" xml:space="preserve">
     <value>All Permissions</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="CustomName" xml:space="preserve">
+    <value>Custom Name</value>
+  </data>
+  <data name="IncomeType" xml:space="preserve">
+    <value>Income Type</value>
+  </data>
+  <data name="InstitutionIncome" xml:space="preserve">
+    <value>Institution Income</value>
+  </data>
 </root>

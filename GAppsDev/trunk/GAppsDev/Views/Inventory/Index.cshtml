@@ -8,15 +8,12 @@
 }
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
 </p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Company.Name)
+            @Loc.Dic.CreationDate
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Orders_Items.Title)
