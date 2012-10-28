@@ -570,6 +570,7 @@ namespace GAppsDev.Controllers
                 {
                     Order order = ordersRepository.GetEntity(modifiedOrder.Order.Id);
                     order.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
+
                     if (selectedStatus == "אשר הזמנה")
                     {
                         if (CurrentUser.OrdersApproverId.HasValue)
@@ -577,12 +578,24 @@ namespace GAppsDev.Controllers
                         else
                             order.StatusId = (int)StatusType.ApprovedPendingInvoice;
                     }
-                    if (selectedStatus == "דחה הזמנה") order.StatusId = (int)StatusType.Declined;
-                    if (selectedStatus == "החזר למשתמש") order.StatusId = (int)StatusType.PendingOrderCreator;
-                    ordersRepository.Update(order);
-                    EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                    emailMethods.sendGoogleEmail(order.User.Email,order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-                    return RedirectToAction("PendingOrders");
+                    else if (selectedStatus == "דחה הזמנה")
+                    {
+                        order.StatusId = (int)StatusType.Declined;
+                    }
+                    else if (selectedStatus == "החזר למשתמש")
+                    {
+                        order.StatusId = (int)StatusType.PendingOrderCreator;
+                    }
+
+                    if (ordersRepository.Update(order) != null)
+                    {
+                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                        emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+
+                        return RedirectToAction("PendingOrders");
+                    }
+                    else
+                        return Error(Errors.DATABASE_ERROR);
                 }
             }
             else return Error(Errors.NO_PERMISSION);
