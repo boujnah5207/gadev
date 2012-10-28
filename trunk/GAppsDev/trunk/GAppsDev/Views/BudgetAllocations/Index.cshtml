@@ -6,8 +6,6 @@
     ViewBag.SubPageName = "AllBudgetAllocations";
 }
 
-<h2>Index</h2>
-
 <p>
     תקציב: @Html.DropDownList("BudgetId", (SelectList)ViewBag.BudgetId, new { id= "BudgetId" }) <input type="button" value="צור הקצאה חדשה"  onClick="redirectToCreate()" />
 </p>

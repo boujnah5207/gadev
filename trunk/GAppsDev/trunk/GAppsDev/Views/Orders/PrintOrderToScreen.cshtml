@@ -25,9 +25,14 @@
 <fieldset>
     <legend>@Loc.Dic.ProcurementOrder</legend>
 
-    <span class="bold">@Loc.Dic.CompanyName:</span> <span>@Html.DisplayFor(model => model.Order.Company.Name)</span>
+    <div id="logoContainer">
+        <img src=@(Url.Content("~/Content/LogoImages/" + Model.Order.Company.Name + ".png")) style="max-width:500px;max-height:200px;"/>
+    </div>
     <br />
+
     <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => model.Order.Company.CompanyNumber)</span>
+    <br />
+    <span class="bold">@Loc.Dic.OrderNumber:</span> <span>@Html.DisplayFor(model => model.Order.OrderNumber)</span>
     <br />
     <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)</span>
     <br />

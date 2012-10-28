@@ -390,6 +390,15 @@
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>
   </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Create New</value>
+  </data>
+  <data name="CreateNewPermission" xml:space="preserve">
+    <value>Create New Permission</value>
+  </data>
+  <data name="EditAllocations" xml:space="preserve">
+    <value>Edit Allocations</value>
+  </data>
   <data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>
