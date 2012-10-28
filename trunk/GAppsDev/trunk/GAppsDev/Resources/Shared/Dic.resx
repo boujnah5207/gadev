@@ -402,4 +402,10 @@
   <data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>
+  <data name="AddAllocation" xml:space="preserve">
+    <value>Add Allocation</value>
+  </data>
+  <data name="AllPermissions" xml:space="preserve">
+    <value>All Permissions</value>
+  </data>
 </root>

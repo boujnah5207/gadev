@@ -61,6 +61,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Allocation.
+        /// </summary>
+        public static string AddAllocation {
+            get {
+                return ResourceManager.GetString("AddAllocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Search.
         /// </summary>
         public static string AdvancedSearch {
@@ -120,6 +129,15 @@ namespace Loc {
         public static string AllOrders {
             get {
                 return ResourceManager.GetString("AllOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Permissions.
+        /// </summary>
+        public static string AllPermissions {
+            get {
+                return ResourceManager.GetString("AllPermissions", resourceCulture);
             }
         }
         
