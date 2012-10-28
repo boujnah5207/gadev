@@ -4,12 +4,10 @@
     ViewBag.Title = Loc.Dic.EditAllocations ;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllPermissions";
-    ViewBag.PageName = "Managment";
-    ViewBag.SubPageName = "Permissions";
 }
 
 @section ExtraScripts{
-    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide,Delete" })'></script>
     <script src="~/Scripts/EditPermissionAllocationScript.js"></script>
 }
 
@@ -24,7 +22,7 @@
             <input type="hidden" name="BudgetAllocationsList[@i].Budget.Id" value="@Model.BudgetAllocationsList[i].Budget.Id" />
 
             <div id="expandingDiv-@i" style="display:none;">
-                @Html.DropDownList("budgetAllocationsList-" + i, (SelectList)Model.BudgetAllocationsList[i].AllocationsList, new { id = "budgetAllocations-" + i }) <input id="addAllocationBtn-@i" type="button" value="Add allocation" onClick="addItem(@i)"/>
+                @Html.DropDownList("budgetAllocationsList-" + i, (SelectList)Model.BudgetAllocationsList[i].AllocationsList, new { id = "budgetAllocations-" + i }) <input id="addAllocationBtn-@i" type="button" value="@Loc.Dic.AddAllocation" onClick="addItem(@i)"/>
                 <fieldset>
                     <legend>>@Loc.Dic.BudgetAllocations</legend>
 

@@ -402,4 +402,10 @@
   <data name="Department" xml:space="preserve">
     <value>אגף</value>
   </data>
+  <data name="AddAllocation" xml:space="preserve">
+    <value>הוסף הרשאה</value>
+  </data>
+  <data name="AllPermissions" xml:space="preserve">
+    <value>כל ההרשאות</value>
+  </data>
 </root>

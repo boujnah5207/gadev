@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<DB.Budgets_Permissions>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = @Loc.Dic.AllPermissions;
     ViewBag.Title = Loc.Dic.Permissions;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllPermissions";
 }
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(@Loc.Dic.CreateNewPermission, "Create")
 </p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
+            @Loc.Dic.CreationDate
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Loc.Dic.Name
         </th>
         <th></th>
     </tr>
@@ -30,10 +30,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Edit Allocations", "EditAllocations", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) |
+            @Html.ActionLink(Loc.Dic.EditAllocations, "EditAllocations", new { id=item.Id }) |
+            @Html.ActionLink(Loc.Dic.Details, "Details", new { id=item.Id }) |
+            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
         </td>
     </tr>
 }

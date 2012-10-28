@@ -134,7 +134,7 @@ namespace GAppsDev.Controllers
 
                     if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution != null))
                     {
-                        if (budget.CompanyId == CurrentUser.CompanyId && incomeType.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
+                        if (budget.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
                         {
                             bool wasCreated;
                             budgets_incomes.CompanyId = CurrentUser.CompanyId;
