@@ -301,6 +301,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Permissions permissionFromDB;
                 List<Budgets_ExpensesToIncomes> existingPermissionAllocations;
+                List<Budgets_PermissionsToAllocation> existingPermissionToAllocations;
 
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
@@ -310,6 +311,7 @@ namespace GAppsDev.Controllers
                     permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
                     //TODO: Error gets ALL pemissions from DB
                     existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_ExpensesToIncomes).ToList();
+                    existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).ToList();
 
                     if (permissionFromDB != null)
                     {
@@ -340,6 +342,14 @@ namespace GAppsDev.Controllers
                                             }
                                         }
 	                                }
+
+                                    foreach (var item in existingPermissionToAllocations)
+                                    {
+                                        if (!budgetAllocation.PermissionAllocations.Any(x => x.Allocation.Id == item.Id))
+                                        {
+                                            permissionsAllocationsRep.Delete(item.Id);
+                                        }
+                                    }
                                 }
                                 else
                                 {
