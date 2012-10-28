@@ -368,8 +368,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="App_Data\Uploads\Invoices\1_9.pdf" />
-    <Content Include="App_Data\Uploads\Receipts\1_9.pdf" />
     <None Include="Properties\PublishProfiles\profile1.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Rotativa\libeay32.dll" />
@@ -549,7 +547,10 @@
     <Content Include="Views\Shared\SubMenu_Budgets.cshtml" />
     <Content Include="Views\Orders\UploadReceiptFile.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\Uploads\Invoices\" />
+    <Folder Include="App_Data\Uploads\Receipts\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
