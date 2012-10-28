@@ -212,7 +212,7 @@ namespace GAppsDev.Controllers
                         .Where(x =>
                             x.CompanyId == CurrentUser.CompanyId &&
                             x.NextOrderApproverId == CurrentUser.UserId &&
-                            (x.Orders_Statuses.Id == (int)StatusType.Pending || x.Orders_Statuses.Id == (int)StatusType.PendingOrderCreator)
+                            (x.Orders_Statuses.Id == (int)StatusType.Pending)
                             );
 
                     int numberOfItems = orders.Count();
