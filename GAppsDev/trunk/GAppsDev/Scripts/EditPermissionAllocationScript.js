@@ -17,39 +17,44 @@ function expandDiv(button, elementId) {
 }
 
 function addItem(budgetIndex) {
-    var allocationId = $("#budgetAllocations-" + budgetIndex).val();
-    var allocationText = $("#budgetAllocations-" + budgetIndex + " option:selected").text();
-    var container = $("#budgetContainer-" + budgetIndex);
-    var nextNumber = $(".budget-" + budgetIndex).length;
+    console.log("#budgetAllocations-" + budgetIndex);
+    console.log($("#budgetAllocations-" + budgetIndex));
+    console.log($("#budgetAllocations-" + budgetIndex + " option:selected"));
+    if ($("#budgetAllocations-" + budgetIndex + " option:selected") != null) {
+        var allocationId = $("#budgetAllocations-" + budgetIndex).val();
+        var allocationText = $("#budgetAllocations-" + budgetIndex + " option:selected").text();
+        var container = $("#budgetContainer-" + budgetIndex);
+        var nextNumber = $(".budget-" + budgetIndex).length;
 
-    var existingItems = $(".existingAllocations");
-    console.log(existingItems);
-    var itemExists = false;
+        var existingItems = $(".existingAllocations");
+        console.log(existingItems);
+        var itemExists = false;
 
-    for (var i = 0; i < existingItems.length; i++) {
-        console.log($(existingItems[i]).val() + "=" + allocationId);
-        if ($(existingItems[i]).val() == allocationId) {
-            itemExists = true;
+        for (var i = 0; i < existingItems.length; i++) {
+            console.log($(existingItems[i]).val() + "=" + allocationId);
+            if ($(existingItems[i]).val() == allocationId) {
+                itemExists = true;
+            }
         }
-    }
 
-    var existingRemovedItem = getRemovedItem(allocationId);
-    if (existingRemovedItem == null) {
-        if(!itemExists) {
-            var newItem = $(
-                "<div class='budget-" + budgetIndex + "' id='permissionAllocation-" + budgetIndex + "-" + nextNumber + "'>" +
-                            "<input type='hidden' class='isActiveField' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
-                            "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
-                            "<span>" + allocationText + "<\span>" +
-                            "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
-                        "</div>"
-                );
+        var existingRemovedItem = getRemovedItem(allocationId);
+        if (existingRemovedItem == null) {
+            if (!itemExists) {
+                var newItem = $(
+                    "<div class='budget-" + budgetIndex + "' id='permissionAllocation-" + budgetIndex + "-" + nextNumber + "'>" +
+                                "<input type='hidden' class='isActiveField' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
+                                "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
+                                "<span>" + allocationText + "<\span>" +
+                                "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
+                            "</div>"
+                    );
 
-            container.append(newItem);
+                container.append(newItem);
+            }
         }
-    }
-    else {
-        unRemove(allocationId);
+        else {
+            unRemove(allocationId);
+        }
     }
 }
 
