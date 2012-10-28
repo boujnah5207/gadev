@@ -40,7 +40,7 @@ namespace GAppsDev.Controllers
                 Budget budget;
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 {
-                    budget = budgetsRep.GetEntity(id);
+                    budget = budgetsRep.GetEntity(id, "Company");
                 }
 
                 if (budget != null)

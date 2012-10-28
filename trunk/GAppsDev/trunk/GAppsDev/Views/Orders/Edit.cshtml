@@ -1,8 +1,10 @@
 ﻿@model DB.Order
 
 @{
-    ViewBag.Title = "עריכת הזמנה";
+    ViewBag.Title = Loc.Dic.EditOrder;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "AllOrders";
 }
 
 @section ExtraScripts{
@@ -11,15 +13,14 @@
     <script src="~/Scripts/editOrderScript.js"></script>
 }
 
-
 <fieldset>
-    <legend>ספק נבחר</legend>
-    <label class="inlineLabel" for="choosenSupplier">ספק: </label>
+    <legend>@Loc.Dic.ChosenSupplier</legend>
+    <label class="inlineLabel" for="choosenSupplier">@Loc.Dic.Supplier: </label>
     <span class='selectedSupplier'> @Model.Supplier.Name </span>
 </fieldset>
 
 <fieldset id="formContainer">
-    <legend>פרטי הזמנה</legend>
+    <legend>@Loc.Dic.OrderDetails</legend>
 
     @using (Html.BeginForm())
     {
@@ -35,11 +36,11 @@
             <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
             
             <div id="AddNewItemContainer">
-                פריט: <span id="loadingMessage"> טוען פריטים ... </span>
-                כמות : <input style="width:50px" id="itemQuantity" type="text" />
-                מחיר ליחידה : <input style="width:50px" id="itemPrice" type="text" />
-                מחיר כולל : <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
-                <input id="AddNewItemButton" type="button" value="הוסף" /> <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()"/>
+                @Loc.Dic.Item: <span id="loadingMessage"> @Loc.Dic.Loading... </span>
+                @Loc.Dic.Quantity : <input style="width:50px" id="itemQuantity" type="text" />
+                @Loc.Dic.SingleItemPrice : <input style="width:50px" id="itemPrice" type="text" />
+                @Loc.Dic.TotalPrice : <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
+                <input id="AddNewItemButton" type="button" value="@Loc.Dic.Add" /> <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateNewItem" onclick="addOrderItem()"/>
             </div>
         </div>
         
