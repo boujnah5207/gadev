@@ -17,9 +17,6 @@ function expandDiv(button, elementId) {
 }
 
 function addItem(budgetIndex) {
-    console.log("#budgetAllocations-" + budgetIndex);
-    console.log($("#budgetAllocations-" + budgetIndex));
-    console.log($("#budgetAllocations-" + budgetIndex + " option:selected").length);
     if ($("#budgetAllocations-" + budgetIndex + " option:selected").length > 0) {
         var allocationId = $("#budgetAllocations-" + budgetIndex).val();
         var allocationText = $("#budgetAllocations-" + budgetIndex + " option:selected").text();
@@ -68,6 +65,7 @@ function removeItem(budgetIndex, allocationIndex) {
 
     isActiveField.val("false");
 
+    /*
     var existingRemovedItem = getRemovedItem(allocationIndex);
     if (existingRemovedItem == null) {
         removedItems[removedItems.length] = {};
@@ -76,6 +74,9 @@ function removeItem(budgetIndex, allocationIndex) {
 
         container.toggle(0);
     }
+    */
+
+    container.remove();
 }
 
 function unRemove(allocationId) {
