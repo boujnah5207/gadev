@@ -426,4 +426,13 @@
   <data name="InstitutionIncome" xml:space="preserve">
     <value>Institution Income</value>
   </data>
+  <data name="Expense" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
 </root>
