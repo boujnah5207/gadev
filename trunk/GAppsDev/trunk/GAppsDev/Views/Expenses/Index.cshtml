@@ -13,13 +13,15 @@
     <tr>
         <th>
             @Loc.Dic.CreationDate
-
+        </th>
+        <th>
+            @Loc.Dic.Budget
         </th>
         <th>
             @Loc.Dic.Department
         </th>
         <th>
-            @Loc.Dic.Projects
+            @Loc.Dic.Project
         </th>
         <th>
             @Loc.Dic.SubProject
@@ -33,33 +35,35 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Projects_ParentProject.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Projects_SubProject.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomName)
-            </td>
-            <td>
-                @Html.ActionLink(Loc.Dic.CreateNew, "Edit", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BudgetId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Projects_ParentProject.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Projects_SubProject.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomName)
+        </td>
+        <td>
+            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) |
+            @Html.ActionLink(Loc.Dic.Details, "Details", new { id=item.Id }) |
+            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
 
 </table>

@@ -243,7 +243,7 @@
   <data name="Submit" xml:space="preserve">
     <value>שלח</value>
   </data>
-  <data name="SubProject" xml:space="preserve">
+  <data name="SubProjects" xml:space="preserve">
     <value>תת-פרוייקטים</value>
   </data>
   <data name="Supplier" xml:space="preserve">
@@ -425,5 +425,17 @@
   </data>
   <data name="InstitutionIncome" xml:space="preserve">
     <value>גורם מכניס</value>
+  </data>
+  <data name="Expense" xml:space="preserve">
+    <value>הוצאה</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>הכנסה</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>פרוייקט</value>
+  </data>
+  <data name="SubProject" xml:space="preserve">
+    <value>תת-פרוייקט</value>
   </data>
 </root>
