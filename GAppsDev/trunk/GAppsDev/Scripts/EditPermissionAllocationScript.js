@@ -19,8 +19,8 @@ function expandDiv(button, elementId) {
 function addItem(budgetIndex) {
     console.log("#budgetAllocations-" + budgetIndex);
     console.log($("#budgetAllocations-" + budgetIndex));
-    console.log($("#budgetAllocations-" + budgetIndex + " option:selected"));
-    if ($("#budgetAllocations-" + budgetIndex + " option:selected") != null) {
+    console.log($("#budgetAllocations-" + budgetIndex + " option:selected").length);
+    if ($("#budgetAllocations-" + budgetIndex + " option:selected").length > 0) {
         var allocationId = $("#budgetAllocations-" + budgetIndex).val();
         var allocationText = $("#budgetAllocations-" + budgetIndex + " option:selected").text();
         var container = $("#budgetContainer-" + budgetIndex);
