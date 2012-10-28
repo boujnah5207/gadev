@@ -112,14 +112,7 @@
                 
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                     {
-                    <text>|</text> 
-                        using (Html.BeginForm(Loc.Dic.UploadReceipt, "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <text>Loc.Dic.UploadReceipt</text> 
-                            <input type="hidden" name="orderId" value="@item.Id" /> 
-                            <input type="file" name="file"  />
-                            <input type="submit" value="OK" />
-                        }
+                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadReceipt, "UploadReceiptFile", new { id = item.Id })
                     }
                 }
             </td>
