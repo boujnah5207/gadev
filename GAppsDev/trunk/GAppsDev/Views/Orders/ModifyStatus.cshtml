@@ -1,7 +1,7 @@
 ﻿@model GAppsDev.Models.OrderModel
 
 @{
-    ViewBag.Title = "אישור הזמנה";
+    ViewBag.Title = @Loc.Dic.ModifyStatus;
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "";
 }
@@ -10,34 +10,34 @@
 @using (Html.BeginForm()) {
 
 <fieldset>
-    <legend>Order</legend>
+    <legend>@Loc.Dic.Order</legend>
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.CreationDate)
+        @Loc.Dic.CreationDate
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.CreationDate)
     </div>
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.UserId)
+        @Loc.Dic.OrderCreatorName
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)
     </div>
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.SupplierId)
+        @Loc.Dic.Supplier
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Supplier.Name)
     </div>
     <table>
         <tr class="display-label">
-            <th>שם הפריט
+            <th>@Loc.Dic.ItemName
             </th>
-            <th>תיאור הפריט
+            <th>@Loc.Dic.ItemDescription
             </th>
-            <th>מחיר בודד
+            <th>@Loc.Dic.SingleItemPrice
             </th>
-            <th>כמות
+            <th>@Loc.Dic.Quantity
             </th>
         </tr>
         @foreach (var item in Model.OrderToItem)
@@ -60,14 +60,14 @@
     </table>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Notes)
+        @Loc.Dic.Notes
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Notes)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.Price)
+        @Loc.Dic.Price
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Price)
@@ -75,20 +75,20 @@
 
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Order.OrderApproverNotes)
+        @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.Order.OrderApproverNotes)
     </div>
     @Html.HiddenFor(model => model.Order.Id)
     <p>
-        <input type="submit" name="selectedStatus" value="אשר הזמנה" />
-        <input type="submit" name="selectedStatus" value="דחה הזמנה" />
-        <input type="submit" name="selectedStatus" value="החזר למשתמש" />
+        <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
+        <input type="submit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />
+        <input type="submit" name="selectedStatus" value="@Loc.Dic.SendBackToUser" />
 
     </p>
 </fieldset>
 }
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>
