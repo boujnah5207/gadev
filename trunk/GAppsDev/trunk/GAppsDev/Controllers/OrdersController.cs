@@ -580,7 +580,7 @@ namespace GAppsDev.Controllers
                     if (selectedStatus == "החזר למשתמש") order.StatusId = (int)StatusType.PendingOrderCreator;
                     ordersRepository.Update(order);
                     EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                    emailMethods.sendGoogleEmail(CurrentUser.Email, CurrentUser.FullName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.Orders_Statuses.Name);
+                    emailMethods.sendGoogleEmail(CurrentUser.Email, CurrentUser.FullName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.Orders_Statuses.Name + "Http://gappsdev.pqdev.com/Orders/MyOrders");
                     return RedirectToAction("PendingOrders");
                 }
             }
