@@ -390,6 +390,15 @@
   <data name="UserName" xml:space="preserve">
     <value>שם משתמש</value>
   </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>צור חדש</value>
+  </data>
+  <data name="CreateNewPermission" xml:space="preserve">
+    <value>צור הרשאה חדשה</value>
+  </data>
+  <data name="EditAllocations" xml:space="preserve">
+    <value>ערוך הקצאות</value>
+  </data>
   <data name="Department" xml:space="preserve">
     <value>אגף</value>
   </data>

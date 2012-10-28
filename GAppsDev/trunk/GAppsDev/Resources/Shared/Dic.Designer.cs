@@ -268,11 +268,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New.
+        /// </summary>
+        public static string CreateNew {
+            get {
+                return ResourceManager.GetString("CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create New Order.
         /// </summary>
         public static string CreateNewOrder {
             get {
                 return ResourceManager.GetString("CreateNewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Permission.
+        /// </summary>
+        public static string CreateNewPermission {
+            get {
+                return ResourceManager.GetString("CreateNewPermission", resourceCulture);
             }
         }
         
@@ -336,6 +354,15 @@ namespace Loc {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Allocations.
+        /// </summary>
+        public static string EditAllocations {
+            get {
+                return ResourceManager.GetString("EditAllocations", resourceCulture);
             }
         }
         

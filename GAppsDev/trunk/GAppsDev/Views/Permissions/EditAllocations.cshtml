@@ -1,17 +1,18 @@
 ﻿@model GAppsDev.Models.PermissionModels.PermissionAllocationsModel
 
 @{
-    ViewBag.Title = "EditAllocations";
+    ViewBag.Title = Loc.Dic.EditAllocations ;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllPermissions";
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "Permissions";
 }
 
 @section ExtraScripts{
-    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "" })'></script>
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/EditPermissionAllocationScript.js"></script>
 }
 
-<h2>EditAllocations</h2>
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <input type="hidden" name="Permission.Id" value="@Model.Permission.Id" />
@@ -19,13 +20,13 @@
     for (int i = 0; i < Model.BudgetAllocationsList.Count; i++)
     {
         <fieldset>
-            <legend>budget - @Model.BudgetAllocationsList[i].Budget.Year</legend>
+            <legend>@Loc.Dic.Budget - @Model.BudgetAllocationsList[i].Budget.Year</legend>
             <input type="hidden" name="BudgetAllocationsList[@i].Budget.Id" value="@Model.BudgetAllocationsList[i].Budget.Id" />
 
             <div id="expandingDiv-@i" style="display:none;">
                 @Html.DropDownList("budgetAllocationsList-" + i, (SelectList)Model.BudgetAllocationsList[i].AllocationsList, new { id = "budgetAllocations-" + i }) <input id="addAllocationBtn-@i" type="button" value="Add allocation" onClick="addItem(@i)"/>
                 <fieldset>
-                    <legend>allocations</legend>
+                    <legend>>@Loc.Dic.BudgetAllocations</legend>
 
                     <div id="budgetContainer-@i">
                         @for (int i2 = 0; i2 < Model.BudgetAllocationsList[i].PermissionAllocations.Count; i2++)
@@ -39,16 +40,16 @@
                                 <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Incomes.CustomName</span> --->
                                 <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Expenses.CustomName</span>
                         
-                                <input type="button"  value="הסר" onClick="removeItem(@i,@i2) "/>
+                                <input type="button" value="@Loc.Dic.Delete" onClick="removeItem(@i,@i2) "/>
                             </div>
                         }
                     </div>
                 </fieldset>
             </div>
-            <input type="button" value="הצג" onClick="expandDiv(this, 'expandingDiv-@i') " />
+            <input type="button" value="@Loc.Dic.Show" onClick="expandDiv(this, 'expandingDiv-@i') " />
         </fieldset>
     }
     <p>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="@Loc.Dic.Submit" />
     </p>
 }

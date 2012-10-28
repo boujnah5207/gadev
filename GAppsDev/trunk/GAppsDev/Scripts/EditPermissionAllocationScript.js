@@ -8,11 +8,11 @@ function expandDiv(button, elementId) {
     $("#" + elementId).slideToggle(500, null);
     button = $(button);
 
-    if (button.val() == "הצג") {
-        button.val("הסתר");
+    if (button.val() == local.Show) {
+        button.val(local.Hide);
     }
     else {
-        button.val("הצג");
+        button.val(local.Show);
     }
 }
 
@@ -41,7 +41,7 @@ function addItem(budgetIndex) {
                             "<input type='hidden' class='isActiveField' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
                             "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
                             "<span>" + allocationText + "<\span>" +
-                            "<input type='button'  value='הסר' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
+                            "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
                         "</div>"
                 );
 
