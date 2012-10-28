@@ -18,8 +18,11 @@
                 <li>@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations", null, new { id = "AllBudgetAllocationsLink" })
                 </li>
             }
-            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.BudgetViewer))
+
+            else
             {
+                if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.BudgetViewer))
+                {
                 <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Budgets", null, new { id = "AllBudgetsLink" })
                 </li>
                 <li>|</li>
@@ -31,6 +34,7 @@
                 <li>|</li>
                 <li>@Html.ActionLink(Loc.Dic.BudgetAllocations, "Index", "BudgetAllocations", null, new { id = "AllBudgetAllocationsLink" })
                 </li>
+                }
             }
         </ul>
     </div>
