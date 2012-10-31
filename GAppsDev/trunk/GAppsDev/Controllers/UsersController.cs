@@ -285,7 +285,7 @@ namespace GAppsDev.Controllers
         // GET: /Users/Create
 
         [OpenIdAuthorize]
-        public ActionResult AddPermission(int id = 0)
+        public ActionResult EditPermissions(int id = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -311,7 +311,7 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult AddPermission(int userId = 0, int PermissionId = 0)
+        public ActionResult EditPermissions(int userId = 0, int PermissionId = 0)
         {
             if (ModelState.IsValid)
             {

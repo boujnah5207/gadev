@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "AddPermission";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
+}
+
+<h2>AddPermission</h2>
+
+@using(Html.BeginForm()) {
+
+    <input type="hidden" name="userId" value="@ViewBag.UserId" />
+    @Loc.Dic.Permissions<text>:</text> @Html.DropDownList("PermissionId")
+    <fieldset>
+        <legend>@Loc.Dic.BudgetAllocations</legend>
+
+        <div id="budgetContainer-@i">
+            @for (int i2 = 0; i2 < Model.BudgetAllocationsList[i].PermissionAllocations.Count; i2++)
+            {
+                <div class="budget-@i" id="permissionAllocation-@i-@i2">
+                    <input type="hidden" class='isActiveField' id="isActiveField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].IsActive" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].IsActive.ToString()" />
+                    <input type="hidden" class="existingAllocations" id="allocationField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomesId" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
+                    <input type="hidden" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.Id" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Id" />
+
+                    <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Amount</span> -
+                    <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Incomes.CustomName</span> --->
+                    <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Expenses.CustomName</span>
+            
+                    <input type="button" value="@Loc.Dic.Delete" onClick="removeItem(@i,@i2) "/>
+                </div>
+            }
+        </div>
+    </fieldset>
+    
+    
+    <p>
+        <input type="submit"  value="Add permission" />
+    </p>
+}
+

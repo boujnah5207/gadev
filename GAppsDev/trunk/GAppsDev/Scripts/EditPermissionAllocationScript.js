@@ -1,7 +1,7 @@
-﻿var removedItems;
+﻿var removedItems = new Array();
 
 $(function () {
-    removedItems = {};
+
 });
 
 function expandDiv(button, elementId) {
@@ -67,9 +67,11 @@ function removeItem(budgetIndex, allocationIndex) {
 
     var existingRemovedItem = getRemovedItem(allocationIndex);
     if (existingRemovedItem == null) {
-        removedItems[removedItems.length] = {};
-        removedItems[removedItems.length].id = allocationId;
-        removedItems[removedItems.length].oldItem = container;
+        console.log(removedItems.length);
+        var newRemovedItem = { id: allocationId, oldItem: container};
+        removedItems[removedItems.length] = newRemovedItem;
+        //removedItems[removedItems.length].id = allocationId;
+        //removedItems[removedItems.length].oldItem = container;
 
         container.toggle(0);
     }
@@ -79,20 +81,24 @@ function unRemove(allocationId) {
     var existingRemovedItem = getRemovedItem(allocationId);
     if (existingRemovedItem != null) {
         existingRemovedItem.oldItem.toggle(0);
+        existingRemovedItem.oldItem.find(".isActiveField").val("true");
 
-        console.log(removedItems.length);
+        console.log("old list: " + removedItems.length);
         var itemIndex = null;
+
+        var newRemovedList = new Array();
+        
         for (var i = 0; i < removedItems.length; i++) {
-            if (removedItems[i] == existingRemovedItem) {
-                itemIndex = i;
-                break;
+            console.log("index: " + i);
+
+            if (removedItems[i] != existingRemovedItem) {
+                newRemovedList[newRemovedList.length] = removedItems[i];
             }
         }
-        console.log(itemIndex);
 
-        $(removedItems).splice(itemIndex, 1);
-        console.log(existingRemovedItem.oldItem.find(".isActiveField"));
-        existingRemovedItem.oldItem.find(".isActiveField").val("true");
+        console.log("new list: " + newRemovedList.length);
+
+        removedItems = newRemovedList;
 
         console.log(removedItems);
     }
