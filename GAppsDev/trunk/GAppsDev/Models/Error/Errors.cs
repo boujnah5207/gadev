@@ -45,6 +45,7 @@ namespace GAppsDev.Models.ErrorModels
         public const string USER_WAS_CANCELED = "חשבון משתשתמש זה בוטל. אנא פנה למנהל המערכת.";
         public const string USER_NOT_REGISTERD = "חשבון משתשתמש זה אינו רשום במערכת.";
         public const string USER_ALREADY_HAS_PERMISSIONS = "למשתמש כבר יש  את ההרשאה שצויינה.";
+        public const string USER_EDIT_PERMISSIONS_ERROR = "היו שגיאות בזמן השמירה לבסיס הנתונים. לא כל ההרשאות נשמרו.";
 
         //Inventory Errors
         public const string INVENTORY_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי.";

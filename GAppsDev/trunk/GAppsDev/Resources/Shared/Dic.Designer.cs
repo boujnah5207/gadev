@@ -97,6 +97,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Permission.
+        /// </summary>
+        public static string AddPermission {
+            get {
+                return ResourceManager.GetString("AddPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Search.
         /// </summary>
         public static string AdvancedSearch {
