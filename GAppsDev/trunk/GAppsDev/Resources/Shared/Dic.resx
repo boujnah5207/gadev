@@ -471,6 +471,12 @@
   <data name="SendBackToUser" xml:space="preserve">
     <value>Return To User</value>
   </data>
+  <data name="AssignedTo" xml:space="preserve">
+    <value>Assigned To</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="AddPermission" xml:space="preserve">
     <value>Add Permission</value>
   </data>

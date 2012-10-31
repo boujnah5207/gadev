@@ -7,11 +7,14 @@ using System.Web;
 using System.Web.Mvc;
 using DB;
 using Mvc4.OpenId.Sample.Security;
+using DA;
 
 namespace GAppsDev.Controllers
 {
     public class InventoryController : BaseController
     {
+
+
         private Entities db = new Entities();
         [OpenIdAuthorize]
         public ActionResult Home()
@@ -31,8 +34,12 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var inventories = db.Inventories.Include("Company").Include("Inventory2").Include("Orders_Items").Include("Location");
-            return View(inventories.ToList());
+            
+            using (InventoryRepository inventoryRepository = new InventoryRepository())
+            {
+                List<Inventory> inventories = inventoryRepository.GetList("Orders_Items","Location").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                return View(inventories);
+            }
         }
 
         //

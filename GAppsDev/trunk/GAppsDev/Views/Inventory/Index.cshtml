@@ -16,88 +16,49 @@
             @Loc.Dic.CreationDate
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Orders_Items.Title)
+            @Loc.Dic.ItemName
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Location.City)
+            @Loc.Dic.ItemDescription
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OrderId)
+            @Loc.Dic.Location
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AssignedTo)
+            @Loc.Dic.AssignedTo
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SerialNumber)
+            @Loc.Dic.Status
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WarrentyPeriodStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WarrentyPeriodEnd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Inventory2.OrderId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsOutOfInventory)
-        </th>
-        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Orders_Items.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssignedTo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SerialNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WarrentyPeriodStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WarrentyPeriodEnd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Notes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Inventory2.OrderId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsOutOfInventory)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orders_Items.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orders_Items.SubTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

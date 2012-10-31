@@ -474,6 +474,12 @@
   <data name="SendBackToUser" xml:space="preserve">
     <value>החזר למשתמש</value>
   </data>
+  <data name="AssignedTo" xml:space="preserve">
+    <value>משויך ל</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>מיקום</value>
+  </data>
   <data name="AddPermission" xml:space="preserve">
     <value>הוסף הרשאה</value>
   </data>
