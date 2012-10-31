@@ -25,7 +25,7 @@ namespace GAppsDev.Models.ErrorModels
         public const string ORDER_DELETE_AFTER_APPROVAL = "אין למחוק הזמנה לאחר אישורה\\ביטולה.";
         public const string ORDER_NOT_APPROVED = "ההזמנה עדיין לא אושרה. אנא המתן עד לאישור ההזמנה.";
         public const string ORDER_ALREADY_HAS_INVOICE = "כבר נסרקה חשבונית להזמנה זאת. ";
-
+        public const string ORDER_INSUFFICIENT_ALLOCATION = "סכום ההזמנה עולה על הסכום שנותר להקצאה שנבחרה.";
 
         // Suppliers Errors
         public const string SUPPLIERS_GET_ERROR = "קרתה שגיאה בזמן הגישה לספקים בבסיס הנתונים. אנא נסה שוב.";
