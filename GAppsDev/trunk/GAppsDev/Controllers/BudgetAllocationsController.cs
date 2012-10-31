@@ -212,9 +212,6 @@ namespace GAppsDev.Controllers
                                 {
                                     return Error(Errors.DATABASE_ERROR);
                                 }
-
-                                return RedirectToAction("Index");
-
                             }
                             else
                             {

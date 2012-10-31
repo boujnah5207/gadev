@@ -11,9 +11,10 @@ namespace DA
     {
         Pending = 1,
         Declined = 2,
-        ApprovedPendingInvoice = 3,
-        InvoiceScannedPendingReceipt = 4,
-        ReceiptScanned = 5,
-        PendingOrderCreator = 6
+        PartiallyApproved = 3,
+        ApprovedPendingInvoice = 4,
+        InvoiceScannedPendingReceipt = 5,
+        ReceiptScanned = 6,
+        PendingOrderCreator = 7,
     }
 }

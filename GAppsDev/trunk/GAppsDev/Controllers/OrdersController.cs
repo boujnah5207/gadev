@@ -21,10 +21,6 @@ namespace GAppsDev.Controllers
 {
     public class OrdersController : BaseController
     {
-        private const int WAITING_FOR_APPROVAL_STATUS = 1;
-        private const int APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE = 3;
-        private const int WAITING_FOR_CREATOR_REPLAY_STATUS = 6;
-
         const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
@@ -212,7 +208,7 @@ namespace GAppsDev.Controllers
                         .Where(x =>
                             x.CompanyId == CurrentUser.CompanyId &&
                             x.NextOrderApproverId == CurrentUser.UserId &&
-                            (x.Orders_Statuses.Id == (int)StatusType.Pending)
+                            x.StatusId == (int)StatusType.Pending
                             );
 
                     int numberOfItems = orders.Count();
@@ -304,12 +300,12 @@ namespace GAppsDev.Controllers
                 {
                     if (order.CompanyId == CurrentUser.CompanyId)
                     {
-                        if (order.StatusId == APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                        if (order.StatusId == (int)StatusType.ApprovedPendingInvoice)
                         {
                             ViewBag.OrderID = id;
                             return View();
                         }
-                        else if (order.StatusId < APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                        else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
                         {
                             return Error(Errors.ORDER_NOT_APPROVED);
                         }
@@ -359,7 +355,7 @@ namespace GAppsDev.Controllers
                         {
                             if (order.CompanyId == CurrentUser.CompanyId)
                             {
-                                if (order.StatusId == APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                                if (order.StatusId == (int)StatusType.ApprovedPendingInvoice)
                                 {
                                     locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
 
@@ -483,7 +479,7 @@ namespace GAppsDev.Controllers
                                         return Error(Errors.DATABASE_ERROR);
                                     }
                                 }
-                                else if (order.StatusId < APPROVED_WAITING_FOR_CREATOR_UPLOAD_INVOICE)
+                                else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
                                 {
                                     return Error(Errors.ORDER_NOT_APPROVED);
                                 }
@@ -566,31 +562,60 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.OrdersApprover))
             {
-                using (OrdersRepository ordersRepository = new OrdersRepository())
+                Budgets_ExpensesToIncomes budgetAllocation;
+                decimal? totalUsedAllocation;
+
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
-                    Order order = ordersRepository.GetEntity(modifiedOrder.Order.Id);
-                    order.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
+                    Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
+                    orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
 
                     if (selectedStatus == "אשר הזמנה")
                     {
-                        if (CurrentUser.OrdersApproverId.HasValue)
-                            order.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                        budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
+
+                        if (budgetAllocation != null)
+                        {
+                            totalUsedAllocation = ordersRep.GetList()
+                                    .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                    .Sum(x => (decimal?)x.Price);
+
+                            if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
+                            {
+                                if (CurrentUser.OrdersApproverId.HasValue)
+                                {
+                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                                }
+                                else
+                                {
+                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                    orderFromDB.NextOrderApproverId = null;
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                            }
+                        }
                         else
-                            order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                        {
+                            return Error(Errors.ALLOCATIONS_GET_ERROR);
+                        }
                     }
                     else if (selectedStatus == "דחה הזמנה")
                     {
-                        order.StatusId = (int)StatusType.Declined;
+                        orderFromDB.StatusId = (int)StatusType.Declined;
                     }
                     else if (selectedStatus == "החזר למשתמש")
                     {
-                        order.StatusId = (int)StatusType.PendingOrderCreator;
+                        orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
                     }
 
-                    if (ordersRepository.Update(order) != null)
+                    if (ordersRep.Update(orderFromDB) != null)
                     {
                         EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                        emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+                        emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
 
                         return RedirectToAction("PendingOrders");
                     }
@@ -611,11 +636,11 @@ namespace GAppsDev.Controllers
 
             PrintOrderModel model = new PrintOrderModel();
 
-            using(OrdersRepository ordersRep = new OrdersRepository())
-            using(OrderToItemRepository orderItemsRep = new OrderToItemRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository())
+            using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 model.Order = ordersRep.GetEntity(id, "User", "Company", "Supplier");
-                model.Items = orderItemsRep.GetList("Orders_Items").Where( x => x.OrderId == id).ToList();
+                model.Items = orderItemsRep.GetList("Orders_Items").Where(x => x.OrderId == id).ToList();
             }
 
             if (model.Order == null)
@@ -675,13 +700,13 @@ namespace GAppsDev.Controllers
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
                     List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
-                    
-                    foreach(var permission in permissions)
+
+                    foreach (var permission in permissions)
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
                                 .Where(x => x.BudgetsPermissionsId == permission.Budgets_Permissions.Id)
-                                .Select( x => x.Budgets_ExpensesToIncomes)
+                                .Select(x => x.Budgets_ExpensesToIncomes)
                                 .ToList()
                                 );
                     }
@@ -725,36 +750,62 @@ namespace GAppsDev.Controllers
                 if (Authorized(RoleType.OrdersWriter))
                 {
                     List<Orders_OrderToItem> ItemsList = ItemsFromString(itemsString, 0);
+                    decimal totalOrderPrice;
+                    decimal? totalUsedAllocation;
+
+                    Budgets_ExpensesToIncomes budgetAllocation;
 
                     order.UserId = CurrentUser.UserId;
                     order.CompanyId = CurrentUser.CompanyId;
                     order.CreationDate = DateTime.Now;
-                    order.StatusId = WAITING_FOR_APPROVAL_STATUS;
+                    order.StatusId = (int)StatusType.Pending;
                     order.OrderApproverNotes = String.Empty;
                     order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
                     order.NextOrderApproverId = CurrentUser.OrdersApproverId;
-                    order.BudgetAllocationId = 3;
 
-                    bool wasOrderCreated;
-                    using (OrdersRepository orderRep = new OrdersRepository())
+                    if (ItemsList != null || !order.BudgetAllocationId.HasValue)
                     {
-                        int? lastOrderNumber = orderRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
-
-                        if (lastOrderNumber.HasValue)
-                            order.OrderNumber = lastOrderNumber.Value + 1;
+                        if (ItemsList.Count > 0)
+                            totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
                         else
-                            order.OrderNumber = 1;
+                            return Error(Errors.ORDER_HAS_NO_ITEMS);
 
-                        wasOrderCreated = orderRep.Create(order);
-                    }
-
-                    if (wasOrderCreated)
-                    {
-                        if (ItemsList != null)
+                        bool wasOrderCreated;
+                        using (OrdersRepository ordersRep = new OrdersRepository())
+                        using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                         {
-                            if (ItemsList.Count == 0)
-                                return Error(Errors.ORDER_HAS_NO_ITEMS);
+                            budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
 
+                            if (budgetAllocation != null)
+                            {
+                                totalUsedAllocation = ordersRep.GetList()
+                                        .Where(o => o.BudgetAllocationId == order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                        .Sum(x => (decimal?)x.Price);
+
+                                if ((totalUsedAllocation ?? 0) + totalOrderPrice <= budgetAllocation.Amount)
+                                {
+                                    int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
+
+                                    if (lastOrderNumber.HasValue)
+                                        order.OrderNumber = lastOrderNumber.Value + 1;
+                                    else
+                                        order.OrderNumber = 1;
+
+                                    wasOrderCreated = ordersRep.Create(order);
+                                }
+                                else
+                                {
+                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.ALLOCATIONS_GET_ERROR);
+                            }
+                        }
+
+                        if (wasOrderCreated)
+                        {
                             foreach (var item in ItemsList)
                             {
                                 item.OrderId = order.Id;
@@ -798,12 +849,12 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.INVALID_FORM);
+                            return Error(Errors.ORDERS_CREATE_ERROR);
                         }
                     }
                     else
                     {
-                        return Error(Errors.ORDERS_CREATE_ERROR);
+                        return Error(Errors.INVALID_FORM);
                     }
                 }
                 else
@@ -919,7 +970,7 @@ namespace GAppsDev.Controllers
                     {
                         if (orderFromDatabase.UserId == CurrentUser.UserId)
                         {
-                            if (orderFromDatabase.StatusId == WAITING_FOR_APPROVAL_STATUS || orderFromDatabase.Id == WAITING_FOR_CREATOR_REPLAY_STATUS)
+                            if (orderFromDatabase.StatusId == (int)StatusType.Pending || orderFromDatabase.Id == (int)StatusType.PendingOrderCreator)
                             {
                                 itemsFromEditForm = ItemsFromString(itemsString, order.Id);
                                 if (itemsFromEditForm != null)
@@ -1051,7 +1102,7 @@ namespace GAppsDev.Controllers
                 {
                     if (model.Order.UserId == CurrentUser.UserId)
                     {
-                        if (model.Order.StatusId == WAITING_FOR_APPROVAL_STATUS || model.Order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
+                        if (model.Order.StatusId == (int)StatusType.Pending || model.Order.StatusId == (int)StatusType.PendingOrderCreator)
                         {
                             return View(model);
                         }
@@ -1095,7 +1146,7 @@ namespace GAppsDev.Controllers
                 {
                     if (order.UserId == CurrentUser.UserId)
                     {
-                        if (order.StatusId == WAITING_FOR_APPROVAL_STATUS || order.StatusId == WAITING_FOR_CREATOR_REPLAY_STATUS)
+                        if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
                         {
                             bool noItemErrors = true;
                             using (OrdersRepository orderRep = new OrdersRepository())
