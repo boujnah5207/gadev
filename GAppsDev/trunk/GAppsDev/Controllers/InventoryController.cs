@@ -10,7 +10,7 @@ using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class InventoryController : Controller
+    public class InventoryController : BaseController
     {
         private Entities db = new Entities();
         [OpenIdAuthorize]
@@ -28,6 +28,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Inventory/
 
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
             var inventories = db.Inventories.Include("Company").Include("Inventory2").Include("Orders_Items").Include("Location");
@@ -37,6 +38,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Inventory/Details/5
 
+        [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
             Inventory inventory = db.Inventories.Single(i => i.Id == id);
@@ -50,6 +52,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Inventory/Create
 
+        [OpenIdAuthorize]
         public ActionResult Create()
         {
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
@@ -62,6 +65,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Inventory/Create
 
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Create(Inventory inventory)
         {
@@ -82,6 +86,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Inventory/Edit/5
 
+        [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
             Inventory inventory = db.Inventories.Single(i => i.Id == id);
@@ -99,6 +104,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Inventory/Edit/5
 
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(Inventory inventory)
         {
@@ -119,6 +125,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Inventory/Delete/5
 
+        [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
             Inventory inventory = db.Inventories.Single(i => i.Id == id);
@@ -132,6 +139,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Inventory/Delete/5
 
+        [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
