@@ -6,12 +6,15 @@
     ViewBag.SubPageName = "AllUsers";
 }
 
-<h2>AddPermission</h2>
+@section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Delete" })'></script>
+    <script src="~/Scripts/EditUserPermissions.js"></script>
+}
 
 @using(Html.BeginForm()) {
 
-    <input type="hidden" name="userId" value="@ViewBag.UserId" />
-    @Loc.Dic.Permissions<text>:</text> @Html.DropDownList("PermissionId", Model.PermissionsSelectList)
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    @Loc.Dic.Permissions<text>:</text> @Html.DropDownList("PermissionId", Model.PermissionsSelectList, new { id = "PermissionsList"}) <input id="addPermissionBtn" type="button" value="@Loc.Dic.AddPermission" onClick="addItem()" />
     <fieldset>
         <legend>@Loc.Dic.BudgetAllocations</legend>
 

@@ -341,39 +341,65 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult EditPermissions(int userId = 0, int PermissionId = 0)
+        public ActionResult EditPermissions(UserPermissionsModel model)
         {
             if (ModelState.IsValid)
             {
                 if (Authorized(RoleType.SystemManager))
                 {
+                    User userFromDB;
+                    List<Budgets_UsersToPermissions> existingPermissions;
+                    bool noErrors = true;
+
                     using (UsersRepository usersRep = new UsersRepository())
                     using (BudgetsUsersToPermissionsRepository userPermissionsRep = new BudgetsUsersToPermissionsRepository())
                     {
-                        Budgets_UsersToPermissions existingPermission = userPermissionsRep.GetList().SingleOrDefault(x => x.PermissionId == PermissionId);
-                        User user = usersRep.GetEntity(userId);
+                        userFromDB = usersRep.GetEntity(model.UserId);
 
-                        if(user != null)
+                        if(userFromDB != null)
                         {
-                            if(user.CompanyId == CurrentUser.CompanyId)
+                            if(userFromDB.CompanyId == CurrentUser.CompanyId)
                             {
-                                if (existingPermission == null)
-                                {
-                                    Budgets_UsersToPermissions newPermission = new Budgets_UsersToPermissions()
-                                    {
-                                        UserId = user.Id,
-                                        PermissionId = PermissionId,
-                                        CompanyId = CurrentUser.CompanyId
-                                    };
+                                existingPermissions = userPermissionsRep.GetList().Where(x => x.UserId == userFromDB.Id).ToList();
 
-                                    if (userPermissionsRep.Create(newPermission))
+                                if (existingPermissions != null)
+                                {
+                                    foreach (var permission in model.UserPermissions)
+                                    {
+                                        if (permission.IsActive)
+                                        {
+                                            if (!existingPermissions.Any(x => x.PermissionId == permission.Permission.Id))
+                                            {
+                                                Budgets_UsersToPermissions newPermission = new Budgets_UsersToPermissions()
+                                                {
+                                                    UserId = userFromDB.Id,
+                                                    PermissionId = permission.Permission.Id,
+                                                    CompanyId = CurrentUser.CompanyId
+                                                };
+
+                                                if (!userPermissionsRep.Create(newPermission))
+                                                    noErrors = false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Budgets_UsersToPermissions existingPermission = existingPermissions.SingleOrDefault(x => x.PermissionId == permission.Permission.Id);
+                                            if (existingPermission != null)
+                                            {
+                                                if (!userPermissionsRep.Delete(existingPermission.Id))
+                                                    noErrors = false;
+                                            }
+                                        }
+                                    }
+
+                                    if (noErrors)
                                         return RedirectToAction("Index");
                                     else
-                                        return Error(Errors.USERS_CREATE_ERROR);
+                                        return Error(Errors.USER_EDIT_PERMISSIONS_ERROR);
                                 }
                                 else
                                 {
-                                    return Error(Errors.USER_ALREADY_HAS_PERMISSIONS);
+                                    return Error(Errors.DATABASE_ERROR);
                                 }
                             }
                             else

@@ -474,4 +474,7 @@
   <data name="SendBackToUser" xml:space="preserve">
     <value>החזר למשתמש</value>
   </data>
+  <data name="AddPermission" xml:space="preserve">
+    <value>הוסף הרשאה</value>
+  </data>
 </root>
