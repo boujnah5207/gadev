@@ -283,6 +283,76 @@ namespace GAppsDev.Controllers
             else return Error(Errors.NO_PERMISSION);
         }
 
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
+        {
+            if (Authorized(RoleType.OrdersApprover))
+            {
+                Budgets_ExpensesToIncomes budgetAllocation;
+                decimal? totalUsedAllocation;
+
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                {
+                    Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
+                    orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
+
+                    if (selectedStatus == "אשר הזמנה")
+                    {
+                        budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
+
+                        if (budgetAllocation != null)
+                        {
+                            totalUsedAllocation = ordersRep.GetList()
+                                    .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                    .Sum(x => (decimal?)x.Price);
+
+                            if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
+                            {
+                                if (CurrentUser.OrdersApproverId.HasValue)
+                                {
+                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                                    orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                                }
+                                else
+                                {
+                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                    orderFromDB.NextOrderApproverId = null;
+                                }
+                            }
+                            else
+                            {
+                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.ALLOCATIONS_GET_ERROR);
+                        }
+                    }
+                    else if (selectedStatus == "דחה הזמנה")
+                    {
+                        orderFromDB.StatusId = (int)StatusType.Declined;
+                    }
+                    else if (selectedStatus == "החזר למשתמש")
+                    {
+                        orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                    }
+
+                    if (ordersRep.Update(orderFromDB) != null)
+                    {
+                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                        emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+
+                        return RedirectToAction("PendingOrders");
+                    }
+                    else
+                        return Error(Errors.DATABASE_ERROR);
+                }
+            }
+            else return Error(Errors.NO_PERMISSION);
+        }
 
         // This action renders the form
         [OpenIdAuthorize]
@@ -556,76 +626,7 @@ namespace GAppsDev.Controllers
         }
         */
 
-        [OpenIdAuthorize]
-        [HttpPost]
-        public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
-        {
-            if (Authorized(RoleType.OrdersApprover))
-            {
-                Budgets_ExpensesToIncomes budgetAllocation;
-                decimal? totalUsedAllocation;
-
-                using (OrdersRepository ordersRep = new OrdersRepository())
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
-                {
-                    Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
-                    orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
-
-                    if (selectedStatus == "אשר הזמנה")
-                    {
-                        budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
-
-                        if (budgetAllocation != null)
-                        {
-                            totalUsedAllocation = ordersRep.GetList()
-                                    .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                    .Sum(x => (decimal?)x.Price);
-
-                            if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
-                            {
-                                if (CurrentUser.OrdersApproverId.HasValue)
-                                {
-                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                                }
-                                else
-                                {
-                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                                    orderFromDB.NextOrderApproverId = null;
-                                }
-                            }
-                            else
-                            {
-                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Errors.ALLOCATIONS_GET_ERROR);
-                        }
-                    }
-                    else if (selectedStatus == "דחה הזמנה")
-                    {
-                        orderFromDB.StatusId = (int)StatusType.Declined;
-                    }
-                    else if (selectedStatus == "החזר למשתמש")
-                    {
-                        orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
-                    }
-
-                    if (ordersRep.Update(orderFromDB) != null)
-                    {
-                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                        emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-
-                        return RedirectToAction("PendingOrders");
-                    }
-                    else
-                        return Error(Errors.DATABASE_ERROR);
-                }
-            }
-            else return Error(Errors.NO_PERMISSION);
-        }
-
+        
         //[OpenIdAuthorize]
         public ActionResult PrintOrderToScreen(int id, string languageCode = "he")
         {

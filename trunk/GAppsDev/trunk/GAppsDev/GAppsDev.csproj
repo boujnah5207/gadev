@@ -178,6 +178,7 @@
     <Compile Include="Models\Search\OrdersSearchFormModel.cs" />
     <Compile Include="Models\Supplier\AjaxSupplier.cs" />
     <Compile Include="Models\User\AllUsersModel.cs" />
+    <Compile Include="Models\User\UserPermissionsModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
@@ -529,7 +530,7 @@
     </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
     <Content Include="Views\Users\LanguageSet.cshtml" />
-    <Content Include="Views\Users\AddPermission.cshtml" />
+    <Content Include="Views\Users\EditPermissions.cshtml" />
     <Content Include="Views\Orders\Home.cshtml" />
     <Content Include="Views\Companies\Home.cshtml" />
     <Content Include="Views\Budgets\Home.cshtml" />
