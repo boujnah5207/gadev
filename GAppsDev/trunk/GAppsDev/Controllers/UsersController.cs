@@ -12,6 +12,7 @@ using GAppsDev.Models.Search;
 using GAppsDev.Models.UserModels;
 using Mvc4.OpenId.Sample.Security;
 using System.Globalization;
+using GAppsDev.Models;
 
 namespace GAppsDev.Controllers
 {
@@ -289,16 +290,45 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                List<Budgets_Permissions> permissions;
+                UserPermissionsModel model = new UserPermissionsModel();
+                User user;
+                List<Budgets_Permissions> allPermissions;
+
+                using (UsersRepository usersRep = new UsersRepository())
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
                 {
-                    permissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                    user = usersRep.GetEntity(id);
+
+                    if (user != null)
+                    {
+                        model.UserPermissions = user.Budgets_UsersToPermissions.Select(x => new UserPermission() { Permission = x.Budgets_Permissions, IsActive = true }).ToList();
+
+                        if (model.UserPermissions != null)
+                        {
+                            allPermissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+
+                            if (allPermissions != null)
+                            {
+                                model.UserId = user.Id;
+                                model.PermissionsSelectList = new SelectList(allPermissions, "Id", "Name");
+
+                                return View(model);
+                            }
+                            else
+                            {
+                                return Error(Errors.DATABASE_ERROR);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.PERMISSIONS_GET_ERROR);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.USERS_GET_ERROR);
+                    }
                 }
-
-                ViewBag.PermissionId = new SelectList(permissions, "Id", "Name");
-                ViewBag.UserId = id;
-
-                return View();
             }
             else
             {
