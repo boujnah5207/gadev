@@ -480,4 +480,10 @@
   <data name="AddPermission" xml:space="preserve">
     <value>Add Permission</value>
   </data>
+  <data name="DownloadInvoice" xml:space="preserve">
+    <value>Download Invoice</value>
+  </data>
+  <data name="DownloadReceipt" xml:space="preserve">
+    <value>Download Receipt</value>
+  </data>
 </root>

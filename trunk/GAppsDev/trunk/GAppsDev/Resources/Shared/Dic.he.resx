@@ -483,4 +483,10 @@
   <data name="AddPermission" xml:space="preserve">
     <value>הוסף הרשאה</value>
   </data>
+  <data name="DownloadInvoice" xml:space="preserve">
+    <value>הורד חשבונית</value>
+  </data>
+  <data name="DownloadReceipt" xml:space="preserve">
+    <value>הורד קבלה</value>
+  </data>
 </root>
