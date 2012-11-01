@@ -466,6 +466,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download Invoice.
+        /// </summary>
+        public static string DownloadInvoice {
+            get {
+                return ResourceManager.GetString("DownloadInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Receipt.
+        /// </summary>
+        public static string DownloadReceipt {
+            get {
+                return ResourceManager.GetString("DownloadReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {

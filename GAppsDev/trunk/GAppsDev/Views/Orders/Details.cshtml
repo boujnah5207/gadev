@@ -99,10 +99,17 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
+    <br />
 
-    @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingReceipt)
+    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingReceipt)
     {
-        <a href="@invoicePath">@invoicePath</a>
+        @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Order.Id });
+        <br />
+    }
+    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
+    {
+        @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Order.Id });
+        <br />
     }
 
 </fieldset>

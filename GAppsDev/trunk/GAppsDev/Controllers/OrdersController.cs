@@ -16,6 +16,7 @@ using BaseLibraries;
 using System.IO;
 using GAppsDev.Models.Search;
 using System.Globalization;
+using System.IO;
 
 namespace GAppsDev.Controllers
 {
@@ -616,17 +617,36 @@ namespace GAppsDev.Controllers
             return RedirectToAction("Index");
         }
 
-        /*
         [OpenIdAuthorize]
         public ActionResult DownloadInvoice(int id)
         {
-            return File(Path.Combine(Server.MapPath("~/App_Data/Bundles"), fileName),
-            "application/java-archive",
-            fileName);
-        }
-        */
+            string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
+            string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
 
-        
+            FileStream stream = System.IO.File.OpenRead(path);
+            byte[] contents = new byte[stream.Length];
+            stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+            stream.Close();
+
+            Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
+            return File(contents, "application/pdf");
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult DownloadReceipt(int id)
+        {
+            string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
+            string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
+
+            FileStream stream = System.IO.File.OpenRead(path);
+            byte[] contents = new byte[stream.Length];
+            stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+            stream.Close();
+
+            Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
+            return File(contents, "application/pdf");
+        }
+
         //[OpenIdAuthorize]
         public ActionResult PrintOrderToScreen(int id, string languageCode = "he")
         {
