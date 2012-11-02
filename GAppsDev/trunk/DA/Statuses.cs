@@ -13,8 +13,10 @@ namespace DA
         Declined = 2,
         PartiallyApproved = 3,
         ApprovedPendingInvoice = 4,
-        InvoiceScannedPendingReceipt = 5,
-        ReceiptScanned = 6,
-        PendingOrderCreator = 7,
+        InvoiceScannedPendingOrderCreator = 5,
+        InvoiceApprovedByOrderCreatorPendingReceipt = 6,
+        ReceiptScanned = 7,
+        PendingOrderCreator = 8,
+        OrderCancelled = 9
     }
 }

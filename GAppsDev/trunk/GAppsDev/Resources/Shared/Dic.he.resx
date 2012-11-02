@@ -489,4 +489,22 @@
   <data name="DownloadReceipt" xml:space="preserve">
     <value>הורד קבלה</value>
   </data>
+  <data name="Invoice" xml:space="preserve">
+    <value>חשבונית</value>
+  </data>
+  <data name="InvoiceApproval" xml:space="preserve">
+    <value>אישור חשבונית</value>
+  </data>
+  <data name="ApproveInvoce" xml:space="preserve">
+    <value>אישור חשבונית</value>
+  </data>
+  <data name="DeclineInvoice" xml:space="preserve">
+    <value>דחיית חשבונית</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>בטל</value>
+  </data>
+  <data name="Cancel Order" xml:space="preserve">
+    <value>בטל הזמנה</value>
+  </data>
 </root>

@@ -548,6 +548,7 @@
     <Content Include="Views\Shared\SubMenu_Inventory.cshtml" />
     <Content Include="Views\Shared\SubMenu_Budgets.cshtml" />
     <Content Include="Views\Orders\UploadReceiptFile.cshtml" />
+    <Content Include="Views\Orders\InvoiceApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

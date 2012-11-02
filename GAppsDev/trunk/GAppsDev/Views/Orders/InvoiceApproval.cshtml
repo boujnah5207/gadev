@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "InvoiceApproval";
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "MyOrders";
+}
+
+<h2>InvoiceApproval</h2>
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="orderId" value=ViewBag.orderId />
+    <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveInvoce" />
+    <input type="submit" name="selectedStatus" value="@Loc.Dic.CancelOrder" />
+}
