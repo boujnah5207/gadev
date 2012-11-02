@@ -486,4 +486,22 @@
   <data name="DownloadReceipt" xml:space="preserve">
     <value>Download Receipt</value>
   </data>
+  <data name="Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="InvoiceApproval" xml:space="preserve">
+    <value>Invoice Approval</value>
+  </data>
+  <data name="ApproveInvoce" xml:space="preserve">
+    <value>Approve Invoce</value>
+  </data>
+  <data name="DeclineInvoice" xml:space="preserve">
+    <value>Decline Invoice</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelOrder" xml:space="preserve">
+    <value>Cancel Order</value>
+  </data>
 </root>

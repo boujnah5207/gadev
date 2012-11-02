@@ -205,6 +205,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approve Invoce.
+        /// </summary>
+        public static string ApproveInvoce {
+            get {
+                return ResourceManager.GetString("ApproveInvoce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve Order.
         /// </summary>
         public static string ApproveOrder {
@@ -282,6 +291,24 @@ namespace Loc {
         public static string BudgetAllocations {
             get {
                 return ResourceManager.GetString("BudgetAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Order.
+        /// </summary>
+        public static string CancelOrder {
+            get {
+                return ResourceManager.GetString("CancelOrder", resourceCulture);
             }
         }
         
@@ -408,6 +435,15 @@ namespace Loc {
         public static string CustomName {
             get {
                 return ResourceManager.GetString("CustomName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decline Invoice.
+        /// </summary>
+        public static string DeclineInvoice {
+            get {
+                return ResourceManager.GetString("DeclineInvoice", resourceCulture);
             }
         }
         
@@ -606,6 +642,24 @@ namespace Loc {
         public static string InventoryList {
             get {
                 return ResourceManager.GetString("InventoryList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice.
+        /// </summary>
+        public static string Invoice {
+            get {
+                return ResourceManager.GetString("Invoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice Approval.
+        /// </summary>
+        public static string InvoiceApproval {
+            get {
+                return ResourceManager.GetString("InvoiceApproval", resourceCulture);
             }
         }
         

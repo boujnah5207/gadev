@@ -16,7 +16,6 @@ using BaseLibraries;
 using System.IO;
 using GAppsDev.Models.Search;
 using System.Globalization;
-using System.IO;
 
 namespace GAppsDev.Controllers
 {
@@ -530,7 +529,7 @@ namespace GAppsDev.Controllers
                                             var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
                                             file.SaveAs(path);
 
-                                            order.StatusId = (int)StatusType.InvoiceScannedPendingReceipt;
+                                            order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
                                             ordersRep.Update(order);
 
                                             return RedirectToAction("Index");
@@ -1679,6 +1678,34 @@ namespace GAppsDev.Controllers
             ViewBag.HideSupplierField = hideSupplierField;
             return PartialView(model);
         }
+
+        [OpenIdAuthorize]
+        public ActionResult InvoiceApproval(int id = 0)
+        {
+            ViewBag.orderId = id;
+            return View();
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult InvoiceApproval(string selectedStatus, int orderId = 0)
+        {
+            using (OrdersRepository ordersRepository = new OrdersRepository())
+            {
+                Order order = ordersRepository.GetEntity(orderId);
+                if (selectedStatus == Loc.Dic.ApproveInvoce)
+                {
+                    order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt;
+                }
+                if (selectedStatus == Loc.Dic.CancelOrder)
+                {
+                    order.StatusId = (int)StatusType.OrderCancelled;
+                }
+                ordersRepository.Update(order);
+            }
+            return RedirectToAction("Index");
+        }
+
 
         private List<Orders_OrderToItem> ItemsFromString(string itemsString, int orderId)
         {

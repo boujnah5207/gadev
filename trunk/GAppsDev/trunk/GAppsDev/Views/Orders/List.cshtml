@@ -106,7 +106,7 @@
                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
                     }
                 }
-                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingReceipt)
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
@@ -114,6 +114,10 @@
                     {
                      <text>|</text> @Html.ActionLink(Loc.Dic.UploadReceipt, "UploadReceiptFile", new { id = item.Id })
                     }
+                }
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+                {
+                    <text>|</text> @Html.ActionLink(Loc.Dic.InvoiceApproval, "InvoiceApproval", new { id = item.Id })
                 }
             </td>
         </tr>
