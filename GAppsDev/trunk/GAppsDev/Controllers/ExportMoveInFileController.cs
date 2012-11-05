@@ -5,10 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
+using Mvc4.OpenId.Sample.Security;
 
 
 namespace GAppsDev.Controllers
 {
+    [OpenIdAuthorize]
     public class ExportMoveInFileController : BaseController
     {
         //
@@ -19,7 +21,7 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRepository = new OrdersRepository())
             {
                 List<Order> toExportOrders = ordersRepository
-                    .GetList()
+                    .GetList("Orders_Statuses", "Supplier", "User")
                     .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                     .ToList();
                 return View(toExportOrders);
