@@ -555,10 +555,10 @@
   <data name="DeclineInvoice" xml:space="preserve">
     <value>Decline Invoice</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="CancelOrder" xml:space="preserve">
     <value>Cancel Order</value>
+  </data>
+  <data name="ExportToFile" xml:space="preserve">
+    <value>Export To File</value>
   </data>
 </root>

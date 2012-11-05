@@ -12,6 +12,8 @@
             {
                 <li>|</li>
                 <li>@Html.ActionLink(Loc.Dic.AllOrders, "Index", "Orders", null, new { id = "AllOrdersLink" })</li>
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.ExportToFile, "Index", "ExportMoveInFile", null, new { id = "ExportToFileLink" })</li>
             }
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
             {

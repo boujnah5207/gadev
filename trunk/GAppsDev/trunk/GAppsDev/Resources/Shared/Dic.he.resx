@@ -496,7 +496,7 @@
     <value>הוסף ספק</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>ביטול</value>
+    <value>בטל</value>
   </data>
   <data name="ChooseAndContinue" xml:space="preserve">
     <value>בחר והמשך</value>
@@ -558,10 +558,10 @@
   <data name="DeclineInvoice" xml:space="preserve">
     <value>דחיית חשבונית</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>בטל</value>
-  </data>
   <data name="Cancel Order" xml:space="preserve">
     <value>בטל הזמנה</value>
+  </data>
+  <data name="ExportToFile" xml:space="preserve">
+    <value>ייצוא לקובץ</value>
   </data>
 </root>
