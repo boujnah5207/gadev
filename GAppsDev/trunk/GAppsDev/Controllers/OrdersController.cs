@@ -1727,7 +1727,7 @@ namespace GAppsDev.Controllers
                 Order order = ordersRepository.GetEntity(orderId);
                 if (selectedStatus == Loc.Dic.ApproveInvoce)
                 {
-                    order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt;
+                    order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport;
                 }
                 if (selectedStatus == Loc.Dic.CancelOrder)
                 {

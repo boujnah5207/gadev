@@ -106,7 +106,7 @@
                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
                     }
                 }
-                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
