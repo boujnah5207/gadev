@@ -558,6 +558,33 @@
   <data name="CancelOrder" xml:space="preserve">
     <value>Cancel Order</value>
   </data>
+  <data name="Error_DatabaseError" xml:space="preserve">
+    <value>An error accured while accessing the database.</value>
+  </data>
+  <data name="Error_InvoiceFileNotFound" xml:space="preserve">
+    <value>The invoice file was not found</value>
+  </data>
+  <data name="Error_InvoiceNotApproved" xml:space="preserve">
+    <value>The invoice is not approved by the order creator.</value>
+  </data>
+  <data name="Error_InvoiceNotScanned" xml:space="preserve">
+    <value>This order does not have an invoice yet.</value>
+  </data>
+  <data name="Error_NoPermission" xml:space="preserve">
+    <value>You don't have the permission to do that action</value>
+  </data>
+  <data name="Error_OrderAlreadyHasReceipt" xml:space="preserve">
+    <value>This order already has a receipt</value>
+  </data>
+  <data name="Error_OrderNotFound" xml:space="preserve">
+    <value>The order was not found in the database.</value>
+  </data>
+  <data name="Error_ReceiptFileNotFound" xml:space="preserve">
+    <value>The receipt file was not found</value>
+  </data>
+  <data name="Error_ReceiptNotScanned" xml:space="preserve">
+    <value>This order does not have an receipt yet.</value>
+  </data>
   <data name="ExportToFile" xml:space="preserve">
     <value>Export To File</value>
   </data>
