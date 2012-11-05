@@ -101,7 +101,7 @@
     </div>
     <br />
 
-    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingReceipt)
+    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Order.Id });
         <br />

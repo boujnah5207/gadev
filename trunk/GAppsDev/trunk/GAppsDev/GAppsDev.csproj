@@ -147,6 +147,7 @@
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
+    <Compile Include="Controllers\ExportMoveInFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncomesController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -549,6 +550,7 @@
     <Content Include="Views\Shared\SubMenu_Budgets.cshtml" />
     <Content Include="Views\Orders\UploadReceiptFile.cshtml" />
     <Content Include="Views\Orders\InvoiceApproval.cshtml" />
+    <Content Include="Views\ExportMoveInFile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />
