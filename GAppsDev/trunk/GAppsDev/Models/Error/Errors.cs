@@ -15,6 +15,7 @@ namespace GAppsDev.Models.ErrorModels
         // Orders Errors
         public const string ORDERS_CREATE_ERROR = "קרתה שגיאה בזמן השמירה למסד הנתונים. ההזמנה לא נשמרה במערכת.";
         public const string ORDERS_GET_ERROR = "קרתה שגיאה בזמן משיכת ההזמנות מבסיס הנתונים. אנא נסה שוב.";
+        public const string ORDER_GET_ERROR = "קרתה שגיאה בזמן משיכת ההזמנה מבסיס הנתונים. אנא נסה שוב.";
         public const string ORDER_HAS_NO_ITEMS = "אין אפשרות ליצור הזמנה ללא פריטים. אנא הוסף פריט ונסה שוב.";
         public const string ORDERS_DELETE_ITEMS_ERROR = "קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק פריטים מההזמנה.";
         public const string ORDERS_DELETE_ERROR = "קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק את ההזמנה.";

@@ -45,7 +45,7 @@ namespace GAppsDev.Controllers
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
+                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
 
                     if (orders != null)
                     {
@@ -153,7 +153,7 @@ namespace GAppsDev.Controllers
                             switch (sortby)
                             {
                                 case "number":
-                                    orders = orderFunction(x => x.CreationDate);
+                                    orders = orderFunction(x => x.OrderNumber);
                                     break;
                                 case "creation":
                                     orders = orderFunction(x => x.CreationDate);
@@ -204,7 +204,7 @@ namespace GAppsDev.Controllers
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository())
                 {
-                    orders = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User")
+                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                         .Where(x =>
                             x.CompanyId == CurrentUser.CompanyId &&
                             x.NextOrderApproverId == CurrentUser.UserId &&
@@ -235,6 +235,9 @@ namespace GAppsDev.Controllers
                             case "username":
                             default:
                                 orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                break;
+                            case "number":
+                                orders = orderFunction(x => x.OrderNumber);
                                 break;
                             case "creation":
                                 orders = orderFunction(x => x.CreationDate);
@@ -276,11 +279,40 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersApprover))
             {
                 OrderModel orderModel = new OrderModel();
-                orderModel.Order = db.Orders.Single(o => o.Id == id);
-                orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
-                return View(orderModel);
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    orderModel.Order = ordersRep.GetEntity(id);
+
+                    if (orderModel.Order != null)
+                    {
+                        if (orderModel.Order.CompanyId == CurrentUser.CompanyId && orderModel.Order.NextOrderApproverId == CurrentUser.UserId)
+                        {
+                            orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+
+                            if (orderModel.OrderToItem != null)
+                            {
+                                return View(orderModel);
+                            }
+                            else
+                            {
+                                return Error(Errors.DATABASE_ERROR);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Errors.NO_PERMISSION);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.ORDER_GET_ERROR);
+                    }
+                }
             }
-            else return Error(Errors.NO_PERMISSION);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         [OpenIdAuthorize]
@@ -296,65 +328,83 @@ namespace GAppsDev.Controllers
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
                     Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
-                    orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
 
-                    if (selectedStatus == "אשר הזמנה")
+                    if (orderFromDB != null)
                     {
-                        budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
-
-                        if (budgetAllocation != null)
+                        if (orderFromDB.CompanyId == CurrentUser.CompanyId && orderFromDB.NextOrderApproverId == CurrentUser.UserId)
                         {
-                            totalUsedAllocation = ordersRep.GetList()
-                                    .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                    .Sum(x => (decimal?)x.Price);
-
-                            if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
+                            if (selectedStatus == Loc.Dic.ApproveOrder)
                             {
-                                if (CurrentUser.OrdersApproverId.HasValue)
+                                budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
+
+                                if (budgetAllocation != null)
                                 {
-                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                                    orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                                    totalUsedAllocation = ordersRep.GetList()
+                                            .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                            .Sum(x => (decimal?)x.Price);
+
+                                    if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
+                                    {
+                                        if (CurrentUser.OrdersApproverId.HasValue)
+                                        {
+                                            orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                                            orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                                        }
+                                        else
+                                        {
+                                            orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                            orderFromDB.NextOrderApproverId = null;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                    }
                                 }
                                 else
                                 {
-                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                                    orderFromDB.NextOrderApproverId = null;
+                                    return Error(Errors.ALLOCATIONS_GET_ERROR);
                                 }
+                            }
+                            else if (selectedStatus == Loc.Dic.DeclineOrder)
+                            {
+                                orderFromDB.StatusId = (int)StatusType.Declined;
+                            }
+                            else if (selectedStatus == Loc.Dic.SendBackToUser)
+                            {
+                                orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                            }
+
+                            orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
+                            if (ordersRep.Update(orderFromDB) != null)
+                            {
+                                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+
+                                return RedirectToAction("PendingOrders");
                             }
                             else
                             {
-                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                return Error(Errors.DATABASE_ERROR);
                             }
                         }
                         else
                         {
-                            return Error(Errors.ALLOCATIONS_GET_ERROR);
+                            return Error(Errors.NO_PERMISSION);
                         }
                     }
-                    else if (selectedStatus == "דחה הזמנה")
-                    {
-                        orderFromDB.StatusId = (int)StatusType.Declined;
-                    }
-                    else if (selectedStatus == "החזר למשתמש")
-                    {
-                        orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
-                    }
-
-                    if (ordersRep.Update(orderFromDB) != null)
-                    {
-                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                        emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-
-                        return RedirectToAction("PendingOrders");
-                    }
                     else
-                        return Error(Errors.DATABASE_ERROR);
+                    {
+                        return Error(Errors.ORDER_GET_ERROR);
+                    }
                 }
             }
-            else return Error(Errors.NO_PERMISSION);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
-        // This action renders the form
         [OpenIdAuthorize]
         public ActionResult UploadInvoiceFile(int id = 0)
         {
@@ -386,7 +436,7 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Errors.ORDER_GET_ERROR);
                     }
                 }
                 else
@@ -409,11 +459,10 @@ namespace GAppsDev.Controllers
             {
                 if (file != null && file.ContentLength > 0)
                 {
-                    List<Inventory> createdItems = new List<Inventory>();
-                    bool noCreationErrors = true;
-
                     Order order;
+                    List<Inventory> createdItems = new List<Inventory>();
                     List<Location> locations;
+                    bool noCreationErrors = true;
 
                     using (InventoryRepository inventoryRep = new InventoryRepository())
                     using (LocationsRepository locationsRep = new LocationsRepository())
@@ -565,7 +614,7 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.ORDER_NOT_FOUND);
+                            return Error(Errors.ORDER_GET_ERROR);
                         }
                     }
                 }
@@ -713,7 +762,6 @@ namespace GAppsDev.Controllers
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
-                using (BudgetsExpensesRepository budgetsExpensesRepository = new BudgetsExpensesRepository())
                 {
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
 
@@ -737,18 +785,6 @@ namespace GAppsDev.Controllers
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
-
-                    /*
-                    List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
-                    foreach(var allocation in allocations)
-                    {
-                        expenses.AddRange(
-                            budgetsExpensesRepository.GetList()
-                                .Where(x => x.Id == allocation.ExpenseId)
-                                .ToList()
-                                );
-                    }
-                    */
 
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
@@ -903,6 +939,7 @@ namespace GAppsDev.Controllers
                 {
                     order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
 
+                    List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
                     List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
 
@@ -916,19 +953,14 @@ namespace GAppsDev.Controllers
                                 );
                     }
 
-                    /*
-                    List<Budgets_Expenses> expenses = new List<Budgets_Expenses>();
-                    foreach(var allocation in allocations)
-                    {
-                        expenses.AddRange(
-                            budgetsExpensesRepository.GetList()
-                                .Where(x => x.Id == allocation.ExpenseId)
-                                .ToList()
-                                );
-                    }
-                    */
+                    allocationsSelectList = allocations
+                        .Distinct()
+                        .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
+                        .AsEnumerable()
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .ToList();
 
-                    ViewBag.BudgetAllocationId = new SelectList(allocations, "id", "Amount", order.BudgetAllocationId);
+                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
 
                 if (order.UserId == CurrentUser.UserId)

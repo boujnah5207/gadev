@@ -486,6 +486,63 @@
   <data name="DownloadReceipt" xml:space="preserve">
     <value>Download Receipt</value>
   </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>Add Item</value>
+  </data>
+  <data name="AddSupplier" xml:space="preserve">
+    <value>Add Supplier</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChooseAndContinue" xml:space="preserve">
+    <value>Choose And Continue</value>
+  </data>
+  <data name="ChooseSupplier" xml:space="preserve">
+    <value>Choose Supplier</value>
+  </data>
+  <data name="DuplicateItemFound" xml:space="preserve">
+    <value>This Item already exist in the order, what whould you like to do?</value>
+  </data>
+  <data name="FinalPrice" xml:space="preserve">
+    <value>Final price</value>
+  </data>
+  <data name="InvalidQuantityOrPrice" xml:space="preserve">
+    <value>Please enter quantity and price and try again</value>
+  </data>
+  <data name="ItemDuplication" xml:space="preserve">
+    <value>Item Duplication</value>
+  </data>
+  <data name="ItemWasCreated" xml:space="preserve">
+    <value>Item was added successfully</value>
+  </data>
+  <data name="LoadingItems" xml:space="preserve">
+    <value>LoadingItems</value>
+  </data>
+  <data name="Merge" xml:space="preserve">
+    <value>Merge</value>
+  </data>
+  <data name="NoItemSelected" xml:space="preserve">
+    <value>Please select an item or create a new one</value>
+  </data>
+  <data name="NoItemsInOrder" xml:space="preserve">
+    <value>No Items In the Order</value>
+  </data>
+  <data name="OrderItem" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="QuantityIsZero" xml:space="preserve">
+    <value>Quantity must be greater then 0</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="SupplierAdded" xml:space="preserve">
+    <value>Supplier was added successfully</value>
+  </data>
+  <data name="UpdateOrder" xml:space="preserve">
+    <value>Update order</value>
+  </data>
   <data name="Invoice" xml:space="preserve">
     <value>Invoice</value>
   </data>
