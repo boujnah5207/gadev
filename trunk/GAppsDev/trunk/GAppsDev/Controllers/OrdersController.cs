@@ -453,7 +453,7 @@ namespace GAppsDev.Controllers
         // This action handles the form POST and the upload
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, AddToInventoryModel model, int? orderId)
+        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, AddToInventoryModel model)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -574,7 +574,7 @@ namespace GAppsDev.Controllers
 
                                         if (noCreationErrors)
                                         {
-                                            var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                                            var fileName = CurrentUser.CompanyId.ToString() + "_" + model.OrderId.ToString() + ".pdf";
                                             var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
                                             file.SaveAs(path);
 
@@ -632,71 +632,213 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult UploadReceiptFile(int id = 0)
         {
-            ViewBag.OrderId = id;
-            return View();
+            if (Authorized(RoleType.SystemManager))
+            {
+                Order order;
+                using (OrdersRepository orderRep = new OrdersRepository())
+                {
+                    order = orderRep.GetEntity(id);
+
+                    if (order != null)
+                    {
+                        if (order.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (order.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                            {
+                                ViewBag.OrderId = id;
+                                return View();
+                            }
+                            else if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                            {
+                                return Error(Loc.Dic.Error_InvoiceNotApproved);
+                            }
+                            else //if (order.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
+                            {
+                                return Error(Loc.Dic.Error_OrderAlreadyHasReceipt);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_OrderNotFound);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Loc.Dic.Error_NoPermission);
+            }
         }
 
-        // This action handles the form POST and the upload
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadReceiptFile(HttpPostedFileBase file, int? orderId)
+        public ActionResult UploadReceiptFile(HttpPostedFileBase file, int orderId = 0)
         {
-            // Verify that the user selected a file
-            if (file != null && file.ContentLength > 0)
+            if (Authorized(RoleType.SystemManager))
             {
-                // extract only the fielname
-                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
-                // store the file inside ~/App_Data/uploads folder
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads/Receipts"), fileName);
-                file.SaveAs(path);
+                Order order;
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    order = ordersRep.GetEntity(orderId);
+
+                    if (order != null)
+                    {
+                        if (order.CompanyId == CurrentUser.CompanyId)
+                        {
+                            if (order.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                            {
+                                order.StatusId = (int)StatusType.ReceiptScanned;
+
+                                if (ordersRep.Update(order) != null)
+                                    return RedirectToAction("Index");
+                                else
+                                    return Error(Loc.Dic.Error_DatabaseError);
+                            }
+                            else if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                            {
+                                return Error(Loc.Dic.Error_InvoiceNotApproved);
+                            }
+                            else //if (order.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
+                            {
+                                return Error(Loc.Dic.Error_OrderAlreadyHasReceipt);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_OrderNotFound);
+                    }
+                }
             }
+            else
+            {
+                return Error(Loc.Dic.Error_NoPermission);
+            }
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult DownloadInvoice(int id = 0)
+        {
             Order order;
             using (OrdersRepository ordersRep = new OrdersRepository())
             {
-                order = ordersRep.GetEntity((int)orderId);
+                order = ordersRep.GetEntity(id);
 
                 if (order != null)
                 {
-                    order.StatusId = (int)StatusType.ReceiptScanned;
-                    ordersRep.Update(order);
+                    if (order.CompanyId == CurrentUser.CompanyId)
+                    {
+                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
+                        {
+                            if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
+                            {
+                                string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
+                                string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
+
+                                if (System.IO.File.Exists(path))
+                                {
+                                    FileStream stream = System.IO.File.OpenRead(path);
+
+                                    byte[] contents = new byte[stream.Length];
+                                    stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+                                    stream.Close();
+
+                                    Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
+                                    return File(contents, "application/pdf");
+                                }
+                                else
+                                {
+                                    return Error(Loc.Dic.Error_InvoiceFileNotFound);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Loc.Dic.Error_InvoiceNotScanned);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_NoPermission);
+                    }
+                }
+                else
+                {
+                    return Error(Loc.Dic.Error_OrderNotFound);
                 }
             }
-            // redirect back to the index action to show the form once again
-            return RedirectToAction("Index");
         }
 
         [OpenIdAuthorize]
-        public ActionResult DownloadInvoice(int id)
+        public ActionResult DownloadReceipt(int id = 0)
         {
-            string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-            string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository())
+            {
+                order = ordersRep.GetEntity(id);
 
-            FileStream stream = System.IO.File.OpenRead(path);
-            byte[] contents = new byte[stream.Length];
-            stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-            stream.Close();
+                if (order != null)
+                {
+                    if (order.CompanyId == CurrentUser.CompanyId)
+                    {
+                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
+                        {
+                            if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
+                            {
+                                string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
+                                string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
 
-            Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
-            return File(contents, "application/pdf");
-        }
+                                if (System.IO.File.Exists(path))
+                                {
+                                    FileStream stream = System.IO.File.OpenRead(path);
+                                    byte[] contents = new byte[stream.Length];
+                                    stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+                                    stream.Close();
 
-        [OpenIdAuthorize]
-        public ActionResult DownloadReceipt(int id)
-        {
-            string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-            string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
-
-            FileStream stream = System.IO.File.OpenRead(path);
-            byte[] contents = new byte[stream.Length];
-            stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-            stream.Close();
-
-            Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
-            return File(contents, "application/pdf");
+                                    Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
+                                    return File(contents, "application/pdf");
+                                }
+                                else
+                                {
+                                    return Error(Loc.Dic.Error_ReceiptFileNotFound);
+                                }
+                            }
+                            else
+                            {
+                                return Error(Loc.Dic.Error_InvoiceNotScanned);
+                            }
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_NoPermission);
+                    }
+                }
+                else
+                {
+                    return Error(Loc.Dic.Error_OrderNotFound);
+                }
+            }
         }
 
         //[OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(int id, string languageCode = "he")
+        public ActionResult PrintOrderToScreen(int id = 0, string languageCode = "he")
         {
             CultureInfo ci = new CultureInfo(languageCode);
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
@@ -722,7 +864,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult DownloadOrderAsPdf(int id)
+        public ActionResult DownloadOrderAsPdf(int id = 0)
         {
             string cookieName = OpenIdMembershipService.LOGIN_COOKIE_NAME;
             HttpCookie cookie = Request.Cookies[cookieName];
@@ -731,24 +873,45 @@ namespace GAppsDev.Controllers
 
             Order order = db.Orders.Single(o => o.Id == id);
             return new ActionAsPdf("PrintOrderToScreen", new { id = id, languageCode = CurrentUser.LanguageCode }) { FileName = "Invoice.pdf" };
-            //return new ViewAsPdf("PrintOrderToScreen", order) { FileName = "Invoice.pdf" };
-            //return new ViewAsPdf("PrintOrderToScreen", new { id = id }) { FileName = "Invoice.pdf", Cookies = cookies };
         }
 
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            OrderModel orderModel = new OrderModel();
-            using (OrdersRepository ordersRepository = new OrdersRepository())
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository())
             {
-                orderModel.Order = db.Orders.Single(o => o.Id == id);
-                orderModel.OrderToItem = db.Orders_OrderToItem.Where(x => x.OrderId == id).ToList();
+                order = ordersRep.GetEntity(id);
+
+                if (order != null)
+                {
+                    if (order.CompanyId == CurrentUser.CompanyId)
+                    {
+                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
+                        {
+                            OrderModel orderModel = new OrderModel()
+                            {
+                                Order = order,
+                                OrderToItem = order.Orders_OrderToItem.ToList()
+                            };
+
+                            return View(orderModel);
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_NoPermission);
+                    }
+                }
+                else
+                {
+                    return Error(Loc.Dic.Error_OrderNotFound);
+                }
             }
-            if (orderModel.Order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orderModel);
         }
 
         //
@@ -791,7 +954,10 @@ namespace GAppsDev.Controllers
 
                 return View();
             }
-            return Error(Errors.NO_PERMISSION);
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
 
         //
@@ -884,7 +1050,9 @@ namespace GAppsDev.Controllers
                             }
 
                             if (noItemErrors)
+                            {
                                 return RedirectToAction("MyOrders");
+                            }
                             else
                             {
                                 using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
@@ -1029,6 +1197,30 @@ namespace GAppsDev.Controllers
                                 {
                                     if (itemsFromEditForm.Count == 0)
                                         return Error(Errors.ORDER_HAS_NO_ITEMS);
+
+                                    decimal? totalUsedAllocation;
+                                    decimal totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
+                                    Budgets_ExpensesToIncomes budgetAllocation;
+
+                                    using (OrdersRepository ordersRep = new OrdersRepository())
+                                    using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                                    {
+                                        budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
+
+                                        if (budgetAllocation != null)
+                                        {
+                                            totalUsedAllocation = ordersRep.GetList()
+                                                    .Where(o => o.BudgetAllocationId == order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                                    .Sum(x => (decimal?)x.Price);
+
+                                            if ((totalUsedAllocation ?? 0) + totalOrderPrice > budgetAllocation.Amount)
+                                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                        }
+                                        else
+                                        {
+                                            return Error(Errors.DATABASE_ERROR);
+                                        }
+                                    }
 
                                     foreach (var newItem in itemsFromEditForm)
                                     {
@@ -1247,54 +1439,7 @@ namespace GAppsDev.Controllers
                 return Error(Errors.NO_PERMISSION);
             }
         }
-
-        [OpenIdAuthorize]
-        [HttpPost]
-        public ActionResult UploadInvoice(int id = 0)
-        {
-            if (Authorized(RoleType.OrdersWriter))
-            {
-                Order order;
-                using (OrdersRepository orderRep = new OrdersRepository())
-                {
-                    order = orderRep.GetEntity(id);
-                }
-
-                if (order != null)
-                {
-                    if (order.UserId == CurrentUser.UserId)
-                    {
-                        if (order.StatusId == 3)
-                        {
-                            // logic goes here
-                            return View();
-                        }
-                        else if (order.StatusId < 3)
-                        {
-                            return Error(Errors.ORDER_NOT_APPROVED);
-                        }
-                        else
-                        {
-                            return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Errors.NO_PERMISSION);
-                    }
-
-                }
-                else
-                {
-                    return Error(Errors.ORDER_NOT_FOUND);
-                }
-            }
-            else
-            {
-                return Error(Errors.NO_PERMISSION);
-            }
-        }
-
+        
         [OpenIdAuthorize]
         [ChildActionOnly]
         public ActionResult AddToInventory(int id = 0)
@@ -1511,7 +1656,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Search()
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
             {
                 if (!Authorized(RoleType.OrdersViewer))
                 {
@@ -1530,7 +1675,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Search(OrdersSearchValuesModel model)
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
             {
                 List<Order> matchingOrders;
                 List<Order> TextMatchOrders = new List<Order>();
@@ -1629,12 +1774,6 @@ namespace GAppsDev.Controllers
             {
                 return Error(Errors.NO_PERMISSION);
             }
-        }
-
-        [ChildActionOnly]
-        public ActionResult SubMenu()
-        {
-            return PartialView();
         }
 
         [ChildActionOnly]
