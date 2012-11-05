@@ -59,18 +59,27 @@ function beginForm(existingItems) {
         if (response.gotData) {
             InitializeItemsList(response.data);
 
-            itemDropDownList = $("#ItemDropDownList");
             addItemButton.click(function () {
-                if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
-                    addNewItem(
-                        itemDropDownList.val(),
-                        itemDropDownList.find(" :selected").text(),
-                        itemQuantityField.val(),
-                        itemPriceField.val()
-                        );
+                if ($("#ItemDropDownList option:selected") != null) {
+                    if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
+                        if (itemQuantityField.val() != 0) {
+                            addNewItem(
+                                $("#ItemDropDownList option:selected").val(),
+                                $("#ItemDropDownList option:selected").text(),
+                                itemQuantityField.val(),
+                                itemPriceField.val()
+                                );
+                        }
+                        else {
+                            alert(local.QuantityIsZero);
+                        }
+                    }
+                    else {
+                        alert(local.InvalidQuantityOrPrice);
+                    }
                 }
                 else {
-                    alert("אנא הכנס כמות ומחיר ונסה שוב.");
+                    alert(local.NoItemSelected);
                 }
             });
         }
@@ -84,6 +93,7 @@ function beginForm(existingItems) {
 }
 
 function addOrderItem() {
+    var newItemId = 0;
     $.ajax({
         type: "POST",
         url: "/OrderItems/PopOutCreate/",
@@ -101,7 +111,8 @@ function addOrderItem() {
                 data: newOrderItem
             }).done(function (response) {
                 if (response.success) {
-                    alert("הפריט נוצר בהצלחה.");
+                    newItemId = response.newItemId;
+                    alert(local.ItemWasCreated);
                 }
                 else {
                     alert(response.message);
@@ -114,7 +125,7 @@ function addOrderItem() {
         });
 
         createItemDialog = createItemDialogContainer.dialog({
-            title: "הוסף פריט",
+            title: local.AddItem,
             width: 400,
             height: 400,
             close: function () {
@@ -124,13 +135,13 @@ function addOrderItem() {
                 }).done(function (response) {
                     if (response.gotData) {
                         UpdateItemsList(response.data);
-
+                        $('#ItemDropDownList option[value="' + newItemId + '"]').attr('selected', 'selected');
                         createItemDialogContainer.dialog("destroy");
                         createItemDialogContainer.remove();
                     }
                 });
             }
-        })
+        });
     });
 }
 
@@ -204,35 +215,36 @@ function addNewItem(itemId, itemName, quantity, price) {
         updateItems();
     }
     else {
-        var doubleItemDialog = $("<div><span>הפריט כבר נמצא בהזמנה, מה ברצונך לעשות?</span></div>");
+        var doubleItemDialog = $("<div><span>" + local.DuplicateItemFound + "</span></div>");
+        var dialog_buttons = {};
+
+        dialog_buttons[local.Merge] = function () {
+            itemList[doubleIndex].quantity = parseInt(itemList[doubleIndex].quantity, 10) + parseInt(itemToInsert.quantity, 10);
+            itemList[doubleIndex].price = itemToInsert.price;
+            itemList[doubleIndex].finalPrice = parseInt(itemList[doubleIndex].price, 10) * parseInt(itemList[doubleIndex].quantity, 10);
+            itemPriceField.val("");
+            itemQuantityField.val("");
+            itemFinalPrice.val("0");
+            updateItems();
+            $(this).dialog("close");
+        }
+        dialog_buttons[local.Replace] = function () {
+            itemList[doubleIndex] = itemToInsert;
+            itemPriceField.val("");
+            itemQuantityField.val("");
+            itemFinalPrice.val("0");
+            updateItems();
+            $(this).dialog("close");
+        }
+        dialog_buttons[local.Cancel] = function () {
+            $(this).dialog("close");
+        }
+
         doubleItemDialog.dialog({
-            title: "כפילות פריטים",
+            title: local.ItemDuplication,
             width: 400,
             height: 150,
-            buttons: 
-                    {
-                        "מזג": function () {
-                            itemList[doubleIndex].quantity = parseInt(itemList[doubleIndex].quantity, 10) + parseInt(itemToInsert.quantity, 10);
-                            itemList[doubleIndex].price = itemToInsert.price;
-                            itemList[doubleIndex].finalPrice = parseInt(itemList[doubleIndex].price, 10) * parseInt(itemList[doubleIndex].quantity, 10);
-                            itemPriceField.val("");
-                            itemQuantityField.val("");
-                            itemFinalPrice.val("0");
-                            updateItems();
-                            $(this).dialog("close");
-                        },
-                        "החלף": function () {
-                            itemList[doubleIndex] = itemToInsert;
-                            itemPriceField.val("");
-                            itemQuantityField.val("");
-                            itemFinalPrice.val("0");
-                            updateItems();
-                            $(this).dialog("close");
-                        },
-                        "ביטול": function () {
-                            $(this).dialog("close")
-                        }
-                    }
+            buttons: dialog_buttons
         });
     }
 }
@@ -243,12 +255,12 @@ function updateItems() {
     var value = "";
     var totalPrice = 0;
     for (var i in itemList) {
-        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span> " + itemList[i].title + " כמות: " + itemList[i].quantity + " מחיר סופי: " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='הסר'/></div>"));
+        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span> " + itemList[i].title + " " + local.Quantity + ": " + itemList[i].quantity + " " + local.FinalPrice + ": " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='" + local.Delete + "'/></div>"));
         value += itemList[i].id + "," + itemList[i].quantity + "," + itemList[i].price + ";";
         totalPrice += itemList[i].quantity * itemList[i].price;
     }
     if (itemList.length == 0) {
-        addedItemsContainer.append($("<span>אין פריטים בהזמנה.</span>"));
+        addedItemsContainer.append($("<span>" + local.NoItemsInOrder + ".</span>"));
     }
     if (value != "") {
         value = value.slice(0, value.length - 1);

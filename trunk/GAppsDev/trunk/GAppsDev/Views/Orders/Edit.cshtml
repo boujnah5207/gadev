@@ -8,8 +8,7 @@
 }
 
 @section ExtraScripts{
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/editOrderScript.js"></script>
 }
 
@@ -37,26 +36,26 @@
             
             <div id="AddNewItemContainer">
                 @Loc.Dic.Item: <span id="loadingMessage"> @Loc.Dic.Loading... </span>
-                @Loc.Dic.Quantity : <input style="width:50px" id="itemQuantity" type="text" />
-                @Loc.Dic.SingleItemPrice : <input style="width:50px" id="itemPrice" type="text" />
-                @Loc.Dic.TotalPrice : <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
+                @Loc.Dic.Quantity: <input style="width:50px" id="itemQuantity" type="text" />
+                @Loc.Dic.SingleItemPrice: <input style="width:50px" id="itemPrice" type="text" />
+                @Loc.Dic.TotalPrice: <input class="display" id="itemFinalPrice" type="text" disabled="disabled"/>
                 <input id="AddNewItemButton" type="button" value="@Loc.Dic.Add" /> <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateNewItem" onclick="addOrderItem()"/>
             </div>
         </div>
         
         <fieldset>
-            <legend>פריטים להזמנה</legend>
+            <legend>@Loc.Dic.OrderItems</legend>
 
             <div id="orderItems">
-                <span>אין פריטים בהזמנה.</span>
+                <span>@Loc.Dic.NoItemsInOrder.</span>
             </div>
         
         </fieldset>
-        <span>מחיר כולל: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
+        <span>@Loc.Dic.TotalPrice: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
         <br />
         <br />
         <div class="editor-label">
-            @Html.LabelFor(model => model.Notes)
+            @Loc.Dic.Notes
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.Notes)
@@ -65,13 +64,13 @@
         <br />
 
         <p>
-            <input type="submit" value="עדכן הזמנה" />
+            <input type="submit" value="@Loc.Dic.UpdateOrder" />
         </p>
     }
 </fieldset>
 
 <div>
-    @Html.ActionLink("חזור לדף ההזמנות שלי", "MyOrders")
+    @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
 </div>
 
 @section Scripts {

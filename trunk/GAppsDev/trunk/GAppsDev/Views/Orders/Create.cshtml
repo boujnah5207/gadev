@@ -2,26 +2,27 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "הזמנה חדשה";
+    ViewBag.Title = Loc.Dic.CreateNewOrder;
     ViewBag.noSubMenu = true;
 }
 
 @section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/createOrderScript.js"></script>
 }
 
 <fieldset>
-    <legend>בחירת ספק</legend>
-    <label class="inlineLabel" for="choosenSupplier">ספק: </label>
+    <legend>@Loc.Dic.ChooseSupplier</legend>
+    <label class="inlineLabel" for="choosenSupplier">@Loc.Dic.Supplier: </label>
 
     @Html.DropDownList("SupplierId", (SelectList)ViewBag.SupplierId, new { id = "suppliersList" })
 
-    <input id="SupplierButton" type="button" value="בחר והמשך" onclick="beginForm()" />
-    <input id="AddSupplierButton" type="button" value="צור ספק חדש" onclick="addSupplier()" />
+    <input id="SupplierButton" type="button" value="@Loc.Dic.ChooseAndContinue" onclick="beginForm()" />
+    <input id="AddSupplierButton" type="button" value="@Loc.Dic.CreateNew" onclick="addSupplier()" />
 </fieldset>
 
 <fieldset id="formContainer" style="display: none;">
-    <legend>פרטי הזמנה</legend>
+    <legend>@Loc.Dic.OrderItems</legend>
 
     @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { style = "display:none;" }))
     {
@@ -37,33 +38,33 @@
             <input id="orderItemsList" name="orderItemsList" type="hidden" value="" />
 
             <div id="AddNewItemContainer">
-                פריט: <span id="loadingMessage">טוען פריטים ... </span>
-                כמות :
+                @Loc.Dic.OrderItem: <span id="loadingMessage">@Loc.Dic.LoadingItems... </span>
+                @Loc.Dic.Quantity:
                 <input style="width: 50px" id="itemQuantity" type="text" />
-                מחיר ליחידה :
+                @Loc.Dic.SingleItemPrice:
                 <input style="width: 50px" id="itemPrice" type="text" />
-                מחיר כולל :
+                @Loc.Dic.TotalPrice:
                 <input class="display" id="itemFinalPrice" type="text" value="0" disabled="disabled" />
-                <input id="AddNewItemButton" type="button" value="הוסף" />
-                <input id="AddOrderItemButton" type="button" value="צור פריט חדש" onclick="addOrderItem()" />
+                <input id="AddNewItemButton" type="button" value="@Loc.Dic.Add" />
+                <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateNewItem" onclick="addOrderItem()" />
             </div>
         </div>
         
         <fieldset>
-            <legend>פריטים להזמנה</legend>
+            <legend>@Loc.Dic.OrderItems</legend>
 
             <div id="orderItems">
-                <span>אין פריטים בהזמנה.</span>
+                <span>@Loc.Dic.NoItemsInOrder.</span>
             </div>
 
         </fieldset>
         <br />
-        <span>מחיר כולל: </span>
+        <span>@Loc.Dic.TotalPrice: </span>
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
         <div class="editor-label">
-            @Html.LabelFor(model => model.Notes)
+            @Loc.Dic.Notes:
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.Notes)
@@ -71,13 +72,13 @@
         </div>
         
         <p>
-            <input type="submit" value="שלח הזמנה" />
+            <input type="submit" value="@Loc.Dic.Submit" />
         </p>
     }
 </fieldset>
 
 <div>
-    @Html.ActionLink("חזור לדף ההזמנות שלי", "MyOrders")
+    @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
 </div>
 
 @section Scripts {

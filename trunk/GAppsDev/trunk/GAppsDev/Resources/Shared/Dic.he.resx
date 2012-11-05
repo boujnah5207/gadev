@@ -489,6 +489,63 @@
   <data name="DownloadReceipt" xml:space="preserve">
     <value>הורד קבלה</value>
   </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>הוסף פריט</value>
+  </data>
+  <data name="AddSupplier" xml:space="preserve">
+    <value>הוסף ספק</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ביטול</value>
+  </data>
+  <data name="ChooseAndContinue" xml:space="preserve">
+    <value>בחר והמשך</value>
+  </data>
+  <data name="ChooseSupplier" xml:space="preserve">
+    <value>בחר ספק</value>
+  </data>
+  <data name="DuplicateItemFound" xml:space="preserve">
+    <value>הפריט כבר נמצא בהזמנה, מה ברצונך לעשות?</value>
+  </data>
+  <data name="FinalPrice" xml:space="preserve">
+    <value>מחיר סופי</value>
+  </data>
+  <data name="InvalidQuantityOrPrice" xml:space="preserve">
+    <value>אנא הכנס כמות ומחיר ונסה שוב</value>
+  </data>
+  <data name="ItemDuplication" xml:space="preserve">
+    <value>כפילות פריטים</value>
+  </data>
+  <data name="ItemWasCreated" xml:space="preserve">
+    <value>הפריט נוצר בהצלחה</value>
+  </data>
+  <data name="LoadingItems" xml:space="preserve">
+    <value>טוען פריטים</value>
+  </data>
+  <data name="Merge" xml:space="preserve">
+    <value>מזג</value>
+  </data>
+  <data name="NoItemSelected" xml:space="preserve">
+    <value>אנא בחר פריט או צור פריט חדש</value>
+  </data>
+  <data name="NoItemsInOrder" xml:space="preserve">
+    <value>אין פריטים בהזמנה</value>
+  </data>
+  <data name="OrderItem" xml:space="preserve">
+    <value>פריט</value>
+  </data>
+  <data name="QuantityIsZero" xml:space="preserve">
+    <value>הכמות חייבת להיות גדולה מ-0</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>החלף</value>
+  </data>
+  <data name="SupplierAdded" xml:space="preserve">
+    <value>הספק נוסף בהצלחה</value>
+  </data>
+  <data name="UpdateOrder" xml:space="preserve">
+    <value>עדכן הזמנה</value>
+  </data>
   <data name="Invoice" xml:space="preserve">
     <value>חשבונית</value>
   </data>
