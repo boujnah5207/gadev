@@ -110,9 +110,13 @@
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
+                    
+                }
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceExportedToFilePendingReceipt)
+                {
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                     {
-                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadReceipt, "UploadReceiptFile", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.UploadReceipt, "UploadReceiptFile", new { id = item.Id })
                     }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
