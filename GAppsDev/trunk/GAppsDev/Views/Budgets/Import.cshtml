@@ -7,6 +7,8 @@
 @using (Html.BeginForm("Import", "Budgets", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
+    <h2>קובץ תקציב</h2>
+    שנת תקציב <input type="text" name="year" />
     
     <h2>קובץ תקציב</h2>
     <input type="file" name="file" />

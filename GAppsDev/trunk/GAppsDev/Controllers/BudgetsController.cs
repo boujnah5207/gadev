@@ -150,19 +150,108 @@ namespace GAppsDev.Controllers
             {
                 if (file != null && file.ContentLength > 0)
                 {
-                    byte[] fileBytes = new byte[file.InputStream.Length];
-                    file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
-                    string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
+                    if (year < DateTime.Now.Year - 1)
+                        return Error(Errors.BUDGETS_YEAR_PASSED);
 
-                    string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    int firstValuesLine = 4;
-
-                    for (int i = firstValuesLine; i < fileLines.Length; i++)
+                    List<Budgets_ExpensesToIncomes> createdAllocations = new List<Budgets_ExpensesToIncomes>();
+                    Budget newBudget = new Budget()
                     {
-                        string[] fileValues = fileLines[i].Split('\t');
+                        CompanyId = CurrentUser.CompanyId,
+                        IsActive = false,
+                        Year = year
+                    };
+
+                    bool wasCreated;
+                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                    {
+                        wasCreated = budgetsRep.Create(newBudget);
                     }
 
-                    return View();
+                    if (wasCreated)
+                    {
+                        byte[] fileBytes = new byte[file.InputStream.Length];
+                        file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
+                        string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
+
+                        string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        int firstValuesLine = 4;
+
+                        bool noErros = true;
+                        string errorType = String.Empty;
+                        using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                        {
+                            for (int i = firstValuesLine; i < fileLines.Length; i++)
+                            {
+                                string[] fileValues = fileLines[i].Split('\t');
+                                Budgets_ExpensesToIncomes newAllocation;
+
+                                try
+                                {
+                                    newAllocation = new Budgets_ExpensesToIncomes()
+                                    {
+                                        BudgetId = newBudget.Id,
+                                        CompanyId = CurrentUser.CompanyId,
+                                        IncomeId = null,
+                                        ExpenseId = null,
+                                        Amount = null,
+                                        January = Decimal.Parse(fileValues[4]),
+                                        February = Decimal.Parse(fileValues[6]),
+                                        March = Decimal.Parse(fileValues[8]),
+                                        April = Decimal.Parse(fileValues[10]),
+                                        May = Decimal.Parse(fileValues[12]),
+                                        June = Decimal.Parse(fileValues[14]),
+                                        July = Decimal.Parse(fileValues[16]),
+                                        August = Decimal.Parse(fileValues[18]),
+                                        September = Decimal.Parse(fileValues[20]),
+                                        October = Decimal.Parse(fileValues[22]),
+                                        November = Decimal.Parse(fileValues[24]),
+                                        December = Decimal.Parse(fileValues[26])
+                                    };
+                                }
+                                catch
+                                {
+                                    noErros = false;
+                                    errorType = Loc.Dic.Error_FileParseError;
+                                    break;
+                                }
+
+                                if (allocationsRep.Create(newAllocation))
+                                {
+                                    createdAllocations.Add(newAllocation);
+                                }
+                                else
+                                {
+                                    noErros = false;
+                                    errorType = Errors.DATABASE_ERROR; 
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (noErros)
+                        {
+                            return View();
+                        }
+                        else
+                        {
+                            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                            using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                            {
+                                foreach (var allocation in createdAllocations)
+                                {
+                                    allocationsRep.Delete(allocation.Id);
+                                }
+
+                                budgetsRep.Delete(newBudget.Id);
+                            }
+
+                            return Error(errorType);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Errors.BUDGETS_CREATE_ERROR);
+                    }
                 }
                 else
                 {

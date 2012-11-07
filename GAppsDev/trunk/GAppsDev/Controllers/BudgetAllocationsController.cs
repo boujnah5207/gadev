@@ -170,8 +170,8 @@ namespace GAppsDev.Controllers
                             if (budget.CompanyId == CurrentUser.CompanyId)
                             {
 
-                                income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
-                                expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
+                                income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId.Value);
+                                expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId.Value);
 
                                 if (income != null && expense != null)
                                 {
@@ -319,8 +319,8 @@ namespace GAppsDev.Controllers
                         {
                             if (allocation.CompanyId == CurrentUser.CompanyId)
                             {
-                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId);
-                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId);
+                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId.Value);
+                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId.Value);
 
                                     if (income != null && expense != null)
                                     {
