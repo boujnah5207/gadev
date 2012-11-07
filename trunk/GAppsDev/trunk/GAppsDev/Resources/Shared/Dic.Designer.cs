@@ -610,6 +610,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There were errors in the submitted file..
+        /// </summary>
+        public static string Error_FileParseError {
+            get {
+                return ResourceManager.GetString("Error_FileParseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The invoice file was not found.
         /// </summary>
         public static string Error_InvoiceFileNotFound {

@@ -44,11 +44,11 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_PermissionsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_PermissionsToAllocation), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Expenses), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Expenses), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Departments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Department), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Projects_ParentProject", "Projects_ParentProject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Projects_ParentProject), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Projects_SubProject", "Projects_SubProject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Projects_SubProject), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Incomes), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Incomes), "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_ExpensesToIncomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_ExpensesToIncomes), "Budgets_PermissionsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_PermissionsToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Budget_ExpensesToIncome", "Budgets_ExpensesToIncomes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_ExpensesToIncomes), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Budgets_Incomes_Categories", "Budgets_Incomes_types", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Incomes_types), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
@@ -61,6 +61,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Budget_Deprtments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Department), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Orders_AllocationMonthes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_AllocationMonthes), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_AllocationMonthes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_AllocationMonthes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
@@ -377,6 +379,22 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Monthe> Monthes
+        {
+            get
+            {
+                if ((_Monthes == null))
+                {
+                    _Monthes = base.CreateObjectSet<Monthe>("Monthes");
+                }
+                return _Monthes;
+            }
+        }
+        private ObjectSet<Monthe> _Monthes;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Order> Orders
         {
             get
@@ -389,6 +407,22 @@ namespace DB
             }
         }
         private ObjectSet<Order> _Orders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Orders_AllocationMonthes> Orders_AllocationMonthes
+        {
+            get
+            {
+                if ((_Orders_AllocationMonthes == null))
+                {
+                    _Orders_AllocationMonthes = base.CreateObjectSet<Orders_AllocationMonthes>("Orders_AllocationMonthes");
+                }
+                return _Orders_AllocationMonthes;
+            }
+        }
+        private ObjectSet<Orders_AllocationMonthes> _Orders_AllocationMonthes;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -635,11 +669,27 @@ namespace DB
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Monthes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMonthes(Monthe monthe)
+        {
+            base.AddObject("Monthes", monthe);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Orders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToOrders(Order order)
         {
             base.AddObject("Orders", order);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Orders_AllocationMonthes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToOrders_AllocationMonthes(Orders_AllocationMonthes orders_AllocationMonthes)
+        {
+            base.AddObject("Orders_AllocationMonthes", orders_AllocationMonthes);
         }
     
         /// <summary>
@@ -861,6 +911,30 @@ namespace DB
         private global::System.Boolean _IsActive;
         partial void OnIsActiveChanging(global::System.Boolean value);
         partial void OnIsActiveChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> ExternalBudget
+        {
+            get
+            {
+                return _ExternalBudget;
+            }
+            set
+            {
+                OnExternalBudgetChanging(value);
+                ReportPropertyChanging("ExternalBudget");
+                _ExternalBudget = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ExternalBudget");
+                OnExternalBudgetChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _ExternalBudget;
+        partial void OnExternalBudgetChanging(Nullable<global::System.Boolean> value);
+        partial void OnExternalBudgetChanged();
 
         #endregion
 
@@ -1493,19 +1567,13 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="budgetId">Initial value of the BudgetId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        /// <param name="incomeId">Initial value of the IncomeId property.</param>
-        /// <param name="expenseId">Initial value of the ExpenseId property.</param>
-        /// <param name="amount">Initial value of the Amount property.</param>
-        public static Budgets_ExpensesToIncomes CreateBudgets_ExpensesToIncomes(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate, global::System.Int32 incomeId, global::System.Int32 expenseId, global::System.Decimal amount)
+        public static Budgets_ExpensesToIncomes CreateBudgets_ExpensesToIncomes(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate)
         {
             Budgets_ExpensesToIncomes budgets_ExpensesToIncomes = new Budgets_ExpensesToIncomes();
             budgets_ExpensesToIncomes.Id = id;
             budgets_ExpensesToIncomes.CompanyId = companyId;
             budgets_ExpensesToIncomes.BudgetId = budgetId;
             budgets_ExpensesToIncomes.CreationDate = creationDate;
-            budgets_ExpensesToIncomes.IncomeId = incomeId;
-            budgets_ExpensesToIncomes.ExpenseId = expenseId;
-            budgets_ExpensesToIncomes.Amount = amount;
             return budgets_ExpensesToIncomes;
         }
 
@@ -1615,9 +1683,9 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 IncomeId
+        public Nullable<global::System.Int32> IncomeId
         {
             get
             {
@@ -1632,16 +1700,16 @@ namespace DB
                 OnIncomeIdChanged();
             }
         }
-        private global::System.Int32 _IncomeId;
-        partial void OnIncomeIdChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _IncomeId;
+        partial void OnIncomeIdChanging(Nullable<global::System.Int32> value);
         partial void OnIncomeIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 ExpenseId
+        public Nullable<global::System.Int32> ExpenseId
         {
             get
             {
@@ -1656,16 +1724,16 @@ namespace DB
                 OnExpenseIdChanged();
             }
         }
-        private global::System.Int32 _ExpenseId;
-        partial void OnExpenseIdChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _ExpenseId;
+        partial void OnExpenseIdChanging(Nullable<global::System.Int32> value);
         partial void OnExpenseIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Decimal Amount
+        public Nullable<global::System.Decimal> Amount
         {
             get
             {
@@ -1680,9 +1748,297 @@ namespace DB
                 OnAmountChanged();
             }
         }
-        private global::System.Decimal _Amount;
-        partial void OnAmountChanging(global::System.Decimal value);
+        private Nullable<global::System.Decimal> _Amount;
+        partial void OnAmountChanging(Nullable<global::System.Decimal> value);
         partial void OnAmountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> January
+        {
+            get
+            {
+                return _January;
+            }
+            set
+            {
+                OnJanuaryChanging(value);
+                ReportPropertyChanging("January");
+                _January = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("January");
+                OnJanuaryChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _January;
+        partial void OnJanuaryChanging(Nullable<global::System.Decimal> value);
+        partial void OnJanuaryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> February
+        {
+            get
+            {
+                return _February;
+            }
+            set
+            {
+                OnFebruaryChanging(value);
+                ReportPropertyChanging("February");
+                _February = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("February");
+                OnFebruaryChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _February;
+        partial void OnFebruaryChanging(Nullable<global::System.Decimal> value);
+        partial void OnFebruaryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> March
+        {
+            get
+            {
+                return _March;
+            }
+            set
+            {
+                OnMarchChanging(value);
+                ReportPropertyChanging("March");
+                _March = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("March");
+                OnMarchChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _March;
+        partial void OnMarchChanging(Nullable<global::System.Decimal> value);
+        partial void OnMarchChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> April
+        {
+            get
+            {
+                return _April;
+            }
+            set
+            {
+                OnAprilChanging(value);
+                ReportPropertyChanging("April");
+                _April = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("April");
+                OnAprilChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _April;
+        partial void OnAprilChanging(Nullable<global::System.Decimal> value);
+        partial void OnAprilChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> May
+        {
+            get
+            {
+                return _May;
+            }
+            set
+            {
+                OnMayChanging(value);
+                ReportPropertyChanging("May");
+                _May = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("May");
+                OnMayChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _May;
+        partial void OnMayChanging(Nullable<global::System.Decimal> value);
+        partial void OnMayChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> June
+        {
+            get
+            {
+                return _June;
+            }
+            set
+            {
+                OnJuneChanging(value);
+                ReportPropertyChanging("June");
+                _June = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("June");
+                OnJuneChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _June;
+        partial void OnJuneChanging(Nullable<global::System.Decimal> value);
+        partial void OnJuneChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> July
+        {
+            get
+            {
+                return _July;
+            }
+            set
+            {
+                OnJulyChanging(value);
+                ReportPropertyChanging("July");
+                _July = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("July");
+                OnJulyChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _July;
+        partial void OnJulyChanging(Nullable<global::System.Decimal> value);
+        partial void OnJulyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> August
+        {
+            get
+            {
+                return _August;
+            }
+            set
+            {
+                OnAugustChanging(value);
+                ReportPropertyChanging("August");
+                _August = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("August");
+                OnAugustChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _August;
+        partial void OnAugustChanging(Nullable<global::System.Decimal> value);
+        partial void OnAugustChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> September
+        {
+            get
+            {
+                return _September;
+            }
+            set
+            {
+                OnSeptemberChanging(value);
+                ReportPropertyChanging("September");
+                _September = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("September");
+                OnSeptemberChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _September;
+        partial void OnSeptemberChanging(Nullable<global::System.Decimal> value);
+        partial void OnSeptemberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> October
+        {
+            get
+            {
+                return _October;
+            }
+            set
+            {
+                OnOctoberChanging(value);
+                ReportPropertyChanging("October");
+                _October = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("October");
+                OnOctoberChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _October;
+        partial void OnOctoberChanging(Nullable<global::System.Decimal> value);
+        partial void OnOctoberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> November
+        {
+            get
+            {
+                return _November;
+            }
+            set
+            {
+                OnNovemberChanging(value);
+                ReportPropertyChanging("November");
+                _November = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("November");
+                OnNovemberChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _November;
+        partial void OnNovemberChanging(Nullable<global::System.Decimal> value);
+        partial void OnNovemberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> December
+        {
+            get
+            {
+                return _December;
+            }
+            set
+            {
+                OnDecemberChanging(value);
+                ReportPropertyChanging("December");
+                _December = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("December");
+                OnDecemberChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _December;
+        partial void OnDecemberChanging(Nullable<global::System.Decimal> value);
+        partial void OnDecemberChanged();
 
         #endregion
 
@@ -5610,6 +5966,115 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Monthe")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Monthe : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Monthe object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static Monthe CreateMonthe(global::System.Int32 id, global::System.String name)
+        {
+            Monthe monthe = new Monthe();
+            monthe.Id = id;
+            monthe.Name = name;
+            return monthe;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes")]
+        public EntityCollection<Orders_AllocationMonthes> Orders_AllocationMonthes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Order")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -6046,6 +6511,28 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes")]
+        public EntityCollection<Orders_AllocationMonthes> Orders_AllocationMonthes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Orders_OrderToItem")]
         public EntityCollection<Orders_OrderToItem> Orders_OrderToItem
         {
@@ -6172,6 +6659,221 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Orders_Users", "User", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Orders_AllocationMonthes")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Orders_AllocationMonthes : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Orders_AllocationMonthes object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="orderId">Initial value of the OrderId property.</param>
+        /// <param name="monthId">Initial value of the MonthId property.</param>
+        /// <param name="amount">Initial value of the Amount property.</param>
+        public static Orders_AllocationMonthes CreateOrders_AllocationMonthes(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 monthId, global::System.Decimal amount)
+        {
+            Orders_AllocationMonthes orders_AllocationMonthes = new Orders_AllocationMonthes();
+            orders_AllocationMonthes.Id = id;
+            orders_AllocationMonthes.OrderId = orderId;
+            orders_AllocationMonthes.MonthId = monthId;
+            orders_AllocationMonthes.Amount = amount;
+            return orders_AllocationMonthes;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderId
+        {
+            get
+            {
+                return _OrderId;
+            }
+            set
+            {
+                OnOrderIdChanging(value);
+                ReportPropertyChanging("OrderId");
+                _OrderId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderId");
+                OnOrderIdChanged();
+            }
+        }
+        private global::System.Int32 _OrderId;
+        partial void OnOrderIdChanging(global::System.Int32 value);
+        partial void OnOrderIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MonthId
+        {
+            get
+            {
+                return _MonthId;
+            }
+            set
+            {
+                OnMonthIdChanging(value);
+                ReportPropertyChanging("MonthId");
+                _MonthId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MonthId");
+                OnMonthIdChanged();
+            }
+        }
+        private global::System.Int32 _MonthId;
+        partial void OnMonthIdChanging(global::System.Int32 value);
+        partial void OnMonthIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Amount
+        {
+            get
+            {
+                return _Amount;
+            }
+            set
+            {
+                OnAmountChanging(value);
+                ReportPropertyChanging("Amount");
+                _Amount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Amount");
+                OnAmountChanged();
+            }
+        }
+        private global::System.Decimal _Amount;
+        partial void OnAmountChanging(global::System.Decimal value);
+        partial void OnAmountChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Monthe")]
+        public Monthe Monthe
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Monthe> MontheReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Order")]
+        public Order Order
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Order> OrderReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order", value);
                 }
             }
         }

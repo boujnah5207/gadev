@@ -594,4 +594,7 @@
   <data name="ImportBudget" xml:space="preserve">
     <value>Import Budget</value>
   </data>
+  <data name="Error_FileParseError" xml:space="preserve">
+    <value>There were errors in the submitted file.</value>
+  </data>
 </root>
