@@ -881,7 +881,7 @@ namespace GAppsDev.Controllers
             Order order;
             using (OrdersRepository ordersRep = new OrdersRepository())
             {
-                order = ordersRep.GetEntity(id);
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User");
 
                 if (order != null)
                 {

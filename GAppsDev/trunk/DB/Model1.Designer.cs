@@ -6401,6 +6401,30 @@ namespace DB
         private Nullable<global::System.Int32> _BudgetAllocationId;
         partial void OnBudgetAllocationIdChanging(Nullable<global::System.Int32> value);
         partial void OnBudgetAllocationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastStatusChangeDate
+        {
+            get
+            {
+                return _LastStatusChangeDate;
+            }
+            set
+            {
+                OnLastStatusChangeDateChanging(value);
+                ReportPropertyChanging("LastStatusChangeDate");
+                _LastStatusChangeDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastStatusChangeDate");
+                OnLastStatusChangeDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastStatusChangeDate;
+        partial void OnLastStatusChangeDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastStatusChangeDateChanged();
 
         #endregion
 
