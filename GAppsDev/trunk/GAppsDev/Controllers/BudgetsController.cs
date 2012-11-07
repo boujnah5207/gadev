@@ -129,6 +129,52 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [OpenIdAuthorize]
+        public ActionResult Import()
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                return View();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase file, int year = 0)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    byte[] fileBytes = new byte[file.InputStream.Length];
+                    file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
+                    string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
+
+                    string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    int firstValuesLine = 4;
+
+                    for (int i = firstValuesLine; i < fileLines.Length; i++)
+                    {
+                        string[] fileValues = fileLines[i].Split('\t');
+                    }
+
+                    return View();
+                }
+                else
+                {
+                    return Error(Errors.INVALID_FORM);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
         //
         // GET: /Budgets/Edit/5
 

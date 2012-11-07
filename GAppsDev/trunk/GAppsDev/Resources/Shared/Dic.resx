@@ -588,4 +588,10 @@
   <data name="ExportToFile" xml:space="preserve">
     <value>Export To File</value>
   </data>
+  <data name="ExportBudget" xml:space="preserve">
+    <value>Export Budget</value>
+  </data>
+  <data name="ImportBudget" xml:space="preserve">
+    <value>Import Budget</value>
+  </data>
 </root>

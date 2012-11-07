@@ -37,6 +37,7 @@ namespace GAppsDev.Controllers
                 return View(new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", lanId));
             }
         }
+
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult LanguageSet(int languageId)
@@ -50,6 +51,7 @@ namespace GAppsDev.Controllers
                 return RedirectToAction("index", "Home");
             }
         }
+
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
