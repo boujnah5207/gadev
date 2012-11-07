@@ -591,4 +591,10 @@
   <data name="ExportToFile" xml:space="preserve">
     <value>ייצוא לקובץ</value>
   </data>
+  <data name="ExportBudget" xml:space="preserve">
+    <value>ייצוא תקציב</value>
+  </data>
+  <data name="ImportBudget" xml:space="preserve">
+    <value>ייבוא תקציב</value>
+  </data>
 </root>

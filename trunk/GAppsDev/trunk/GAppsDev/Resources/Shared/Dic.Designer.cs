@@ -700,6 +700,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Budget.
+        /// </summary>
+        public static string ExportBudget {
+            get {
+                return ResourceManager.GetString("ExportBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export To File.
         /// </summary>
         public static string ExportToFile {
@@ -732,6 +741,15 @@ namespace Loc {
         public static string Hide {
             get {
                 return ResourceManager.GetString("Hide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Budget.
+        /// </summary>
+        public static string ImportBudget {
+            get {
+                return ResourceManager.GetString("ImportBudget", resourceCulture);
             }
         }
         
