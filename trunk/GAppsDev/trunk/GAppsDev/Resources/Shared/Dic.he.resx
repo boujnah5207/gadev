@@ -597,4 +597,7 @@
   <data name="ImportBudget" xml:space="preserve">
     <value>ייבוא תקציב</value>
   </data>
+  <data name="Error_FileParseError" xml:space="preserve">
+    <value>התגלו שגיאות בקובץ שנשלח</value>
+  </data>
 </root>

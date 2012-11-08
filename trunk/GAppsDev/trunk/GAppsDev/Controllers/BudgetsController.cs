@@ -174,7 +174,7 @@ namespace GAppsDev.Controllers
                         string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
 
                         string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                        int firstValuesLine = 4;
+                        int firstValuesLine = 3;
 
                         bool noErros = true;
                         string errorType = String.Empty;
@@ -183,6 +183,11 @@ namespace GAppsDev.Controllers
                             for (int i = firstValuesLine; i < fileLines.Length; i++)
                             {
                                 string[] fileValues = fileLines[i].Split('\t');
+                                for (int vIndex = 0; vIndex < fileValues.Length; vIndex++)
+                                {
+                                    fileValues[vIndex] = fileValues[vIndex].Replace("\"", "");
+                                }
+
                                 Budgets_ExpensesToIncomes newAllocation;
 
                                 try
@@ -194,18 +199,18 @@ namespace GAppsDev.Controllers
                                         IncomeId = null,
                                         ExpenseId = null,
                                         Amount = null,
-                                        January = Decimal.Parse(fileValues[4]),
-                                        February = Decimal.Parse(fileValues[6]),
-                                        March = Decimal.Parse(fileValues[8]),
-                                        April = Decimal.Parse(fileValues[10]),
-                                        May = Decimal.Parse(fileValues[12]),
-                                        June = Decimal.Parse(fileValues[14]),
-                                        July = Decimal.Parse(fileValues[16]),
-                                        August = Decimal.Parse(fileValues[18]),
-                                        September = Decimal.Parse(fileValues[20]),
-                                        October = Decimal.Parse(fileValues[22]),
-                                        November = Decimal.Parse(fileValues[24]),
-                                        December = Decimal.Parse(fileValues[26])
+                                        January = String.IsNullOrEmpty(fileValues[3]) ? 0 : Decimal.Parse(fileValues[3]),
+                                        February = String.IsNullOrEmpty(fileValues[5]) ? 0 : Decimal.Parse(fileValues[5]),
+                                        March = String.IsNullOrEmpty(fileValues[7]) ? 0 : Decimal.Parse(fileValues[7]),
+                                        April = String.IsNullOrEmpty(fileValues[9]) ? 0 : Decimal.Parse(fileValues[9]),
+                                        May = String.IsNullOrEmpty(fileValues[11]) ? 0 : Decimal.Parse(fileValues[11]),
+                                        June = String.IsNullOrEmpty(fileValues[13]) ? 0 : Decimal.Parse(fileValues[13]),
+                                        July = String.IsNullOrEmpty(fileValues[15]) ? 0 : Decimal.Parse(fileValues[15]),
+                                        August = String.IsNullOrEmpty(fileValues[17]) ? 0 : Decimal.Parse(fileValues[17]),
+                                        September = String.IsNullOrEmpty(fileValues[19]) ? 0 : Decimal.Parse(fileValues[19]),
+                                        October = String.IsNullOrEmpty(fileValues[21]) ? 0 : Decimal.Parse(fileValues[21]),
+                                        November = String.IsNullOrEmpty(fileValues[23]) ? 0 : Decimal.Parse(fileValues[23]),
+                                        December = String.IsNullOrEmpty(fileValues[25]) ? 0 : Decimal.Parse(fileValues[25])
                                     };
                                 }
                                 catch
