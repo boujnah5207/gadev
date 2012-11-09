@@ -8,7 +8,7 @@
     font-weight:bold;
 }
 body {
-    background-color: #fff;
+    background-color: #efeeef;
     border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
@@ -145,17 +145,18 @@ table.listTable
 
 tr.headingRow
 {
-    background-color:#c8c8c8;
+    background-color:#d0d0d0;
+    text-decoration:underline;
 }
 
 tr.evenRow
 {
-    background-color:#efeeef;
+    background-color:white;
 }
 
 tr.oddRow
 {
-    background-color:#c8c8c8;
+    background-color:#efeeef;
 }
 
 /* CSS Menu
@@ -228,6 +229,7 @@ tr.oddRow
     font-size: 0.9em;
     background-color: none;
     padding: 10px 0px;
+    margin-bottom:15px;
 }
 
 body#Orders a#OrdersLink,
@@ -266,7 +268,22 @@ body#Managment a#ManagmentLink,
     padding-bottom: 35px;
 }
 
+div.body
+{
+    width:100%;
+}
+
+div.content-pad
+{
+    margin-right:200px;
+    margin-left:200px;
+    margin-bottom:20px;
+}
+
     .main-content {
+        background-color: white;
+        width:100%;
+        max-width:100%;
         padding-left: 10px;
         padding-top: 30px;
     }
@@ -373,7 +390,7 @@ ul#menu {
 ----------------------------------------------------------*/
 /* featured */
 .featured {
-    background-color: #fff;
+    background-color: #efeeef;
 }
 
     .featured .content-wrapper {
@@ -382,7 +399,7 @@ ul#menu {
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
-            color: #fff;
+            color: #efeeef;
         }
 
         .featured p {
@@ -775,6 +792,11 @@ tr.pager td {
 
     /* header
     ----------------------------------------------------------*/
+    header
+    {
+        background-color:#efeeef;
+    }
+
     header .float-left,
     header .float-right
     {
