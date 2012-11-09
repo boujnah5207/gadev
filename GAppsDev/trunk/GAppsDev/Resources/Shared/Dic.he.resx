@@ -600,6 +600,21 @@
   <data name="Error_FileParseError" xml:space="preserve">
     <value>התגלו שגיאות בקובץ שנשלח</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>פעולות</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>ייצא</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>ייבא</value>
+  </data>
+  <data name="OrdersToExport" xml:space="preserve">
+    <value>הזמנות לייצוא</value>
+  </data>
+  <data name="SelectedItems" xml:space="preserve">
+    <value>נבחרו</value>
+  </data>
   <data name="EnterVatNumber" xml:space="preserve">
     <value>הכנס מספר עוסק מורשה</value>
   </data>

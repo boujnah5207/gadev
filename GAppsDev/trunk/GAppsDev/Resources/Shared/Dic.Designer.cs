@@ -61,6 +61,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
         public static string Activate {
@@ -718,6 +727,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Budget.
         /// </summary>
         public static string ExportBudget {
@@ -759,6 +777,15 @@ namespace Loc {
         public static string Hide {
             get {
                 return ResourceManager.GetString("Hide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
@@ -1150,6 +1177,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orders To Export.
+        /// </summary>
+        public static string OrdersToExport {
+            get {
+                return ResourceManager.GetString("OrdersToExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending Orders.
         /// </summary>
         public static string PendingOrders {
@@ -1290,6 +1326,15 @@ namespace Loc {
         public static string SearchResults {
             get {
                 return ResourceManager.GetString("SearchResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected.
+        /// </summary>
+        public static string SelectedItems {
+            get {
+                return ResourceManager.GetString("SelectedItems", resourceCulture);
             }
         }
         

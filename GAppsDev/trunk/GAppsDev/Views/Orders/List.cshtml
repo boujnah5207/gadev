@@ -16,7 +16,9 @@
     <tr>
         @if (ViewBag.IsCheckBoxed)
         {
-            <th>Selected</th>
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
         }
         @if ((bool)ViewBag.IsOrdered)
         {
@@ -33,28 +35,29 @@
         else
         { 
             <th>
-                @Html.DisplayNameFor(model => model.OrderNumber)
+                @Loc.Dic.OrderNumber
             </th>
             if (ViewBag.ShowUserName)
             {
-            <th>שם המזמין
+            <th>
+                @Loc.Dic.OrderCreatorName
             </th>
             }
             <th>
-                @Html.DisplayNameFor(model => model.Supplier.Name)
+                @Loc.Dic.SupplierName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Loc.Dic.Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Orders_Statuses.Name)
+                @Loc.Dic.Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
+                @Loc.Dic.CreationDate
             </th>
         }
 
-        <th>פעולות</th>
+        <th>@Loc.Dic.Actions</th>
     </tr>
     @foreach (DB.Order item in Model)
     {
@@ -62,7 +65,7 @@
             @if (ViewBag.IsCheckBoxed)
             {
                 <td>
-                    <input type="radio" id="checkbox-@item.Id" value="@item.Id" name="selectedOrder" />
+                    <input type="checkbox" id="checkbox-@item.Id" value="@item.Id" name="selectedOrder" />
                 </td>
             }
             <td>
