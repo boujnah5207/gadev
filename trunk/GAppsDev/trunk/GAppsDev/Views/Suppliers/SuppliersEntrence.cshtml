@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DB.Order>
+@{
+    ViewBag.Title = Loc.Dic.Supplier;
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "";
+}
+
+@if (Model == null)
+{
+    using (Html.BeginForm())
+    {
+        <span> @Loc.Dic.EnterVatNumber</span>
+        <input style="width: 50px" id="VAT_num" type="text" name="VAT_Number" />
+        <input type="submit" value="@Loc.Dic.Send" />
+    }
+
+}
+@if (Model != null)
+{
+    @Html.Action("List", "Orders", new { orders = Model, baseUrl = Url.Action("SuppliersEntrence"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}

@@ -600,4 +600,7 @@
   <data name="Error_FileParseError" xml:space="preserve">
     <value>התגלו שגיאות בקובץ שנשלח</value>
   </data>
+  <data name="EnterVatNumber" xml:space="preserve">
+    <value>הכנס מספר עוסק מורשה</value>
+  </data>
 </root>
