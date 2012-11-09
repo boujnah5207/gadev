@@ -1,0 +1,17 @@
+﻿@model List<DB.Order>
+
+@{
+    ViewBag.Title = Loc.Dic.OrdersToExport;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "AllOrders";
+}
+
+@using (Html.BeginForm()) {
+    
+    @Html.Action("SelectorList", new { orders = Model })
+
+    <p>
+        <input type="submit" value="@Loc.Dic.Export" />
+    </p>
+}
+

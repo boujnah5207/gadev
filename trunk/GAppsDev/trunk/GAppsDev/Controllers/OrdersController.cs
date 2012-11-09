@@ -1673,6 +1673,138 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        public ActionResult OrdersToExport()
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                List<Order> ordersToExport;
+
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                {
+                    ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                        .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                        .ToList();
+
+                }
+
+                if (ordersToExport != null)
+                {
+                    return View(ordersToExport);
+                }
+                else
+                {
+                    return Error(Errors.ORDER_GET_ERROR);
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult OrdersToExport(int[] selectedOrder)
+        {
+            if (Authorized(RoleType.SystemManager))
+            {
+                StringBuilder builder = new StringBuilder();
+
+                List<Order> ordersToExport = new List<Order>();
+                Company userCompany;
+
+                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (CompaniesRepository companiesRep = new CompaniesRepository())
+                {
+                    ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                        .Where(x => selectedOrder.Contains(x.Id))
+                        .ToList();
+
+                    userCompany = companiesRep.GetEntity(CurrentUser.CompanyId);
+
+                    if (ordersToExport != null)
+                    {
+                        if (userCompany == null)
+                            return Error(Errors.DATABASE_ERROR);
+
+                        if (String.IsNullOrEmpty(userCompany.ExternalCoinCode) || String.IsNullOrEmpty(userCompany.ExternalExpenseCode))
+                            return Error("Insufficient company data for export");
+
+                        int numberOfOrders = ordersToExport.Count > 999 ? 0 : ordersToExport.Count;
+
+                        builder.AppendLine(
+                            numberOfOrders.ToString().PadRight(180)
+                            );
+
+                        foreach (var order in ordersToExport)
+                        {
+                            DateTime paymentDate;
+
+                            if (order.Price > 999999999)
+                                return Error("Price is too high");
+
+                            if (String.IsNullOrEmpty(order.Supplier.ExternalId))
+                                return Error("Insufficient supplier data for export");
+
+                            if (String.IsNullOrEmpty(order.Budgets_ExpensesToIncomes.ExternalId))
+                                return Error("Insufficient allocation data for export");
+
+                            if (String.IsNullOrEmpty(order.InvoiceNumber) || order.InvoiceDate == null)
+                                return Error("Insufficient order data for export");
+
+                            string orderNotes = order.Notes == null ? String.Empty : order.Notes;
+
+                            if (order.Orders_AllocationMonthes.Count > 0)
+                            {
+                                int paymentMonthId = order.Orders_AllocationMonthes.Max(month => month.Id);
+                                paymentDate = new DateTime(order.Budgets_ExpensesToIncomes.Budget.Year, paymentMonthId, 1);
+                            }
+                            else
+                            {
+                                paymentDate = new DateTime(order.Budgets_ExpensesToIncomes.Budget.Year, order.CreationDate.Month, 1);
+                            }
+
+                            builder.AppendLine(
+                                String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
+                                userCompany.ExternalExpenseCode.PadLeft(3),
+                                order.InvoiceNumber.PadLeft(5),
+                                order.InvoiceDate.Value.ToShortDateString().PadLeft(6),
+                                String.Empty.PadLeft(5),
+                                paymentDate.ToShortDateString().PadLeft(6),
+                                userCompany.ExternalCoinCode.PadLeft(3),
+                                new String(orderNotes.Take(22).ToArray()).PadLeft(22),
+                                order.Budgets_ExpensesToIncomes.ExternalId.ToString().PadLeft(8),
+                                String.Empty.PadLeft(8),
+                                order.Supplier.ExternalId.ToString().PadLeft(8),
+                                String.Empty.PadLeft(8),
+                                order.Price.ToString("0.00").PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                order.Price.ToString("0.00").PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12)
+                                )
+                                );
+                        }
+                        return File(Encoding.UTF8.GetBytes(builder.ToString()),
+                             "text/plain",
+                             "MOVEIN.DAT");
+                    }
+                    else
+                    {
+                        return Error(Errors.ORDER_GET_ERROR);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
+        }
+
+        [OpenIdAuthorize]
         public ActionResult ExportAll()
         {
             if (Authorized(RoleType.SystemManager))
@@ -1721,6 +1853,8 @@ namespace GAppsDev.Controllers
                             if (String.IsNullOrEmpty(order.InvoiceNumber) || order.InvoiceDate == null)
                                 return Error("Insufficient order data for export");
 
+                            string orderNotes = order.Notes == null ? String.Empty : order.Notes;
+
                             if(order.Orders_AllocationMonthes.Count > 0)
                             {
                                 int paymentMonthId = order.Orders_AllocationMonthes.Max(month => month.Id);
@@ -1739,7 +1873,7 @@ namespace GAppsDev.Controllers
                                 String.Empty.PadLeft(5),
                                 paymentDate.ToShortDateString().PadLeft(6),
                                 userCompany.ExternalCoinCode.PadLeft(3),
-                                new String(order.Notes.Take(22).ToArray()).PadLeft(22),
+                                new String(orderNotes.Take(22).ToArray()).PadLeft(22),
                                 order.Budgets_ExpensesToIncomes.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
                                 order.Supplier.ExternalId.ToString().PadLeft(8),
@@ -1915,6 +2049,25 @@ namespace GAppsDev.Controllers
             ViewBag.NumberOfPages = 1;
 
             ViewBag.IsCheckBoxed = false;
+            ViewBag.ShowUserName = true;
+
+            ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
+
+            return PartialView("List", orders);
+        }
+
+        [ChildActionOnly]
+        public ActionResult SelectorList(IEnumerable<Order> orders, string baseUrl)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = false;
+            ViewBag.IsPaged = false;
+            ViewBag.Sortby = null;
+            ViewBag.Order = null;
+            ViewBag.CurrPage = 1;
+            ViewBag.NumberOfPages = 1;
+
+            ViewBag.IsCheckBoxed = true;
             ViewBag.ShowUserName = true;
 
             ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
