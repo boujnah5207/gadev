@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Order>
+﻿@model List<DB.Order>
 
 @{
     string ReverseOrder;
@@ -12,8 +12,8 @@
     }
 }
 
-<table>
-    <tr>
+<table class="listTable">
+    <tr class="headingRow">
         @if (ViewBag.IsCheckBoxed)
         {
             <th>
@@ -59,9 +59,11 @@
 
         <th>@Loc.Dic.Actions</th>
     </tr>
-    @foreach (DB.Order item in Model)
+    @for (int index = 0; index < Model.Count; index++)
     {
-        <tr>
+        DB.Order item = Model[index];
+        
+        <tr class="@if(index % 2 != 0) {<text>oddRow</text>} else {<text>evenRow</text>}" >
             @if (ViewBag.IsCheckBoxed)
             {
                 <td>
