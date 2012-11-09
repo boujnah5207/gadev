@@ -1611,6 +1611,30 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ExternalId
+        {
+            get
+            {
+                return _ExternalId;
+            }
+            set
+            {
+                OnExternalIdChanging(value);
+                ReportPropertyChanging("ExternalId");
+                _ExternalId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExternalId");
+                OnExternalIdChanged();
+            }
+        }
+        private global::System.String _ExternalId;
+        partial void OnExternalIdChanging(global::System.String value);
+        partial void OnExternalIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Int32 CompanyId
@@ -4248,6 +4272,54 @@ namespace DB
         private global::System.String _CompanyNumber;
         partial void OnCompanyNumberChanging(global::System.String value);
         partial void OnCompanyNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ExternalExpenseCode
+        {
+            get
+            {
+                return _ExternalExpenseCode;
+            }
+            set
+            {
+                OnExternalExpenseCodeChanging(value);
+                ReportPropertyChanging("ExternalExpenseCode");
+                _ExternalExpenseCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExternalExpenseCode");
+                OnExternalExpenseCodeChanged();
+            }
+        }
+        private global::System.String _ExternalExpenseCode;
+        partial void OnExternalExpenseCodeChanging(global::System.String value);
+        partial void OnExternalExpenseCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ExternalCoinCode
+        {
+            get
+            {
+                return _ExternalCoinCode;
+            }
+            set
+            {
+                OnExternalCoinCodeChanging(value);
+                ReportPropertyChanging("ExternalCoinCode");
+                _ExternalCoinCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExternalCoinCode");
+                OnExternalCoinCodeChanged();
+            }
+        }
+        private global::System.String _ExternalCoinCode;
+        partial void OnExternalCoinCodeChanging(global::System.String value);
+        partial void OnExternalCoinCodeChanged();
 
         #endregion
 
@@ -6425,6 +6497,54 @@ namespace DB
         private Nullable<global::System.DateTime> _LastStatusChangeDate;
         partial void OnLastStatusChangeDateChanging(Nullable<global::System.DateTime> value);
         partial void OnLastStatusChangeDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String InvoiceNumber
+        {
+            get
+            {
+                return _InvoiceNumber;
+            }
+            set
+            {
+                OnInvoiceNumberChanging(value);
+                ReportPropertyChanging("InvoiceNumber");
+                _InvoiceNumber = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("InvoiceNumber");
+                OnInvoiceNumberChanged();
+            }
+        }
+        private global::System.String _InvoiceNumber;
+        partial void OnInvoiceNumberChanging(global::System.String value);
+        partial void OnInvoiceNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> InvoiceDate
+        {
+            get
+            {
+                return _InvoiceDate;
+            }
+            set
+            {
+                OnInvoiceDateChanging(value);
+                ReportPropertyChanging("InvoiceDate");
+                _InvoiceDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("InvoiceDate");
+                OnInvoiceDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _InvoiceDate;
+        partial void OnInvoiceDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnInvoiceDateChanged();
 
         #endregion
 
@@ -8719,6 +8839,30 @@ namespace DB
         private global::System.Int32 _CompanyId;
         partial void OnCompanyIdChanging(global::System.Int32 value);
         partial void OnCompanyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ExternalId
+        {
+            get
+            {
+                return _ExternalId;
+            }
+            set
+            {
+                OnExternalIdChanging(value);
+                ReportPropertyChanging("ExternalId");
+                _ExternalId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExternalId");
+                OnExternalIdChanged();
+            }
+        }
+        private global::System.String _ExternalId;
+        partial void OnExternalIdChanging(global::System.String value);
+        partial void OnExternalIdChanged();
 
         #endregion
 
