@@ -10,11 +10,18 @@ using DB;
 using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.SupplierModels;
 using Mvc4.OpenId.Sample.Security;
+using System.Globalization;
+using GAppsDev.OpenIdService;
 
 namespace GAppsDev.Controllers
 {
     public class SuppliersController : BaseController
     {
+        const int ITEMS_PER_PAGE = 10;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_DESC_ORDER = "DESC";
+
         private Entities db = new Entities();
 
         //
@@ -115,7 +122,7 @@ namespace GAppsDev.Controllers
                 }
 
                 if (wasCreated)
-                    return Json(new { success = true, message = String.Empty, newSupplierId = supplier.Id.ToString()}, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, message = String.Empty, newSupplierId = supplier.Id.ToString() }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { success = false, message = Errors.SUPPLIERS_CREATE_ERROR }, JsonRequestBehavior.AllowGet);
             }
@@ -191,7 +198,7 @@ namespace GAppsDev.Controllers
                 using (SuppliersRepository suppRep = new SuppliersRepository())
                 {
                     allSuppliers = suppRep.GetList()
-                        .Where(x=>x.CompanyId==CurrentUser.CompanyId)
+                        .Where(x => x.CompanyId == CurrentUser.CompanyId)
                         .Select(
                             supp => new AjaxSupplier()
                             {
@@ -227,6 +234,97 @@ namespace GAppsDev.Controllers
             else
             {
                 return Json(new { gotData = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult SuppliersEntrence()
+        {
+            CultureInfo ci = new CultureInfo("He");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+            CultureInfo.CreateSpecificCulture(ci.Name);
+                
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SuppliersEntrence(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER, int VAT_Number = 0)
+        {
+            CultureInfo ci = new CultureInfo("He");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+            System.Threading.Thread.CurrentThread.CurrentCulture =
+            CultureInfo.CreateSpecificCulture(ci.Name);
+
+            using (SuppliersRepository supRep = new SuppliersRepository())
+            using (OrdersRepository orderRep = new OrdersRepository())
+            {
+                Supplier supplier = supRep.GetList().SingleOrDefault(x => x.VAT_Number == VAT_Number);
+
+                IEnumerable<Order> orders;
+
+                orders = orderRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.SupplierId == supplier.Id);
+
+                if (orders != null)
+                {
+                    int numberOfItems = orders.Count();
+                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                    if (numberOfItems % ITEMS_PER_PAGE != 0)
+                        numberOfPages++;
+
+                    if (page <= 0)
+                        page = FIRST_PAGE;
+                    if (page > numberOfPages)
+                        page = numberOfPages;
+
+                    if (sortby != NO_SORT_BY)
+                    {
+                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                        if (order == DEFAULT_DESC_ORDER)
+                            orderFunction = x => orders.OrderByDescending(x);
+                        else
+                            orderFunction = x => orders.OrderBy(x);
+
+                        switch (sortby)
+                        {
+                            case "username":
+                            default:
+                                orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                break;
+                            case "number":
+                                orders = orderFunction(x => x.OrderNumber);
+                                break;
+                            case "creation":
+                                orders = orderFunction(x => x.CreationDate);
+                                break;
+                            case "supplier":
+                                orders = orderFunction(x => x.Supplier.Name);
+                                break;
+                            case "status":
+                                orders = orderFunction(x => x.StatusId);
+                                break;
+                            case "price":
+                                orders = orderFunction(x => x.Price);
+                                break;
+                        }
+                    }
+
+                    orders = orders
+                        .Skip((page - 1) * ITEMS_PER_PAGE)
+                        .Take(ITEMS_PER_PAGE)
+                        .ToList();
+
+                    ViewBag.Sortby = sortby;
+                    ViewBag.Order = order;
+                    ViewBag.CurrPage = page;
+                    ViewBag.NumberOfPages = numberOfPages;
+
+                    return View(orders.ToList());
+                }
+                else
+                {
+                    return Error(Errors.ORDER_GET_ERROR);
+                }
             }
         }
 

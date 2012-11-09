@@ -1891,7 +1891,14 @@ namespace GAppsDev.Controllers
             ViewBag.IsCheckBoxed = isCheckBoxed;
             ViewBag.ShowUserName = showUserName;
 
-            ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
+            if (CurrentUser == null)
+            {
+                ViewBag.UserRoles = RoleType.None;
+            }
+            else
+            {
+                ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
+            }
 
             return PartialView(orders);
         }

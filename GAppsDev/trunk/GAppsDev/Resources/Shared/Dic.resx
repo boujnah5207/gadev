@@ -597,4 +597,7 @@
   <data name="Error_FileParseError" xml:space="preserve">
     <value>There were errors in the submitted file.</value>
   </data>
+  <data name="EnterVatNumber" xml:space="preserve">
+    <value>Enter Vat Number</value>
+  </data>
 </root>

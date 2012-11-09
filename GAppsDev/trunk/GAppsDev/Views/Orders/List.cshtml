@@ -97,13 +97,17 @@
                     <text>|</text> @Html.ActionLink(Loc.Dic.UpdateStatus, "ModifyStatus", new { id = item.Id })
                     }
                 }
-                @if (item.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
+
+                @if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersWriter))
                 {
-                    <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
-                
-                    if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
+                    if (item.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
                     {
-                    <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
+                        <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
+                
+                        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
+                        {
+                        <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
+                        }
                     }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
