@@ -135,6 +135,29 @@ h5, h6 {
         text-decoration: none;
     }
     
+/* CSS Lists
+----------------------------------------------------------*/
+
+table.listTable
+{
+    width:100%;
+}
+
+tr.headingRow
+{
+    background-color:#c8c8c8;
+}
+
+tr.evenRow
+{
+    background-color:#efeeef;
+}
+
+tr.oddRow
+{
+    background-color:#c8c8c8;
+}
+
 /* CSS Menu
 ----------------------------------------------------------*/
 
