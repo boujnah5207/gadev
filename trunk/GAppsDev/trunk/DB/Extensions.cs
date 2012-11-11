@@ -15,7 +15,6 @@ namespace DB
 
     public class OrderMetaData
     {
-      
     }
 
 }

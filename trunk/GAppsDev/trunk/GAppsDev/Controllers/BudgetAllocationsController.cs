@@ -311,7 +311,7 @@ namespace GAppsDev.Controllers
                     using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                     using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                     using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
-                    using (OrdersRepository ordersRep = new OrdersRepository())
+                    using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
                         allocation = allocationsRep.GetEntity(budgets_expensestoincomes.Id);
 
@@ -403,7 +403,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_ExpensesToIncomes allocation;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
                 {
@@ -449,7 +449,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_ExpensesToIncomes allocation;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
                 {

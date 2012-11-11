@@ -41,79 +41,75 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.OrdersViewer))
-            {
-                IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository())
-                {
-                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
-
-                    if (orders != null)
-                    {
-                        int numberOfItems = orders.Count();
-                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                        if (numberOfItems % ITEMS_PER_PAGE != 0)
-                            numberOfPages++;
-
-                        if (page <= 0)
-                            page = FIRST_PAGE;
-                        if (page > numberOfPages)
-                            page = numberOfPages;
-
-                        if (sortby != NO_SORT_BY)
-                        {
-                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                            if (order == DEFAULT_DESC_ORDER)
-                                orderFunction = x => orders.OrderByDescending(x);
-                            else
-                                orderFunction = x => orders.OrderBy(x);
-
-                            switch (sortby)
-                            {
-                                case "username":
-                                default:
-                                    orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
-                                    break;
-                                case "number":
-                                    orders = orderFunction(x => x.OrderNumber);
-                                    break;
-                                case "creation":
-                                    orders = orderFunction(x => x.CreationDate);
-                                    break;
-                                case "supplier":
-                                    orders = orderFunction(x => x.Supplier.Name);
-                                    break;
-                                case "status":
-                                    orders = orderFunction(x => x.StatusId);
-                                    break;
-                                case "price":
-                                    orders = orderFunction(x => x.Price);
-                                    break;
-                            }
-                        }
-
-                        orders = orders
-                            .Skip((page - 1) * ITEMS_PER_PAGE)
-                            .Take(ITEMS_PER_PAGE)
-                            .ToList();
-
-                        ViewBag.Sortby = sortby;
-                        ViewBag.Order = order;
-                        ViewBag.CurrPage = page;
-                        ViewBag.NumberOfPages = numberOfPages;
-
-                        return View(orders.ToList());
-                    }
-                    else
-                    {
-                        return Error(Errors.ORDERS_GET_ERROR);
-                    }
-                }
-            }
-            else
-            {
+            if (!Authorized(RoleType.OrdersViewer))
                 return Error(Errors.NO_PERMISSION);
+
+            IEnumerable<Order> orders;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
+
+                if (orders != null)
+                {
+                    int numberOfItems = orders.Count();
+                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                    if (numberOfItems % ITEMS_PER_PAGE != 0)
+                        numberOfPages++;
+
+                    if (page <= 0)
+                        page = FIRST_PAGE;
+                    if (page > numberOfPages)
+                        page = numberOfPages;
+
+                    if (sortby != NO_SORT_BY)
+                    {
+                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                        if (order == DEFAULT_DESC_ORDER)
+                            orderFunction = x => orders.OrderByDescending(x);
+                        else
+                            orderFunction = x => orders.OrderBy(x);
+
+                        switch (sortby)
+                        {
+                            case "number":
+                                orders = orderFunction(x => x.OrderNumber);
+                                break;
+                            case "creation":
+                                orders = orderFunction(x => x.CreationDate);
+                                break;
+                            case "supplier":
+                                orders = orderFunction(x => x.Supplier.Name);
+                                break;
+                            case "status":
+                                orders = orderFunction(x => x.StatusId);
+                                break;
+                            case "price":
+                                orders = orderFunction(x => x.Price);
+                                break;
+                            case "username":
+                            default:
+                                orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                break;
+                        }
+                    }
+
+                    orders = orders
+                        .Skip((page - 1) * ITEMS_PER_PAGE)
+                        .Take(ITEMS_PER_PAGE)
+                        .ToList();
+
+                    ViewBag.Sortby = sortby;
+                    ViewBag.Order = order;
+                    ViewBag.CurrPage = page;
+                    ViewBag.NumberOfPages = numberOfPages;
+
+                    return View(orders.ToList());
+                }
+                else
+                {
+                    return Error(Errors.ORDERS_GET_ERROR);
+                }
             }
         }
 
@@ -126,7 +122,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.UserId == CurrentUser.UserId);
 
@@ -203,7 +199,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersApprover))
             {
                 IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                         .Where(x =>
@@ -277,42 +273,26 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult ModifyStatus(int id = 0)
         {
-            if (Authorized(RoleType.OrdersApprover))
+            if (!Authorized(RoleType.OrdersApprover))
+                return Error(Errors.NO_PERMISSION);
+
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 OrderModel orderModel = new OrderModel();
-                using (OrdersRepository ordersRep = new OrdersRepository())
-                {
-                    orderModel.Order = ordersRep.GetEntity(id);
+                orderModel.Order = ordersRep.GetEntity(id);
 
-                    if (orderModel.Order != null)
-                    {
-                        if (orderModel.Order.CompanyId == CurrentUser.CompanyId && orderModel.Order.NextOrderApproverId == CurrentUser.UserId)
-                        {
-                            orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+                if (orderModel.Order == null)
+                    return Error(Errors.ORDER_GET_ERROR);
 
-                            if (orderModel.OrderToItem != null)
-                            {
-                                return View(orderModel);
-                            }
-                            else
-                            {
-                                return Error(Errors.DATABASE_ERROR);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Errors.NO_PERMISSION);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Errors.ORDER_GET_ERROR);
-                    }
-                }
-            }
-            else
-            {
-                return Error(Errors.NO_PERMISSION);
+                if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
+                    return Error(Errors.NO_PERMISSION);
+
+                orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+
+                if (orderModel.OrderToItem == null)
+                    return Error(Errors.DATABASE_ERROR);
+
+                return View(orderModel);
             }
         }
 
@@ -325,7 +305,7 @@ namespace GAppsDev.Controllers
                 Budgets_ExpensesToIncomes budgetAllocation;
                 decimal? totalUsedAllocation;
 
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
                     Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
@@ -342,7 +322,7 @@ namespace GAppsDev.Controllers
                                 {
                                     totalUsedAllocation = ordersRep.GetList()
                                             .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                            .Sum(x => (decimal?)x.Price);
+                                            .Sum(x => x.Price);
 
                                     if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
                                     {
@@ -412,7 +392,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Order order;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = ordersRep.GetEntity(id);
                 }
@@ -467,7 +447,7 @@ namespace GAppsDev.Controllers
 
                     using (InventoryRepository inventoryRep = new InventoryRepository())
                     using (LocationsRepository locationsRep = new LocationsRepository())
-                    using (OrdersRepository ordersRep = new OrdersRepository())
+                    using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
                         order = ordersRep.GetEntity(model.OrderId, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
 
@@ -636,7 +616,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Order order;
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = orderRep.GetEntity(id);
 
@@ -682,7 +662,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Order order;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = ordersRep.GetEntity(orderId);
 
@@ -729,7 +709,7 @@ namespace GAppsDev.Controllers
         public ActionResult DownloadInvoice(int id = 0)
         {
             Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id);
 
@@ -786,7 +766,7 @@ namespace GAppsDev.Controllers
         public ActionResult DownloadReceipt(int id = 0)
         {
             Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id);
 
@@ -848,7 +828,7 @@ namespace GAppsDev.Controllers
 
             PrintOrderModel model = new PrintOrderModel();
 
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 model.Order = ordersRep.GetEntity(id, "User", "Company", "Supplier");
@@ -880,7 +860,7 @@ namespace GAppsDev.Controllers
         public ActionResult Details(int id = 0)
         {
             Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User");
 
@@ -994,7 +974,7 @@ namespace GAppsDev.Controllers
                             return Error(Errors.ORDER_HAS_NO_ITEMS);
 
                         bool wasOrderCreated;
-                        using (OrdersRepository ordersRep = new OrdersRepository())
+                        using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                         {
                             budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
@@ -1064,7 +1044,7 @@ namespace GAppsDev.Controllers
                                     }
                                 }
 
-                                using (OrdersRepository orderRep = new OrdersRepository())
+                                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                                 {
                                     orderRep.Delete(order.Id);
                                 }
@@ -1102,7 +1082,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
@@ -1182,7 +1162,7 @@ namespace GAppsDev.Controllers
                     List<Orders_OrderToItem> itemsToCreate = new List<Orders_OrderToItem>();
                     List<Orders_OrderToItem> itemsToUpdate = new List<Orders_OrderToItem>();
 
-                    using (OrdersRepository orderRep = new OrdersRepository())
+                    using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
                         orderFromDatabase = orderRep.GetEntity(order.Id, "Supplier", "Orders_OrderToItem");
                     }
@@ -1203,7 +1183,7 @@ namespace GAppsDev.Controllers
                                     decimal totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
                                     Budgets_ExpensesToIncomes budgetAllocation;
 
-                                    using (OrdersRepository ordersRep = new OrdersRepository())
+                                    using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                                     using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                                     {
                                         budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
@@ -1276,7 +1256,7 @@ namespace GAppsDev.Controllers
 
                                         if (order.Notes != orderFromDatabase.Notes || order.BudgetAllocationId != orderFromDatabase.BudgetAllocationId)
                                         {
-                                            using (OrdersRepository ordersRep = new OrdersRepository())
+                                            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                                             {
                                                 order.CompanyId = orderFromDatabase.CompanyId;
                                                 order.CreationDate = orderFromDatabase.CreationDate;
@@ -1337,7 +1317,7 @@ namespace GAppsDev.Controllers
             {
                 OrderModel model = new OrderModel();
 
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Company", "User", "Orders_Statuses", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
                     model.OrderToItem = model.Order.Orders_OrderToItem.ToList();
@@ -1382,7 +1362,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem");
                 }
@@ -1394,7 +1374,7 @@ namespace GAppsDev.Controllers
                         if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
                         {
                             bool noItemErrors = true;
-                            using (OrdersRepository orderRep = new OrdersRepository())
+                            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                             using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                             {
                                 foreach (var item in order.Orders_OrderToItem)
@@ -1449,7 +1429,7 @@ namespace GAppsDev.Controllers
             {
                 AddToInventoryModel model = new AddToInventoryModel();
                 Order order;
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
                 }
@@ -1506,7 +1486,7 @@ namespace GAppsDev.Controllers
                 Order order;
                 List<Location> locations;
 
-                using (OrdersRepository orderRep = new OrdersRepository())
+                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = orderRep.GetEntity(model.OrderId, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
                 }
@@ -1679,7 +1659,7 @@ namespace GAppsDev.Controllers
             {
                 List<Order> ordersToExport;
 
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                         .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
@@ -1713,7 +1693,7 @@ namespace GAppsDev.Controllers
                 List<Order> ordersToExport = new List<Order>();
                 Company userCompany;
 
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
                 {
                     ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
@@ -1815,7 +1795,7 @@ namespace GAppsDev.Controllers
                 Company userCompany;
 
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     ordersToExport = ordersRep.GetList("Orders_AllocationMonthes")
                         .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
@@ -1841,7 +1821,7 @@ namespace GAppsDev.Controllers
                         {
                             DateTime paymentDate;
 
-                            if(order.Price > 999999999)
+                            if (order.Price > 999999999)
                                 return Error("Price is too high");
 
                             if (String.IsNullOrEmpty(order.Supplier.ExternalId))
@@ -1922,7 +1902,7 @@ namespace GAppsDev.Controllers
                 ViewBag.HideStatusField = model.HideStatusField;
                 ViewBag.HideSupplierField = model.HideSupplierField;
 
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (UsersRepository usersRep = new UsersRepository())
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
@@ -2122,7 +2102,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult InvoiceApproval(string selectedStatus, int orderId = 0)
         {
-            using (OrdersRepository ordersRepository = new OrdersRepository())
+            using (OrdersRepository ordersRepository = new OrdersRepository(CurrentUser.CompanyId))
             {
                 Order order = ordersRepository.GetEntity(orderId);
                 if (selectedStatus == Loc.Dic.ApproveInvoce)

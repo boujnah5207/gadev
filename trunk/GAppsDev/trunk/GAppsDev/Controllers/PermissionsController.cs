@@ -416,7 +416,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Permissions permission;
 
-                using (OrdersRepository orderssRep = new OrdersRepository())
+                using (OrdersRepository orderssRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
                 using (BudgetsUsersToPermissionsRepository usersPermissionsRep = new BudgetsUsersToPermissionsRepository())

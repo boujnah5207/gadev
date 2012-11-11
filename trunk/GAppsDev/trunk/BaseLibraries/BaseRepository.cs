@@ -27,7 +27,7 @@ namespace BaseLibraries
             _db.Dispose();
         }
 
-        public IQueryable<TEntity> GetList(params string[] includes)
+        public virtual IQueryable<TEntity> GetList(params string[] includes)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace BaseLibraries
             }
             catch
             {
-                return null;
+                return Enumerable.Empty<TEntity>().AsQueryable();
             }
         }
 

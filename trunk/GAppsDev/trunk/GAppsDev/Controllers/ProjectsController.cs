@@ -240,7 +240,7 @@ namespace GAppsDev.Controllers
             {
                 Projects_ParentProject project;
 
-                using (OrdersRepository orderssRep = new OrdersRepository())
+                using (OrdersRepository orderssRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 {
                     project = projectsRep.GetEntity(id);

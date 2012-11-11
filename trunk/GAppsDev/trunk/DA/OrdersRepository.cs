@@ -10,10 +10,22 @@ namespace DA
 {
     public class OrdersRepository : BaseRepository<Order, Entities>
     {
+        private int _companyId;
+        public OrdersRepository(int companyId)
+        {
+            _companyId = companyId;
+        }
+
         public override bool Create(Order entity)
         {
             entity.CreationDate = DateTime.Now;
             return base.Create(entity);
+        }
+
+        public override IQueryable<Order> GetList(params string[] includes)
+        {
+            return base.GetList(includes)
+                .Where(x => x.CompanyId == _companyId);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace GAppsDev.Controllers
 
         public ActionResult Index()
         {
-            using (OrdersRepository ordersRepository = new OrdersRepository())
+            using (OrdersRepository ordersRepository = new OrdersRepository(CurrentUser.CompanyId))
             {
                 List<Order> toExportOrders = ordersRepository
                     .GetList("Orders_Statuses", "Supplier", "User")
