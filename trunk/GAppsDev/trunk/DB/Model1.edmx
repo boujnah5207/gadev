@@ -24,7 +24,6 @@
           <EntitySet Name="Languages" EntityType="designModel.Store.Languages" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Monthes" EntityType="designModel.Store.Monthes" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Orders" EntityType="designModel.Store.Orders" store:Type="Tables" Schema="uddi" />
-          <EntitySet Name="Orders_AllocationMonthes" EntityType="designModel.Store.Orders_AllocationMonthes" store:Type="Tables" Schema="uddi" Table="Orders.AllocationMonthes" />
           <EntitySet Name="Orders_OrderToAllocation" EntityType="designModel.Store.Orders_OrderToAllocation" store:Type="Tables" Schema="uddi" Table="Orders.OrderToAllocation" />
           <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Store.Orders_OrderToItem" store:Type="Tables" Schema="uddi" Table="Orders.OrderToItem" />
           <EntitySet Name="Orders_Statuses" EntityType="designModel.Store.Orders_Statuses" store:Type="Tables" Schema="uddi" Table="Orders.Statuses" />
@@ -161,20 +160,16 @@
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Locations" EntitySet="Locations" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_AllocationMonthes_Monthes" Association="designModel.Store.FK_Orders_AllocationMonthes_Monthes">
-            <End Role="Monthes" EntitySet="Monthes" />
-            <End Role="Orders_AllocationMonthes" EntitySet="Orders_AllocationMonthes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_AllocationMonthes_Orders" Association="designModel.Store.FK_Orders_AllocationMonthes_Orders">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="Orders_AllocationMonthes" EntitySet="Orders_AllocationMonthes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.Store.FK_Orders_Items_Suppliers">
             <End Role="Suppliers" EntitySet="Suppliers" />
             <End Role="Orders_Items" EntitySet="Orders_Items" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
             <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToAllocation_Monthes" Association="designModel.Store.FK_Orders_OrderToAllocation_Monthes">
+            <End Role="Monthes" EntitySet="Monthes" />
             <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Orders" Association="designModel.Store.FK_Orders_OrderToAllocation_Orders">
@@ -463,15 +458,6 @@
           <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="5" />
           <Property Name="InvoiceDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="Orders_AllocationMonthes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="int" Nullable="false" />
-          <Property Name="MonthId" Type="int" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Nullable="false" />
-        </EntityType>
         <EntityType Name="Orders_OrderToAllocation">
           <Key>
             <PropertyRef Name="Id" />
@@ -479,6 +465,7 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="AllocationId" Type="int" Nullable="false" />
+          <Property Name="MonthId" Type="int" Nullable="false" />
           <Property Name="Amount" Type="decimal" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders_OrderToItem">
@@ -955,30 +942,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Orders_AllocationMonthes_Monthes">
-          <End Role="Monthes" Type="designModel.Store.Monthes" Multiplicity="1" />
-          <End Role="Orders_AllocationMonthes" Type="designModel.Store.Orders_AllocationMonthes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Monthes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Orders_AllocationMonthes">
-              <PropertyRef Name="MonthId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_AllocationMonthes_Orders">
-          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="1" />
-          <End Role="Orders_AllocationMonthes" Type="designModel.Store.Orders_AllocationMonthes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Orders_AllocationMonthes">
-              <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Orders_Items_Suppliers">
           <End Role="Suppliers" Type="designModel.Store.Suppliers" Multiplicity="1" />
           <End Role="Orders_Items" Type="designModel.Store.Orders_Items" Multiplicity="*" />
@@ -1000,6 +963,18 @@
             </Principal>
             <Dependent Role="Orders_OrderToAllocation">
               <PropertyRef Name="AllocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToAllocation_Monthes">
+          <End Role="Monthes" Type="designModel.Store.Monthes" Multiplicity="1" />
+          <End Role="Orders_OrderToAllocation" Type="designModel.Store.Orders_OrderToAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Monthes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToAllocation">
+              <PropertyRef Name="MonthId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1218,7 +1193,6 @@
           <EntitySet Name="Languages" EntityType="designModel.Language" />
           <EntitySet Name="Monthes" EntityType="designModel.Monthe" />
           <EntitySet Name="Orders" EntityType="designModel.Order" />
-          <EntitySet Name="Orders_AllocationMonthes" EntityType="designModel.Orders_AllocationMonthes" />
           <EntitySet Name="Orders_OrderToAllocation" EntityType="designModel.Orders_OrderToAllocation" />
           <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Orders_OrderToItem" />
           <EntitySet Name="Orders_Statuses" EntityType="designModel.Orders_Statuses" />
@@ -1399,13 +1373,9 @@
             <End Role="Language" EntitySet="Languages" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_AllocationMonthes_Monthes" Association="designModel.FK_Orders_AllocationMonthes_Monthes">
+          <AssociationSet Name="FK_Orders_OrderToAllocation_Monthes" Association="designModel.FK_Orders_OrderToAllocation_Monthes">
             <End Role="Monthe" EntitySet="Monthes" />
-            <End Role="Orders_AllocationMonthes" EntitySet="Orders_AllocationMonthes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_AllocationMonthes_Orders" Association="designModel.FK_Orders_AllocationMonthes_Orders">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Orders_AllocationMonthes" EntitySet="Orders_AllocationMonthes" />
+            <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Orders" Association="designModel.FK_Orders_OrderToAllocation_Orders">
             <End Role="Order" EntitySet="Orders" />
@@ -1706,7 +1676,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Orders_AllocationMonthes" Relationship="designModel.FK_Orders_AllocationMonthes_Monthes" FromRole="Monthe" ToRole="Orders_AllocationMonthes" />
+          <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Monthes" FromRole="Monthe" ToRole="Orders_OrderToAllocation" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1730,23 +1700,11 @@
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
           <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Order" ToRole="Budgets_ExpensesToIncomes" />
-          <NavigationProperty Name="Orders_AllocationMonthes" Relationship="designModel.FK_Orders_AllocationMonthes_Orders" FromRole="Order" ToRole="Orders_AllocationMonthes" />
           <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Orders" FromRole="Order" ToRole="Orders_OrderToAllocation" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
           <NavigationProperty Name="Supplier" Relationship="designModel.FK_Orders_Suppliers" FromRole="Order" ToRole="Supplier" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Orders_Users" FromRole="Order" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Orders_AllocationMonthes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="OrderId" Nullable="false" />
-          <Property Type="Int32" Name="MonthId" Nullable="false" />
-          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
-          <NavigationProperty Name="Monthe" Relationship="designModel.FK_Orders_AllocationMonthes_Monthes" FromRole="Orders_AllocationMonthes" ToRole="Monthe" />
-          <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_AllocationMonthes_Orders" FromRole="Orders_AllocationMonthes" ToRole="Order" />
         </EntityType>
         <EntityType Name="Orders_OrderToAllocation">
           <Key>
@@ -1755,8 +1713,10 @@
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="OrderId" Nullable="false" />
           <Property Type="Int32" Name="AllocationId" Nullable="false" />
+          <Property Type="Int32" Name="MonthId" Nullable="false" />
           <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Orders_OrderToAllocation" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Monthe" Relationship="designModel.FK_Orders_OrderToAllocation_Monthes" FromRole="Orders_OrderToAllocation" ToRole="Monthe" />
           <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_OrderToAllocation_Orders" FromRole="Orders_OrderToAllocation" ToRole="Order" />
         </EntityType>
         <EntityType Name="Orders_OrderToItem">
@@ -2385,27 +2345,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Orders_AllocationMonthes_Monthes">
+        <Association Name="FK_Orders_OrderToAllocation_Monthes">
           <End Type="designModel.Monthe" Role="Monthe" Multiplicity="1" />
-          <End Type="designModel.Orders_AllocationMonthes" Role="Orders_AllocationMonthes" Multiplicity="*" />
+          <End Type="designModel.Orders_OrderToAllocation" Role="Orders_OrderToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Monthe">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Orders_AllocationMonthes">
+            <Dependent Role="Orders_OrderToAllocation">
               <PropertyRef Name="MonthId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_AllocationMonthes_Orders">
-          <End Type="designModel.Order" Role="Order" Multiplicity="1" />
-          <End Type="designModel.Orders_AllocationMonthes" Role="Orders_AllocationMonthes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Orders_AllocationMonthes">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2738,20 +2686,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Orders_AllocationMonthes">
-            <EntityTypeMapping TypeName="designModel.Orders_AllocationMonthes">
-              <MappingFragment StoreEntitySet="Orders_AllocationMonthes">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="MonthId" ColumnName="MonthId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Orders_OrderToAllocation">
             <EntityTypeMapping TypeName="designModel.Orders_OrderToAllocation">
               <MappingFragment StoreEntitySet="Orders_OrderToAllocation">
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MonthId" ColumnName="MonthId" />
                 <ScalarProperty Name="AllocationId" ColumnName="AllocationId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -2876,33 +2815,32 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="7.3874950871744645" PointY="9.409509752602089" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="10.308482480379047" PointY="5.7459213611418019" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="0.08512475345522387" PointY="27.558180613237518" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="11.323351017815689" PointY="12.428268185084811" />
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="11.543053602586991" PointY="29.667119978772067" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="5.9658498046760675" PointY="29.8861276944569" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="10.410998788853641" PointY="14.84448739087418" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="0.29506987533302509" PointY="29.779152898946382" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="3.9744346402466455" PointY="22.361187200230169" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="11.252832630301281" PointY="31.626609995787316" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="9.2131547803120473" PointY="12.170666774814327" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="10.008534985598427" PointY="19.217928090699914" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="1.3962222996150249" PointY="5.8207647231504156" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="7.6394355779697349" PointY="18.174635031341872" />
-        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="5.7213279463915754" PointY="6.4162100136355544" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="6.2608403648533111" PointY="5.3434097791758415" />
-        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="5.9758282033614014" PointY="18.429299616454774" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.846251574739" PointY="24.134613808307151" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_AllocationMonthes" Width="1.5" PointX="1.7549887941009312" PointY="14.939849741263245" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="10.170353247863405" PointY="18.363829353062357" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="3.8992520253636185" PointY="17.648560100071393" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="11.082991724406831" PointY="3.5552205161914325" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="9.25252099207254" PointY="4.8011878602212237" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="3.6756102143207614" PointY="18.635441848372782" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="10.499924897449056" PointY="16.807572029907057" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="2.8852625484044023" PointY="9.65469332488938" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.2282149289866062" PointY="15.340611658683331" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="3.2521266486738467" PointY="7.5293201243175751" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="5.5200311716273571" PointY="8.2713585236442082" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="0.75849821081315083" PointY="26.406234619396848" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="2.6948821519943333" PointY="12.020967682833303" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.93927262301523" PointY="24.365266259929754" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="4.8643296271862138" PointY="10.565523033293673" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="5.2314696820599345" PointY="9.3333638204882678" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="6.7204311968388186" PointY="8.6522391925809163" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="9.412193543003962" PointY="27.658642632727812" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="10.215091952222908" PointY="11.643724327741062" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="7.9607267230566254" PointY="6.9198526474274011" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="5.4810083161485421" PointY="23.134206112071038" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="9.9542020419399257" PointY="30.922071605418843" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="10.507176556860644" PointY="1.7363863595465134" />
+        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="8.3155632393041454" PointY="30.44930249380381" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="11.520816206708931" PointY="7.0408809813861177" />
+        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="5.7755637382043359" PointY="0.59493021694707227" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="3.6588607074966939" PointY="21.394017408319758" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="3.5304490064878244" PointY="28.408611593958277" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="4.8439454421605657" PointY="0.71470737490556546" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="4.1915538554040506" PointY="30.377037718136346" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="7.6789374145115428" PointY="5.1893783384884609" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="8.4688780663855727" PointY="14.10786627889977" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="8.5689757655230245" PointY="0.46826341770042823" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="0.26785949630097461" PointY="19.3475605339499" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.8906459682111851" PointY="12.035390829683928" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Companies" />
@@ -2946,8 +2884,7 @@
         <edmx:AssociationConnector Association="designModel.FK_Users_Budget_Deprtments" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Languages" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Languages" />
-        <edmx:AssociationConnector Association="designModel.FK_Orders_AllocationMonthes_Monthes" />
-        <edmx:AssociationConnector Association="designModel.FK_Orders_AllocationMonthes_Orders" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Monthes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Orders_Statuses" />

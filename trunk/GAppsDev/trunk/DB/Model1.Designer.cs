@@ -62,8 +62,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Budget_Deprtments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Department), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Orders_AllocationMonthes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_AllocationMonthes), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_AllocationMonthes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_AllocationMonthes), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
@@ -413,22 +412,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Orders_AllocationMonthes> Orders_AllocationMonthes
-        {
-            get
-            {
-                if ((_Orders_AllocationMonthes == null))
-                {
-                    _Orders_AllocationMonthes = base.CreateObjectSet<Orders_AllocationMonthes>("Orders_AllocationMonthes");
-                }
-                return _Orders_AllocationMonthes;
-            }
-        }
-        private ObjectSet<Orders_AllocationMonthes> _Orders_AllocationMonthes;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Orders_OrderToAllocation> Orders_OrderToAllocation
         {
             get
@@ -700,14 +683,6 @@ namespace DB
         public void AddToOrders(Order order)
         {
             base.AddObject("Orders", order);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Orders_AllocationMonthes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToOrders_AllocationMonthes(Orders_AllocationMonthes orders_AllocationMonthes)
-        {
-            base.AddObject("Orders_AllocationMonthes", orders_AllocationMonthes);
         }
     
         /// <summary>
@@ -6172,18 +6147,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes")]
-        public EntityCollection<Orders_AllocationMonthes> Orders_AllocationMonthes
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Orders_OrderToAllocation")]
+        public EntityCollection<Orders_OrderToAllocation> Orders_OrderToAllocation
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_OrderToAllocation>("designModel.FK_Orders_OrderToAllocation_Monthes", "Orders_OrderToAllocation");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Monthes", "Orders_AllocationMonthes", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_OrderToAllocation>("designModel.FK_Orders_OrderToAllocation_Monthes", "Orders_OrderToAllocation", value);
                 }
             }
         }
@@ -6701,28 +6676,6 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes")]
-        public EntityCollection<Orders_AllocationMonthes> Orders_AllocationMonthes
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_AllocationMonthes>("designModel.FK_Orders_AllocationMonthes_Orders", "Orders_AllocationMonthes", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToAllocation_Orders", "Orders_OrderToAllocation")]
         public EntityCollection<Orders_OrderToAllocation> Orders_OrderToAllocation
         {
@@ -6871,221 +6824,6 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Orders_Users", "User", value);
-                }
-            }
-        }
-
-        #endregion
-
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Orders_AllocationMonthes")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Orders_AllocationMonthes : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Orders_AllocationMonthes object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="orderId">Initial value of the OrderId property.</param>
-        /// <param name="monthId">Initial value of the MonthId property.</param>
-        /// <param name="amount">Initial value of the Amount property.</param>
-        public static Orders_AllocationMonthes CreateOrders_AllocationMonthes(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 monthId, global::System.Decimal amount)
-        {
-            Orders_AllocationMonthes orders_AllocationMonthes = new Orders_AllocationMonthes();
-            orders_AllocationMonthes.Id = id;
-            orders_AllocationMonthes.OrderId = orderId;
-            orders_AllocationMonthes.MonthId = monthId;
-            orders_AllocationMonthes.Amount = amount;
-            return orders_AllocationMonthes;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 OrderId
-        {
-            get
-            {
-                return _OrderId;
-            }
-            set
-            {
-                OnOrderIdChanging(value);
-                ReportPropertyChanging("OrderId");
-                _OrderId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrderId");
-                OnOrderIdChanged();
-            }
-        }
-        private global::System.Int32 _OrderId;
-        partial void OnOrderIdChanging(global::System.Int32 value);
-        partial void OnOrderIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 MonthId
-        {
-            get
-            {
-                return _MonthId;
-            }
-            set
-            {
-                OnMonthIdChanging(value);
-                ReportPropertyChanging("MonthId");
-                _MonthId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("MonthId");
-                OnMonthIdChanged();
-            }
-        }
-        private global::System.Int32 _MonthId;
-        partial void OnMonthIdChanging(global::System.Int32 value);
-        partial void OnMonthIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Amount
-        {
-            get
-            {
-                return _Amount;
-            }
-            set
-            {
-                OnAmountChanging(value);
-                ReportPropertyChanging("Amount");
-                _Amount = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Amount");
-                OnAmountChanged();
-            }
-        }
-        private global::System.Decimal _Amount;
-        partial void OnAmountChanging(global::System.Decimal value);
-        partial void OnAmountChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Monthes", "Monthe")]
-        public Monthe Monthe
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Monthe> MontheReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Monthe>("designModel.FK_Orders_AllocationMonthes_Monthes", "Monthe", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_AllocationMonthes_Orders", "Order")]
-        public Order Order
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Order> OrderReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Order>("designModel.FK_Orders_AllocationMonthes_Orders", "Order", value);
                 }
             }
         }
@@ -7357,13 +7095,15 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="orderId">Initial value of the OrderId property.</param>
         /// <param name="allocationId">Initial value of the AllocationId property.</param>
+        /// <param name="monthId">Initial value of the MonthId property.</param>
         /// <param name="amount">Initial value of the Amount property.</param>
-        public static Orders_OrderToAllocation CreateOrders_OrderToAllocation(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 allocationId, global::System.Decimal amount)
+        public static Orders_OrderToAllocation CreateOrders_OrderToAllocation(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 allocationId, global::System.Int32 monthId, global::System.Decimal amount)
         {
             Orders_OrderToAllocation orders_OrderToAllocation = new Orders_OrderToAllocation();
             orders_OrderToAllocation.Id = id;
             orders_OrderToAllocation.OrderId = orderId;
             orders_OrderToAllocation.AllocationId = allocationId;
+            orders_OrderToAllocation.MonthId = monthId;
             orders_OrderToAllocation.Amount = amount;
             return orders_OrderToAllocation;
         }
@@ -7452,6 +7192,30 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
+        public global::System.Int32 MonthId
+        {
+            get
+            {
+                return _MonthId;
+            }
+            set
+            {
+                OnMonthIdChanging(value);
+                ReportPropertyChanging("MonthId");
+                _MonthId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MonthId");
+                OnMonthIdChanged();
+            }
+        }
+        private global::System.Int32 _MonthId;
+        partial void OnMonthIdChanging(global::System.Int32 value);
+        partial void OnMonthIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
         public global::System.Decimal Amount
         {
             get
@@ -7510,6 +7274,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_ExpensesToIncomes>("designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes", "Budgets_ExpensesToIncomes", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Monthe")]
+        public Monthe Monthe
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Monthe> MontheReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe", value);
                 }
             }
         }
