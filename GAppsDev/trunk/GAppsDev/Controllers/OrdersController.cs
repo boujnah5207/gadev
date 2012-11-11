@@ -1754,9 +1754,9 @@ namespace GAppsDev.Controllers
 
                             string orderNotes = order.Notes == null ? String.Empty : order.Notes;
 
-                            if (order.Orders_AllocationMonthes.Count > 0)
+                            if (order.Orders_OrderToAllocation.Count > 0)
                             {
-                                int paymentMonthId = order.Orders_AllocationMonthes.Max(month => month.Id);
+                                int paymentMonthId = order.Orders_OrderToAllocation.Max(month => month.Id);
                                 paymentDate = new DateTime(order.Budgets_ExpensesToIncomes.Budget.Year, paymentMonthId, 1);
                             }
                             else
@@ -1855,9 +1855,9 @@ namespace GAppsDev.Controllers
 
                             string orderNotes = order.Notes == null ? String.Empty : order.Notes;
 
-                            if(order.Orders_AllocationMonthes.Count > 0)
+                            if (order.Orders_OrderToAllocation.Count > 0)
                             {
-                                int paymentMonthId = order.Orders_AllocationMonthes.Max(month => month.Id);
+                                int paymentMonthId = order.Orders_OrderToAllocation.Max(month => month.Id);
                                 paymentDate = new DateTime(order.Budgets_ExpensesToIncomes.Budget.Year, paymentMonthId, 1);
                             }
                             else
