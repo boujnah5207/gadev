@@ -371,7 +371,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Expenses expense;
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 {
                     expense = expensesRep.GetEntity(id, "Budget", "Department", "Projects_ParentProject", "Projects_SubProject");
@@ -422,7 +422,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Expenses expense;
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
-                using (OrdersRepository ordersRep = new OrdersRepository())
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 using (BudgetsPermissionsToAllocationRepository permissionAllocationsRep = new BudgetsPermissionsToAllocationRepository())
                 {

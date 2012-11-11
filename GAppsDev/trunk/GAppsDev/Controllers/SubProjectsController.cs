@@ -238,7 +238,7 @@ namespace GAppsDev.Controllers
             {
                 Projects_SubProject subProject;
 
-                using (OrdersRepository orderssRep = new OrdersRepository())
+                using (OrdersRepository orderssRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                 {
                     subProject = subProjectsRep.GetEntity(id);

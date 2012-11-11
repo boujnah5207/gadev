@@ -256,7 +256,7 @@ namespace GAppsDev.Controllers
             CultureInfo.CreateSpecificCulture(ci.Name);
 
             using (SuppliersRepository supRep = new SuppliersRepository())
-            using (OrdersRepository orderRep = new OrdersRepository())
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 Supplier supplier = supRep.GetList().SingleOrDefault(x => x.VAT_Number == VAT_Number);
 
