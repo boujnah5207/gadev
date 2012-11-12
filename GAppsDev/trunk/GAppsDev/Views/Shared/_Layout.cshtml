@@ -29,7 +29,10 @@
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                <p class="site-title">@Html.ActionLink("cloudERP", "Index", "Home")</p>
+                <p class="site-title">
+                    <img src="~/App_Data/Pictures/CloudERP-Logo.png" />
+                    @Html.ActionLink(".", "Index", "Home")
+                </p>
             </div>
             <div class="float-right">
                 <section id="login">
@@ -51,10 +54,10 @@
                             </li>
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
-                            <li>|</li>
-                            <li id="CompaniesPage">
-                                @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id = "ManagmentLink" })
-                            </li>
+                                <li>|</li>
+                                <li id="CompaniesPage">
+                                    @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id = "ManagmentLink" })
+                                </li>
                             }
                         </ul>
                     </div>
