@@ -923,13 +923,66 @@ namespace GAppsDev.Controllers
                                 );
                     }
 
+                    allocations = allocations.Distinct().ToList();
+
+                    foreach (var allocation in allocations)
+                    {
+                        decimal allocatedJanuary = allocation.January.HasValue ? allocation.January.Value : 0;
+                        decimal? remainingJanuary = allocatedJanuary - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.January = remainingJanuary.HasValue ? Math.Max(0, remainingJanuary.Value) : 0 ;
+
+                        decimal allocatedFebruary = allocation.February.HasValue ? allocation.February.Value : 0;
+                        decimal? remainingFebruary = allocatedFebruary - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 2).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.February = remainingFebruary.HasValue ? Math.Max(0, remainingFebruary.Value) : 0;
+
+                        decimal allocatedMarch = allocation.March.HasValue ? allocation.March.Value : 0;
+                        decimal? remainingMarch = allocatedMarch - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 3).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.March = remainingMarch.HasValue ? Math.Max(0, remainingMarch.Value) : 0;
+
+                        decimal allocatedApril = allocation.April.HasValue ? allocation.April.Value : 0;
+                        decimal? remainingApril = allocatedApril - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 4).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.April = remainingApril.HasValue ? Math.Max(0, remainingApril.Value) : 0;
+
+                        decimal allocatedMay = allocation.May.HasValue ? allocation.May.Value : 0;
+                        decimal? remainingMay = allocatedMay - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 5).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.May = remainingMay.HasValue ? Math.Max(0, remainingMay.Value) : 0;
+
+                        decimal allocatedJune = allocation.June.HasValue ? allocation.June.Value : 0;
+                        decimal? remainingJune = allocatedJune - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 6).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.June = remainingJune.HasValue ? Math.Max(0, remainingJune.Value) : 0;
+
+                        decimal allocatedJuly = allocation.July.HasValue ? allocation.July.Value : 0;
+                        decimal? remainingJuly = allocatedJuly - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 7).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.July = remainingJuly.HasValue ? Math.Max(0, remainingJuly.Value) : 0;
+
+                        decimal allocatedAugust = allocation.August.HasValue ? allocation.August.Value : 0;
+                        decimal? remainingAugust = allocatedAugust - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 8).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.August = remainingAugust.HasValue ? Math.Max(0, remainingAugust.Value) : 0;
+
+                        decimal allocatedSeptember = allocation.September.HasValue ? allocation.September.Value : 0;
+                        decimal? remainingSeptember = allocatedSeptember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 9).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.September = remainingSeptember.HasValue ? Math.Max(0, remainingSeptember.Value) : 0;
+
+                        decimal allocatedOctober = allocation.October.HasValue ? allocation.October.Value : 0;
+                        decimal? remainingOctober = allocatedOctober - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 10).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.October = remainingOctober.HasValue ? Math.Max(0, remainingOctober.Value) : 0;
+
+                        decimal allocatedNovember = allocation.November.HasValue ? allocation.November.Value : 0;
+                        decimal? remainingNovember = allocatedNovember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 11).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.November = remainingNovember.HasValue ? Math.Max(0, remainingNovember.Value) : 0;
+
+                        decimal allocatedDecember = allocation.December.HasValue ? allocation.December.Value : 0;
+                        decimal? remainingDecember = allocatedDecember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 12).Select(d => (decimal?)d.Amount).Sum();
+                        allocation.December = remainingDecember.HasValue ? Math.Max(0, remainingDecember.Value) : 0;
+                    }
+
                     allocationsSelectList = allocations
-                        .Distinct()
                         .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
 
+                    ViewBag.Allocations = allocations;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
 
@@ -946,27 +999,27 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Order order, string itemsString)
+        public ActionResult Create(CreateOrderModel model)
         {
             if (ModelState.IsValid)
             {
                 if (Authorized(RoleType.OrdersWriter))
                 {
-                    List<Orders_OrderToItem> ItemsList = ItemsFromString(itemsString, 0);
+                    List<Orders_OrderToItem> ItemsList = ItemsFromString(model.ItemsString, 0);
                     decimal totalOrderPrice;
                     decimal? totalUsedAllocation;
 
                     Budgets_ExpensesToIncomes budgetAllocation;
 
-                    order.UserId = CurrentUser.UserId;
-                    order.CompanyId = CurrentUser.CompanyId;
-                    order.CreationDate = DateTime.Now;
-                    order.StatusId = (int)StatusType.Pending;
-                    order.OrderApproverNotes = String.Empty;
-                    order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
-                    order.NextOrderApproverId = CurrentUser.OrdersApproverId;
+                    model.Order.UserId = CurrentUser.UserId;
+                    model.Order.CompanyId = CurrentUser.CompanyId;
+                    model.Order.CreationDate = DateTime.Now;
+                    model.Order.StatusId = (int)StatusType.Pending;
+                    model.Order.OrderApproverNotes = String.Empty;
+                    model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
+                    model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
 
-                    if (ItemsList != null || !order.BudgetAllocationId.HasValue)
+                    if (ItemsList != null || !model.Order.BudgetAllocationId.HasValue)
                     {
                         if (ItemsList.Count > 0)
                             totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
@@ -977,12 +1030,12 @@ namespace GAppsDev.Controllers
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                         {
-                            budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
+                            budgetAllocation = allocationsRep.GetEntity(model.Order.BudgetAllocationId.Value);
 
                             if (budgetAllocation != null)
                             {
                                 totalUsedAllocation = ordersRep.GetList()
-                                        .Where(o => o.BudgetAllocationId == order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                        .Where(o => o.BudgetAllocationId == model.Order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
                                         .Sum(x => (decimal?)x.Price);
 
                                 if ((totalUsedAllocation ?? 0) + totalOrderPrice <= budgetAllocation.Amount)
@@ -990,11 +1043,11 @@ namespace GAppsDev.Controllers
                                     int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
 
                                     if (lastOrderNumber.HasValue)
-                                        order.OrderNumber = lastOrderNumber.Value + 1;
+                                        model.Order.OrderNumber = lastOrderNumber.Value + 1;
                                     else
-                                        order.OrderNumber = 1;
+                                        model.Order.OrderNumber = 1;
 
-                                    wasOrderCreated = ordersRep.Create(order);
+                                    wasOrderCreated = ordersRep.Create(model.Order);
                                 }
                                 else
                                 {
@@ -1011,7 +1064,7 @@ namespace GAppsDev.Controllers
                         {
                             foreach (var item in ItemsList)
                             {
-                                item.OrderId = order.Id;
+                                item.OrderId = model.Order.Id;
                             }
 
                             bool noItemErrors = true;
@@ -1046,7 +1099,7 @@ namespace GAppsDev.Controllers
 
                                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                                 {
-                                    orderRep.Delete(order.Id);
+                                    orderRep.Delete(model.Order.Id);
                                 }
 
                                 return Error(Errors.ORDERS_CREATE_ERROR);
