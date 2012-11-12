@@ -170,6 +170,7 @@
     <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\AddToInventoryModel.cs" />
+    <Compile Include="Models\Order\CreateOrderModel.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
     <Compile Include="Models\Order\PrintOrderModel.cs" />
     <Compile Include="Models\PermissionModels\PermissionAllocationsModel.cs" />

@@ -28,8 +28,6 @@
     {
         @Html.ValidationSummary(true)
 
-        
-        
         <input id="SupplierId" name="SupplierId" type="hidden" value="" />
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
@@ -62,6 +60,40 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id ="allocationSelectList" }) 
+        
+        @Loc.Dic.Month<text>:</text> 
+        for (int i = 0; i < ViewBag.Allocations.Count; i++)
+        {
+            <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if(i != 0){<text>style="display:none;"</text>}>
+                <option data-amount="@ViewBag.Allocations[i].January" value="1">@Loc.Dic.January (@ViewBag.Allocations[i].January)</option>
+                <option data-amount="@ViewBag.Allocations[i].February" value="2">@Loc.Dic.February (@ViewBag.Allocations[i].February)</option>
+                <option data-amount="@ViewBag.Allocations[i].March" value="3">@Loc.Dic.March (@ViewBag.Allocations[i].March)</option>
+                <option data-amount="@ViewBag.Allocations[i].April" value="4">@Loc.Dic.April (@ViewBag.Allocations[i].April)</option>
+                <option data-amount="@ViewBag.Allocations[i].May" value="5">@Loc.Dic.May (@ViewBag.Allocations[i].May)</option>
+                <option data-amount="@ViewBag.Allocations[i].June" value="6">@Loc.Dic.June (@ViewBag.Allocations[i].June)</option>
+                <option data-amount="@ViewBag.Allocations[i].July" value="12">@Loc.Dic.July (@ViewBag.Allocations[i].July)</option>
+                <option data-amount="@ViewBag.Allocations[i].August" value="7">@Loc.Dic.August (@ViewBag.Allocations[i].August)</option>
+                <option data-amount="@ViewBag.Allocations[i].September" value="8">@Loc.Dic.September (@ViewBag.Allocations[i].September)</option>
+                <option data-amount="@ViewBag.Allocations[i].October" value="9">@Loc.Dic.October (@ViewBag.Allocations[i].October)</option>
+                <option data-amount="@ViewBag.Allocations[i].November" value="10">@Loc.Dic.November (@ViewBag.Allocations[i].November)</option>
+                <option data-amount="@ViewBag.Allocations[i].December" value="11">@Loc.Dic.December (@ViewBag.Allocations[i].December)</option>
+            </select> 
+        }
+        @Loc.Dic.Amount<text>:</text> <input type="text" id="allocationAmount" value=" " /> 
+        <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+        
+        <fieldset>
+            <legend>@Loc.Dic.BudgetAllocations</legend>
+
+            <div id="orderAllocations">
+                <span>@Loc.Dic.NoAllocationsInOrder.</span>
+            </div>
+        </fieldset>
+        <br />
+        <span>@Loc.Dic.TotalAllocation: </span>
+        <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+        
         <div class="editor-label">
             @Loc.Dic.Notes:
         </div>

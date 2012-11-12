@@ -618,4 +618,49 @@
   <data name="EnterVatNumber" xml:space="preserve">
     <value>הכנס מספר עוסק מורשה</value>
   </data>
+  <data name="April" xml:space="preserve">
+    <value>אפריל</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>אוגוסט</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>דצמבר</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>פברואר</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>ינואר</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>יולי</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>יוני</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>מרץ</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>מאי</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>חודש</value>
+  </data>
+  <data name="NoAllocationsInOrder" xml:space="preserve">
+    <value>אין להזמנה הקצאות</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>נובמבר</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>אוקטובר</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>ספטמבר</value>
+  </data>
+  <data name="TotalAllocation" xml:space="preserve">
+    <value>סך הקצאה</value>
+  </data>
 </root>
