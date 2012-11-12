@@ -44,74 +44,74 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.OrdersViewer))
                 return Error(Errors.NO_PERMISSION);
 
-            IEnumerable<Order> orders;
+                IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-            {
+                {
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
 
-                if (orders != null)
-                {
-                    int numberOfItems = orders.Count();
-                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                    if (numberOfItems % ITEMS_PER_PAGE != 0)
-                        numberOfPages++;
-
-                    if (page <= 0)
-                        page = FIRST_PAGE;
-                    if (page > numberOfPages)
-                        page = numberOfPages;
-
-                    if (sortby != NO_SORT_BY)
+                    if (orders != null)
                     {
-                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+                        int numberOfItems = orders.Count();
+                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                        if (numberOfItems % ITEMS_PER_PAGE != 0)
+                            numberOfPages++;
 
-                        if (order == DEFAULT_DESC_ORDER)
-                            orderFunction = x => orders.OrderByDescending(x);
-                        else
-                            orderFunction = x => orders.OrderBy(x);
+                        if (page <= 0)
+                            page = FIRST_PAGE;
+                        if (page > numberOfPages)
+                            page = numberOfPages;
 
-                        switch (sortby)
+                        if (sortby != NO_SORT_BY)
                         {
-                            case "number":
-                                orders = orderFunction(x => x.OrderNumber);
-                                break;
-                            case "creation":
-                                orders = orderFunction(x => x.CreationDate);
-                                break;
-                            case "supplier":
-                                orders = orderFunction(x => x.Supplier.Name);
-                                break;
-                            case "status":
-                                orders = orderFunction(x => x.StatusId);
-                                break;
-                            case "price":
-                                orders = orderFunction(x => x.Price);
-                                break;
+                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                            if (order == DEFAULT_DESC_ORDER)
+                                orderFunction = x => orders.OrderByDescending(x);
+                            else
+                                orderFunction = x => orders.OrderBy(x);
+
+                            switch (sortby)
+                            {
+                                case "number":
+                                    orders = orderFunction(x => x.OrderNumber);
+                                    break;
+                                case "creation":
+                                    orders = orderFunction(x => x.CreationDate);
+                                    break;
+                                case "supplier":
+                                    orders = orderFunction(x => x.Supplier.Name);
+                                    break;
+                                case "status":
+                                    orders = orderFunction(x => x.StatusId);
+                                    break;
+                                case "price":
+                                    orders = orderFunction(x => x.Price);
+                                    break;
                             case "username":
                             default:
                                 orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
                                 break;
+                            }
                         }
+
+                        orders = orders
+                            .Skip((page - 1) * ITEMS_PER_PAGE)
+                            .Take(ITEMS_PER_PAGE)
+                            .ToList();
+
+                        ViewBag.Sortby = sortby;
+                        ViewBag.Order = order;
+                        ViewBag.CurrPage = page;
+                        ViewBag.NumberOfPages = numberOfPages;
+
+                        return View(orders.ToList());
                     }
-
-                    orders = orders
-                        .Skip((page - 1) * ITEMS_PER_PAGE)
-                        .Take(ITEMS_PER_PAGE)
-                        .ToList();
-
-                    ViewBag.Sortby = sortby;
-                    ViewBag.Order = order;
-                    ViewBag.CurrPage = page;
-                    ViewBag.NumberOfPages = numberOfPages;
-
-                    return View(orders.ToList());
-                }
-                else
-                {
-                    return Error(Errors.ORDERS_GET_ERROR);
+                    else
+                    {
+                        return Error(Errors.ORDERS_GET_ERROR);
+                    }
                 }
             }
-        }
 
         //
         // GET: /Orders/Details/5
@@ -279,7 +279,7 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 OrderModel orderModel = new OrderModel();
-                orderModel.Order = ordersRep.GetEntity(id);
+                    orderModel.Order = ordersRep.GetEntity(id);
 
                 if (orderModel.Order == null)
                     return Error(Errors.ORDER_GET_ERROR);
@@ -287,14 +287,14 @@ namespace GAppsDev.Controllers
                 if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
                     return Error(Errors.NO_PERMISSION);
 
-                orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+                            orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
 
                 if (orderModel.OrderToItem == null)
                     return Error(Errors.DATABASE_ERROR);
 
-                return View(orderModel);
-            }
-        }
+                                return View(orderModel);
+                            }
+                }
 
         [OpenIdAuthorize]
         [HttpPost]
@@ -1719,6 +1719,19 @@ namespace GAppsDev.Controllers
                         foreach (var order in ordersToExport)
                         {
                             DateTime paymentDate;
+                            decimal orderPrice;
+
+                            if (order.Price.HasValue)
+                            {
+                                if (order.Price.Value > 999999999)
+                                    return Error("Price is too high");
+                                else
+                                    orderPrice = order.Price.Value;
+                            }
+                            else
+                            {
+                                orderPrice = 0;
+                            }
 
                             if (order.Price > 999999999)
                                 return Error("Price is too high");
@@ -1748,18 +1761,18 @@ namespace GAppsDev.Controllers
                                 String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                                 userCompany.ExternalExpenseCode.PadLeft(3),
                                 order.InvoiceNumber.PadLeft(5),
-                                order.InvoiceDate.Value.ToShortDateString().PadLeft(6),
+                                order.InvoiceDate.Value.ToString("ddMMyy"),
                                 String.Empty.PadLeft(5),
-                                paymentDate.ToShortDateString().PadLeft(6),
+                                paymentDate.ToString("ddMMyy"),
                                 userCompany.ExternalCoinCode.PadLeft(3),
-                                new String(orderNotes.Take(22).ToArray()).PadLeft(22),
+                                String.Empty.PadLeft(22),
                                 order.Budgets_ExpensesToIncomes.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
                                 order.Supplier.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
-                                //order.Price.ToString("0.00").PadLeft(12),
+                                orderPrice.ToString("0.00").PadLeft(12),
                                 String.Empty.PadLeft(12),
-                                //order.Price.ToString("0.00").PadLeft(12),
+                                orderPrice.ToString("0.00").PadLeft(12),
                                 String.Empty.PadLeft(12),
                                 String.Empty.PadLeft(12),
                                 String.Empty.PadLeft(12),
@@ -1797,7 +1810,7 @@ namespace GAppsDev.Controllers
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    ordersToExport = ordersRep.GetList("Orders_AllocationMonthes")
+                    ordersToExport = ordersRep.GetList()
                         .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                         .ToList();
 
@@ -1820,9 +1833,19 @@ namespace GAppsDev.Controllers
                         foreach (var order in ordersToExport)
                         {
                             DateTime paymentDate;
+                            decimal orderPrice;
 
-                            if (order.Price > 999999999)
+                            if (order.Price.HasValue)
+                            {
+                                if (order.Price.Value > 999999999)
                                 return Error("Price is too high");
+                                else
+                                    orderPrice = order.Price.Value;
+                            }
+                            else
+                            {
+                                orderPrice = 0;
+                            }
 
                             if (String.IsNullOrEmpty(order.Supplier.ExternalId))
                                 return Error("Insufficient supplier data for export");
@@ -1849,18 +1872,18 @@ namespace GAppsDev.Controllers
                                 String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                                 userCompany.ExternalExpenseCode.PadLeft(3),
                                 order.InvoiceNumber.PadLeft(5),
-                                order.InvoiceDate.Value.ToShortDateString().PadLeft(6),
+                                order.InvoiceDate.Value.ToString("ddMMyy"),
                                 String.Empty.PadLeft(5),
-                                paymentDate.ToShortDateString().PadLeft(6),
+                                paymentDate.ToString("ddMMyy"),
                                 userCompany.ExternalCoinCode.PadLeft(3),
-                                new String(orderNotes.Take(22).ToArray()).PadLeft(22),
+                                String.Empty.PadLeft(22),
                                 order.Budgets_ExpensesToIncomes.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
                                 order.Supplier.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
-                                //order.Price.ToString("0.00").PadLeft(12),
+                                orderPrice.ToString("0.00").PadLeft(12),
                                 String.Empty.PadLeft(12),
-                                //order.Price.ToString("0.00").PadLeft(12),
+                                orderPrice.ToString("0.00").PadLeft(12),
                                 String.Empty.PadLeft(12),
                                 String.Empty.PadLeft(12),
                                 String.Empty.PadLeft(12),
@@ -1870,7 +1893,7 @@ namespace GAppsDev.Controllers
                                 );
                         }
 
-                        return File(Encoding.UTF8.GetBytes(builder.ToString()),
+                        return File(Encoding.Default.GetBytes(builder.ToString()),
                              "text/plain",
                              "MOVEIN.DAT");
                     }
