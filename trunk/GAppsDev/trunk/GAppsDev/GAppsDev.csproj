@@ -206,6 +206,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Pictures\CloudERP-Logo.png" />
     <Content Include="Content\images.large\aol.gif" />
     <Content Include="Content\images.large\facebook.gif" />
     <Content Include="Content\images.large\google.gif" />
