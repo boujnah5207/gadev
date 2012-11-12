@@ -418,9 +418,10 @@ function addAllocation() {
 
             container.append(newAllocation);
         }
-
-        existingAllocation.find(".amountField").val(wantedAmount);
-        existingAllocation.find(".amountText").html(wantedAmount);
+        else {
+            existingAllocation.find(".amountField").val(wantedAmount);
+            existingAllocation.find(".amountText").html(wantedAmount);
+        }
     }
     else {
         unRemove(allocationId, monthId);
