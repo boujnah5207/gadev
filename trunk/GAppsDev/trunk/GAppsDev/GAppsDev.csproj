@@ -207,7 +207,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Pictures\CloudERP-Logo.png" />
     <Content Include="Content\images.large\aol.gif" />
     <Content Include="Content\images.large\facebook.gif" />
     <Content Include="Content\images.large\google.gif" />
@@ -292,6 +291,7 @@
     <Content Include="Content\images.small\yandex.ico.gif" />
     <Content Include="Content\images.small\yandex.ico.png" />
     <Content Include="Content\images\ASC.png" />
+    <Content Include="Content\images\CloudERP-Logo.png" />
     <Content Include="Content\images\DESC.png" />
     <Content Include="Content\images\openid-inputicon.gif" />
     <Content Include="Content\images\openid-providers-en.png" />
