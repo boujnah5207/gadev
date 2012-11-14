@@ -251,6 +251,8 @@ body#Managment a#ManagmentLink,
     body.AllSubProjects a#AllSubProjectsLink,
     body.AllUsers a#AllUsersLink,
     body.AllPermissions a#AllPermissionsLink
+    body.AllSuppliers a#AllSuppliersLink
+
 {
     background-color: #a8eaec;
 }

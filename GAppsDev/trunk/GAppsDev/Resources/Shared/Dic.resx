@@ -666,6 +666,15 @@
   <data name="DeleteAlertMessege" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Suppliers" xml:space="preserve">
+    <value>Suppliers</value>
+  </data>
+  <data name="SuppliersEntrence" xml:space="preserve">
+    <value>Suppliers Entrence</value>
+  </data>
   <data name="AmountExceedsAllocation" xml:space="preserve">
     <value>The amount is higher then the remaining amount</value>
   </data>
