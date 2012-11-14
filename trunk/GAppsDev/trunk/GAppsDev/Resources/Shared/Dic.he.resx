@@ -666,4 +666,7 @@
   <data name="LastChangeDate" xml:space="preserve">
     <value>עודכן בתאריך</value>
   </data>
+  <data name="DeleteAlertMessege" xml:space="preserve">
+    <value>האם למחוק פריט זה?</value>
+  </data>
 </root>

@@ -27,6 +27,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Departments/Details/5
 
+        [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
             Department department = db.Departments.Single(d => d.Id == id);
@@ -39,7 +40,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Departments/Create
-
+        [OpenIdAuthorize]
         public ActionResult Create()
         {
             return View();
@@ -48,6 +49,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Departments/Create
 
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Create(Department department)
         {
@@ -69,6 +71,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Departments/Edit/5
 
+        [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
             Department department = db.Departments.Single(d => d.Id == id);
@@ -83,6 +86,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Departments/Edit/5
 
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(Department department)
         {
@@ -100,6 +104,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Departments/Delete/5
 
+        [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
             Department department = db.Departments.Single(d => d.Id == id);
@@ -113,6 +118,7 @@ namespace GAppsDev.Controllers
         //
         // POST: /Departments/Delete/5
 
+        [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

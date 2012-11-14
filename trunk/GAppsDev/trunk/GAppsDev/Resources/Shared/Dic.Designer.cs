@@ -538,6 +538,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        /// </summary>
+        public static string DeleteAlertMessege {
+            get {
+                return ResourceManager.GetString("DeleteAlertMessege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         public static string Department {
