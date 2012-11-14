@@ -11,6 +11,11 @@ namespace GAppsDev.Models
         public Order Order { get; set; }
         public string ItemsString { get; set; }
         public List<OrderAllocation> Allocations { get; set; }
+
+        public CreateOrderModel()
+        {
+            Order = new Order();
+        }
     }
 
     public class OrderAllocation
@@ -18,6 +23,6 @@ namespace GAppsDev.Models
         public bool IsActive { get; set; }
         public int AllocationId { get; set; }
         public int MonthId { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
     }
 }

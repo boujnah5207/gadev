@@ -937,52 +937,54 @@ namespace GAppsDev.Controllers
 
                     foreach (var allocation in allocations)
                     {
+                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+
                         decimal allocatedJanuary = allocation.January.HasValue ? allocation.January.Value : 0;
-                        decimal? remainingJanuary = allocatedJanuary - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingJanuary = allocatedJanuary - approvedAllocations.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
                         allocation.January = remainingJanuary.HasValue ? Math.Max(0, remainingJanuary.Value) : 0 ;
 
                         decimal allocatedFebruary = allocation.February.HasValue ? allocation.February.Value : 0;
-                        decimal? remainingFebruary = allocatedFebruary - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 2).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingFebruary = allocatedFebruary - approvedAllocations.Where(m => m.MonthId == 2).Select(d => (decimal?)d.Amount).Sum();
                         allocation.February = remainingFebruary.HasValue ? Math.Max(0, remainingFebruary.Value) : 0;
 
                         decimal allocatedMarch = allocation.March.HasValue ? allocation.March.Value : 0;
-                        decimal? remainingMarch = allocatedMarch - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 3).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingMarch = allocatedMarch - approvedAllocations.Where(m => m.MonthId == 3).Select(d => (decimal?)d.Amount).Sum();
                         allocation.March = remainingMarch.HasValue ? Math.Max(0, remainingMarch.Value) : 0;
 
                         decimal allocatedApril = allocation.April.HasValue ? allocation.April.Value : 0;
-                        decimal? remainingApril = allocatedApril - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 4).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingApril = allocatedApril - approvedAllocations.Where(m => m.MonthId == 4).Select(d => (decimal?)d.Amount).Sum();
                         allocation.April = remainingApril.HasValue ? Math.Max(0, remainingApril.Value) : 0;
 
                         decimal allocatedMay = allocation.May.HasValue ? allocation.May.Value : 0;
-                        decimal? remainingMay = allocatedMay - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 5).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingMay = allocatedMay - approvedAllocations.Where(m => m.MonthId == 5).Select(d => (decimal?)d.Amount).Sum();
                         allocation.May = remainingMay.HasValue ? Math.Max(0, remainingMay.Value) : 0;
 
                         decimal allocatedJune = allocation.June.HasValue ? allocation.June.Value : 0;
-                        decimal? remainingJune = allocatedJune - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 6).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingJune = allocatedJune - approvedAllocations.Where(m => m.MonthId == 6).Select(d => (decimal?)d.Amount).Sum();
                         allocation.June = remainingJune.HasValue ? Math.Max(0, remainingJune.Value) : 0;
 
                         decimal allocatedJuly = allocation.July.HasValue ? allocation.July.Value : 0;
-                        decimal? remainingJuly = allocatedJuly - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 7).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingJuly = allocatedJuly - approvedAllocations.Where(m => m.MonthId == 7).Select(d => (decimal?)d.Amount).Sum();
                         allocation.July = remainingJuly.HasValue ? Math.Max(0, remainingJuly.Value) : 0;
 
                         decimal allocatedAugust = allocation.August.HasValue ? allocation.August.Value : 0;
-                        decimal? remainingAugust = allocatedAugust - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 8).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingAugust = allocatedAugust - approvedAllocations.Where(m => m.MonthId == 8).Select(d => (decimal?)d.Amount).Sum();
                         allocation.August = remainingAugust.HasValue ? Math.Max(0, remainingAugust.Value) : 0;
 
                         decimal allocatedSeptember = allocation.September.HasValue ? allocation.September.Value : 0;
-                        decimal? remainingSeptember = allocatedSeptember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 9).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingSeptember = allocatedSeptember - approvedAllocations.Where(m => m.MonthId == 9).Select(d => (decimal?)d.Amount).Sum();
                         allocation.September = remainingSeptember.HasValue ? Math.Max(0, remainingSeptember.Value) : 0;
 
                         decimal allocatedOctober = allocation.October.HasValue ? allocation.October.Value : 0;
-                        decimal? remainingOctober = allocatedOctober - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 10).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingOctober = allocatedOctober - approvedAllocations.Where(m => m.MonthId == 10).Select(d => (decimal?)d.Amount).Sum();
                         allocation.October = remainingOctober.HasValue ? Math.Max(0, remainingOctober.Value) : 0;
 
                         decimal allocatedNovember = allocation.November.HasValue ? allocation.November.Value : 0;
-                        decimal? remainingNovember = allocatedNovember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 11).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingNovember = allocatedNovember - approvedAllocations.Where(m => m.MonthId == 11).Select(d => (decimal?)d.Amount).Sum();
                         allocation.November = remainingNovember.HasValue ? Math.Max(0, remainingNovember.Value) : 0;
 
                         decimal allocatedDecember = allocation.December.HasValue ? allocation.December.Value : 0;
-                        decimal? remainingDecember = allocatedDecember - allocation.Orders_OrderToAllocation.Where(m => m.MonthId == 12).Select(d => (decimal?)d.Amount).Sum();
+                        decimal? remainingDecember = allocatedDecember - approvedAllocations.Where(m => m.MonthId == 12).Select(d => (decimal?)d.Amount).Sum();
                         allocation.December = remainingDecember.HasValue ? Math.Max(0, remainingDecember.Value) : 0;
                     }
 
@@ -1016,10 +1018,10 @@ namespace GAppsDev.Controllers
                 if (Authorized(RoleType.OrdersWriter))
                 {
                     List<Orders_OrderToItem> ItemsList = ItemsFromString(model.ItemsString, 0);
-                    decimal totalOrderPrice;
-                    decimal? totalUsedAllocation;
+                    List<Budgets_ExpensesToIncomes> orderAllocations;
 
-                    Budgets_ExpensesToIncomes budgetAllocation;
+                    decimal totalOrderPrice;
+                    decimal totalAllocation;
 
                     model.Order.UserId = CurrentUser.UserId;
                     model.Order.CompanyId = CurrentUser.CompanyId;
@@ -1031,45 +1033,156 @@ namespace GAppsDev.Controllers
                     model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
                     model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
 
-                    if (ItemsList != null || !model.Order.BudgetAllocationId.HasValue)
+                    if (ItemsList != null)
                     {
                         if (ItemsList.Count > 0)
                             totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
                         else
                             return Error(Errors.ORDER_HAS_NO_ITEMS);
 
+                        if (model.Allocations.Count > 0)
+                            totalAllocation = model.Allocations.Sum(x => x.Amount);
+                        else
+                            totalAllocation = 0;
+
+                        if (totalOrderPrice != totalAllocation)
+                            return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+
                         bool wasOrderCreated;
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                         {
-                            budgetAllocation = allocationsRep.GetEntity(model.Order.BudgetAllocationId.Value);
+                            int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
+                            orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
+                            bool IsValidAllocations =
+                                (orderAllocations.Count == orderAllocationsIds.Length) && 
+                                orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
+                                model.Allocations.All( x => (x.MonthId >= 1 && x.MonthId <= 12) && x.Amount > 0);
 
-                            if (budgetAllocation != null)
+                            if (IsValidAllocations)
                             {
-                                totalUsedAllocation = ordersRep.GetList()
-                                        .Where(o => o.BudgetAllocationId == model.Order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                        .Sum(x => (decimal?)x.Price);
-
-                                if ((totalUsedAllocation ?? 0) + totalOrderPrice <= budgetAllocation.Amount)
+                                foreach (var allocation in orderAllocations)
                                 {
-                                    int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
+                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
 
-                                    if (lastOrderNumber.HasValue)
-                                        model.Order.OrderNumber = lastOrderNumber.Value + 1;
-                                    else
-                                        model.Order.OrderNumber = 1;
+                                    decimal allocatedJanuary = allocation.January.HasValue ? allocation.January.Value : 0;
+                                    decimal? remainingJanuary = allocatedJanuary - approvedAllocations.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.January = remainingJanuary.HasValue ? Math.Max(0, remainingJanuary.Value) : 0;
 
-                                    wasOrderCreated = ordersRep.Create(model.Order);
-                                }
-                                else
-                                {
-                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                    decimal allocatedFebruary = allocation.February.HasValue ? allocation.February.Value : 0;
+                                    decimal? remainingFebruary = allocatedFebruary - approvedAllocations.Where(m => m.MonthId == 2).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.February = remainingFebruary.HasValue ? Math.Max(0, remainingFebruary.Value) : 0;
+
+                                    decimal allocatedMarch = allocation.March.HasValue ? allocation.March.Value : 0;
+                                    decimal? remainingMarch = allocatedMarch - approvedAllocations.Where(m => m.MonthId == 3).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.March = remainingMarch.HasValue ? Math.Max(0, remainingMarch.Value) : 0;
+
+                                    decimal allocatedApril = allocation.April.HasValue ? allocation.April.Value : 0;
+                                    decimal? remainingApril = allocatedApril - approvedAllocations.Where(m => m.MonthId == 4).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.April = remainingApril.HasValue ? Math.Max(0, remainingApril.Value) : 0;
+
+                                    decimal allocatedMay = allocation.May.HasValue ? allocation.May.Value : 0;
+                                    decimal? remainingMay = allocatedMay - approvedAllocations.Where(m => m.MonthId == 5).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.May = remainingMay.HasValue ? Math.Max(0, remainingMay.Value) : 0;
+
+                                    decimal allocatedJune = allocation.June.HasValue ? allocation.June.Value : 0;
+                                    decimal? remainingJune = allocatedJune - approvedAllocations.Where(m => m.MonthId == 6).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.June = remainingJune.HasValue ? Math.Max(0, remainingJune.Value) : 0;
+
+                                    decimal allocatedJuly = allocation.July.HasValue ? allocation.July.Value : 0;
+                                    decimal? remainingJuly = allocatedJuly - approvedAllocations.Where(m => m.MonthId == 7).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.July = remainingJuly.HasValue ? Math.Max(0, remainingJuly.Value) : 0;
+
+                                    decimal allocatedAugust = allocation.August.HasValue ? allocation.August.Value : 0;
+                                    decimal? remainingAugust = allocatedAugust - approvedAllocations.Where(m => m.MonthId == 8).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.August = remainingAugust.HasValue ? Math.Max(0, remainingAugust.Value) : 0;
+
+                                    decimal allocatedSeptember = allocation.September.HasValue ? allocation.September.Value : 0;
+                                    decimal? remainingSeptember = allocatedSeptember - approvedAllocations.Where(m => m.MonthId == 9).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.September = remainingSeptember.HasValue ? Math.Max(0, remainingSeptember.Value) : 0;
+
+                                    decimal allocatedOctober = allocation.October.HasValue ? allocation.October.Value : 0;
+                                    decimal? remainingOctober = allocatedOctober - approvedAllocations.Where(m => m.MonthId == 10).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.October = remainingOctober.HasValue ? Math.Max(0, remainingOctober.Value) : 0;
+
+                                    decimal allocatedNovember = allocation.November.HasValue ? allocation.November.Value : 0;
+                                    decimal? remainingNovember = allocatedNovember - approvedAllocations.Where(m => m.MonthId == 11).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.November = remainingNovember.HasValue ? Math.Max(0, remainingNovember.Value) : 0;
+
+                                    decimal allocatedDecember = allocation.December.HasValue ? allocation.December.Value : 0;
+                                    decimal? remainingDecember = allocatedDecember - approvedAllocations.Where(m => m.MonthId == 12).Select(d => (decimal?)d.Amount).Sum();
+                                    allocation.December = remainingDecember.HasValue ? Math.Max(0, remainingDecember.Value) : 0;
+
+                                    List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
+                                    foreach (var allocationMonth in allocationMonths)
+                                    {
+                                        switch (allocationMonth.MonthId)
+                                        {
+                                            case 1:
+                                                if (allocationMonth.Amount > allocation.January)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 2:
+                                                if (allocationMonth.Amount > allocation.February)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 3:
+                                                if (allocationMonth.Amount > allocation.March)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 4:
+                                                if (allocationMonth.Amount > allocation.April)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 5:
+                                                if (allocationMonth.Amount > allocation.May)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 6:
+                                                if (allocationMonth.Amount > allocation.June)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 7:
+                                                if (allocationMonth.Amount > allocation.July)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 8:
+                                                if (allocationMonth.Amount > allocation.August)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 9:
+                                                if (allocationMonth.Amount > allocation.September)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 10:
+                                                if (allocationMonth.Amount > allocation.October)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 11:
+                                                if (allocationMonth.Amount > allocation.November)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                            case 12:
+                                                if (allocationMonth.Amount > allocation.December)
+                                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                break;
+                                        }
+                                    }
                                 }
                             }
                             else
                             {
-                                return Error(Errors.ALLOCATIONS_GET_ERROR);
+                                return Error(Errors.INVALID_FORM);
                             }
+
+                            int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
+
+                            if (lastOrderNumber.HasValue)
+                                model.Order.OrderNumber = lastOrderNumber.Value + 1;
+                            else
+                                model.Order.OrderNumber = 1;
+
+                            wasOrderCreated = ordersRep.Create(model.Order);
                         }
 
                         if (wasOrderCreated)
@@ -1095,22 +1208,52 @@ namespace GAppsDev.Controllers
                                 }
                             }
 
-                            if (noItemErrors)
+                            bool noAllocationErros = true;
+                            List<Orders_OrderToAllocation> createdAllocations = new List<Orders_OrderToAllocation>();
+
+                            List<OrderAllocation> activeAllocations = model.Allocations.Where(x => x.IsActive).ToList();
+                            foreach (var allocation in activeAllocations)
+                            {
+                                using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
+                                {
+                                    Orders_OrderToAllocation newOrderAllocation = new Orders_OrderToAllocation()
+                                    {
+                                        OrderId = model.Order.Id,
+                                        AllocationId = allocation.AllocationId,
+                                        MonthId = allocation.MonthId,
+                                        Amount = allocation.Amount
+                                    };
+
+                                    if (orderAllocationsRep.Create(newOrderAllocation))
+                                        createdAllocations.Add(newOrderAllocation);
+                                    else
+                                    {
+                                        noAllocationErros = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (noItemErrors && noAllocationErros)
                             {
                                 return RedirectToAction("MyOrders");
                             }
                             else
                             {
+                                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                                 using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                                using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
                                 {
                                     foreach (Orders_OrderToItem item in createdItems)
                                     {
                                         orderToItemRep.Delete(item.Id);
                                     }
-                                }
 
-                                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                                {
+                                    foreach (Orders_OrderToAllocation item in createdAllocations)
+                                    {
+                                        orderAllocationsRep.Delete(item.Id);
+                                    }
+
                                     orderRep.Delete(model.Order.Id);
                                 }
 

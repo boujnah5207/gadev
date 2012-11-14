@@ -232,6 +232,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The amount is higher then the remaining amount.
+        /// </summary>
+        public static string AmountExceedsAllocation {
+            get {
+                return ResourceManager.GetString("AmountExceedsAllocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve Invoce.
         /// </summary>
         public static string ApproveInvoce {
@@ -876,6 +885,15 @@ namespace Loc {
         public static string InstitutionIncome {
             get {
                 return ResourceManager.GetString("InstitutionIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid amount.
+        /// </summary>
+        public static string InvalidAmount {
+            get {
+                return ResourceManager.GetString("InvalidAmount", resourceCulture);
             }
         }
         

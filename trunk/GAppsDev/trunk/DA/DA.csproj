@@ -61,6 +61,7 @@
     <Compile Include="OrderItemsRepository.cs" />
     <Compile Include="OrdersRepository.cs" />
     <Compile Include="OrderStatusesRepository.cs" />
+    <Compile Include="OrderToAllocationRepository.cs" />
     <Compile Include="OrderToItemRepository.cs" />
     <Compile Include="ParentProjectsRepository.cs" />
     <Compile Include="PendingUsersRepository.cs" />
