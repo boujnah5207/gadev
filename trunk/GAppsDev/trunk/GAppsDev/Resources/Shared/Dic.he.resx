@@ -669,6 +669,12 @@
   <data name="DeleteAlertMessege" xml:space="preserve">
     <value>האם למחוק פריט זה?</value>
   </data>
+  <data name="Suppliers" xml:space="preserve">
+    <value>ספקים</value>
+  </data>
+  <data name="SuppliersEntrence" xml:space="preserve">
+    <value>כניסה לספקים</value>
+  </data>
   <data name="AmountExceedsAllocation" xml:space="preserve">
     <value>הכמות עולה על סך ההקצאה</value>
   </data>
