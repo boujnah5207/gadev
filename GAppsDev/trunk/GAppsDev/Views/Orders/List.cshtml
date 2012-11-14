@@ -31,6 +31,8 @@
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Price, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Status, "status", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.CreationDate, "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.LastChangeDate, "LastChange", ReverseOrder, (string)ViewBag.Sortby)</th>
+            
         }
         else
         { 
@@ -55,6 +57,9 @@
             <th>
                 @Loc.Dic.CreationDate
             </th>
+            <th>
+                @Loc.Dic.LastChangeDate
+            </th>
         }
 
         <th>@Loc.Dic.Actions</th>
@@ -63,7 +68,10 @@
     {
         DB.Order item = Model[index];
         
-        <tr class="@if(index % 2 != 0) {<text>oddRow</text>} else {<text>evenRow</text>}" >
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
             @if (ViewBag.IsCheckBoxed)
             {
                 <td>
@@ -92,6 +100,9 @@
                 @Html.DisplayTextFor(modelItem => item.CreationDate)
             </td>
             <td>
+                @Html.DisplayTextFor(modelItem => item.LastStatusChangeDate)
+            </td>
+            <td>
                 @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
                 {
@@ -107,11 +118,11 @@
                 {
                     if (item.Orders_Statuses.Id == (int)DA.StatusType.ApprovedPendingInvoice)
                     {
-                        <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
                 
                         if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
                         {
-                        <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
+                    <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
                         }
                     }
                 }

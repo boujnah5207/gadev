@@ -997,6 +997,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Change Date.
+        /// </summary>
+        public static string LastChangeDate {
+            get {
+                return ResourceManager.GetString("LastChangeDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {

@@ -330,10 +330,12 @@ namespace GAppsDev.Controllers
                                         {
                                             orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
                                             orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                                            orderFromDB.LastStatusChangeDate = DateTime.Now;
                                         }
                                         else
                                         {
                                             orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                            orderFromDB.LastStatusChangeDate = DateTime.Now;
                                             orderFromDB.NextOrderApproverId = null;
                                         }
                                     }
@@ -350,10 +352,14 @@ namespace GAppsDev.Controllers
                             else if (selectedStatus == Loc.Dic.DeclineOrder)
                             {
                                 orderFromDB.StatusId = (int)StatusType.Declined;
+                                orderFromDB.LastStatusChangeDate = DateTime.Now;
+
                             }
                             else if (selectedStatus == Loc.Dic.SendBackToUser)
                             {
                                 orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                                orderFromDB.LastStatusChangeDate = DateTime.Now;
+
                             }
 
                             orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
@@ -560,6 +566,8 @@ namespace GAppsDev.Controllers
                                             file.SaveAs(path);
 
                                             order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
+                                            order.LastStatusChangeDate = DateTime.Now;
+
                                             ordersRep.Update(order);
 
                                             return RedirectToAction("Index");
@@ -673,6 +681,8 @@ namespace GAppsDev.Controllers
                             if (order.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                             {
                                 order.StatusId = (int)StatusType.ReceiptScanned;
+                                order.LastStatusChangeDate = DateTime.Now;
+
 
                                 if (ordersRep.Update(order) != null)
                                     return RedirectToAction("Index");
@@ -1015,6 +1025,8 @@ namespace GAppsDev.Controllers
                     model.Order.CompanyId = CurrentUser.CompanyId;
                     model.Order.CreationDate = DateTime.Now;
                     model.Order.StatusId = (int)StatusType.Pending;
+                    model.Order.LastStatusChangeDate = DateTime.Now;
+
                     model.Order.OrderApproverNotes = String.Empty;
                     model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
                     model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
@@ -2184,10 +2196,14 @@ namespace GAppsDev.Controllers
                 if (selectedStatus == Loc.Dic.ApproveInvoce)
                 {
                     order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport;
+                    order.LastStatusChangeDate = DateTime.Now;
+
                 }
                 if (selectedStatus == Loc.Dic.CancelOrder)
                 {
                     order.StatusId = (int)StatusType.OrderCancelled;
+                    order.LastStatusChangeDate = DateTime.Now;
+
                 }
                 ordersRepository.Update(order);
             }

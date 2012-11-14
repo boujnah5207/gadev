@@ -663,4 +663,7 @@
   <data name="TotalAllocation" xml:space="preserve">
     <value>סך הקצאה</value>
   </data>
+  <data name="LastChangeDate" xml:space="preserve">
+    <value>עודכן בתאריך</value>
+  </data>
 </root>

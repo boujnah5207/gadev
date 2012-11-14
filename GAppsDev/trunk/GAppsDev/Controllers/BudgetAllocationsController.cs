@@ -468,6 +468,8 @@ namespace GAppsDev.Controllers
                                 {
                                     item.BudgetAllocationId = null;
                                     item.StatusId = (int)StatusType.Declined;
+                                    item.LastStatusChangeDate = DateTime.Now;
+
                                     item.OrderApproverNotes = YOUR_ALLOCATION_WAS_REVOKED;
                                     item.NextOrderApproverId = null;
 

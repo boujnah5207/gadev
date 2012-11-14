@@ -660,4 +660,7 @@
   <data name="TotalAllocation" xml:space="preserve">
     <value>Total allocation</value>
   </data>
+  <data name="LastChangeDate" xml:space="preserve">
+    <value>Last Change Date</value>
+  </data>
 </root>
