@@ -379,8 +379,12 @@ function addAllocation() {
     var allocationText = $("#allocationSelectList option:selected").text();
     var container = $("#orderAllocations");
 
+    if (!isInt(wantedAmount) || wantedAmount <= 0) {
+        alert(local.InvalidAmount);
+        return;
+    }
     if (wantedAmount > remainingAmount) {
-        alert("The amount is higher then the remaining amount.");
+        alert(local.AmountExceedsAllocation);
         return;
     }
 
@@ -430,6 +434,7 @@ function addAllocation() {
     }
 
     updateTotalAllocation();
+    $("#allocationAmount").val("");
 }
 
 function removeAllocation(allocationIndex) {

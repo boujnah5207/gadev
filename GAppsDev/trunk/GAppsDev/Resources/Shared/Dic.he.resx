@@ -403,7 +403,7 @@
     <value>אגף</value>
   </data>
   <data name="AddAllocation" xml:space="preserve">
-    <value>הוסף הרשאה</value>
+    <value>הוסף הקצאה</value>
   </data>
   <data name="AllPermissions" xml:space="preserve">
     <value>כל ההרשאות</value>
@@ -668,5 +668,11 @@
   </data>
   <data name="DeleteAlertMessege" xml:space="preserve">
     <value>האם למחוק פריט זה?</value>
+  </data>
+  <data name="AmountExceedsAllocation" xml:space="preserve">
+    <value>הכמות עולה על סך ההקצאה</value>
+  </data>
+  <data name="InvalidAmount" xml:space="preserve">
+    <value>אנא הכנס כמות ונסה שוב</value>
   </data>
 </root>

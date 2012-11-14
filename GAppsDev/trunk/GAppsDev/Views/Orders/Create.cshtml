@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model GAppsDev.Models.CreateOrderModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,7 +28,7 @@
     {
         @Html.ValidationSummary(true)
 
-        <input id="SupplierId" name="SupplierId" type="hidden" value="" />
+        <input id="SupplierId" name="Order.SupplierId" type="hidden" value="" />
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
         <div class="editor-field">
@@ -60,27 +60,64 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
-        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id ="allocationSelectList" }) 
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
         
         @Loc.Dic.Month<text>:</text> 
         for (int i = 0; i < ViewBag.Allocations.Count; i++)
         {
-            <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if(i != 0){<text>style="display:none;"</text>}>
+            <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
+                                                                                           {<text>style="display:none;"</text>}>
+                @if (DateTime.Now.Month == 1)
+                {
                 <option data-amount="@ViewBag.Allocations[i].January" value="1">@Loc.Dic.January (@ViewBag.Allocations[i].January)</option>
+                }
+                @if (DateTime.Now.Month <= 2)
+                {
                 <option data-amount="@ViewBag.Allocations[i].February" value="2">@Loc.Dic.February (@ViewBag.Allocations[i].February)</option>
+                }
+                @if (DateTime.Now.Month <= 3)
+                {
                 <option data-amount="@ViewBag.Allocations[i].March" value="3">@Loc.Dic.March (@ViewBag.Allocations[i].March)</option>
+                }
+                @if (DateTime.Now.Month <= 4)
+                {
                 <option data-amount="@ViewBag.Allocations[i].April" value="4">@Loc.Dic.April (@ViewBag.Allocations[i].April)</option>
+                }
+                @if (DateTime.Now.Month <= 5)
+                {
                 <option data-amount="@ViewBag.Allocations[i].May" value="5">@Loc.Dic.May (@ViewBag.Allocations[i].May)</option>
+                }
+                @if (DateTime.Now.Month <= 6)
+                {
                 <option data-amount="@ViewBag.Allocations[i].June" value="6">@Loc.Dic.June (@ViewBag.Allocations[i].June)</option>
-                <option data-amount="@ViewBag.Allocations[i].July" value="12">@Loc.Dic.July (@ViewBag.Allocations[i].July)</option>
-                <option data-amount="@ViewBag.Allocations[i].August" value="7">@Loc.Dic.August (@ViewBag.Allocations[i].August)</option>
-                <option data-amount="@ViewBag.Allocations[i].September" value="8">@Loc.Dic.September (@ViewBag.Allocations[i].September)</option>
-                <option data-amount="@ViewBag.Allocations[i].October" value="9">@Loc.Dic.October (@ViewBag.Allocations[i].October)</option>
-                <option data-amount="@ViewBag.Allocations[i].November" value="10">@Loc.Dic.November (@ViewBag.Allocations[i].November)</option>
-                <option data-amount="@ViewBag.Allocations[i].December" value="11">@Loc.Dic.December (@ViewBag.Allocations[i].December)</option>
+                }
+                @if (DateTime.Now.Month <= 7)
+                {
+                <option data-amount="@ViewBag.Allocations[i].July" value="7">@Loc.Dic.July (@ViewBag.Allocations[i].July)</option>
+                }
+                @if (DateTime.Now.Month <= 8)
+                {
+                <option data-amount="@ViewBag.Allocations[i].August" value="8">@Loc.Dic.August (@ViewBag.Allocations[i].August)</option>
+                }
+                @if (DateTime.Now.Month <= 9)
+                {
+                <option data-amount="@ViewBag.Allocations[i].September" value="9">@Loc.Dic.September (@ViewBag.Allocations[i].September)</option>
+                }
+                @if (DateTime.Now.Month <= 10)
+                {
+                <option data-amount="@ViewBag.Allocations[i].October" value="10">@Loc.Dic.October (@ViewBag.Allocations[i].October)</option>
+                }
+                @if (DateTime.Now.Month <= 11)
+                {
+                <option data-amount="@ViewBag.Allocations[i].November" value="11">@Loc.Dic.November (@ViewBag.Allocations[i].November)</option>
+                }
+                @if (DateTime.Now.Month < 12)
+                {
+                <option data-amount="@ViewBag.Allocations[i].December" value="12">@Loc.Dic.December (@ViewBag.Allocations[i].December)</option>
+                }
             </select> 
         }
-        @Loc.Dic.Amount<text>:</text> <input type="text" id="allocationAmount" value=" " /> 
+        @Loc.Dic.Amount<text>:</text> <input type="text" id="allocationAmount" value="" /> 
         <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
         
         <fieldset>
@@ -98,8 +135,8 @@
             @Loc.Dic.Notes:
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Notes)
-            @Html.ValidationMessageFor(model => model.Notes)
+            @Html.TextAreaFor(model => model.Order.Notes)
+            @Html.ValidationMessageFor(model => model.Order.Notes)
         </div>
         
         <p>
