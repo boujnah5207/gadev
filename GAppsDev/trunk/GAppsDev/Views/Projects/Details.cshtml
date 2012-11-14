@@ -1,36 +1,24 @@
 ﻿@model DB.Projects_ParentProject
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Loc.Dic.Details;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllProjects";
 }
 
-<h2>Details</h2>
+<h2>@Loc.Dic.Details</h2>
 
 <fieldset>
-    <legend>Projects_ParentProject</legend>
+    <legend>@Loc.Dic.Project</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Company.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+         @Loc.Dic.Name
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=Model.Id }) |
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

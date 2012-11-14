@@ -1,24 +1,24 @@
 ﻿@model DB.Department
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Loc.Dic.CreateNew;
     ViewBag.PageName = "Managment";
-    ViewBag.SubPageName = "Departments";
+    ViewBag.SubPageName = "AllDepartments";
 }
     
         
-}
 
-<h2>Create</h2>
+
+<h2>@Loc.Dic.CreateNew</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Department</legend>
+        <legend>@Loc.Dic.Departments</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Loc.Dic.Name
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
@@ -27,13 +27,13 @@
 
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value=@Loc.Dic.Send />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {

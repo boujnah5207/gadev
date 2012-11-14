@@ -6,18 +6,18 @@
     ViewBag.SubPageName = "AllProjects";
 }
 
-<h2>Edit</h2>
+<h2>@Loc.Dic.Edit</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Projects_ParentProject</legend>
+        <legend>@Loc.Dic.Project</legend>
 
-        @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Loc.Dic.Name
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
@@ -25,13 +25,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="@Loc.Dic.Send" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {
