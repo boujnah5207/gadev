@@ -681,4 +681,19 @@
   <data name="InvalidAmount" xml:space="preserve">
     <value>Invalid amount</value>
   </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="ImportSuppliers" xml:space="preserve">
+    <value>Import Suppliers</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="UsersAmount" xml:space="preserve">
+    <value>Users Amount</value>
+  </data>
+  <data name="UpdateBudget" xml:space="preserve">
+    <value>Update Budget</value>
+  </data>
 </root>
