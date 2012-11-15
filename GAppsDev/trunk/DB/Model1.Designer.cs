@@ -3984,7 +3984,8 @@ namespace DB
         /// <param name="bankNumber">Initial value of the BankNumber property.</param>
         /// <param name="telephoneNumber">Initial value of the TelephoneNumber property.</param>
         /// <param name="companyNumber">Initial value of the CompanyNumber property.</param>
-        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber)
+        /// <param name="isUsingExternalAccountManagment">Initial value of the IsUsingExternalAccountManagment property.</param>
+        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber, global::System.Boolean isUsingExternalAccountManagment)
         {
             Company company = new Company();
             company.Id = id;
@@ -4000,6 +4001,7 @@ namespace DB
             company.BankNumber = bankNumber;
             company.TelephoneNumber = telephoneNumber;
             company.CompanyNumber = companyNumber;
+            company.IsUsingExternalAccountManagment = isUsingExternalAccountManagment;
             return company;
         }
 
@@ -4369,6 +4371,30 @@ namespace DB
         private global::System.String _ExternalCoinCode;
         partial void OnExternalCoinCodeChanging(global::System.String value);
         partial void OnExternalCoinCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsUsingExternalAccountManagment
+        {
+            get
+            {
+                return _IsUsingExternalAccountManagment;
+            }
+            set
+            {
+                OnIsUsingExternalAccountManagmentChanging(value);
+                ReportPropertyChanging("IsUsingExternalAccountManagment");
+                _IsUsingExternalAccountManagment = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsUsingExternalAccountManagment");
+                OnIsUsingExternalAccountManagmentChanged();
+            }
+        }
+        private global::System.Boolean _IsUsingExternalAccountManagment;
+        partial void OnIsUsingExternalAccountManagmentChanging(global::System.Boolean value);
+        partial void OnIsUsingExternalAccountManagmentChanged();
 
         #endregion
 
