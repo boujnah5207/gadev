@@ -11,8 +11,9 @@
           <EntitySet Name="Locations" EntityType="designModel.Store.Locations" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Orders_Items" EntityType="designModel.Store.Orders_Items" store:Type="Tables" Schema="dbo" Table="Orders.Items" />
           <EntitySet Name="Budgets" EntityType="designModel.Store.Budgets" store:Type="Tables" Schema="uddi" />
+          <EntitySet Name="Budgets_Allocations" EntityType="designModel.Store.Budgets_Allocations" store:Type="Tables" Schema="uddi" Table="Budgets.Allocations" />
+          <EntitySet Name="Budgets_AllocationToMonth" EntityType="designModel.Store.Budgets_AllocationToMonth" store:Type="Tables" Schema="uddi" Table="Budgets.AllocationToMonth" />
           <EntitySet Name="Budgets_Expenses" EntityType="designModel.Store.Budgets_Expenses" store:Type="Tables" Schema="uddi" Table="Budgets.Expenses" />
-          <EntitySet Name="Budgets_ExpensesToIncomes" EntityType="designModel.Store.Budgets_ExpensesToIncomes" store:Type="Tables" Schema="uddi" Table="Budgets.ExpensesToIncomes" />
           <EntitySet Name="Budgets_Incomes" EntityType="designModel.Store.Budgets_Incomes" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes" />
           <EntitySet Name="Budgets_Incomes_Institutions" EntityType="designModel.Store.Budgets_Incomes_Institutions" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes.Institutions" />
           <EntitySet Name="Budgets_Incomes_types" EntityType="designModel.Store.Budgets_Incomes_types" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes.types" />
@@ -32,13 +33,15 @@
           <EntitySet Name="Projects_SubProject" EntityType="designModel.Store.Projects_SubProject" store:Type="Tables" Schema="uddi" Table="Projects.SubProject" />
           <EntitySet Name="Suppliers" EntityType="designModel.Store.Suppliers" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Users" EntityType="designModel.Store.Users" store:Type="Tables" Schema="uddi" />
+          <EntitySet Name="Users_Hierarchies" EntityType="designModel.Store.Users_Hierarchies" store:Type="Tables" Schema="uddi" Table="Users.Hierarchies" />
+          <EntitySet Name="Users_HierarchyLevel" EntityType="designModel.Store.Users_HierarchyLevel" store:Type="Tables" Schema="uddi" Table="Users.HierarchyLevel" />
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Expenses" Association="designModel.Store.FK_Budget_ExpensesToIncome_Budget_Expenses">
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Income" Association="designModel.Store.FK_Budget_ExpensesToIncome_Budget_Income">
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budget_Income_Budget" Association="designModel.Store.FK_Budget_Income_Budget">
             <End Role="Budgets" EntitySet="Budgets" />
@@ -47,6 +50,14 @@
           <AssociationSet Name="FK_Budget_Companies1" Association="designModel.Store.FK_Budget_Companies1">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Budgets" EntitySet="Budgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes">
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+            <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_AllocationToMonth_Monthes" Association="designModel.Store.FK_Budgets_AllocationToMonth_Monthes">
+            <End Role="Monthes" EntitySet="Monthes" />
+            <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Expenses_Budgets" Association="designModel.Store.FK_Budgets_Expenses_Budgets">
             <End Role="Budgets" EntitySet="Budgets" />
@@ -70,11 +81,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Budgets" Association="designModel.Store.FK_Budgets_ExpensesToIncomes_Budgets">
             <End Role="Budgets" EntitySet="Budgets" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Companies" Association="designModel.Store.FK_Budgets_ExpensesToIncomes_Companies">
             <End Role="Companies" EntitySet="Companies" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Incomes_Categories_Companies" Association="designModel.Store.FK_Budgets_Incomes_Categories_Companies">
             <End Role="Companies" EntitySet="Companies" />
@@ -109,7 +120,7 @@
             <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
             <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_Permissions" Association="designModel.Store.FK_Budgets_PermissionsToAllocation_Budgets_Permissions">
@@ -165,7 +176,7 @@
             <End Role="Orders_Items" EntitySet="Orders_Items" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
             <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Monthes" Association="designModel.Store.FK_Orders_OrderToAllocation_Monthes">
@@ -185,7 +196,7 @@
             <End Role="Orders_OrderToItem" EntitySet="Orders_OrderToItem" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Budget_ExpensesToIncome" Association="designModel.Store.FK_Orders_Budget_ExpensesToIncome">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Companies" Association="designModel.Store.FK_Orders_Companies">
@@ -219,6 +230,18 @@
           <AssociationSet Name="FK_Projects_ParentProject_Companies" Association="designModel.Store.FK_Projects_ParentProject_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Projects_ParentProject" EntitySet="Projects_ParentProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Hierarchies_Companies" Association="designModel.Store.FK_Users_Hierarchies_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_HierarchyLevel_Users" Association="designModel.Store.FK_Users_HierarchyLevel_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_HierarchyLevel_Users_Hierarchies" Association="designModel.Store.FK_Users_HierarchyLevel_Users_Hierarchies">
+            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Budget_Deprtments" Association="designModel.Store.FK_Users_Budget_Deprtments">
             <End Role="Departments" EntitySet="Departments" />
@@ -308,6 +331,28 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ExternalBudget" Type="bit" />
         </EntityType>
+        <EntityType Name="Budgets_Allocations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ExternalId" Type="nvarchar" MaxLength="8" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BudgetId" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
+          <Property Name="IncomeId" Type="int" />
+          <Property Name="ExpenseId" Type="int" />
+          <Property Name="Amount" Type="decimal" />
+        </EntityType>
+        <EntityType Name="Budgets_AllocationToMonth">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AllocationId" Type="int" Nullable="false" />
+          <Property Name="MonthId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Nullable="false" />
+        </EntityType>
         <EntityType Name="Budgets_Expenses">
           <Key>
             <PropertyRef Name="Id" />
@@ -321,31 +366,6 @@
           <Property Name="SubProjectId" Type="int" Nullable="false" />
           <Property Name="Amount" Type="decimal" Nullable="false" />
           <Property Name="CustomName" Type="nvarchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="Budgets_ExpensesToIncomes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ExternalId" Type="nvarchar" MaxLength="8" />
-          <Property Name="CompanyId" Type="int" Nullable="false" />
-          <Property Name="BudgetId" Type="int" Nullable="false" />
-          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
-          <Property Name="IncomeId" Type="int" />
-          <Property Name="ExpenseId" Type="int" />
-          <Property Name="Amount" Type="decimal" />
-          <Property Name="January" Type="decimal" />
-          <Property Name="February" Type="decimal" />
-          <Property Name="March" Type="decimal" />
-          <Property Name="April" Type="decimal" />
-          <Property Name="May" Type="decimal" />
-          <Property Name="June" Type="decimal" />
-          <Property Name="July" Type="decimal" />
-          <Property Name="August" Type="decimal" />
-          <Property Name="September" Type="decimal" />
-          <Property Name="October" Type="decimal" />
-          <Property Name="November" Type="decimal" />
-          <Property Name="December" Type="decimal" />
         </EntityType>
         <EntityType Name="Budgets_Incomes">
           <Key>
@@ -558,26 +578,43 @@
           <Property Name="OrdersApproverId" Type="int" />
           <Property Name="LanguageId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Users_Hierarchies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users_HierarchyLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="HierarchyId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Budget_ExpensesToIncome_Budget_Expenses">
           <End Role="Budgets_Expenses" Type="designModel.Store.Budgets_Expenses" Multiplicity="0..1" />
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_Expenses">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="ExpenseId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Budget_ExpensesToIncome_Budget_Income">
           <End Role="Budgets_Incomes" Type="designModel.Store.Budgets_Incomes" Multiplicity="0..1" />
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_Incomes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="IncomeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -603,6 +640,30 @@
             </Principal>
             <Dependent Role="Budgets">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes">
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="1" />
+          <End Role="Budgets_AllocationToMonth" Type="designModel.Store.Budgets_AllocationToMonth" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Allocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_AllocationToMonth">
+              <PropertyRef Name="AllocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_AllocationToMonth_Monthes">
+          <End Role="Monthes" Type="designModel.Store.Monthes" Multiplicity="1" />
+          <End Role="Budgets_AllocationToMonth" Type="designModel.Store.Budgets_AllocationToMonth" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Monthes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_AllocationToMonth">
+              <PropertyRef Name="MonthId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -668,24 +729,24 @@
         </Association>
         <Association Name="FK_Budgets_ExpensesToIncomes_Budgets">
           <End Role="Budgets" Type="designModel.Store.Budgets" Multiplicity="1" />
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="BudgetId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Budgets_ExpensesToIncomes_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -787,10 +848,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="1" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="1" />
           <End Role="Budgets_PermissionsToAllocation" Type="designModel.Store.Budgets_PermissionsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
+            <Principal Role="Budgets_Allocations">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Budgets_PermissionsToAllocation">
@@ -955,10 +1016,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="1" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="1" />
           <End Role="Orders_OrderToAllocation" Type="designModel.Store.Orders_OrderToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
+            <Principal Role="Budgets_Allocations">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Orders_OrderToAllocation">
@@ -1015,10 +1076,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Budget_ExpensesToIncome">
-          <End Role="Budgets_ExpensesToIncomes" Type="designModel.Store.Budgets_ExpensesToIncomes" Multiplicity="0..1" />
+          <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="0..1" />
           <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
+            <Principal Role="Budgets_Allocations">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Orders">
@@ -1122,6 +1183,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Hierarchies_Companies">
+          <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
+          <End Role="Users_Hierarchies" Type="designModel.Store.Users_Hierarchies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_Hierarchies">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_HierarchyLevel_Users">
+          <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
+          <End Role="Users_HierarchyLevel" Type="designModel.Store.Users_HierarchyLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_HierarchyLevel">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_HierarchyLevel_Users_Hierarchies">
+          <End Role="Users_Hierarchies" Type="designModel.Store.Users_Hierarchies" Multiplicity="1" />
+          <End Role="Users_HierarchyLevel" Type="designModel.Store.Users_HierarchyLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_Hierarchies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_HierarchyLevel">
+              <PropertyRef Name="HierarchyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_Budget_Deprtments">
           <End Role="Departments" Type="designModel.Store.Departments" Multiplicity="0..1" />
           <End Role="Users" Type="designModel.Store.Users" Multiplicity="*" />
@@ -1180,8 +1277,9 @@
           <EntitySet Name="Locations" EntityType="designModel.Location" />
           <EntitySet Name="Orders_Items" EntityType="designModel.Orders_Items" />
           <EntitySet Name="Budgets" EntityType="designModel.Budget" />
+          <EntitySet Name="Budgets_Allocations" EntityType="designModel.Budgets_Allocations" />
+          <EntitySet Name="Budgets_AllocationToMonth" EntityType="designModel.Budgets_AllocationToMonth" />
           <EntitySet Name="Budgets_Expenses" EntityType="designModel.Budgets_Expenses" />
-          <EntitySet Name="Budgets_ExpensesToIncomes" EntityType="designModel.Budgets_ExpensesToIncomes" />
           <EntitySet Name="Budgets_Incomes" EntityType="designModel.Budgets_Incomes" />
           <EntitySet Name="Budgets_Incomes_Institutions" EntityType="designModel.Budgets_Incomes_Institutions" />
           <EntitySet Name="Budgets_Incomes_types" EntityType="designModel.Budgets_Incomes_types" />
@@ -1201,6 +1299,8 @@
           <EntitySet Name="Projects_SubProject" EntityType="designModel.Projects_SubProject" />
           <EntitySet Name="Suppliers" EntityType="designModel.Supplier" />
           <EntitySet Name="Users" EntityType="designModel.User" />
+          <EntitySet Name="Users_Hierarchies" EntityType="designModel.Users_Hierarchies" />
+          <EntitySet Name="Users_HierarchyLevel" EntityType="designModel.Users_HierarchyLevel" />
           <AssociationSet Name="FK_Budget_Companies1" Association="designModel.FK_Budget_Companies1">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Budget" EntitySet="Budgets" />
@@ -1211,7 +1311,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Companies" Association="designModel.FK_Budgets_ExpensesToIncomes_Companies">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Incomes_Categories_Companies" Association="designModel.FK_Budgets_Incomes_Categories_Companies">
             <End Role="Company" EntitySet="Companies" />
@@ -1257,6 +1357,10 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Projects_ParentProject" EntitySet="Projects_ParentProject" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_Hierarchies_Companies" Association="designModel.FK_Users_Hierarchies_Companies">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_Companies" Association="designModel.FK_Users_Companies">
             <End Role="Company" EntitySet="Companies" />
             <End Role="User" EntitySet="Users" />
@@ -1295,7 +1399,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_ExpensesToIncomes_Budgets" Association="designModel.FK_Budgets_ExpensesToIncomes_Budgets">
             <End Role="Budget" EntitySet="Budgets" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets">
             <End Role="Budget" EntitySet="Budgets" />
@@ -1303,7 +1407,31 @@
           </AssociationSet>
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Expenses" Association="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses">
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Income" Association="designModel.FK_Budget_ExpensesToIncome_Budget_Income">
+            <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" Association="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes">
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+            <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+            <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Budget_ExpensesToIncome" Association="designModel.FK_Orders_Budget_ExpensesToIncome">
+            <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_AllocationToMonth_Monthes" Association="designModel.FK_Budgets_AllocationToMonth_Monthes">
+            <End Role="Monthe" EntitySet="Monthes" />
+            <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Expenses_Departments" Association="designModel.FK_Budgets_Expenses_Departments">
             <End Role="Department" EntitySet="Departments" />
@@ -1316,22 +1444,6 @@
           <AssociationSet Name="FK_Budgets_Expenses_Projects_SubProject" Association="designModel.FK_Budgets_Expenses_Projects_SubProject">
             <End Role="Projects_SubProject" EntitySet="Projects_SubProject" />
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Income" Association="designModel.FK_Budget_ExpensesToIncome_Budget_Income">
-            <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
-            <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Budget_ExpensesToIncome" Association="designModel.FK_Orders_Budget_ExpensesToIncome">
-            <End Role="Budgets_ExpensesToIncomes" EntitySet="Budgets_ExpensesToIncomes" />
-            <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Incomes_Budgets_Incomes_Categories" Association="designModel.FK_Budgets_Incomes_Budgets_Incomes_Categories">
             <End Role="Budgets_Incomes_types" EntitySet="Budgets_Incomes_types" />
@@ -1401,9 +1513,17 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PendingUser" EntitySet="PendingUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_HierarchyLevel_Users" Association="designModel.FK_Users_HierarchyLevel_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_Users" Association="designModel.FK_Users_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="User1" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_HierarchyLevel_Users_Hierarchies" Association="designModel.FK_Users_HierarchyLevel_Users_Hierarchies">
+            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
@@ -1427,7 +1547,7 @@
           <Property Type="String" Name="ExternalCoinCode" MaxLength="3" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Budgets" Relationship="designModel.FK_Budget_Companies1" FromRole="Company" ToRole="Budget" />
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budgets_Expenses_Companies" FromRole="Company" ToRole="Budgets_Expenses" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Companies" FromRole="Company" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Companies" FromRole="Company" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Budgets_Incomes_types" Relationship="designModel.FK_Budgets_Incomes_Categories_Companies" FromRole="Company" ToRole="Budgets_Incomes_types" />
           <NavigationProperty Name="Budgets_Incomes_Institutions" Relationship="designModel.FK_Budgets_Incomes_Institutions_Companies" FromRole="Company" ToRole="Budgets_Incomes_Institutions" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budgets_Incomes_Companies" FromRole="Company" ToRole="Budgets_Incomes" />
@@ -1439,6 +1559,7 @@
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Companies" FromRole="Company" ToRole="Order" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Companies" FromRole="Company" ToRole="PendingUser" />
           <NavigationProperty Name="Projects_ParentProject" Relationship="designModel.FK_Projects_ParentProject_Companies" FromRole="Company" ToRole="Projects_ParentProject" />
+          <NavigationProperty Name="Users_Hierarchies" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Company" ToRole="Users_Hierarchies" />
           <NavigationProperty Name="Users" Relationship="designModel.FK_Users_Companies" FromRole="Company" ToRole="User" />
         </EntityType>
         <EntityType Name="Inventory">
@@ -1505,8 +1626,40 @@
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budget_Companies1" FromRole="Budget" ToRole="Company" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_Income_Budget" FromRole="Budget" ToRole="Budgets_Incomes" />
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budgets_Expenses_Budgets" FromRole="Budget" ToRole="Budgets_Expenses" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budget" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budget" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets" FromRole="Budget" ToRole="Budgets_PermissionsToAllocation" />
+        </EntityType>
+        <EntityType Name="Budgets_Allocations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="ExternalId" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="Int32" Name="BudgetId" Nullable="false" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
+          <Property Type="Int32" Name="IncomeId" />
+          <Property Type="Int32" Name="ExpenseId" />
+          <Property Type="Decimal" Name="Amount" Precision="18" Scale="0" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Companies" FromRole="Budgets_Allocations" ToRole="Company" />
+          <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budgets_Allocations" ToRole="Budget" />
+          <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_Allocations" ToRole="Budgets_Expenses" />
+          <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_Allocations" ToRole="Budgets_Incomes" />
+          <NavigationProperty Name="Budgets_AllocationToMonth" Relationship="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Budgets_AllocationToMonth" />
+          <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Budgets_PermissionsToAllocation" />
+          <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Orders_OrderToAllocation" />
+          <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Budgets_Allocations" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Budgets_AllocationToMonth">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="AllocationId" Nullable="false" />
+          <Property Type="Int32" Name="MonthId" Nullable="false" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" FromRole="Budgets_AllocationToMonth" ToRole="Budgets_Allocations" />
+          <NavigationProperty Name="Monthe" Relationship="designModel.FK_Budgets_AllocationToMonth_Monthes" FromRole="Budgets_AllocationToMonth" ToRole="Monthe" />
         </EntityType>
         <EntityType Name="Budgets_Expenses">
           <Key>
@@ -1523,42 +1676,10 @@
           <Property Type="String" Name="CustomName" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_Expenses_Companies" FromRole="Budgets_Expenses" ToRole="Company" />
           <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_Expenses_Budgets" FromRole="Budgets_Expenses" ToRole="Budget" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_Expenses" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_Expenses" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Department" Relationship="designModel.FK_Budgets_Expenses_Departments" FromRole="Budgets_Expenses" ToRole="Department" />
           <NavigationProperty Name="Projects_ParentProject" Relationship="designModel.FK_Budgets_Expenses_Projects_ParentProject" FromRole="Budgets_Expenses" ToRole="Projects_ParentProject" />
           <NavigationProperty Name="Projects_SubProject" Relationship="designModel.FK_Budgets_Expenses_Projects_SubProject" FromRole="Budgets_Expenses" ToRole="Projects_SubProject" />
-        </EntityType>
-        <EntityType Name="Budgets_ExpensesToIncomes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="String" Name="ExternalId" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="CompanyId" Nullable="false" />
-          <Property Type="Int32" Name="BudgetId" Nullable="false" />
-          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
-          <Property Type="Int32" Name="IncomeId" />
-          <Property Type="Int32" Name="ExpenseId" />
-          <Property Type="Decimal" Name="Amount" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="January" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="February" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="March" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="April" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="May" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="June" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="July" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="August" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="September" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="October" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="November" Precision="18" Scale="0" />
-          <Property Type="Decimal" Name="December" Precision="18" Scale="0" />
-          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Companies" FromRole="Budgets_ExpensesToIncomes" ToRole="Company" />
-          <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budgets_ExpensesToIncomes" ToRole="Budget" />
-          <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_Expenses" />
-          <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_Incomes" />
-          <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_ExpensesToIncomes" ToRole="Budgets_PermissionsToAllocation" />
-          <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_ExpensesToIncomes" ToRole="Orders_OrderToAllocation" />
-          <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Budgets_ExpensesToIncomes" ToRole="Order" />
         </EntityType>
         <EntityType Name="Budgets_Incomes">
           <Key>
@@ -1574,7 +1695,7 @@
           <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_Incomes_Companies" FromRole="Budgets_Incomes" ToRole="Company" />
           <NavigationProperty Name="Budget" Relationship="designModel.FK_Budget_Income_Budget" FromRole="Budgets_Incomes" ToRole="Budget" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_Incomes" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_Incomes" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Budgets_Incomes_types" Relationship="designModel.FK_Budgets_Incomes_Budgets_Incomes_Categories" FromRole="Budgets_Incomes" ToRole="Budgets_Incomes_types" />
           <NavigationProperty Name="Budgets_Incomes_Institutions" Relationship="designModel.FK_Budgets_Incomes_Budgets_Incomes_Institutions" FromRole="Budgets_Incomes" ToRole="Budgets_Incomes_Institutions" />
         </EntityType>
@@ -1623,7 +1744,7 @@
           <Property Type="Int32" Name="BudgetsPermissionsId" Nullable="false" />
           <Property Type="Int32" Name="BudgetsExpensesToIncomesId" Nullable="false" />
           <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets" FromRole="Budgets_PermissionsToAllocation" ToRole="Budget" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_PermissionsToAllocation" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_PermissionsToAllocation" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Budgets_Permissions" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions" FromRole="Budgets_PermissionsToAllocation" ToRole="Budgets_Permissions" />
         </EntityType>
         <EntityType Name="Budgets_UsersToPermissions">
@@ -1676,6 +1797,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Budgets_AllocationToMonth" Relationship="designModel.FK_Budgets_AllocationToMonth_Monthes" FromRole="Monthe" ToRole="Budgets_AllocationToMonth" />
           <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Monthes" FromRole="Monthe" ToRole="Orders_OrderToAllocation" />
         </EntityType>
         <EntityType Name="Order">
@@ -1699,7 +1821,7 @@
           <Property Type="DateTime" Name="InvoiceDate" Precision="3" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Order" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Order" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Orders" FromRole="Order" ToRole="Orders_OrderToAllocation" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
@@ -1715,7 +1837,7 @@
           <Property Type="Int32" Name="AllocationId" Nullable="false" />
           <Property Type="Int32" Name="MonthId" Nullable="false" />
           <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
-          <NavigationProperty Name="Budgets_ExpensesToIncomes" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Orders_OrderToAllocation" ToRole="Budgets_ExpensesToIncomes" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Orders_OrderToAllocation" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Monthe" Relationship="designModel.FK_Orders_OrderToAllocation_Monthes" FromRole="Orders_OrderToAllocation" ToRole="Monthe" />
           <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_OrderToAllocation_Orders" FromRole="Orders_OrderToAllocation" ToRole="Order" />
         </EntityType>
@@ -1826,8 +1948,30 @@
           <NavigationProperty Name="Language" Relationship="designModel.FK_Users_Languages" FromRole="User" ToRole="Language" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Users" FromRole="User" ToRole="Order" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Users" FromRole="User" ToRole="PendingUser" />
+          <NavigationProperty Name="Users_HierarchyLevel" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="User" ToRole="Users_HierarchyLevel" />
           <NavigationProperty Name="Users1" Relationship="designModel.FK_Users_Users" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User1" Relationship="designModel.FK_Users_Users" FromRole="User1" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Users_Hierarchies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Users_Hierarchies" ToRole="Company" />
+          <NavigationProperty Name="Users_HierarchyLevel" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_Hierarchies" ToRole="Users_HierarchyLevel" />
+        </EntityType>
+        <EntityType Name="Users_HierarchyLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="HierarchyId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="Level" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="Users_HierarchyLevel" ToRole="User" />
+          <NavigationProperty Name="Users_Hierarchies" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_HierarchyLevel" ToRole="Users_Hierarchies" />
         </EntityType>
         <Association Name="FK_Budget_Companies1">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
@@ -1855,12 +1999,12 @@
         </Association>
         <Association Name="FK_Budgets_ExpensesToIncomes_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1997,6 +2141,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Hierarchies_Companies">
+          <End Type="designModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="designModel.Users_Hierarchies" Role="Users_Hierarchies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_Hierarchies">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
           <End Type="designModel.User" Role="User" Multiplicity="*" />
@@ -2107,12 +2263,12 @@
         </Association>
         <Association Name="FK_Budgets_ExpensesToIncomes_Budgets">
           <End Type="designModel.Budget" Role="Budget" Multiplicity="1" />
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budget">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="BudgetId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2131,13 +2287,85 @@
         </Association>
         <Association Name="FK_Budget_ExpensesToIncome_Budget_Expenses">
           <End Type="designModel.Budgets_Expenses" Role="Budgets_Expenses" Multiplicity="0..1" />
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_Expenses">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
+            <Dependent Role="Budgets_Allocations">
               <PropertyRef Name="ExpenseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budget_ExpensesToIncome_Budget_Income">
+          <End Type="designModel.Budgets_Incomes" Role="Budgets_Incomes" Multiplicity="0..1" />
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Incomes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_Allocations">
+              <PropertyRef Name="IncomeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes">
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="1" />
+          <End Type="designModel.Budgets_AllocationToMonth" Role="Budgets_AllocationToMonth" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Allocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_AllocationToMonth">
+              <PropertyRef Name="AllocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="1" />
+          <End Type="designModel.Budgets_PermissionsToAllocation" Role="Budgets_PermissionsToAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Allocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_PermissionsToAllocation">
+              <PropertyRef Name="BudgetsExpensesToIncomesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="1" />
+          <End Type="designModel.Orders_OrderToAllocation" Role="Orders_OrderToAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Allocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_OrderToAllocation">
+              <PropertyRef Name="AllocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Budget_ExpensesToIncome">
+          <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="0..1" />
+          <End Type="designModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Allocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="BudgetAllocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_AllocationToMonth_Monthes">
+          <End Type="designModel.Monthe" Role="Monthe" Multiplicity="1" />
+          <End Type="designModel.Budgets_AllocationToMonth" Role="Budgets_AllocationToMonth" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Monthe">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_AllocationToMonth">
+              <PropertyRef Name="MonthId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2174,54 +2402,6 @@
             </Principal>
             <Dependent Role="Budgets_Expenses">
               <PropertyRef Name="SubProjectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Budget_ExpensesToIncome_Budget_Income">
-          <End Type="designModel.Budgets_Incomes" Role="Budgets_Incomes" Multiplicity="0..1" />
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_Incomes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Budgets_ExpensesToIncomes">
-              <PropertyRef Name="IncomeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="1" />
-          <End Type="designModel.Budgets_PermissionsToAllocation" Role="Budgets_PermissionsToAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
-              <PropertyRef Name="BudgetsExpensesToIncomesId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="1" />
-          <End Type="designModel.Orders_OrderToAllocation" Role="Orders_OrderToAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Orders_OrderToAllocation">
-              <PropertyRef Name="AllocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_Budget_ExpensesToIncome">
-          <End Type="designModel.Budgets_ExpensesToIncomes" Role="Budgets_ExpensesToIncomes" Multiplicity="0..1" />
-          <End Type="designModel.Order" Role="Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_ExpensesToIncomes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="BudgetAllocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2429,6 +2609,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_HierarchyLevel_Users">
+          <End Type="designModel.User" Role="User" Multiplicity="1" />
+          <End Type="designModel.Users_HierarchyLevel" Role="Users_HierarchyLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_HierarchyLevel">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_Users">
           <End Type="designModel.User" Role="User" Multiplicity="0..1" />
           <End Type="designModel.User" Role="User1" Multiplicity="*" />
@@ -2438,6 +2630,18 @@
             </Principal>
             <Dependent Role="User1">
               <PropertyRef Name="OrdersApproverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_HierarchyLevel_Users_Hierarchies">
+          <End Type="designModel.Users_Hierarchies" Role="Users_Hierarchies" Multiplicity="1" />
+          <End Type="designModel.Users_HierarchyLevel" Role="Users_HierarchyLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_Hierarchies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_HierarchyLevel">
+              <PropertyRef Name="HierarchyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2523,6 +2727,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Budgets_Allocations">
+            <EntityTypeMapping TypeName="designModel.Budgets_Allocations">
+              <MappingFragment StoreEntitySet="Budgets_Allocations">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="ExternalId" ColumnName="ExternalId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Budgets_AllocationToMonth">
+            <EntityTypeMapping TypeName="designModel.Budgets_AllocationToMonth">
+              <MappingFragment StoreEntitySet="Budgets_AllocationToMonth">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MonthId" ColumnName="MonthId" />
+                <ScalarProperty Name="AllocationId" ColumnName="AllocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Budgets_Expenses">
             <EntityTypeMapping TypeName="designModel.Budgets_Expenses">
               <MappingFragment StoreEntitySet="Budgets_Expenses">
@@ -2534,32 +2762,6 @@
                 <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Budgets_ExpensesToIncomes">
-            <EntityTypeMapping TypeName="designModel.Budgets_ExpensesToIncomes">
-              <MappingFragment StoreEntitySet="Budgets_ExpensesToIncomes">
-                <ScalarProperty Name="December" ColumnName="December" />
-                <ScalarProperty Name="November" ColumnName="November" />
-                <ScalarProperty Name="October" ColumnName="October" />
-                <ScalarProperty Name="September" ColumnName="September" />
-                <ScalarProperty Name="August" ColumnName="August" />
-                <ScalarProperty Name="July" ColumnName="July" />
-                <ScalarProperty Name="June" ColumnName="June" />
-                <ScalarProperty Name="May" ColumnName="May" />
-                <ScalarProperty Name="April" ColumnName="April" />
-                <ScalarProperty Name="March" ColumnName="March" />
-                <ScalarProperty Name="February" ColumnName="February" />
-                <ScalarProperty Name="January" ColumnName="January" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="ExpenseId" ColumnName="ExpenseId" />
-                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="ExternalId" ColumnName="ExternalId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2794,6 +2996,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Users_Hierarchies">
+            <EntityTypeMapping TypeName="designModel.Users_Hierarchies">
+              <MappingFragment StoreEntitySet="Users_Hierarchies">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users_HierarchyLevel">
+            <EntityTypeMapping TypeName="designModel.Users_HierarchyLevel">
+              <MappingFragment StoreEntitySet="Users_HierarchyLevel">
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2815,32 +3036,35 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="3.2521266486738467" PointY="7.5293201243175751" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="5.5200311716273571" PointY="8.2713585236442082" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="0.75849821081315083" PointY="26.406234619396848" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="2.6948821519943333" PointY="12.020967682833303" />
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.93927262301523" PointY="24.365266259929754" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="4.8643296271862138" PointY="10.565523033293673" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_ExpensesToIncomes" Width="1.5" PointX="5.2314696820599345" PointY="9.3333638204882678" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="6.7204311968388186" PointY="8.6522391925809163" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="9.412193543003962" PointY="27.658642632727812" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="10.215091952222908" PointY="11.643724327741062" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="7.9607267230566254" PointY="6.9198526474274011" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="5.4810083161485421" PointY="23.134206112071038" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="9.9542020419399257" PointY="30.922071605418843" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="10.507176556860644" PointY="1.7363863595465134" />
-        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="8.3155632393041454" PointY="30.44930249380381" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="11.520816206708931" PointY="7.0408809813861177" />
-        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="5.7755637382043359" PointY="0.59493021694707227" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="3.6588607074966939" PointY="21.394017408319758" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="3.5304490064878244" PointY="28.408611593958277" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="4.8439454421605657" PointY="0.71470737490556546" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="4.1915538554040506" PointY="30.377037718136346" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="7.6789374145115428" PointY="5.1893783384884609" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="8.4688780663855727" PointY="14.10786627889977" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="8.5689757655230245" PointY="0.46826341770042823" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="0.26785949630097461" PointY="19.3475605339499" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.8906459682111851" PointY="12.035390829683928" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="8.481661748365342" PointY="9.0911516887560264" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="5.89446771233085" PointY="2.9826682968915756" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="3.2171503525307168" PointY="21.59696810953178" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="10.894672857082762" PointY="6.92728902722117" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="6.4964648049773945" PointY="28.560933737345476" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="5.3539596690581925" PointY="17.593784593787877" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="11.181507898113461" PointY="13.44834152490289" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="9.6307644646758046" PointY="13.469300872399145" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="9.3451094223862086" PointY="21.456054354764547" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="7.7746429684453844" PointY="13.744069344244929" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="8.4207732232384274" PointY="29.544573320795116" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="3.9007654562130414" PointY="13.839614546783089" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="10.236109485028363" PointY="20.21684838282729" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="11.698201987751855" PointY="15.620603538872954" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="5.625902538013599" PointY="30.022621675405009" />
+        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="2.8240612106509793" PointY="30.353707625695368" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="3.346242960238011" PointY="14.947747311996178" />
+        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="7.77772821848175" PointY="14.522212020364689" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="2.4304192543171435" PointY="9.3916083618028132" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="7.91306510936146" PointY="13.398767835180633" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="0.8154892515463239" PointY="25.761084881499915" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="3.2447557874232329" PointY="5.8993304250293086" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="9.6179891366595349" PointY="6.1030312804985005" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="9.277655464260679" PointY="14.950360021996479" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="8.8807169277596838" PointY="7.3682075773217752" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="7.1202598191426407" PointY="21.029591421144826" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.4410239348379079" PointY="30.136707215633571" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="1.1770445616808927" PointY="25.073191341512459" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="11.508416427070468" PointY="1.8789660194325102" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Companies" />
@@ -2855,6 +3079,7 @@
         <edmx:AssociationConnector Association="designModel.FK_Orders_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Projects_ParentProject_Companies" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_Hierarchies_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Inventory" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Items" />
@@ -2867,13 +3092,15 @@
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Departments" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_ParentProject" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_SubProject" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_ExpensesToIncome_Budget_Income" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Budget_ExpensesToIncome" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_AllocationToMonth_Monthes" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Departments" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_ParentProject" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_SubProject" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Budgets_Incomes_Categories" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Budgets_Incomes_Institutions" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Permissions_Budgets_Permissions" />
@@ -2891,7 +3118,9 @@
         <edmx:AssociationConnector Association="designModel.FK_Orders_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Users" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_HierarchyLevel_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

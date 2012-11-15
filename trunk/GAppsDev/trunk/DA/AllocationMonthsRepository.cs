@@ -7,7 +7,7 @@ using DB;
 
 namespace DA
 {
-    public class ExpensesToIncomeRepository : BaseRepository<Budgets_Allocations, Entities>
+    public class AllocationMonthsRepository : BaseRepository<Budgets_AllocationToMonth, Entities>, IDisposable
     {
 
     }

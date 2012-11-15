@@ -244,13 +244,13 @@ namespace GAppsDev.Controllers
 
                                 foreach (var budget in budgets)
                                 {
-                                    List<SelectListItemDB> allocationsList = budget.Budgets_ExpensesToIncomes
+                                    List<SelectListItemDB> allocationsList = budget.Budgets_Allocations
                                         .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
                                         .AsEnumerable()
                                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                                         .ToList();
 
-                                    List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_ExpensesToIncomes", "Budgets_ExpensesToIncomes.Budgets_Incomes", "Budgets_ExpensesToIncomes.Budgets_Expenses")
+                                    List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_Allocations", "Budgets_Allocations.Budgets_Incomes", "Budgets_Allocations.Budgets_Expenses")
                                         .Where(x => x.BudgetId == budget.Id && x.BudgetsPermissionsId == model.Permission.Id)
                                         .AsEnumerable()
                                         .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
@@ -300,7 +300,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Permissions permissionFromDB;
-                List<Budgets_ExpensesToIncomes> existingPermissionAllocations;
+                List<Budgets_Allocations> existingPermissionAllocations;
                 List<Budgets_PermissionsToAllocation> existingPermissionToAllocations;
 
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
@@ -310,7 +310,7 @@ namespace GAppsDev.Controllers
                 {
                     permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
                     //TODO: Error gets ALL pemissions from DB
-                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_ExpensesToIncomes).ToList();
+                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_Allocations).ToList();
                     existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).ToList();
 
                     if (permissionFromDB != null)

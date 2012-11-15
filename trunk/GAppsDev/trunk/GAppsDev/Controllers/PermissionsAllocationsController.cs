@@ -18,7 +18,7 @@ namespace GAppsDev.Controllers
 
         public ActionResult Index()
         {
-            var budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Include("Budgets_ExpensesToIncomes").Include("Budgets_Permissions");
+            var budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Include("Budgets_Allocations").Include("Budgets_Permissions");
             return View(budgets_permissionstoallocation.ToList());
         }
 
@@ -40,7 +40,7 @@ namespace GAppsDev.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_ExpensesToIncomes, "Id", "Id");
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
             ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name");
             return View();
         }
@@ -58,7 +58,7 @@ namespace GAppsDev.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_ExpensesToIncomes, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
             ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
             return View(budgets_permissionstoallocation);
         }
@@ -73,7 +73,7 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_ExpensesToIncomes, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
             ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
             return View(budgets_permissionstoallocation);
         }
@@ -91,7 +91,7 @@ namespace GAppsDev.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_ExpensesToIncomes, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
             ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
             return View(budgets_permissionstoallocation);
         }

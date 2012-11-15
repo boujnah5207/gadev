@@ -348,7 +348,7 @@ namespace GAppsDev.Controllers
                         {
                             if (
                                 !ordersRep.GetList()
-                                .Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id)
+                                .Where(x => x.Budgets_Allocations.IncomeId == income.Id)
                                 .Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
                                 )
                             {
@@ -397,16 +397,16 @@ namespace GAppsDev.Controllers
                     {
                         if (income.CompanyId == CurrentUser.CompanyId)
                         {
-                            List<Budgets_ExpensesToIncomes> incomeAllocations;
+                            List<Budgets_Allocations> incomeAllocations;
                             List<Budgets_PermissionsToAllocation> incomePermissions;
-                            List<Order> incomeOrders = ordersRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id).ToList();
+                            List<Order> incomeOrders = ordersRep.GetList().Where(x => x.Budgets_Allocations.IncomeId == income.Id).ToList();
 
                             if (!incomeOrders.Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice))
                             {
                                 try
                                 {
                                     incomeAllocations = allocationsRep.GetList().Where(x => x.IncomeId == income.Id).ToList();
-                                    incomePermissions = permissionAllocationsRep.GetList().Where(x => x.Budgets_ExpensesToIncomes.IncomeId == income.Id).ToList();
+                                    incomePermissions = permissionAllocationsRep.GetList().Where(x => x.Budgets_Allocations.IncomeId == income.Id).ToList();
 
                                     foreach (var item in incomeOrders)
                                     {
