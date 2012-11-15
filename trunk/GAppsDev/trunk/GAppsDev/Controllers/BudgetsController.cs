@@ -311,7 +311,7 @@ namespace GAppsDev.Controllers
 
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 {
-                    budgetFromDb = budgetsRep.GetEntity(id);
+                    budgetFromDb = budgetsRep.GetEntity(id, "Budgets_Allocations.Budgets_AllocationToMonth");
 
                     if (budgetFromDb != null)
                     {
