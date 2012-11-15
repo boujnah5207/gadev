@@ -214,7 +214,7 @@
     <value>הרשאה</value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>הרשאות תקציביות</value>
+    <value>סלי תקציבים</value>
   </data>
   <data name="PermissionsAllocations" xml:space="preserve">
     <value>הגדרת הרשאות תקציביות</value>
@@ -680,5 +680,20 @@
   </data>
   <data name="InvalidAmount" xml:space="preserve">
     <value>אנא הכנס כמות ונסה שוב</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>כל המשתמשים</value>
+  </data>
+  <data name="ImportSuppliers" xml:space="preserve">
+    <value>ייבוא ספקים</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>משתמשים</value>
+  </data>
+  <data name="UsersAmount" xml:space="preserve">
+    <value>כמות משתמשים</value>
+  </data>
+  <data name="UpdateBudget" xml:space="preserve">
+    <value>עדכון תקציב</value>
   </data>
 </root>

@@ -223,6 +223,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Users.
+        /// </summary>
+        public static string AllUsers {
+            get {
+                return ResourceManager.GetString("AllUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount.
         /// </summary>
         public static string Amount {
@@ -849,6 +858,15 @@ namespace Loc {
         public static string ImportBudget {
             get {
                 return ResourceManager.GetString("ImportBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Suppliers.
+        /// </summary>
+        public static string ImportSuppliers {
+            get {
+                return ResourceManager.GetString("ImportSuppliers", resourceCulture);
             }
         }
         
@@ -1672,6 +1690,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Budget.
+        /// </summary>
+        public static string UpdateBudget {
+            get {
+                return ResourceManager.GetString("UpdateBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update order.
         /// </summary>
         public static string UpdateOrder {
@@ -1722,6 +1749,24 @@ namespace Loc {
         public static string UserPerferences {
             get {
                 return ResourceManager.GetString("UserPerferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users Amount.
+        /// </summary>
+        public static string UsersAmount {
+            get {
+                return ResourceManager.GetString("UsersAmount", resourceCulture);
             }
         }
         
