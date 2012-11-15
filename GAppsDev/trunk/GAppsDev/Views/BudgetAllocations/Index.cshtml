@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Budgets_ExpensesToIncomes>
+﻿@model IEnumerable<DB.Budgets_Allocations>
 
 @{
     ViewBag.Title = Loc.Dic.AllBudgetAllocations;
@@ -53,6 +53,6 @@
 
 <script>
     function redirectToCreate() {
-        window.location = "@Url.Action("Create")" + "\\" + $("#BudgetId").val();
+        window.location = "@Url.Action("Create")" + "/" + $("#BudgetId").val();
     }
 </script>

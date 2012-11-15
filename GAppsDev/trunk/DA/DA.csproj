@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllocationMonthsRepository.cs" />
     <Compile Include="BudgetsExpensesRepository.cs" />
     <Compile Include="BudgetsExpensesToIncomesRepository.cs" />
     <Compile Include="BudgetsIncomesRepository.cs" />

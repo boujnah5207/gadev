@@ -26,7 +26,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                List<Budgets_ExpensesToIncomes> model;
+                List<Budgets_Allocations> model;
                 List<SelectListItemDB> budgetsList;
 
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
@@ -59,7 +59,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_ExpensesToIncomes allocation;
+                Budgets_Allocations allocation;
 
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 {
@@ -148,7 +148,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Budgets_ExpensesToIncomes budgets_expensestoincomes, int id = 0)
+        public ActionResult Create(Budgets_Allocations Budgets_Allocations, int id = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -170,8 +170,8 @@ namespace GAppsDev.Controllers
                             if (budget.CompanyId == CurrentUser.CompanyId)
                             {
 
-                                income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId.Value);
-                                expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId.Value);
+                                income = incomesRep.GetEntity(Budgets_Allocations.IncomeId.Value);
+                                expense = expensesRep.GetEntity(Budgets_Allocations.ExpenseId.Value);
 
                                 if (income != null && expense != null)
                                 {
@@ -184,21 +184,21 @@ namespace GAppsDev.Controllers
                                              .Where(x => x.IncomeId == income.Id)
                                              .Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
+                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
                                             return Error(Errors.INCOME_FULL_ALLOCATION);
 
                                         allocatedToExpense = allocationsRep.GetList()
                                             .Where(x => x.ExpenseId == expense.Id)
                                             .Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
+                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
                                             return Error(Errors.EXPENSES_FULL_ALLOCATION);
 
-                                        budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
-                                        budgets_expensestoincomes.BudgetId = budget.Id;
-                                        budgets_expensestoincomes.CompanyId = CurrentUser.CompanyId;
+                                        Budgets_Allocations.CompanyId = CurrentUser.CompanyId;
+                                        Budgets_Allocations.BudgetId = budget.Id;
+                                        Budgets_Allocations.CompanyId = CurrentUser.CompanyId;
 
-                                        if (allocationsRep.Create(budgets_expensestoincomes))
+                                        if (allocationsRep.Create(Budgets_Allocations))
                                             return RedirectToAction("Index");
                                         else
                                             return Error(Errors.DATABASE_ERROR);
@@ -243,7 +243,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_ExpensesToIncomes allocation;
+                Budgets_Allocations allocation;
                 List<SelectListItemDB> incomesList;
                 List<SelectListItemDB> expensesList;
 
@@ -297,13 +297,13 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Edit(Budgets_ExpensesToIncomes budgets_expensestoincomes)
+        public ActionResult Edit(Budgets_Allocations Budgets_Allocations)
         {
             if (Authorized(RoleType.SystemManager))
             {
                 if (ModelState.IsValid)
                 {
-                    Budgets_ExpensesToIncomes allocation;
+                    Budgets_Allocations allocation;
                     Budgets_Incomes income;
                     Budgets_Expenses expense;
 
@@ -313,14 +313,14 @@ namespace GAppsDev.Controllers
                     using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
-                        allocation = allocationsRep.GetEntity(budgets_expensestoincomes.Id);
+                        allocation = allocationsRep.GetEntity(Budgets_Allocations.Id);
 
                         if (allocation != null)
                         {
                             if (allocation.CompanyId == CurrentUser.CompanyId)
                             {
-                                    income = incomesRep.GetEntity(budgets_expensestoincomes.IncomeId.Value);
-                                    expense = expensesRep.GetEntity(budgets_expensestoincomes.ExpenseId.Value);
+                                    income = incomesRep.GetEntity(Budgets_Allocations.IncomeId.Value);
+                                    expense = expensesRep.GetEntity(Budgets_Allocations.ExpenseId.Value);
 
                                     if (income != null && expense != null)
                                     {
@@ -331,31 +331,31 @@ namespace GAppsDev.Controllers
                                             decimal? allocatedToIncome;
 
                                             totalUsed = ordersRep.GetList()
-                                                .Where(order => order.BudgetAllocationId == budgets_expensestoincomes.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                                .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
                                                 .Sum(x => (decimal?)x.Price);
 
-                                            if ((totalUsed ?? 0) > budgets_expensestoincomes.Amount)
+                                            if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
                                                 return Error(Errors.ALLOCATIONS_AMOUNT_IS_USED);
 
                                             allocatedToIncome = allocationsRep.GetList()
-                                                 .Where(x => x.IncomeId == income.Id && x.Id != budgets_expensestoincomes.Id)
+                                                 .Where(x => x.IncomeId == income.Id && x.Id != Budgets_Allocations.Id)
                                                  .Sum(alloc => (decimal?)alloc.Amount);
 
-                                            if ((allocatedToIncome ?? 0) + budgets_expensestoincomes.Amount > income.Amount)
+                                            if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
                                                 return Error(Errors.INCOME_FULL_ALLOCATION);
 
                                             allocatedToExpense = allocationsRep.GetList()
-                                                .Where(x => x.ExpenseId == expense.Id && x.Id != budgets_expensestoincomes.Id)
+                                                .Where(x => x.ExpenseId == expense.Id && x.Id != Budgets_Allocations.Id)
                                                 .Sum(alloc => (decimal?)alloc.Amount);
 
-                                            if ((allocatedToExpense ?? 0) + budgets_expensestoincomes.Amount > expense.Amount)
+                                            if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
                                                 return Error(Errors.EXPENSES_FULL_ALLOCATION);
 
-                                            allocation.IncomeId = budgets_expensestoincomes.IncomeId;
-                                            allocation.ExpenseId = budgets_expensestoincomes.ExpenseId;
-                                            allocation.Amount = budgets_expensestoincomes.Amount;
+                                            allocation.IncomeId = Budgets_Allocations.IncomeId;
+                                            allocation.ExpenseId = Budgets_Allocations.ExpenseId;
+                                            allocation.Amount = Budgets_Allocations.Amount;
 
-                                            Budgets_ExpensesToIncomes update = allocationsRep.Update(allocation);
+                                            Budgets_Allocations update = allocationsRep.Update(allocation);
 
                                             if (update != null)
                                                 return RedirectToAction("Index");
@@ -402,7 +402,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_ExpensesToIncomes allocation;
+                Budgets_Allocations allocation;
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
@@ -448,7 +448,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_ExpensesToIncomes allocation;
+                Budgets_Allocations allocation;
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())

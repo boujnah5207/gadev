@@ -154,7 +154,8 @@ namespace GAppsDev.Controllers
                     if (year < DateTime.Now.Year - 1)
                         return Error(Errors.BUDGETS_YEAR_PASSED);
 
-                    List<Budgets_ExpensesToIncomes> createdAllocations = new List<Budgets_ExpensesToIncomes>();
+                    List<Budgets_Allocations> createdAllocations = new List<Budgets_Allocations>();
+                    List<Budgets_AllocationToMonth> createdAllocationMonths = new List<Budgets_AllocationToMonth>();
                     Budget newBudget = new Budget()
                     {
                         CompanyId = CurrentUser.CompanyId,
@@ -183,6 +184,7 @@ namespace GAppsDev.Controllers
                         bool noErros = true;
                         string errorType = String.Empty;
                         using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                        using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
                         {
                             for (int i = firstValuesLine; i < fileLines.Length; i++)
                             {
@@ -192,29 +194,17 @@ namespace GAppsDev.Controllers
                                     fileValues[vIndex] = fileValues[vIndex].Replace("\"", "");
                                 }
 
-                                Budgets_ExpensesToIncomes newAllocation;
+                                Budgets_Allocations newAllocation;
 
                                 try
                                 {
-                                    newAllocation = new Budgets_ExpensesToIncomes()
+                                    newAllocation = new Budgets_Allocations()
                                     {
                                         BudgetId = newBudget.Id,
                                         CompanyId = CurrentUser.CompanyId,
                                         IncomeId = null,
                                         ExpenseId = null,
-                                        Amount = null,
-                                        January = String.IsNullOrEmpty(fileValues[3]) || Decimal.Parse(fileValues[3]) <= 0 ? 0 : Decimal.Parse(fileValues[3]),
-                                        February = String.IsNullOrEmpty(fileValues[5]) || Decimal.Parse(fileValues[5]) <= 0 ? 0 : Decimal.Parse(fileValues[5]),
-                                        March = String.IsNullOrEmpty(fileValues[7]) || Decimal.Parse(fileValues[7]) <= 0 ? 0 : Decimal.Parse(fileValues[7]),
-                                        April = String.IsNullOrEmpty(fileValues[9]) || Decimal.Parse(fileValues[9]) <= 0 ? 0 : Decimal.Parse(fileValues[9]),
-                                        May = String.IsNullOrEmpty(fileValues[11]) || Decimal.Parse(fileValues[11]) <= 0 ? 0 : Decimal.Parse(fileValues[11]),
-                                        June = String.IsNullOrEmpty(fileValues[13]) || Decimal.Parse(fileValues[13]) <= 0 ? 0 : Decimal.Parse(fileValues[13]),
-                                        July = String.IsNullOrEmpty(fileValues[15]) || Decimal.Parse(fileValues[15]) <= 0 ? 0 : Decimal.Parse(fileValues[15]),
-                                        August = String.IsNullOrEmpty(fileValues[17]) || Decimal.Parse(fileValues[17]) <= 0 ? 0 : Decimal.Parse(fileValues[17]),
-                                        September = String.IsNullOrEmpty(fileValues[19]) || Decimal.Parse(fileValues[19]) <= 0 ? 0 : Decimal.Parse(fileValues[19]),
-                                        October = String.IsNullOrEmpty(fileValues[21]) || Decimal.Parse(fileValues[21]) <= 0 ? 0 : Decimal.Parse(fileValues[21]),
-                                        November = String.IsNullOrEmpty(fileValues[23]) || Decimal.Parse(fileValues[23]) <= 0 ? 0 : Decimal.Parse(fileValues[23]),
-                                        December = String.IsNullOrEmpty(fileValues[25]) || Decimal.Parse(fileValues[25]) <= 0 ? 0 : Decimal.Parse(fileValues[25])
+                                        Amount = null
                                     };
                                 }
                                 catch
@@ -227,6 +217,38 @@ namespace GAppsDev.Controllers
                                 if (allocationsRep.Create(newAllocation))
                                 {
                                     createdAllocations.Add(newAllocation);
+
+                                    for (int month = 1, fileLine = 3; month <= 12; month++, fileLine += 2)
+                                    {
+                                        string monthAmountString = fileValues[fileLine];
+                                        if (String.IsNullOrEmpty(monthAmountString))
+                                        {
+                                            noErros = false;
+                                            break;
+                                        }
+
+                                        decimal amount;
+                                        if(!Decimal.TryParse(monthAmountString, out amount))
+                                        {
+                                            noErros = false;
+                                            break;
+                                        }
+
+                                        Budgets_AllocationToMonth newAllocationMonth = new Budgets_AllocationToMonth()
+                                        {
+                                            AllocationId = newAllocation.Id,
+                                            MonthId = month,
+                                            Amount = amount < 0 ? 0 : amount
+                                        };
+
+                                        if (!allocationMonthsRep.Create(newAllocationMonth))
+                                        {
+                                            noErros = false;
+                                            break;
+                                        }
+                                        
+                                        createdAllocationMonths.Add(newAllocationMonth);
+                                    }
                                 }
                                 else
                                 {
@@ -245,10 +267,16 @@ namespace GAppsDev.Controllers
                         {
                             using (BudgetsRepository budgetsRep = new BudgetsRepository())
                             using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                            using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
                             {
                                 foreach (var allocation in createdAllocations)
                                 {
                                     allocationsRep.Delete(allocation.Id);
+                                }
+
+                                foreach (var allocationMonth in createdAllocationMonths)
+                                {
+                                    allocationMonthsRep.Delete(allocationMonth.Id);
                                 }
 
                                 budgetsRep.Delete(newBudget.Id);
@@ -279,7 +307,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budget budgetFromDb;
-                List<Budgets_ExpensesToIncomes> allocations = new List<Budgets_ExpensesToIncomes>();
+                List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
 
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 {
@@ -287,7 +315,7 @@ namespace GAppsDev.Controllers
 
                     if (budgetFromDb != null)
                     {
-                        allocations = budgetFromDb.Budgets_ExpensesToIncomes.ToList();
+                        allocations = budgetFromDb.Budgets_Allocations.ToList();
                     }
                 }
 
@@ -298,20 +326,20 @@ namespace GAppsDev.Controllers
                     foreach (var allocation in allocations)
                     {
                         builder.AppendLine(
-                            String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} ",
-                                allocation.January,
-                                allocation.February,
-                                allocation.March,
-                                allocation.April,
-                                allocation.May,
-                                allocation.June,
-                                allocation.July,
-                                allocation.August,
-                                allocation.September,
-                                allocation.October,
-                                allocation.November,
-                                allocation.December
-                                )
+                            //String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} ",
+                            //    allocation.January,
+                            //    allocation.February,
+                            //    allocation.March,
+                            //    allocation.April,
+                            //    allocation.May,
+                            //    allocation.June,
+                            //    allocation.July,
+                            //    allocation.August,
+                            //    allocation.September,
+                            //    allocation.October,
+                            //    allocation.November,
+                            //    allocation.December
+                            //    )
                             );
                     }
 

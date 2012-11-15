@@ -34,9 +34,9 @@
                                 <input type="hidden" class="existingAllocations" id="allocationField-@i-@i2" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomesId" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
                                 <input type="hidden" name="BudgetAllocationsList[@i].PermissionAllocations[@i2].Allocation.Id" value="@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Id" />
 
-                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Amount</span> -
-                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Incomes.CustomName</span> --->
-                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_ExpensesToIncomes.Budgets_Expenses.CustomName</span>
+                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_Allocations.Amount</span> -
+                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_Allocations.Budgets_Incomes.CustomName</span> --->
+                                <span>@Model.BudgetAllocationsList[i].PermissionAllocations[i2].Allocation.Budgets_Allocations.Budgets_Expenses.CustomName</span>
                         
                                 <input type="button" value="@Loc.Dic.Delete" onClick="removeItem(@i,@i2) "/>
                             </div>
