@@ -8,8 +8,12 @@ namespace GAppsDev.Models
 {
     public class CreateOrderModel
     {
+        bool IsFutureOrder = false;
+
         public Order Order { get; set; }
         public string ItemsString { get; set; }
+
+        public int? AllocationId { get; set; }
         public List<OrderAllocation> Allocations { get; set; }
 
         public CreateOrderModel()

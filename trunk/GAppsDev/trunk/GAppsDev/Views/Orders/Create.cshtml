@@ -62,75 +62,36 @@
         <br />
         @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
         
-        @Loc.Dic.Month<text>:</text> 
-        for (int i = 0; i < ViewBag.Allocations.Count; i++)
-        {
-            <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
-                                                                                           {<text>style="display:none;"</text>}>
-                @if (DateTime.Now.Month == 1)
-                {
-                <option data-amount="@ViewBag.Allocations[i].January" value="1">@Loc.Dic.January (@ViewBag.Allocations[i].January)</option>
-                }
-                @if (DateTime.Now.Month <= 2)
-                {
-                <option data-amount="@ViewBag.Allocations[i].February" value="2">@Loc.Dic.February (@ViewBag.Allocations[i].February)</option>
-                }
-                @if (DateTime.Now.Month <= 3)
-                {
-                <option data-amount="@ViewBag.Allocations[i].March" value="3">@Loc.Dic.March (@ViewBag.Allocations[i].March)</option>
-                }
-                @if (DateTime.Now.Month <= 4)
-                {
-                <option data-amount="@ViewBag.Allocations[i].April" value="4">@Loc.Dic.April (@ViewBag.Allocations[i].April)</option>
-                }
-                @if (DateTime.Now.Month <= 5)
-                {
-                <option data-amount="@ViewBag.Allocations[i].May" value="5">@Loc.Dic.May (@ViewBag.Allocations[i].May)</option>
-                }
-                @if (DateTime.Now.Month <= 6)
-                {
-                <option data-amount="@ViewBag.Allocations[i].June" value="6">@Loc.Dic.June (@ViewBag.Allocations[i].June)</option>
-                }
-                @if (DateTime.Now.Month <= 7)
-                {
-                <option data-amount="@ViewBag.Allocations[i].July" value="7">@Loc.Dic.July (@ViewBag.Allocations[i].July)</option>
-                }
-                @if (DateTime.Now.Month <= 8)
-                {
-                <option data-amount="@ViewBag.Allocations[i].August" value="8">@Loc.Dic.August (@ViewBag.Allocations[i].August)</option>
-                }
-                @if (DateTime.Now.Month <= 9)
-                {
-                <option data-amount="@ViewBag.Allocations[i].September" value="9">@Loc.Dic.September (@ViewBag.Allocations[i].September)</option>
-                }
-                @if (DateTime.Now.Month <= 10)
-                {
-                <option data-amount="@ViewBag.Allocations[i].October" value="10">@Loc.Dic.October (@ViewBag.Allocations[i].October)</option>
-                }
-                @if (DateTime.Now.Month <= 11)
-                {
-                <option data-amount="@ViewBag.Allocations[i].November" value="11">@Loc.Dic.November (@ViewBag.Allocations[i].November)</option>
-                }
-                @if (DateTime.Now.Month < 12)
-                {
-                <option data-amount="@ViewBag.Allocations[i].December" value="12">@Loc.Dic.December (@ViewBag.Allocations[i].December)</option>
-                }
-            </select> 
-        }
-        @Loc.Dic.Amount<text>:</text> <input type="text" id="allocationAmount" value="" /> 
-        <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
-        
-        <fieldset>
-            <legend>@Loc.Dic.BudgetAllocations</legend>
+        <div id="FutureOrder" style="display:none;">
+            @Loc.Dic.Month: 
+            @for (int i = 0; i < ViewBag.Allocations.Count; i++)
+            {
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
 
-            <div id="orderAllocations">
-                <span>@Loc.Dic.NoAllocationsInOrder.</span>
-            </div>
-        </fieldset>
-        <br />
-        <span>@Loc.Dic.TotalAllocation: </span>
-        <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+                    @for (int month = DateTime.Now.Month; month <= 12; month++)
+                    {
+                        DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
+                        <option data-amount="@monthAllocation.Amount" value="@month">@Html.GetMonthName(month) (@monthAllocation.Amount)</option>
+                    }
+
+                </select>
+            }
+            @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
+            <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
         
+            <fieldset>
+                <legend>@Loc.Dic.BudgetAllocations</legend>
+
+                <div id="orderAllocations">
+                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                </div>
+            </fieldset>
+            <br />
+            <span>@Loc.Dic.TotalAllocation: </span>
+            <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+        </div>
+        <br />
+        <br />
         <div class="editor-label">
             @Loc.Dic.Notes:
         </div>
