@@ -556,6 +556,7 @@
     <Content Include="Views\Budgets\Import.cshtml" />
     <Content Include="Views\Orders\OrdersToExport.cshtml" />
     <Content Include="Views\Suppliers\SuppliersEntrence.cshtml" />
+    <Content Include="Views\Suppliers\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

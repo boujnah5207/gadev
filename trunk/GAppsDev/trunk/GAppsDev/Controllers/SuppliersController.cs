@@ -33,6 +33,13 @@ namespace GAppsDev.Controllers
             return View(db.Suppliers.Where(x => x.CompanyId == CurrentUser.CompanyId).ToList());
         }
 
+
+        [OpenIdAuthorize]
+        public ActionResult Import()
+        {
+            return View(ViewBag.CompanyId = CurrentUser.CompanyId);
+        }
+
         //
         // GET: /Suppliers/Details/5
 

@@ -14,6 +14,7 @@
 @using(Html.BeginForm()) {
 
     <input type="hidden" name="userId" value="@Model.UserId" />
+    @Loc.Dic.BudgetAllocations Model.
     @Loc.Dic.Permissions<text>:</text> @Html.DropDownList("PermissionId", Model.PermissionsSelectList, new { id = "PermissionsList"}) <input id="addPermissionBtn" type="button" value="@Loc.Dic.AddPermission" onClick="addItem()" />
     <fieldset>
         <legend>@Loc.Dic.BudgetAllocations</legend>

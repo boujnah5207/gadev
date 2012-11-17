@@ -250,7 +250,7 @@ body#Managment a#ManagmentLink,
     body.AllProjects a#AllProjectsLink,
     body.AllSubProjects a#AllSubProjectsLink,
     body.AllUsers a#AllUsersLink,
-    body.AllPermissions a#AllPermissionsLink
+    body.AllPermissions a#AllPermissionsLink,
     body.AllSuppliers a#AllSuppliersLink
 
 {
