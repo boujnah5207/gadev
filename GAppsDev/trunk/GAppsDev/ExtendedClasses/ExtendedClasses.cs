@@ -9,6 +9,39 @@ namespace System.Web.Mvc.Html
 {
     public static partial class LinkExtensions
     {
+        public static MvcHtmlString GetMonthName(this HtmlHelper htmlHelper, int month)
+        {
+            switch (month)
+            {
+                case 1:
+                    return new MvcHtmlString(Loc.Dic.January);
+                case 2:
+                    return new MvcHtmlString(Loc.Dic.February);
+                case 3:
+                    return new MvcHtmlString(Loc.Dic.March);
+                case 4:
+                    return new MvcHtmlString(Loc.Dic.April);
+                case 5:
+                    return new MvcHtmlString(Loc.Dic.May);
+                case 6:
+                    return new MvcHtmlString(Loc.Dic.June);
+                case 7:
+                    return new MvcHtmlString(Loc.Dic.July);
+                case 8:
+                    return new MvcHtmlString(Loc.Dic.August);
+                case 9:
+                    return new MvcHtmlString(Loc.Dic.September);
+                case 10:
+                    return new MvcHtmlString(Loc.Dic.October);
+                case 11:
+                    return new MvcHtmlString(Loc.Dic.November);
+                case 12:
+                    return new MvcHtmlString(Loc.Dic.December);
+                default:
+                    return new MvcHtmlString("Invalid Month Number");
+            }
+        }
+
         public static MvcHtmlString FilterLink(this HtmlHelper htmlHelper, string baseURL, string linkText, string linkSortby, string linkOrder, string currSortby)
         {
             string currSort = HttpContext.Current.Request.QueryString["sortby"];

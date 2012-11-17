@@ -159,6 +159,7 @@ namespace GAppsDev.Controllers
                     Budget newBudget = new Budget()
                     {
                         CompanyId = CurrentUser.CompanyId,
+                        ExternalBudget = true,
                         IsActive = false,
                         Year = year
                     };
@@ -188,10 +189,10 @@ namespace GAppsDev.Controllers
                         {
                             for (int i = firstValuesLine; i < fileLines.Length; i++)
                             {
-                                string[] fileValues = fileLines[i].Split('\t');
-                                for (int vIndex = 0; vIndex < fileValues.Length; vIndex++)
+                                string[] lineValues = fileLines[i].Split('\t');
+                                for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
                                 {
-                                    fileValues[vIndex] = fileValues[vIndex].Replace("\"", "");
+                                    lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
                                 }
 
                                 Budgets_Allocations newAllocation;
@@ -218,9 +219,9 @@ namespace GAppsDev.Controllers
                                 {
                                     createdAllocations.Add(newAllocation);
 
-                                    for (int month = 1, fileLine = 3; month <= 12; month++, fileLine += 2)
+                                    for (int month = 1, valueIndex = 3; month <= 12; month++, valueIndex += 2)
                                     {
-                                        string monthAmountString = fileValues[fileLine];
+                                        string monthAmountString = lineValues[valueIndex];
                                         if (String.IsNullOrEmpty(monthAmountString))
                                         {
                                             noErros = false;
@@ -325,22 +326,15 @@ namespace GAppsDev.Controllers
 
                     foreach (var allocation in allocations)
                     {
-                        builder.AppendLine(
-                            //String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} ",
-                            //    allocation.January,
-                            //    allocation.February,
-                            //    allocation.March,
-                            //    allocation.April,
-                            //    allocation.May,
-                            //    allocation.June,
-                            //    allocation.July,
-                            //    allocation.August,
-                            //    allocation.September,
-                            //    allocation.October,
-                            //    allocation.November,
-                            //    allocation.December
-                            //    )
-                            );
+                        for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
+                        {
+                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+
+                            builder.Append(String.Format("{0} ", monthAmount));
+                        }
+
+                        builder.AppendLine();
                     }
 
                     return File(Encoding.UTF8.GetBytes(builder.ToString()),
