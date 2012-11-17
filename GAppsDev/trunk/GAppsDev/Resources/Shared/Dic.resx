@@ -696,4 +696,13 @@
   <data name="UpdateBudget" xml:space="preserve">
     <value>Update Budget</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ImportedSupplierNumber" xml:space="preserve">
+    <value>Imported Supplier Number</value>
+  </data>
+  <data name="ImportDate" xml:space="preserve">
+    <value>Import Date</value>
+  </data>
 </root>

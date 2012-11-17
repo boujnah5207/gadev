@@ -25,7 +25,6 @@
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "שם המשתמש", "username", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "הרשאה", "roles", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "אימייל", "email", ReverseOrder, (string)ViewBag.Sortby)</th>
-        <th>@Html.FilterLink((string)ViewBag.BaseUrl, "תאריך יצירה", "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
         <th>@Html.FilterLink((string)ViewBag.BaseUrl, "התחברות אחרונה", "login", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
@@ -41,9 +40,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LastLogInTime)
@@ -72,9 +68,6 @@
         </td>
         <td>
             @Html.DisplayTextFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.CreationTime)
         </td>
         <td>
             @Html.DisplayTextFor(modelItem => item.LastLogInTime)

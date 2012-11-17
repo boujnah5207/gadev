@@ -862,6 +862,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Date.
+        /// </summary>
+        public static string ImportDate {
+            get {
+                return ResourceManager.GetString("ImportDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imported Supplier Number.
+        /// </summary>
+        public static string ImportedSupplierNumber {
+            get {
+                return ResourceManager.GetString("ImportedSupplierNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Suppliers.
         /// </summary>
         public static string ImportSuppliers {
@@ -1776,6 +1794,15 @@ namespace Loc {
         public static string UsersManagment {
             get {
                 return ResourceManager.GetString("UsersManagment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
         

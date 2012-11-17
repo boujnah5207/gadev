@@ -696,4 +696,13 @@
   <data name="UpdateBudget" xml:space="preserve">
     <value>עדכון תקציב</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>הצג</value>
+  </data>
+  <data name="ImportedSupplierNumber" xml:space="preserve">
+    <value>מספר ספק מיובא</value>
+  </data>
+  <data name="ImportDate" xml:space="preserve">
+    <value>תאריך ייבוא</value>
+  </data>
 </root>
