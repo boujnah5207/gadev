@@ -696,6 +696,9 @@
   <data name="UpdateBudget" xml:space="preserve">
     <value>עדכון תקציב</value>
   </data>
+  <data name="FutureOrder" xml:space="preserve">
+    <value>הזמנה עתידית</value>
+  </data>
   <data name="View" xml:space="preserve">
     <value>הצג</value>
   </data>

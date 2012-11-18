@@ -592,6 +592,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dic.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Loc</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shared\Dic.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

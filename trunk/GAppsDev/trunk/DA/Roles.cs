@@ -18,6 +18,7 @@ namespace DA
         UsersManager = 16,
         admin = 32 | UsersManager | SystemManager | OrdersApprover | OrdersWriter,
         BudgetViewer = 64,
+        FutureOrderWriter = 128,
         SuperAdmin = int.MaxValue
     }
     public static class Roles

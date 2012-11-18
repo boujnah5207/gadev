@@ -1163,13 +1163,15 @@ namespace DB
         /// Create a new Budgets_Allocations object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="budgetId">Initial value of the BudgetId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate)
+        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.String name, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate)
         {
             Budgets_Allocations budgets_Allocations = new Budgets_Allocations();
             budgets_Allocations.Id = id;
+            budgets_Allocations.Name = name;
             budgets_Allocations.CompanyId = companyId;
             budgets_Allocations.BudgetId = budgetId;
             budgets_Allocations.CreationDate = creationDate;
@@ -1206,6 +1208,30 @@ namespace DB
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
