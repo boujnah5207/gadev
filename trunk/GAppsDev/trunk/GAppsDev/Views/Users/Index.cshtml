@@ -22,7 +22,7 @@
 @Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
 
 <p>
-    @Html.ActionLink("הוסף משתמש חדש", "Create")
+    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
 </p>
 
 <h2>משתמשים פעילים (@Model.ActiveUsers.Count)</h2>
@@ -41,14 +41,14 @@ else
     <table>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PendingUsers[0].Email)
+                @Loc.Dic.Email
             </th>
         
             <th>
-                @Html.DisplayNameFor(model => model.PendingUsers[0].Roles)
+                @Loc.Dic.Role
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PendingUsers[0].CreationDate)
+                @Loc.Dic.CreationDate
             </th>
             <th>פעולות</th>
         </tr>
@@ -90,22 +90,19 @@ else
     <table>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].Company.Name)
+                @Loc.Dic.Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].FirstName)
+                @Loc.Dic.Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].LastName)
+                @Loc.Dic.Role
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].Roles)
+                @Loc.Dic.CreationDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].CreationTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NonActiveUsers[0].LastLogInTime)
+                @Loc.Dic.LastLogInTime
             </th>
             <th>פעולות</th>
         </tr>
@@ -118,8 +115,6 @@ else
             </td>
             <td>
                 @Html.DisplayFor(modelItem => user.FirstName)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => user.LastName)
             </td>
             <td>
