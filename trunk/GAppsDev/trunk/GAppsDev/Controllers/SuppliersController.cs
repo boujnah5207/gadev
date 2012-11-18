@@ -37,8 +37,77 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Import()
         {
-            return View(ViewBag.CompanyId = CurrentUser.CompanyId);
+            if (Authorized(RoleType.SystemManager))
+            {
+                return View();
+            }
+            else
+            {
+                return Error(Errors.NO_PERMISSION);
+            }
         }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase file)
+        {
+            if (!Authorized(RoleType.SystemManager)) return Error(Errors.NO_PERMISSION);
+            if (file != null && file.ContentLength <= 0) return Error(Errors.INVALID_FORM);
+
+            List<Supplier> createdSuppliers = new List<Supplier>();
+            byte[] fileBytes = new byte[file.InputStream.Length];
+            file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
+            string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
+
+            string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            int firstValuesLine = 3;
+
+            bool noErros = true;
+            string errorType = String.Empty;
+            using (SuppliersRepository suppliersRep = new SuppliersRepository())
+            {
+                for (int i = firstValuesLine; i < fileLines.Length; i++)
+                {
+                    string[] lineValues = fileLines[i].Split('\t');
+                    for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
+                    {
+                        lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
+                    }
+
+                    Supplier newSupplier;
+
+                    try
+                    {
+                        newSupplier = new Supplier()
+                        {
+                            CompanyId = CurrentUser.CompanyId,
+                        };
+                    }
+                    catch
+                    {
+                        noErros = false;
+                        errorType = Loc.Dic.Error_FileParseError;
+                        break;
+                    }
+
+                    if (suppliersRep.Create(newSupplier))
+                    {
+                        createdSuppliers.Add(newSupplier);
+
+                    }
+                    else
+                    {
+                        noErros = false;
+                        errorType = Errors.DATABASE_ERROR;
+                        break;
+                    }
+                }
+            }
+
+            if (!noErros) return Error(Errors.BUDGETS_CREATE_ERROR);
+            return RedirectToAction("index");
+        }
+
 
         //
         // GET: /Suppliers/Details/5
@@ -250,7 +319,7 @@ namespace GAppsDev.Controllers
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
-                
+
             return View();
         }
 
