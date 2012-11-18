@@ -60,13 +60,18 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
+        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
+        {
+        @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
+        <br />
         @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
         
-        <div id="FutureOrder" style="display:none;">
+        <div id="FutureOrderContainer" style="display:none;">
             @Loc.Dic.Month: 
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
-                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
+                                                                                               {<text>style="display:none;"</text>}>
 
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {
@@ -90,6 +95,11 @@
             <span>@Loc.Dic.TotalAllocation: </span>
             <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
         </div>
+        }
+        else
+        {
+            @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" })
+        }
         <br />
         <br />
         <div class="editor-label">

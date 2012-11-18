@@ -938,18 +938,23 @@ namespace GAppsDev.Controllers
                     foreach (var allocation in allocations)
                     {
                         List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                        decimal totalRemaining = 0;
 
                         for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
                         {
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
                             decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                            
+                            if(monthNumber <= DateTime.Now.Month)
+                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
+
+                        allocation.Amount = totalRemaining;
                     }
 
                     allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
+                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Amount) })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
@@ -958,6 +963,7 @@ namespace GAppsDev.Controllers
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
 
+                ViewBag.UserRoles = CurrentUser.Roles;
                 return View();
             }
             else
@@ -1000,49 +1006,93 @@ namespace GAppsDev.Controllers
                         else
                             return Error(Errors.ORDER_HAS_NO_ITEMS);
 
-                        model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-
-                        if (model.Allocations.Count > 0)
+                        if (model.IsFutureOrder && model.Allocations != null && model.Allocations.Count > 0)
+                        {
+                            model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
                             totalAllocation = model.Allocations.Sum(x => x.Amount);
+                        }
                         else
+                        {
+                            model.Allocations = new List<OrderAllocation>();
                             totalAllocation = 0;
+                        }
 
-                        if (totalOrderPrice != totalAllocation)
-                            return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
-
+                        if (model.IsFutureOrder)
+                        {
+                            if (totalOrderPrice != totalAllocation)
+                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                        }
+                        
                         bool wasOrderCreated;
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
                         {
-                            int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
-                            orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
-                            bool IsValidAllocations =
-                                (orderAllocations.Count == orderAllocationsIds.Length) && 
-                                orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
-                                model.Allocations.All( x => (x.MonthId >= 1 && x.MonthId <= 12) && x.Amount > 0);
-
-                            if (IsValidAllocations)
+                            if (model.IsFutureOrder)
                             {
-                                foreach (var allocation in orderAllocations)
+                                int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
+                                orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
+                                bool IsValidAllocations =
+                                    (orderAllocations.Count == orderAllocationsIds.Length) &&
+                                    orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
+                                    model.Allocations.All(x => (x.MonthId >= 1 && x.MonthId <= 12) && x.Amount > 0);
+
+                                if (IsValidAllocations)
                                 {
-                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
-                                    List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
-
-                                    foreach (var month in allocationMonths)
+                                    foreach (var allocation in orderAllocations)
                                     {
-                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                        List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
 
-                                        if (month.Amount > allocationMonth.Amount)
-                                            return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                        foreach (var month in allocationMonths)
+                                        {
+                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                            if (month.Amount > allocationMonth.Amount)
+                                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                        }
                                     }
+                                }
+                                else
+                                {
+                                    return Error(Errors.INVALID_FORM);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.INVALID_FORM);
+                                if(!model.BudgetAllocationId.HasValue)
+                                    return Error(Errors.INVALID_FORM);
+
+                                Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
+
+                                List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                decimal remainingOrderPrice = totalOrderPrice;
+
+                                for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
+                                {
+                                    var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                    decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                    decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                                    if (remainingAmount.HasValue && remainingAmount.Value > 0)
+                                    {
+                                        OrderAllocation newOrderAllocation = new OrderAllocation()
+                                        {
+                                            AllocationId = model.BudgetAllocationId.Value,
+                                            Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
+                                            MonthId = monthNumber,
+                                            IsActive = true
+                                        };
+
+                                        model.Allocations.Add(newOrderAllocation);
+                                        remainingOrderPrice -= newOrderAllocation.Amount;
+                                    }
+                                }
+
+                                if (remainingOrderPrice > 0)
+                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
                             }
 
                             int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();

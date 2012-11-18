@@ -696,6 +696,9 @@
   <data name="UpdateBudget" xml:space="preserve">
     <value>Update Budget</value>
   </data>
+  <data name="FutureOrder" xml:space="preserve">
+    <value>Future Order</value>
+  </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
   </data>
@@ -711,4 +714,5 @@
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>
+>>>>>>> .r199
 </root>

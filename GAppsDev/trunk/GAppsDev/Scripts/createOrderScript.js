@@ -40,6 +40,10 @@ $(function () {
         console.log($(this).val());
         $("#allocation-" + $(this).val()).css("display", "inline-block");
     });
+
+    $("#isFutureOrder").change(function () {
+        $("#FutureOrderContainer").toggle();
+    });
 });
 
 function beginForm() {
