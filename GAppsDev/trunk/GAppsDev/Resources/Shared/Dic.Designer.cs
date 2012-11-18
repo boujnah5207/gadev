@@ -1069,6 +1069,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last LogIn Time.
+        /// </summary>
+        public static string LastLogInTime {
+            get {
+                return ResourceManager.GetString("LastLogInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {
@@ -1488,6 +1497,15 @@ namespace Loc {
         public static string Replace {
             get {
                 return ResourceManager.GetString("Replace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
             }
         }
         

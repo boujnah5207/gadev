@@ -705,4 +705,10 @@
   <data name="ImportDate" xml:space="preserve">
     <value>Import Date</value>
   </data>
+  <data name="LastLogInTime" xml:space="preserve">
+    <value>Last LogIn Time</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
 </root>
