@@ -4,4 +4,15 @@
     ViewBag.SubPageName = "AllSuppliers";
 }
 
-<h2>Import</h2>
+<h2>@Loc.Dic.Import</h2>
+
+@using (Html.BeginForm("Import", "Suppliers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <text>
+    <h2>קובץ ספקים</h2>
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+    </text>
+}
