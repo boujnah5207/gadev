@@ -59,8 +59,8 @@ namespace BL
                         errorType = Loc.Dic.Error_FileParseError;
                         break;
                     }
-                    Supplier existingSupplier = suppliersRep.GetList().Where(x=>x.CompanyId == companyId).SingleOrDefault(x => x.ExternalId == newSupplier.ExternalId);
-                    if(existingSupplier == null) toAddSuppliers.Add(newSupplier);
+                    List<Supplier> existingSuppliers = suppliersRep.GetList().Where(x=>x.CompanyId == companyId && x.ExternalId == newSupplier.ExternalId).ToList();
+                    if(existingSuppliers.Count == 0) toAddSuppliers.Add(newSupplier);
                 }
                 if (!suppliersRep.AddList(toAddSuppliers))
                 {
