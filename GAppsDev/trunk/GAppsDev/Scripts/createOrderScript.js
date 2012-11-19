@@ -375,7 +375,7 @@ function isInt(value) {
 }
 
 function addAllocation() {
-    var allocationId = $("#allocationSelectList").val();
+    var allocationId = $("#allocationSelectList option:selected").val();
     var monthId = $("#allocation-" + allocationId + " option:selected").val();
     var monthName = $("#allocation-" + allocationId + " option:selected").text();
     var wantedAmount = $("#allocationAmount").val();

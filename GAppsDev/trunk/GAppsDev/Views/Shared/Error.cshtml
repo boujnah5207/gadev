@@ -1,12 +1,10 @@
-﻿@model GAppsDev.Models.ErrorModels.ErrorModel
-
-@{
-    ViewBag.Title = "שגיאה";
+﻿@{
+    ViewBag.Title = Loc.Dic.Error;
     ViewBag.PageName = "Error";
     ViewBag.NoSubMenu = true;
 
     string HtmlNewLine = System.Environment.NewLine + "<br />";
-    string HtmlErrorMessage = Model.ErrorMessage.Replace(System.Environment.NewLine, HtmlNewLine);
+    string HtmlErrorMessage = ViewBag.ErrorMessage.Replace(System.Environment.NewLine, HtmlNewLine);
 }
 
 <h2>

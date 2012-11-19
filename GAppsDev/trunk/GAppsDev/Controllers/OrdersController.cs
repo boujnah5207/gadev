@@ -1216,6 +1216,7 @@ namespace GAppsDev.Controllers
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                    model.IsFutureOrder = model.Order.IsFutureOrder;
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
@@ -1249,7 +1250,6 @@ namespace GAppsDev.Controllers
                     }
 
                     allocations = allocations.Distinct().ToList();
-                    model.Allocations = new List<OrderAllocation>();
 
                     foreach (var allocation in allocations)
                     {

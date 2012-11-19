@@ -18,6 +18,7 @@ var dialogContainer;
 var createSupplierDialog;
 var createItemDialogContainer;
 var createItemDialog;
+var removedAllocations = new Array();
 
 $(function () {
     formContainer = $("#formContainer");
@@ -283,4 +284,143 @@ function isInt(value) {
     else {
         return false;
     }
+}
+
+
+function addAllocation() {
+    var allocationId = $("#allocationSelectList").val();
+    var monthId = $("#allocation-" + allocationId + " option:selected").val();
+    var monthName = $("#allocation-" + allocationId + " option:selected").text();
+    var wantedAmount = $("#allocationAmount").val();
+    var remainingAmount = $("#allocation-" + allocationId + " option:selected").data("amount");
+    var allocationText = $("#allocationSelectList option:selected").text();
+    var container = $("#orderAllocations");
+
+    if (!isInt(wantedAmount) || wantedAmount <= 0) {
+        alert(local.InvalidAmount);
+        return;
+    }
+    if (wantedAmount > remainingAmount) {
+        alert(local.AmountExceedsAllocation);
+        return;
+    }
+
+    var existingAllocations = $(".existingAllocations");
+    var nextNumber = existingAllocations.length;
+
+    if (nextNumber == 0)
+        $("#orderAllocations").html("");
+
+    console.log(existingAllocations);
+    var allocationExists = false;
+    var existingAllocation;
+
+    for (var i = 0; i < existingAllocations.length; i++) {
+        console.log($(existingAllocations[i]).val() + "=" + allocationId);
+        if ($(existingAllocations[i]).find(".allocationIdField").val() == allocationId && $(existingAllocations[i]).find(".monthIdField").val() == monthId) {
+            allocationExists = true;
+            existingAllocation = $(existingAllocations[i]);
+        }
+    }
+
+    var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
+    if (existingRemovedAllocation == null) {
+        if (!allocationExists) {
+            var newAllocation = $(
+                "<div id='allocation-" + nextNumber + "' class='existingAllocations'>" +
+                    "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='Allocations[" + nextNumber + "].IsActive' value='true' />" +
+                    "<input type='hidden' class='allocationIdField' id='allocationIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].AllocationId' value='" + allocationId + "' />" +
+                    "<input type='hidden' class='monthIdField' id='monthIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].MonthId' value='" + monthId + "' />" +
+                    "<input type='hidden' class='amountField' id='amountField-" + nextNumber + "' name='Allocations[" + nextNumber + "].Amount' value='" + wantedAmount + "' />" +
+                    "<span class='allocationText'> Allocation: " + allocationText + " Month: " + monthName + " Amount: <span class='amountText'>" + wantedAmount + "</span></span>" +
+                    "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(" + nextNumber + ") '/>" +
+                "</div>"
+                );
+
+            container.append(newAllocation);
+        }
+        else {
+            existingAllocation.find(".amountField").val(wantedAmount);
+            existingAllocation.find(".amountText").html(wantedAmount);
+        }
+    }
+    else {
+        unRemove(allocationId, monthId);
+        existingAllocation.find(".amountField").val(wantedAmount);
+        existingAllocation.find(".amountText").html(wantedAmount);
+    }
+
+    updateTotalAllocation();
+    $("#allocationAmount").val("");
+}
+
+function removeAllocation(allocationIndex) {
+    var container = $("#allocation-" + allocationIndex);
+    var isActiveField = $("#isActiveField-" + allocationIndex);
+    var isActive = isActiveField.val();
+    var allocationId = $("#allocationIdField-" + allocationIndex).val();
+    var monthId = $("#monthIdField-" + allocationIndex).val();
+    console.log("index: " + allocationIndex);
+    console.log("id: " + allocationId);
+    isActiveField.val("false");
+
+    var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
+    if (existingRemovedAllocation == null) {
+        console.log(removedAllocations.length);
+        var newRemovedAllocation = { allocationId: allocationId, monthId: monthId, oldItem: container };
+        removedAllocations[removedAllocations.length] = newRemovedAllocation;
+
+        container.toggle(0);
+    }
+
+    updateTotalAllocation();
+}
+
+function unRemove(allocationId, monthId) {
+    var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
+    if (existingRemovedAllocation != null) {
+        existingRemovedAllocation.oldItem.toggle(0);
+        existingRemovedAllocation.oldItem.find(".isActiveField").val("true");
+
+        console.log("old list: " + removedAllocations.length);
+        var itemIndex = null;
+
+        var newRemovedList = new Array();
+
+        for (var i = 0; i < removedAllocations.length; i++) {
+            console.log("index: " + i);
+
+            if (removedAllocations[i] != existingRemovedAllocation) {
+                newRemovedList[newRemovedList.length] = removedAllocations[i];
+            }
+        }
+
+        console.log("new list: " + newRemovedList.length);
+
+        removedAllocations = newRemovedList;
+
+        console.log(removedAllocations);
+    }
+}
+
+function getRemovedAllocation(allocationId, monthId) {
+    for (var index in removedAllocations) {
+        if (removedAllocations[index].allocationId == allocationId && removedAllocations[index].monthId == monthId) {
+            return removedAllocations[index];
+        }
+    }
+
+    return null;
+}
+
+function updateTotalAllocation() {
+    var existingAllocations = $(".existingAllocations");
+    var totalAllocation = 0;
+
+    for (var i = 0; i < existingAllocations.length; i++) {
+        if ($(existingAllocations[i]).find(".isActiveField").val() == "true")
+            totalAllocation += parseInt($(existingAllocations[i]).find(".amountField").val());
+    }
+
+    $("#totalAllocation").val(totalAllocation);
 }
