@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="AllocationMonthsRepository.cs" />
     <Compile Include="BudgetsExpensesRepository.cs" />
-    <Compile Include="BudgetsExpensesToIncomesRepository.cs" />
+    <Compile Include="AllocationRepository.cs" />
     <Compile Include="BudgetsIncomesRepository.cs" />
     <Compile Include="BudgetsPermissionsRepository.cs" />
     <Compile Include="BudgetsPermissionsToAllocationRepository.cs" />
