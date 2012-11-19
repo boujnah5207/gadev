@@ -7,12 +7,12 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using BL;
 using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.SupplierModels;
 using Mvc4.OpenId.Sample.Security;
 using System.Globalization;
 using GAppsDev.OpenIdService;
+using BL;
 
 namespace GAppsDev.Controllers
 {
@@ -52,7 +52,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)
         {
-            Interfaces.ImportSuppliers();  //file.InputStream
+            Interfaces.ImportSuppliers(file.InputStream);  //file.InputStream
             const int FIRST_COLOUMN = 0;
             const int SECOND_COLOUMN = 0;
             if (!Authorized(RoleType.SystemManager)) return Error(Errors.NO_PERMISSION);
@@ -288,7 +288,7 @@ namespace GAppsDev.Controllers
                             {
                                 Id = supp.Id,
                                 Name = supp.Name,
-                                VAT_Number = supp.VAT_Number,
+                                VAT_Number = supp.VAT_Number.HasValue ? supp.VAT_Number.Value : 0,
                                 Phone_Number = supp.Phone_Number,
                                 Activity_Hours = supp.Activity_Hours,
                                 Additional_Phone = supp.Additional_Phone,

@@ -1208,16 +1208,35 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.OrdersWriter))
             {
-                Order order;
+                CreateOrderModel model = new CreateOrderModel();
+                model.Allocations = new List<OrderAllocation>();
+
                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
-                    order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                    model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
                     List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
+
+                    foreach (var allocation in existingOrderAllocations)
+	                {
+                        string allocationName = allocation.Budgets_Allocations.Name;
+
+		                model.Allocations.Add(
+                            new OrderAllocation()
+                            {
+                                AllocationId = allocation.Id,
+                                Name = allocationName,
+                                MonthId = allocation.MonthId,
+                                IsActive = true,
+                                Amount = allocation.Amount
+                            }
+                        );
+	                }
 
                     foreach (var permission in permissions)
                     {
@@ -1229,22 +1248,44 @@ namespace GAppsDev.Controllers
                                 );
                     }
 
+                    allocations = allocations.Distinct().ToList();
+                    model.Allocations = new List<OrderAllocation>();
+
+                    foreach (var allocation in allocations)
+                    {
+                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                        decimal totalRemaining = 0;
+
+                        for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
+                        {
+                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                            if (monthNumber <= DateTime.Now.Month)
+                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                        }
+                        
+                        allocation.Amount = totalRemaining;
+                    }
+
                     allocationsSelectList = allocations
-                        .Distinct()
-                        .Select(a => new { Id = a.Id, Name = a.Amount + ": " + a.Budgets_Incomes.CustomName + "-->" + a.Budgets_Expenses.CustomName })
+                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Amount) })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
 
+                    ViewBag.Allocations = allocations;
+                    ViewBag.UserRoles = CurrentUser.Roles;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }
 
-                if (order.UserId == CurrentUser.UserId)
+                if (model.Order.UserId == CurrentUser.UserId)
                 {
-                    if (order != null)
+                    if (model != null)
                     {
                         string existingItems = "";
-                        foreach (var item in order.Orders_OrderToItem)
+                        foreach (var item in model.Order.Orders_OrderToItem)
                         {
                             existingItems += String.Format("{0},{1},{2},{3};", item.ItemId, item.Orders_Items.Title, item.Quantity, item.SingleItemPrice);
                         }
@@ -1254,7 +1295,7 @@ namespace GAppsDev.Controllers
 
                         ViewBag.ExistingItems = existingItems;
 
-                        return View(order);
+                        return View(model);
                     }
                     else
                     {

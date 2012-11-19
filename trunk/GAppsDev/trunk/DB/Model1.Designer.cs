@@ -8611,24 +8611,16 @@ namespace DB
         /// Create a new Supplier object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="vAT_Number">Initial value of the VAT_Number property.</param>
-        /// <param name="address">Initial value of the Address property.</param>
-        /// <param name="city">Initial value of the City property.</param>
-        /// <param name="phone_Number">Initial value of the Phone_Number property.</param>
-        /// <param name="companyId">Initial value of the CompanyId property.</param>
-        public static Supplier CreateSupplier(global::System.Int32 id, global::System.DateTime creationDate, global::System.String name, global::System.Int32 vAT_Number, global::System.String address, global::System.String city, global::System.String phone_Number, global::System.Int32 companyId)
+        public static Supplier CreateSupplier(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.String name)
         {
             Supplier supplier = new Supplier();
             supplier.Id = id;
+            supplier.CompanyId = companyId;
             supplier.CreationDate = creationDate;
             supplier.Name = name;
-            supplier.VAT_Number = vAT_Number;
-            supplier.Address = address;
-            supplier.City = city;
-            supplier.Phone_Number = phone_Number;
-            supplier.CompanyId = companyId;
             return supplier;
         }
 
@@ -8662,6 +8654,30 @@ namespace DB
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CompanyId
+        {
+            get
+            {
+                return _CompanyId;
+            }
+            set
+            {
+                OnCompanyIdChanging(value);
+                ReportPropertyChanging("CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompanyId");
+                OnCompanyIdChanged();
+            }
+        }
+        private global::System.Int32 _CompanyId;
+        partial void OnCompanyIdChanging(global::System.Int32 value);
+        partial void OnCompanyIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8714,9 +8730,33 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 VAT_Number
+        public global::System.String ExternalId
+        {
+            get
+            {
+                return _ExternalId;
+            }
+            set
+            {
+                OnExternalIdChanging(value);
+                ReportPropertyChanging("ExternalId");
+                _ExternalId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExternalId");
+                OnExternalIdChanged();
+            }
+        }
+        private global::System.String _ExternalId;
+        partial void OnExternalIdChanging(global::System.String value);
+        partial void OnExternalIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> VAT_Number
         {
             get
             {
@@ -8731,14 +8771,14 @@ namespace DB
                 OnVAT_NumberChanged();
             }
         }
-        private global::System.Int32 _VAT_Number;
-        partial void OnVAT_NumberChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _VAT_Number;
+        partial void OnVAT_NumberChanging(Nullable<global::System.Int32> value);
         partial void OnVAT_NumberChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Address
         {
@@ -8750,7 +8790,7 @@ namespace DB
             {
                 OnAddressChanging(value);
                 ReportPropertyChanging("Address");
-                _Address = StructuralObject.SetValidValue(value, false);
+                _Address = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Address");
                 OnAddressChanged();
             }
@@ -8762,7 +8802,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String City
         {
@@ -8774,7 +8814,7 @@ namespace DB
             {
                 OnCityChanging(value);
                 ReportPropertyChanging("City");
-                _City = StructuralObject.SetValidValue(value, false);
+                _City = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("City");
                 OnCityChanged();
             }
@@ -8786,7 +8826,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Phone_Number
         {
@@ -8798,7 +8838,7 @@ namespace DB
             {
                 OnPhone_NumberChanging(value);
                 ReportPropertyChanging("Phone_Number");
-                _Phone_Number = StructuralObject.SetValidValue(value, false);
+                _Phone_Number = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Phone_Number");
                 OnPhone_NumberChanged();
             }
@@ -9022,54 +9062,6 @@ namespace DB
         private global::System.String _Notes;
         partial void OnNotesChanging(global::System.String value);
         partial void OnNotesChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CompanyId
-        {
-            get
-            {
-                return _CompanyId;
-            }
-            set
-            {
-                OnCompanyIdChanging(value);
-                ReportPropertyChanging("CompanyId");
-                _CompanyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CompanyId");
-                OnCompanyIdChanged();
-            }
-        }
-        private global::System.Int32 _CompanyId;
-        partial void OnCompanyIdChanging(global::System.Int32 value);
-        partial void OnCompanyIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String ExternalId
-        {
-            get
-            {
-                return _ExternalId;
-            }
-            set
-            {
-                OnExternalIdChanging(value);
-                ReportPropertyChanging("ExternalId");
-                _ExternalId = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ExternalId");
-                OnExternalIdChanged();
-            }
-        }
-        private global::System.String _ExternalId;
-        partial void OnExternalIdChanging(global::System.String value);
-        partial void OnExternalIdChanged();
 
         #endregion
 

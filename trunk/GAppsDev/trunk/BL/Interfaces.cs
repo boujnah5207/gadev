@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Interfaces
+namespace BL
 {
     public static class Interfaces
     {
-        public static bool ImportSuppliers(File file)
+        public static bool ImportSuppliers(Stream stream)
         {
             return true;
         }
