@@ -60,6 +60,23 @@ namespace BaseLibraries
             return true;
         }
 
+        public virtual bool AddList(List<TEntity> list)
+        {
+            try
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    _db.CreateObjectSet<TEntity>().AddObject(list[i]);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            _db.SaveChanges();
+            return true;
+        }
+
         public TEntity GetEntity(int id, params string[] includes)
         {
             try
