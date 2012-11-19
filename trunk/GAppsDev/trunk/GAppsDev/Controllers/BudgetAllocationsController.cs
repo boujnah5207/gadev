@@ -29,7 +29,7 @@ namespace GAppsDev.Controllers
                 List<SelectListItemDB> budgetsList;
 
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 {
                     model = allocationsRep.GetList("Budgets_Expenses", "Budgets_Incomes").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
 
@@ -60,7 +60,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Allocations allocation;
 
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 {
                     allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
                 }
@@ -247,7 +247,7 @@ namespace GAppsDev.Controllers
                 List<SelectListItemDB> incomesList;
                 List<SelectListItemDB> expensesList;
 
-                using (BudgetsExpensesToIncomesRepository allocationRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationRep = new AllocationRepository())
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
@@ -405,7 +405,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Allocations allocation;
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
                 {
                     allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
@@ -451,7 +451,7 @@ namespace GAppsDev.Controllers
             {
                 Budgets_Allocations allocation;
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 using (BudgetsPermissionsToAllocationRepository allocationsPermissionsRep = new BudgetsPermissionsToAllocationRepository())
                 {
                     allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");

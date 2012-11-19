@@ -305,7 +305,7 @@ namespace GAppsDev.Controllers
                 decimal? totalUsedAllocation;
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 {
                     Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
 
@@ -1024,7 +1024,7 @@ namespace GAppsDev.Controllers
                         
                         bool wasOrderCreated;
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                        using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                        using (AllocationRepository allocationsRep = new AllocationRepository())
                         {
                             if (model.IsFutureOrder)
                             {
@@ -1351,7 +1351,7 @@ namespace GAppsDev.Controllers
                                     Budgets_Allocations budgetAllocation;
 
                                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                                    using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                                    using (AllocationRepository allocationsRep = new AllocationRepository())
                                     {
                                         budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
 
