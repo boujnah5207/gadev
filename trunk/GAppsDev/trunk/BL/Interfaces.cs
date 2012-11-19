@@ -10,7 +10,7 @@ namespace BL
 {
     public static class Interfaces
     {
-        public static bool ImportSuppliers(Stream stream, int companyId)
+        public static string ImportSuppliers(Stream stream, int companyId)
         {
             const int FIRST_COLOUMN = 0;
             const int SECOND_COLOUMN = 1;
@@ -59,7 +59,8 @@ namespace BL
                         errorType = Loc.Dic.Error_FileParseError;
                         break;
                     }
-                    toAddSuppliers.Add(newSupplier);
+                    Supplier existingSupplier = suppliersRep.GetList().Where(x=>x.CompanyId == companyId).SingleOrDefault(x => x.ExternalId == newSupplier.ExternalId);
+                    if(existingSupplier == null) toAddSuppliers.Add(newSupplier);
                 }
                 if (!suppliersRep.AddList(toAddSuppliers))
                 {
@@ -67,9 +68,8 @@ namespace BL
                     errorType = Loc.Dic.error_database_error;
                 }
             }
-            if (!noErros) return false; // Error(Loc.Dic.error_budgets_create_error);
-
-            return true;
+            if (!noErros) return errorType;
+            return "OK";
         }
     }
 }

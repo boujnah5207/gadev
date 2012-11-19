@@ -51,13 +51,11 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)
         {
-            //Interfaces.ImportSuppliers(file.InputStream);
-            
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
-
-            
-            return RedirectToAction("index");
+            string moved = Interfaces.ImportSuppliers(file.InputStream, CurrentUser.CompanyId);
+            if (moved == "OK") return RedirectToAction("index");
+            else return Error(moved);
         }
 
 
