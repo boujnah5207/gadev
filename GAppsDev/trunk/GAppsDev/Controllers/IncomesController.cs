@@ -387,7 +387,7 @@ namespace GAppsDev.Controllers
                 Budgets_Incomes income;
                 using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (BudgetsExpensesToIncomesRepository allocationsRep = new BudgetsExpensesToIncomesRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository())
                 using (BudgetsPermissionsToAllocationRepository permissionAllocationsRep = new BudgetsPermissionsToAllocationRepository())
                 {
                     income = incomesRep.GetEntity(id, "Budget", "Budgets_Incomes_types", "Budgets_Incomes_Institutions");
