@@ -714,4 +714,181 @@
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>
+  <data name="error_allocations_amount_is_used" xml:space="preserve">
+    <value>error_allocations_amount_is_used</value>
+  </data>
+  <data name="error_allocations_delete_error" xml:space="preserve">
+    <value>error_allocations_delete_error</value>
+  </data>
+  <data name="error_allocations_edit_error" xml:space="preserve">
+    <value>error_allocations_edit_error</value>
+  </data>
+  <data name="error_allocations_get_error" xml:space="preserve">
+    <value>error_allocations_get_error</value>
+  </data>
+  <data name="error_allocations_has_approved_orders" xml:space="preserve">
+    <value>error_allocations_has_approved_orders</value>
+  </data>
+  <data name="error_budgets_already_active" xml:space="preserve">
+    <value>error_budgets_already_active</value>
+  </data>
+  <data name="error_budgets_create_error" xml:space="preserve">
+    <value>error_budgets_create_error</value>
+  </data>
+  <data name="error_budgets_get_error" xml:space="preserve">
+    <value>error_budgets_get_error</value>
+  </data>
+  <data name="error_budgets_year_exists" xml:space="preserve">
+    <value>error_budgets_year_exists</value>
+  </data>
+  <data name="error_budgets_year_passed" xml:space="preserve">
+    <value>error_budgets_year_passed</value>
+  </data>
+  <data name="error_database_error" xml:space="preserve">
+    <value>error_database_error</value>
+  </data>
+  <data name="error_expenses_allocations_exeeds_amount" xml:space="preserve">
+    <value>error_expenses_allocations_exeeds_amount</value>
+  </data>
+  <data name="error_expenses_create_error" xml:space="preserve">
+    <value>error_expenses_create_error</value>
+  </data>
+  <data name="error_expenses_delete_has_approved_orders" xml:space="preserve">
+    <value>error_expenses_delete_has_approved_orders</value>
+  </data>
+  <data name="error_expenses_full_allocation" xml:space="preserve">
+    <value>error_expenses_full_allocation</value>
+  </data>
+  <data name="error_expenses_get_error" xml:space="preserve">
+    <value>error_expenses_get_error</value>
+  </data>
+  <data name="error_income_allocations_exeeds_amount" xml:space="preserve">
+    <value>error_income_allocations_exeeds_amount</value>
+  </data>
+  <data name="error_income_create_error" xml:space="preserve">
+    <value>error_income_create_error</value>
+  </data>
+  <data name="error_income_delete_has_approved_orders" xml:space="preserve">
+    <value>error_income_delete_has_approved_orders</value>
+  </data>
+  <data name="error_income_full_allocation" xml:space="preserve">
+    <value>error_income_full_allocation</value>
+  </data>
+  <data name="error_income_get_error" xml:space="preserve">
+    <value>error_income_get_error</value>
+  </data>
+  <data name="error_invalid_form" xml:space="preserve">
+    <value>error_invalid_form</value>
+  </data>
+  <data name="error_inventory_create_error" xml:space="preserve">
+    <value>error_inventory_create_error</value>
+  </data>
+  <data name="error_no_permission" xml:space="preserve">
+    <value>error_no_permission</value>
+  </data>
+  <data name="error_orderitems_get_error" xml:space="preserve">
+    <value>error_orderitems_get_error</value>
+  </data>
+  <data name="error_orders_create_error" xml:space="preserve">
+    <value>error_orders_create_error</value>
+  </data>
+  <data name="error_orders_delete_error" xml:space="preserve">
+    <value>error_orders_delete_error</value>
+  </data>
+  <data name="error_orders_delete_items_error" xml:space="preserve">
+    <value>error_orders_delete_items_error</value>
+  </data>
+  <data name="error_orders_get_error" xml:space="preserve">
+    <value>error_orders_get_error</value>
+  </data>
+  <data name="error_order_already_has_invoice" xml:space="preserve">
+    <value>error_order_already_has_invoice</value>
+  </data>
+  <data name="error_order_delete_after_approval" xml:space="preserve">
+    <value>error_order_delete_after_approval</value>
+  </data>
+  <data name="error_order_edit_after_approval" xml:space="preserve">
+    <value>error_order_edit_after_approval</value>
+  </data>
+  <data name="error_order_get_error" xml:space="preserve">
+    <value>error_order_get_error</value>
+  </data>
+  <data name="error_order_has_no_items" xml:space="preserve">
+    <value>error_order_has_no_items</value>
+  </data>
+  <data name="error_order_insufficient_allocation" xml:space="preserve">
+    <value>error_order_insufficient_allocation</value>
+  </data>
+  <data name="error_order_not_approved" xml:space="preserve">
+    <value>error_order_not_approved</value>
+  </data>
+  <data name="error_order_not_found" xml:space="preserve">
+    <value>error_order_not_found</value>
+  </data>
+  <data name="error_order_save_items_error" xml:space="preserve">
+    <value>error_order_save_items_error</value>
+  </data>
+  <data name="error_order_update_items_error" xml:space="preserve">
+    <value>error_order_update_items_error</value>
+  </data>
+  <data name="error_permissions_create_error" xml:space="preserve">
+    <value>error_permissions_create_error</value>
+  </data>
+  <data name="error_permissions_delete_error" xml:space="preserve">
+    <value>error_permissions_delete_error</value>
+  </data>
+  <data name="error_permissions_get_error" xml:space="preserve">
+    <value>error_permissions_get_error</value>
+  </data>
+  <data name="error_projects_create_error" xml:space="preserve">
+    <value>error_projects_create_error</value>
+  </data>
+  <data name="error_projects_get_error" xml:space="preserve">
+    <value>error_projects_get_error</value>
+  </data>
+  <data name="error_sub_projects_create_error" xml:space="preserve">
+    <value>error_sub_projects_create_error</value>
+  </data>
+  <data name="error_sub_projects_get_error" xml:space="preserve">
+    <value>error_sub_projects_get_error</value>
+  </data>
+  <data name="error_suppliers_create_error" xml:space="preserve">
+    <value>error_suppliers_create_error</value>
+  </data>
+  <data name="error_suppliers_get_error" xml:space="preserve">
+    <value>error_suppliers_get_error</value>
+  </data>
+  <data name="error_users_create_error" xml:space="preserve">
+    <value>error_users_create_error</value>
+  </data>
+  <data name="error_users_delete_error" xml:space="preserve">
+    <value>error_users_delete_error</value>
+  </data>
+  <data name="error_users_exist_error" xml:space="preserve">
+    <value>error_users_exist_error</value>
+  </data>
+  <data name="error_users_get_error" xml:space="preserve">
+    <value>error_users_get_error</value>
+  </data>
+  <data name="error_users_limit_reached" xml:space="preserve">
+    <value>error_users_limit_reached</value>
+  </data>
+  <data name="error_user_already_has_permissions" xml:space="preserve">
+    <value>error_user_already_has_permissions</value>
+  </data>
+  <data name="error_user_cannot_delete_self" xml:space="preserve">
+    <value>error_user_cannot_delete_self</value>
+  </data>
+  <data name="error_user_edit_permissions_error" xml:space="preserve">
+    <value>error_user_edit_permissions_error</value>
+  </data>
+  <data name="error_user_not_found" xml:space="preserve">
+    <value>error_user_not_found</value>
+  </data>
+  <data name="error_user_not_registerd" xml:space="preserve">
+    <value>error_user_not_registerd</value>
+  </data>
+  <data name="error_user_was_canceled" xml:space="preserve">
+    <value>error_user_was_canceled</value>
+  </data>
 </root>
