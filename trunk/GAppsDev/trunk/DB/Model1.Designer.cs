@@ -6309,7 +6309,8 @@ namespace DB
         /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId)
+        /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder)
         {
             Order order = new Order();
             order.Id = id;
@@ -6319,6 +6320,7 @@ namespace DB
             order.OrderNumber = orderNumber;
             order.SupplierId = supplierId;
             order.StatusId = statusId;
+            order.IsFutureOrder = isFutureOrder;
             return order;
         }
 
@@ -6688,6 +6690,30 @@ namespace DB
         private Nullable<global::System.DateTime> _InvoiceDate;
         partial void OnInvoiceDateChanging(Nullable<global::System.DateTime> value);
         partial void OnInvoiceDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsFutureOrder
+        {
+            get
+            {
+                return _IsFutureOrder;
+            }
+            set
+            {
+                OnIsFutureOrderChanging(value);
+                ReportPropertyChanging("IsFutureOrder");
+                _IsFutureOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsFutureOrder");
+                OnIsFutureOrderChanged();
+            }
+        }
+        private global::System.Boolean _IsFutureOrder;
+        partial void OnIsFutureOrderChanging(global::System.Boolean value);
+        partial void OnIsFutureOrderChanged();
 
         #endregion
 

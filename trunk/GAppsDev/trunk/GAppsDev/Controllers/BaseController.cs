@@ -41,13 +41,14 @@ namespace GAppsDev.Controllers
 
         public ActionResult Error(ModelStateDictionary modelState)
         {
-            return View("Error", new ErrorModel(GetErrorsFromModel(modelState)));
+            ViewBag.ErrorMessage = GetErrorsFromModel(modelState);
+            return View("Error");
         }
 
         protected string GetErrorsFromModel(ModelStateDictionary modelState)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine(Errors.INVALID_FORM);
+            builder.AppendLine(Loc.Dic.error_invalid_form);
             builder.AppendLine();
 
             foreach (var kvp in modelState)

@@ -891,4 +891,7 @@
   <data name="error_user_was_canceled" xml:space="preserve">
     <value>error_user_was_canceled</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

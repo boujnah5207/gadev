@@ -36,19 +36,19 @@ namespace BL
                     Supplier newSupplier;
                     if (!(int.Parse(lineValues[FIRST_COLOUMN]) > 0))
                     {
-                        errorType = Loc.Dic.error_in INVALID_FORM;
+                        errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
                     if (int.Parse(lineValues[SECOND_COLOUMN]) == null)
                     {
-                        errorType = Errors.INVALID_FORM;
+                        errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
                     try
                     {
                         newSupplier = new Supplier()
                         {
-                            CompanyId = CurrentUser.CompanyId,
+                            //CompanyId = CurrentUser.CompanyId,
                             ExternalId = lineValues[FIRST_COLOUMN],
                             Name = lineValues[SECOND_COLOUMN],
                         };
@@ -64,10 +64,12 @@ namespace BL
                 if (!suppliersRep.AddList(toAddSuppliers))
                 {
                     noErros = false;
-                    errorType = Errors.DATABASE_ERROR;
+                    errorType = Loc.Dic.error_database_error;
                 }
             }
-            if (!noErros) return Error(Errors.BUDGETS_CREATE_ERROR);
+            if (!noErros) return false; // Error(Loc.Dic.error_budgets_create_error);
+
+            return true;
         }
     }
 }
