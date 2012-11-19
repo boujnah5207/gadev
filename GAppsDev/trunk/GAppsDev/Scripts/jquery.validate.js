@@ -383,7 +383,7 @@ $.extend($.validator, {
 				});
 			}
 			this.settings.showErrors
-				? this.settings.showErrors.call( this, this.errorMap, this.errorList )
+				? this.settings.showLoc.Dic.error_call( this, this.errorMap, this.errorList )
 				: this.defaultShowErrors();
 		},
 

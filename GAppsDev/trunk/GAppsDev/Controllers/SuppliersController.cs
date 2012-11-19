@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.SupplierModels;
 using Mvc4.OpenId.Sample.Security;
 using System.Globalization;
@@ -44,7 +43,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -54,8 +53,8 @@ namespace GAppsDev.Controllers
         {
             //Interfaces.ImportSuppliers(file.InputStream);
             
-            if (!Authorized(RoleType.SystemManager)) return Error(Errors.NO_PERMISSION);
-            if (file != null && file.ContentLength <= 0) return Error(Errors.INVALID_FORM);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
 
             
             return RedirectToAction("index");
@@ -88,7 +87,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -113,7 +112,7 @@ namespace GAppsDev.Controllers
                     if (wasCreated)
                         return RedirectToAction("Index");
                     else
-                        return Error(Errors.SUPPLIERS_CREATE_ERROR);
+                        return Error(Loc.Dic.error_suppliers_create_error);
                 }
                 else
                 {
@@ -122,7 +121,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -135,7 +134,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -153,11 +152,11 @@ namespace GAppsDev.Controllers
                 if (wasCreated)
                     return Json(new { success = true, message = String.Empty, newSupplierId = supplier.Id.ToString() }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, message = Errors.SUPPLIERS_CREATE_ERROR }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = Loc.Dic.error_suppliers_create_error }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = Loc.Dic.error_no_permission }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -257,12 +256,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Json(new { gotData = false, message = Errors.SUPPLIERS_GET_ERROR }, JsonRequestBehavior.AllowGet);
+                    return Json(new { gotData = false, message = Loc.Dic.error_suppliers_get_error }, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                return Json(new { gotData = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+                return Json(new { gotData = false, message = Loc.Dic.error_no_permission }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -352,7 +351,7 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.ORDER_GET_ERROR);
+                    return Error(Loc.Dic.error_order_get_error);
                 }
             }
         }

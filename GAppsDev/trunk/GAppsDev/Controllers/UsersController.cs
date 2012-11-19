@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.Search;
 using GAppsDev.Models.UserModels;
 using Mvc4.OpenId.Sample.Security;
@@ -75,7 +74,7 @@ namespace GAppsDev.Controllers
                         }
                         catch
                         {
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
                         }
 
                         int numberOfItems = activeUsers.Count();
@@ -134,13 +133,13 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.USERS_GET_ERROR);
+                        return Error(Loc.Dic.error_users_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -190,7 +189,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -222,18 +221,18 @@ namespace GAppsDev.Controllers
                         }
                         catch
                         {
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
                         }
 
                         bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
                         bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
 
                         if (userExists || pendingUserExists)
-                            return Error(Errors.USERS_EXIST_ERROR);
+                            return Error(Loc.Dic.error_users_exist_error);
                     }
 
                     if (companyUserCount >= companyUserLimit)
-                        return Error(Errors.USERS_LIMIT_REACHED);
+                        return Error(Loc.Dic.error_users_limit_reached);
 
                     user.CompanyId = CurrentUser.CompanyId;
                     user.CreationDate = DateTime.Now;
@@ -250,7 +249,7 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.INVALID_FORM);
+                                return Error(Loc.Dic.error_invalid_form);
                             }
                         }
                         user.Roles = (int)combinedRoles;
@@ -266,16 +265,16 @@ namespace GAppsDev.Controllers
                         if (wasUserCreated)
                             return RedirectToAction("Index");
                         else
-                            return Error(Errors.USERS_CREATE_ERROR);
+                            return Error(Loc.Dic.error_users_create_error);
                     }
                     else
                     {
-                        return Error(Errors.INVALID_FORM);
+                        return Error(Loc.Dic.error_invalid_form);
                     }
                 }
                 else
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
             }
             else
@@ -318,23 +317,23 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
                         }
                         else
                         {
-                            return Error(Errors.PERMISSIONS_GET_ERROR);
+                            return Error(Loc.Dic.error_permissions_get_error);
                         }
                     }
                     else
                     {
-                        return Error(Errors.USERS_GET_ERROR);
+                        return Error(Loc.Dic.error_users_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -397,27 +396,27 @@ namespace GAppsDev.Controllers
                                     if (noErrors)
                                         return RedirectToAction("Index");
                                     else
-                                        return Error(Errors.USER_EDIT_PERMISSIONS_ERROR);
+                                        return Error(Loc.Dic.error_user_edit_permissions_error);
                                 }
                                 else
                                 {
-                                    return Error(Errors.DATABASE_ERROR);
+                                    return Error(Loc.Dic.error_database_error);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
                             }
                         }
                         else
                         {
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
                         }
                     }
                 }
                 else
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
             }
             else
@@ -443,7 +442,7 @@ namespace GAppsDev.Controllers
                 if (user != null)
                 {
                     if (user.CompanyId != CurrentUser.CompanyId)
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
 
                     List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
                     roleNames.Remove(RoleType.None.ToString());
@@ -459,12 +458,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.USER_NOT_FOUND);
+                    return Error(Loc.Dic.error_user_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -487,7 +486,7 @@ namespace GAppsDev.Controllers
                         if (userFromDatabase != null)
                         {
                             if (userFromDatabase.CompanyId != CurrentUser.CompanyId)
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
 
                             RoleType combinedRoles = RoleType.None;
                             foreach (string roleName in roleNames)
@@ -499,7 +498,7 @@ namespace GAppsDev.Controllers
                                 }
                                 else
                                 {
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
                                 }
                             }
 
@@ -513,11 +512,11 @@ namespace GAppsDev.Controllers
                             if (updatedUser != null)
                                 return RedirectToAction("Index");
                             else
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                         }
                         else
                         {
-                            return Error(Errors.USER_NOT_FOUND);
+                            return Error(Loc.Dic.error_user_not_found);
                         }
                     }
                 }
@@ -528,7 +527,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -545,7 +544,7 @@ namespace GAppsDev.Controllers
                 }
 
                 if (user.CompanyId != CurrentUser.CompanyId)
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
 
                 if (user != null)
                 {
@@ -563,12 +562,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.USER_NOT_FOUND);
+                    return Error(Loc.Dic.error_user_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -591,7 +590,7 @@ namespace GAppsDev.Controllers
                         if (userFromDatabase != null)
                         {
                             if (userFromDatabase.CompanyId != CurrentUser.CompanyId)
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
 
                             RoleType combinedRoles = RoleType.None;
                             foreach (string roleName in roleNames)
@@ -603,7 +602,7 @@ namespace GAppsDev.Controllers
                                 }
                                 else
                                 {
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
                                 }
                             }
 
@@ -615,7 +614,7 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.USER_NOT_FOUND);
+                            return Error(Loc.Dic.error_user_not_found);
                         }
                     }
                 }
@@ -626,7 +625,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -646,22 +645,22 @@ namespace GAppsDev.Controllers
 
                 if (user == null)
                 {
-                    return Error(Errors.USER_NOT_FOUND);
+                    return Error(Loc.Dic.error_user_not_found);
                 }
                 if (user.Id == CurrentUser.UserId)
                 {
-                    return Error(Errors.USER_CANNOT_DELETE_SELF);
+                    return Error(Loc.Dic.error_user_cannot_delete_self);
                 }
                 if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
 
                 return View(user);
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -678,18 +677,18 @@ namespace GAppsDev.Controllers
 
                 if (user == null)
                 {
-                    return Error(Errors.USER_NOT_FOUND);
+                    return Error(Loc.Dic.error_user_not_found);
                 }
                 if (user.CompanyId != CurrentUser.CompanyId)
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
 
                 return View(user);
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -706,11 +705,11 @@ namespace GAppsDev.Controllers
 
                     if (user == null)
                     {
-                        return Error(Errors.USER_NOT_FOUND);
+                        return Error(Loc.Dic.error_user_not_found);
                     }
                     if (user.CompanyId != CurrentUser.CompanyId)
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
 
                     pendingUserRep.Delete(user.Id);
@@ -720,7 +719,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -741,15 +740,15 @@ namespace GAppsDev.Controllers
 
                     if (user == null)
                     {
-                        return Error(Errors.USER_NOT_FOUND);
+                        return Error(Loc.Dic.error_user_not_found);
                     }
                     if (user.Id == CurrentUser.UserId)
                     {
-                        return Error(Errors.USER_CANNOT_DELETE_SELF);
+                        return Error(Loc.Dic.error_user_cannot_delete_self);
                     }
                     if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
 
                     user.IsActive = false;
@@ -766,7 +765,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -783,15 +782,15 @@ namespace GAppsDev.Controllers
 
                 if (user == null)
                 {
-                    return Error(Errors.USER_NOT_FOUND);
+                    return Error(Loc.Dic.error_user_not_found);
                 }
                 if (user.Id == CurrentUser.UserId)
                 {
-                    return Error(Errors.USER_CANNOT_DELETE_SELF);
+                    return Error(Loc.Dic.error_user_cannot_delete_self);
                 }
                 if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
 
                 bool? canAddUsers = CompanyCanAddUsers();
@@ -803,17 +802,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.USERS_LIMIT_REACHED);
+                        return Error(Loc.Dic.error_users_limit_reached);
                     }
                 }
                 else
                 {
-                    return Error(Errors.DATABASE_ERROR);
+                    return Error(Loc.Dic.error_database_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -830,15 +829,15 @@ namespace GAppsDev.Controllers
 
                     if (user == null)
                     {
-                        return Error(Errors.USER_NOT_FOUND);
+                        return Error(Loc.Dic.error_user_not_found);
                     }
                     if (user.Id == CurrentUser.UserId)
                     {
-                        return Error(Errors.USER_CANNOT_DELETE_SELF);
+                        return Error(Loc.Dic.error_user_cannot_delete_self);
                     }
                     if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
 
                     bool? canAddUsers = CompanyCanAddUsers();
@@ -852,18 +851,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.USERS_LIMIT_REACHED);
+                            return Error(Loc.Dic.error_users_limit_reached);
                         }
                     }
                     else
                     {
-                        return Error(Errors.DATABASE_ERROR);
+                        return Error(Loc.Dic.error_database_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -876,7 +875,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -917,13 +916,13 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.USERS_GET_ERROR);
+                        return Error(Loc.Dic.error_users_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 

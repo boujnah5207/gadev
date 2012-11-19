@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using GAppsDev.Models;
@@ -42,7 +41,7 @@ namespace GAppsDev.Controllers
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.OrdersViewer))
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
 
                 IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
@@ -108,7 +107,7 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.ORDERS_GET_ERROR);
+                        return Error(Loc.Dic.error_orders_get_error);
                     }
                 }
             }
@@ -183,13 +182,13 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.ORDERS_GET_ERROR);
+                        return Error(Loc.Dic.error_orders_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -266,7 +265,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -274,7 +273,7 @@ namespace GAppsDev.Controllers
         public ActionResult ModifyStatus(int id = 0)
         {
             if (!Authorized(RoleType.OrdersApprover))
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
 
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
@@ -282,15 +281,15 @@ namespace GAppsDev.Controllers
                     orderModel.Order = ordersRep.GetEntity(id);
 
                 if (orderModel.Order == null)
-                    return Error(Errors.ORDER_GET_ERROR);
+                    return Error(Loc.Dic.error_order_get_error);
 
                 if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
 
                             orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
 
                 if (orderModel.OrderToItem == null)
-                    return Error(Errors.DATABASE_ERROR);
+                    return Error(Loc.Dic.error_database_error);
 
                                 return View(orderModel);
                             }
@@ -341,12 +340,12 @@ namespace GAppsDev.Controllers
                                     }
                                     else
                                     {
-                                        return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                        return Error(Loc.Dic.error_order_insufficient_allocation);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.ALLOCATIONS_GET_ERROR);
+                                    return Error(Loc.Dic.error_allocations_get_error);
                                 }
                             }
                             else if (selectedStatus == Loc.Dic.DeclineOrder)
@@ -372,23 +371,23 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.ORDER_GET_ERROR);
+                        return Error(Loc.Dic.error_order_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -414,26 +413,26 @@ namespace GAppsDev.Controllers
                         }
                         else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
                         {
-                            return Error(Errors.ORDER_NOT_APPROVED);
+                            return Error(Loc.Dic.error_order_not_approved);
                         }
                         else
                         {
-                            return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
+                            return Error(Loc.Dic.error_order_already_has_invoice);
                         }
                     }
                     else
                     {
-                        return Error(Errors.ORDER_GET_ERROR);
+                        return Error(Loc.Dic.error_order_get_error);
                     }
                 }
                 else
                 {
-                    return Error(Errors.ORDER_NOT_FOUND);
+                    return Error(Loc.Dic.error_order_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -579,42 +578,42 @@ namespace GAppsDev.Controllers
                                                 inventoryRep.Delete(item.Id);
                                             }
 
-                                            return Error(Errors.INVENTORY_CREATE_ERROR);
+                                            return Error(Loc.Dic.error_inventory_create_error);
                                         }
                                     }
                                     else
                                     {
-                                        return Error(Errors.DATABASE_ERROR);
+                                        return Error(Loc.Dic.error_database_error);
                                     }
                                 }
                                 else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
                                 {
-                                    return Error(Errors.ORDER_NOT_APPROVED);
+                                    return Error(Loc.Dic.error_order_not_approved);
                                 }
                                 else
                                 {
-                                    return Error(Errors.ORDER_ALREADY_HAS_INVOICE);
+                                    return Error(Loc.Dic.error_order_already_has_invoice);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
                             }
                         }
                         else
                         {
-                            return Error(Errors.ORDER_GET_ERROR);
+                            return Error(Loc.Dic.error_order_get_error);
                         }
                     }
                 }
                 else
                 {
-                    return Error(Errors.INVALID_FORM);
+                    return Error(Loc.Dic.error_invalid_form);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -968,7 +967,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1004,7 +1003,7 @@ namespace GAppsDev.Controllers
                         if (ItemsList.Count > 0)
                             totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
                         else
-                            return Error(Errors.ORDER_HAS_NO_ITEMS);
+                            return Error(Loc.Dic.error_order_has_no_items);
 
                         if (model.IsFutureOrder && model.Allocations != null && model.Allocations.Count > 0)
                         {
@@ -1020,7 +1019,7 @@ namespace GAppsDev.Controllers
                         if (model.IsFutureOrder)
                         {
                             if (totalOrderPrice != totalAllocation)
-                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                return Error(Loc.Dic.error_order_insufficient_allocation);
                         }
                         
                         bool wasOrderCreated;
@@ -1051,19 +1050,19 @@ namespace GAppsDev.Controllers
                                             allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
                                             if (month.Amount > allocationMonth.Amount)
-                                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
                                 }
                             }
                             else
                             {
                                 if(!model.BudgetAllocationId.HasValue)
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
 
                                 Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
 
@@ -1092,7 +1091,7 @@ namespace GAppsDev.Controllers
                                 }
 
                                 if (remainingOrderPrice > 0)
-                                    return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                    return Error(Loc.Dic.error_order_insufficient_allocation);
                             }
 
                             int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
@@ -1176,22 +1175,22 @@ namespace GAppsDev.Controllers
                                     orderRep.Delete(model.Order.Id);
                                 }
 
-                                return Error(Errors.ORDERS_CREATE_ERROR);
+                                return Error(Loc.Dic.error_orders_create_error);
                             }
                         }
                         else
                         {
-                            return Error(Errors.ORDERS_CREATE_ERROR);
+                            return Error(Loc.Dic.error_orders_create_error);
                         }
                     }
                     else
                     {
-                        return Error(Errors.INVALID_FORM);
+                        return Error(Loc.Dic.error_invalid_form);
                     }
                 }
                 else
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
             }
             else
@@ -1299,17 +1298,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.ORDER_NOT_FOUND);
+                        return Error(Loc.Dic.error_order_not_found);
                     }
                 }
                 else
                 {
-                    return Error(Errors.NO_PERMISSION);
+                    return Error(Loc.Dic.error_no_permission);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1345,7 +1344,7 @@ namespace GAppsDev.Controllers
                                 if (itemsFromEditForm != null)
                                 {
                                     if (itemsFromEditForm.Count == 0)
-                                        return Error(Errors.ORDER_HAS_NO_ITEMS);
+                                        return Error(Loc.Dic.error_order_has_no_items);
 
                                     decimal? totalUsedAllocation;
                                     decimal totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
@@ -1363,11 +1362,11 @@ namespace GAppsDev.Controllers
                                                     .Sum(x => (decimal?)x.Price);
 
                                             if ((totalUsedAllocation ?? 0) + totalOrderPrice > budgetAllocation.Amount)
-                                                return Error(Errors.ORDER_INSUFFICIENT_ALLOCATION);
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
                                         }
                                         else
                                         {
-                                            return Error(Errors.DATABASE_ERROR);
+                                            return Error(Loc.Dic.error_database_error);
                                         }
                                     }
 
@@ -1442,26 +1441,26 @@ namespace GAppsDev.Controllers
                                     if (noErrors)
                                         return RedirectToAction("MyOrders");
                                     else
-                                        return Error(Errors.ORDER_UPDATE_ITEMS_ERROR);
+                                        return Error(Loc.Dic.error_order_update_items_error);
                                 }
                                 else
                                 {
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.ORDER_EDIT_AFTER_APPROVAL);
+                                return Error(Loc.Dic.error_order_edit_after_approval);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.ORDER_NOT_FOUND);
+                        return Error(Loc.Dic.error_order_not_found);
                     }
                 }
                 else
@@ -1471,7 +1470,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1501,22 +1500,22 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
+                            return Error(Loc.Dic.error_order_delete_after_approval);
                         }
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.ORDER_NOT_FOUND);
+                    return Error(Loc.Dic.error_order_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1559,33 +1558,34 @@ namespace GAppsDev.Controllers
                                     }
                                     else
                                     {
-                                        return Error(Errors.ORDERS_DELETE_ERROR);
+                                        return Error(Loc.Dic.error_orders_delete_error);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.ORDERS_DELETE_ITEMS_ERROR);
+                                    return Error(Loc.Dic.error_orders_delete_items_error);
                                 }
                             }
                         }
                         else
                         {
-                            return Error(Errors.ORDER_DELETE_AFTER_APPROVAL);
+                            return Error(Loc.Dic.error_order_delete_after_approval);
                         }
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.ORDER_NOT_FOUND);
+                    return Error(Loc.Dic.error_order_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1622,22 +1622,22 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
                         }
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.ORDER_NOT_FOUND);
+                    return Error(Loc.Dic.error_order_not_found);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1770,33 +1770,33 @@ namespace GAppsDev.Controllers
                                             inventoryRep.Delete(item.Id);
                                         }
 
-                                        return Error(Errors.INVENTORY_CREATE_ERROR);
+                                        return Error(Loc.Dic.error_INVENTORY_CREATE_ERROR);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.INVALID_FORM);
+                                    return Error(Loc.Dic.error_invalid_form);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
                         }
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.ORDER_NOT_FOUND);
+                    return Error(Loc.Dic.error_ORDER_NOT_FOUND);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
             */
             return View();
@@ -1816,7 +1816,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1841,12 +1841,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.ORDER_GET_ERROR);
+                    return Error(Loc.Dic.error_order_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1873,7 +1873,7 @@ namespace GAppsDev.Controllers
                     if (ordersToExport != null)
                     {
                         if (userCompany == null)
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
 
                         if (String.IsNullOrEmpty(userCompany.ExternalCoinCode) || String.IsNullOrEmpty(userCompany.ExternalExpenseCode))
                             return Error("Insufficient company data for export");
@@ -1955,13 +1955,13 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.ORDER_GET_ERROR);
+                        return Error(Loc.Dic.error_order_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -1987,7 +1987,7 @@ namespace GAppsDev.Controllers
                     if (ordersToExport != null)
                     {
                         if (userCompany == null)
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
 
                         if (String.IsNullOrEmpty(userCompany.ExternalCoinCode) || String.IsNullOrEmpty(userCompany.ExternalExpenseCode))
                             return Error("Insufficient company data for export");
@@ -2067,13 +2067,13 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.ORDER_GET_ERROR);
+                        return Error(Loc.Dic.error_order_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -2178,7 +2178,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 

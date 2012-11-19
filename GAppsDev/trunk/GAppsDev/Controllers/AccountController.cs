@@ -8,7 +8,6 @@ using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using DotNetOpenAuth.Messaging;
 using WebMatrix.WebData;
-using GAppsDev.Models.ErrorModels;
 
 namespace GAppsDev.Controllers
 {
@@ -38,11 +37,11 @@ namespace GAppsDev.Controllers
                 }
                 else if (result.IsCanceled)
                 {
-                    return View("Error_NoLayout", new ErrorModel(Errors.USER_WAS_CANCELED));
+                    return View("Error_NoLayout", Loc.Dic.error_user_was_canceled);
                 }
                 else
                 {
-                    return View("Error_NoLayout", new ErrorModel(Errors.USER_NOT_REGISTERD));
+                    return View("Error_NoLayout", Loc.Dic.error_user_not_registerd);
                 }
             }
 

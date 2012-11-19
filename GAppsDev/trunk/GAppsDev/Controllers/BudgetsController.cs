@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
@@ -52,17 +51,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.BUDGETS_GET_ERROR);
+                    return Error(Loc.Dic.error_budgets_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -78,7 +77,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -104,7 +103,7 @@ namespace GAppsDev.Controllers
                             bool yearExists = budgetRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Year == budget.Year);
 
                             if (yearExists)
-                                return Error(Errors.BUDGETS_YEAR_EXISTS);
+                                return Error(Loc.Dic.error_budgets_year_exists);
 
                             wasCreated = budgetRep.Create(budget);
                         }
@@ -112,11 +111,11 @@ namespace GAppsDev.Controllers
                         if (wasCreated)
                             return RedirectToAction("Index");
                         else
-                            return Error(Errors.BUDGETS_CREATE_ERROR);
+                            return Error(Loc.Dic.error_budgets_create_error);
                     }
                     else
                     {
-                        return Error(Errors.BUDGETS_YEAR_PASSED);
+                        return Error(Loc.Dic.error_budgets_year_passed);
                     }
                 }
                 else
@@ -126,7 +125,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -139,7 +138,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -152,7 +151,7 @@ namespace GAppsDev.Controllers
                 if (file != null && file.ContentLength > 0)
                 {
                     if (year < DateTime.Now.Year - 1)
-                        return Error(Errors.BUDGETS_YEAR_PASSED);
+                        return Error(Loc.Dic.error_budgets_year_passed);
 
                     List<Budgets_Allocations> createdAllocations = new List<Budgets_Allocations>();
                     List<Budgets_AllocationToMonth> createdAllocationMonths = new List<Budgets_AllocationToMonth>();
@@ -168,7 +167,7 @@ namespace GAppsDev.Controllers
                     using (BudgetsRepository budgetsRep = new BudgetsRepository())
                     {
                         if (budgetsRep.GetList().Any(x => x.Year == year))
-                            return Error(Errors.BUDGETS_YEAR_EXISTS);
+                            return Error(Loc.Dic.error_budgets_year_exists);
 
                         wasCreated = budgetsRep.Create(newBudget);
                     }
@@ -254,7 +253,7 @@ namespace GAppsDev.Controllers
                                 else
                                 {
                                     noErros = false;
-                                    errorType = Errors.DATABASE_ERROR; 
+                                    errorType = Loc.Dic.error_database_error; 
                                     break;
                                 }
                             }
@@ -288,17 +287,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.BUDGETS_CREATE_ERROR);
+                        return Error(Loc.Dic.error_budgets_create_error);
                     }
                 }
                 else
                 {
-                    return Error(Errors.INVALID_FORM);
+                    return Error(Loc.Dic.error_invalid_form);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -343,12 +342,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.DATABASE_ERROR);
+                    return Error(Loc.Dic.error_database_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -453,18 +452,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.BUDGETS_ALREADY_ACTIVE);
+                            return Error(Loc.Dic.error_budgets_already_active);
                         }
                     }
                     else
                     {
-                        return Error(Errors.BUDGETS_GET_ERROR);
+                        return Error(Loc.Dic.error_budgets_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 

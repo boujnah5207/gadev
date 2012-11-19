@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
@@ -48,17 +47,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.EXPENSES_GET_ERROR);
+                    return Error(Loc.Dic.error_expenses_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -108,7 +107,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -156,21 +155,21 @@ namespace GAppsDev.Controllers
                                 if (wasCreated)
                                     return RedirectToAction("Index");
                                 else
-                                    return Error(Errors.EXPENSES_CREATE_ERROR);
+                                    return Error(Loc.Dic.error_expenses_create_error);
                             }
                             else
                             {
-                                return Error(Errors.INVALID_FORM);
+                                return Error(Loc.Dic.error_invalid_form);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.DATABASE_ERROR);
+                        return Error(Loc.Dic.error_database_error);
                     }
                 }
                 else
@@ -180,7 +179,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -237,7 +236,7 @@ namespace GAppsDev.Controllers
                             }
                             catch
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
 
                             ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name", expense.BudgetId);
@@ -249,18 +248,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.INCOME_GET_ERROR);
+                        return Error(Loc.Dic.error_income_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -313,7 +312,7 @@ namespace GAppsDev.Controllers
                                             }
 
                                             if (allocatedToExpense.HasValue && allocatedToExpense > budgets_expenses.Amount)
-                                                return Error(Errors.EXPENSES_ALLOCATIONS_EXEEDS_AMOUNT);
+                                                return Error(Loc.Dic.error_expenses_allocations_exeeds_amount);
                                         }
 
                                         expenseFromDB.BudgetId = budgets_expenses.BudgetId;
@@ -328,26 +327,26 @@ namespace GAppsDev.Controllers
                                         if (update != null)
                                             return RedirectToAction("Index");
                                         else
-                                            return Error(Errors.EXPENSES_CREATE_ERROR);
+                                            return Error(Loc.Dic.error_expenses_create_error);
                                     }
                                     else
                                     {
-                                        return Error(Errors.INVALID_FORM);
+                                        return Error(Loc.Dic.error_invalid_form);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.NO_PERMISSION);
+                                    return Error(Loc.Dic.error_no_permission);
                                 }
                             }
                             else
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
                         }
                         else
                         {
-                            return Error(Errors.EXPENSES_GET_ERROR);
+                            return Error(Loc.Dic.error_expenses_get_error);
                         }
                     }
                 }
@@ -358,7 +357,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -391,23 +390,23 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.EXPENSES_DELETE_HAS_APPROVED_ORDERS);
+                                return Error(Loc.Dic.error_expenses_delete_has_approved_orders);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.EXPENSES_GET_ERROR);
+                        return Error(Loc.Dic.error_expenses_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -462,30 +461,30 @@ namespace GAppsDev.Controllers
                                 }
                                 catch
                                 {
-                                    return Error(Errors.DATABASE_ERROR);
+                                    return Error(Loc.Dic.error_database_error);
                                 }
 
                                 return RedirectToAction("Index");
                             }
                             else
                             {
-                                return Error(Errors.EXPENSES_DELETE_HAS_APPROVED_ORDERS);
+                                return Error(Loc.Dic.error_expenses_delete_has_approved_orders);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.EXPENSES_GET_ERROR);
+                        return Error(Loc.Dic.error_expenses_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
