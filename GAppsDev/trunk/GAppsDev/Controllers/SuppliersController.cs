@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
+using BL;
 using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.SupplierModels;
 using Mvc4.OpenId.Sample.Security;
@@ -51,10 +52,13 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)
         {
+            Interfaces.ImportSuppliers();  //file.InputStream
+            const int FIRST_COLOUMN = 0;
+            const int SECOND_COLOUMN = 0;
             if (!Authorized(RoleType.SystemManager)) return Error(Errors.NO_PERMISSION);
             if (file != null && file.ContentLength <= 0) return Error(Errors.INVALID_FORM);
 
-            List<Supplier> createdSuppliers = new List<Supplier>();
+            List<Supplier> toAddSuppliers = new List<Supplier>();
             byte[] fileBytes = new byte[file.InputStream.Length];
             file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
             string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
@@ -75,12 +79,23 @@ namespace GAppsDev.Controllers
                     }
 
                     Supplier newSupplier;
-
+                    if (!(int.Parse(lineValues[FIRST_COLOUMN]) > 0))
+                    {
+                        errorType = Errors.INVALID_FORM;
+                        break;
+                    }
+                    if (int.Parse(lineValues[SECOND_COLOUMN]) == null)
+                    {
+                        errorType = Errors.INVALID_FORM;
+                        break;
+                    }
                     try
                     {
                         newSupplier = new Supplier()
                         {
                             CompanyId = CurrentUser.CompanyId,
+                            ExternalId = lineValues[FIRST_COLOUMN],
+                            Name = lineValues[SECOND_COLOUMN],
                         };
                     }
                     catch
@@ -89,21 +104,14 @@ namespace GAppsDev.Controllers
                         errorType = Loc.Dic.Error_FileParseError;
                         break;
                     }
-
-                    if (suppliersRep.Create(newSupplier))
-                    {
-                        createdSuppliers.Add(newSupplier);
-
-                    }
-                    else
-                    {
-                        noErros = false;
-                        errorType = Errors.DATABASE_ERROR;
-                        break;
-                    }
+                    toAddSuppliers.Add(newSupplier);
+                }
+                if (!suppliersRep.AddList(toAddSuppliers))
+                {
+                    noErros = false;
+                    errorType = Errors.DATABASE_ERROR;
                 }
             }
-
             if (!noErros) return Error(Errors.BUDGETS_CREATE_ERROR);
             return RedirectToAction("index");
         }
