@@ -94,6 +94,7 @@ namespace BL
             bool noErros = true;
             string errorType = String.Empty;
 
+            using (AllocationMonthsRepository allocationMonthRepository = new AllocationMonthsRepository())
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
             using (AllocationRepository allocationRep = new AllocationRepository())
             {
@@ -130,7 +131,6 @@ namespace BL
                             BudgetId = budget.Id,
                             ExternalId = lineValues[FIRST_COLOUMN],
                             Name = lineValues[SECOND_COLOUMN],
-                            Amount = decimal.Parse(lineValues[THIRD_COLOUMN]),
                         };
                     }
                     catch
@@ -147,7 +147,7 @@ namespace BL
                         {
                             allocation.Name = lineValues[SECOND_COLOUMN];
                             allocation.BudgetId = budget.Id;
-                            allocation.Amount = decimal.Parse(lineValues[THIRD_COLOUMN]);
+                            //allocation.Amount = decimal.Parse(lineValues[THIRD_COLOUMN]);
                             allocationRep.Update(allocation);
                         }
                     }
@@ -156,6 +156,12 @@ namespace BL
                 {
                     noErros = false;
                     errorType = Loc.Dic.error_database_error;
+                }
+
+                foreach (Budgets_Allocations allocation in toAddAllocations)
+                {
+                    Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.ExternalId == allocation.ExternalId);
+                    Budgets_AllocationToMonth allocationMonth = allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id);
                 }
             }
             if (!noErros) return errorType;
