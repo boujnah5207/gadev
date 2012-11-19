@@ -419,7 +419,7 @@ function addAllocation() {
                     "<input type='hidden' class='allocationIdField' id='allocationIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].AllocationId' value='" + allocationId + "' />" +
                     "<input type='hidden' class='monthIdField' id='monthIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].MonthId' value='" + monthId + "' />" +
                     "<input type='hidden' class='amountField' id='amountField-" + nextNumber + "' name='Allocations[" + nextNumber + "].Amount' value='" + wantedAmount + "' />" +
-                    "<span class='allocationText'> Allocation: " + allocationText + " Month: " + monthName + " Amount: <span class='amountText'>" + wantedAmount + "</span><\span>" +
+                    "<span class='allocationText'> Allocation: " + allocationText + " Month: " + monthName + " Amount: <span class='amountText'>" + wantedAmount + "</span></span>" +
                     "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(" + nextNumber + ") '/>" +
                 "</div>"
                 );

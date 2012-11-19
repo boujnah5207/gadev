@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model GAppsDev.Models.CreateOrderModel
 
 @{
     ViewBag.Title = Loc.Dic.EditOrder;
@@ -15,7 +15,7 @@
 <fieldset>
     <legend>@Loc.Dic.ChosenSupplier</legend>
     <label class="inlineLabel" for="choosenSupplier">@Loc.Dic.Supplier: </label>
-    <span class='selectedSupplier'> @Model.Supplier.Name </span>
+    <span class='selectedSupplier'> @Model.Order.Supplier.Name </span>
 </fieldset>
 
 <fieldset id="formContainer">
@@ -28,7 +28,7 @@
         @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId")
         <br /><br />
         
-        @Html.HiddenFor( model => model.SupplierId);
+        @Html.HiddenFor(model => model.Order.SupplierId);
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
         <div class="editor-field">
@@ -54,12 +54,72 @@
         <span>@Loc.Dic.TotalPrice: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
         <br />
         <br />
+        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
+        {
+        @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
+        <br />
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
+        
+        <div id="FutureOrderContainer" style="display:none;">
+            @Loc.Dic.Month: 
+            @for (int i = 0; i < ViewBag.Allocations.Count; i++)
+            {
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
+                                                                                               {<text>style="display:none;"</text>}>
+
+                    @for (int month = DateTime.Now.Month; month <= 12; month++)
+                    {
+                        DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
+                        <option data-amount="@monthAllocation.Amount" value="@month">@Html.GetMonthName(month) (@monthAllocation.Amount)</option>
+                    }
+
+                </select>
+            }
+            @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
+            <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+        
+            <fieldset>
+                <legend>@Loc.Dic.BudgetAllocations</legend>
+
+                <div id="orderAllocations">
+                    @if(Model.IsFutureOrder && Model.Allocations.Count > 0)
+                    {
+                        for (int i = 0; i < Model.Allocations.Count; i++)
+			            {
+                        <div id='allocation-@i' class='existingAllocations'>
+                        <input type='hidden' class='isActiveField' id='isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
+                        <input type='hidden' class='allocationIdField' id='allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
+                        <input type='hidden' class='monthIdField' id='monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
+                        <input type='hidden' class='amountField' id='amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
+                        <span class='allocationText'> Allocation: @Model.Allocations[i].Name Month: @Html.GetMonthName(Model.Allocations[i].MonthId) Amount: <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation(@i)' />
+                        </div>
+                        }
+                    }
+                    else
+                    {
+                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                    }
+                </div>
+            </fieldset>
+            <br />
+            <span>@Loc.Dic.TotalAllocation: </span>
+            <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+        </div>
+        }
+        else
+        {
+            @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" })
+        }
+        <br />
+        <br />
+        
         <div class="editor-label">
             @Loc.Dic.Notes
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Notes)
-            @Html.ValidationMessageFor(model => model.Notes)
+            @Html.TextAreaFor(model => model.Order.Notes)
+            @Html.ValidationMessageFor(model => model.Order.Notes)
         </div>
         <br />
 
