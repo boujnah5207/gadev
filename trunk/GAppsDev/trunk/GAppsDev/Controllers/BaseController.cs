@@ -35,7 +35,7 @@ namespace GAppsDev.Controllers
 
         public ActionResult Error(string errorMessage)
         {
-            ViewBag.errorMessage;
+            ViewBag.ErrorMessage = errorMessage;
             return View("Error");
         }
 
