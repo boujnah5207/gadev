@@ -10,7 +10,7 @@ namespace BL
 {
     public static class Interfaces
     {
-        public static bool ImportSuppliers(Stream stream)
+        public static bool ImportSuppliers(Stream stream, int companyId)
         {
             const int FIRST_COLOUMN = 0;
             const int SECOND_COLOUMN = 1;
@@ -39,7 +39,7 @@ namespace BL
                         errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
-                    if (int.Parse(lineValues[SECOND_COLOUMN]) == null)
+                    if (lineValues[SECOND_COLOUMN] == null)
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
@@ -48,7 +48,7 @@ namespace BL
                     {
                         newSupplier = new Supplier()
                         {
-                            //CompanyId = CurrentUser.CompanyId,
+                            CompanyId = companyId,
                             ExternalId = lineValues[FIRST_COLOUMN],
                             Name = lineValues[SECOND_COLOUMN],
                         };

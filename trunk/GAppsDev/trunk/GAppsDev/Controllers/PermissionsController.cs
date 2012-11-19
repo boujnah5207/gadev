@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.PermissionModels;
 using Mvc4.OpenId.Sample.Security;
 
@@ -36,7 +35,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -62,17 +61,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.PERMISSIONS_GET_ERROR);
+                    return Error(Loc.Dic.error_permissions_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -101,7 +100,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -127,7 +126,7 @@ namespace GAppsDev.Controllers
                     if (wasCreated)
                         return RedirectToAction("Index");
                     else
-                        return Error(Errors.PERMISSIONS_CREATE_ERROR);
+                        return Error(Loc.Dic.error_permissions_create_error);
 
                 }
                 else
@@ -137,7 +136,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -163,17 +162,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.PERMISSIONS_GET_ERROR);
+                    return Error(Loc.Dic.error_permissions_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -203,18 +202,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.PERMISSIONS_GET_ERROR);
+                        return Error(Loc.Dic.error_permissions_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -268,25 +267,25 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.DATABASE_ERROR);
+                                return Error(Loc.Dic.error_database_error);
                             }
 
                             return View(model);
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.PERMISSIONS_GET_ERROR);
+                        return Error(Loc.Dic.error_permissions_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -353,18 +352,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.PERMISSIONS_GET_ERROR);
+                        return Error(Loc.Dic.error_permissions_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -390,18 +389,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.PROJECTS_GET_ERROR);
+                        return Error(Loc.Dic.error_projects_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -449,22 +448,22 @@ namespace GAppsDev.Controllers
                             if (noErrors)
                                 return RedirectToAction("Index");
                             else
-                                return Error(Errors.PERMISSIONS_DELETE_ERROR);
+                                return Error(Loc.Dic.error_permissions_delete_error);
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.PROJECTS_GET_ERROR);
+                        return Error(Loc.Dic.error_projects_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 

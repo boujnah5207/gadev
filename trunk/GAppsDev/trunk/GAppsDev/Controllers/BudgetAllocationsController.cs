@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
@@ -47,7 +46,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -74,17 +73,17 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        return Error(Errors.NO_PERMISSION);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
                 else
                 {
-                    return Error(Errors.INCOME_GET_ERROR);
+                    return Error(Loc.Dic.error_income_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -128,18 +127,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.DATABASE_ERROR);
+                        return Error(Loc.Dic.error_database_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -185,14 +184,14 @@ namespace GAppsDev.Controllers
                                              .Sum(allocation => (decimal?)allocation.Amount);
 
                                         if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
-                                            return Error(Errors.INCOME_FULL_ALLOCATION);
+                                            return Error(Loc.Dic.error_income_full_allocation);
 
                                         allocatedToExpense = allocationsRep.GetList()
                                             .Where(x => x.ExpenseId == expense.Id)
                                             .Sum(allocation => (decimal?)allocation.Amount);
 
                                         if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
-                                            return Error(Errors.EXPENSES_FULL_ALLOCATION);
+                                            return Error(Loc.Dic.error_expenses_full_allocation);
 
                                         Budgets_Allocations.CompanyId = CurrentUser.CompanyId;
                                         Budgets_Allocations.BudgetId = budget.Id;
@@ -201,26 +200,27 @@ namespace GAppsDev.Controllers
                                         if (allocationsRep.Create(Budgets_Allocations))
                                             return RedirectToAction("Index");
                                         else
-                                            return Error(Errors.DATABASE_ERROR);
+                                            return Error(Loc.Dic.error_database_error);
                                     }
                                     else
                                     {
-                                        return Error(Errors.INVALID_FORM);
+                                        return Error(Loc.Dic.error_invalid_form);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Errors.DATABASE_ERROR);
+                                    return Error(Loc.Dic.error_database_error);
+
                                 }
                             }
                             else
                             {
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
                             }
                         }
                         else
                         {
-                            return Error(Errors.DATABASE_ERROR);
+                            return Error(Loc.Dic.error_database_error);
                         }
                     }
                 }
@@ -231,7 +231,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -277,18 +277,18 @@ namespace GAppsDev.Controllers
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.DATABASE_ERROR);
+                        return Error(Loc.Dic.error_database_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -335,21 +335,21 @@ namespace GAppsDev.Controllers
                                                 .Sum(x => (decimal?)x.Price);
 
                                             if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
-                                                return Error(Errors.ALLOCATIONS_AMOUNT_IS_USED);
+                                                return Error(Loc.Dic.error_allocations_amount_is_used);
 
                                             allocatedToIncome = allocationsRep.GetList()
                                                  .Where(x => x.IncomeId == income.Id && x.Id != Budgets_Allocations.Id)
                                                  .Sum(alloc => (decimal?)alloc.Amount);
 
                                             if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
-                                                return Error(Errors.INCOME_FULL_ALLOCATION);
+                                                return Error(Loc.Dic.error_income_full_allocation);
 
                                             allocatedToExpense = allocationsRep.GetList()
                                                 .Where(x => x.ExpenseId == expense.Id && x.Id != Budgets_Allocations.Id)
                                                 .Sum(alloc => (decimal?)alloc.Amount);
 
                                             if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
-                                                return Error(Errors.EXPENSES_FULL_ALLOCATION);
+                                                return Error(Loc.Dic.error_expenses_full_allocation);
 
                                             allocation.IncomeId = Budgets_Allocations.IncomeId;
                                             allocation.ExpenseId = Budgets_Allocations.ExpenseId;
@@ -360,26 +360,27 @@ namespace GAppsDev.Controllers
                                             if (update != null)
                                                 return RedirectToAction("Index");
                                             else
-                                                return Error(Errors.ALLOCATIONS_GET_ERROR);
+                                                return Error(Loc.Dic.error_allocations_get_error);
                                         }
                                         else
                                         {
-                                            return Error(Errors.INVALID_FORM);
+                                            return Error(Loc.Dic.error_invalid_form);
+
                                         }
                                     }
                                     else
                                     {
-                                        return Error(Errors.DATABASE_ERROR);
+                                        return Error(Loc.Dic.error_database_error);
                                     }
                             }
                             else
                             {
-                                return Error(Errors.NO_PERMISSION);
+                                return Error(Loc.Dic.error_no_permission);
                             }
                         }
                         else
                         {
-                            return Error(Errors.ALLOCATIONS_GET_ERROR);
+                            return Error(Loc.Dic.error_allocations_get_error);
                         }
                     }
                 }
@@ -390,7 +391,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -419,23 +420,23 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                return Error(Errors.ALLOCATIONS_HAS_APPROVED_ORDERS);
+                                return Error(Loc.Dic.error_allocations_has_approved_orders);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.INCOME_GET_ERROR);
+                        return Error(Loc.Dic.error_income_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -490,27 +491,27 @@ namespace GAppsDev.Controllers
                                 if (noErrors)
                                     return RedirectToAction("Index");
                                 else
-                                    return Error(Errors.ALLOCATIONS_DELETE_ERROR);
+                                    return Error(Loc.Dic.error_allocations_delete_error);
                             }
                             else
                             {
-                                return Error(Errors.ALLOCATIONS_HAS_APPROVED_ORDERS);
+                                return Error(Loc.Dic.error_allocations_has_approved_orders);
                             }
                         }
                         else
                         {
-                            return Error(Errors.NO_PERMISSION);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Errors.INCOME_GET_ERROR);
+                        return Error(Loc.Dic.error_income_get_error);
                     }
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 

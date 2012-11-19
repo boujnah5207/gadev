@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.Models.OrderItemsModels;
 using Mvc4.OpenId.Sample.Security;
 
@@ -62,12 +61,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Error(Errors.SUPPLIERS_GET_ERROR);
+                    return Error(Loc.Dic.error_suppliers_get_error);
                 }
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -98,7 +97,7 @@ namespace GAppsDev.Controllers
             }
             else
             {
-                return Error(Errors.NO_PERMISSION);
+                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -115,11 +114,11 @@ namespace GAppsDev.Controllers
                 if (wasCreated)
                     return Json(new { success = true, message = String.Empty, newItemId = orderItem.Id }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, message = Errors.SUPPLIERS_CREATE_ERROR }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = Loc.Dic.error_suppliers_create_error }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = Loc.Dic.error_no_permission }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -199,12 +198,12 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    return Json(new { gotData = false, message = Errors.ORDERITEMS_GET_ERROR }, JsonRequestBehavior.AllowGet);
+                    return Json(new { gotData = false, message = Loc.Dic.error_orderitems_get_error }, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                return Json(new { gotData = false, message = Errors.NO_PERMISSION }, JsonRequestBehavior.AllowGet);
+                return Json(new { gotData = false, message = Loc.Dic.error_no_permission }, JsonRequestBehavior.AllowGet);
             }
         }
 
