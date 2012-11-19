@@ -8,7 +8,7 @@ using DB;
 
 namespace DA
 {
-    public class BudgetsExpensesToIncomesRepository : BaseRepository<Budgets_Allocations, Entities>, IDisposable
+    public class AllocationRepository : BaseRepository<Budgets_Allocations, Entities>, IDisposable
     {
         public override bool Create(Budgets_Allocations entity)
         {
