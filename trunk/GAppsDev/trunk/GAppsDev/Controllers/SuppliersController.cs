@@ -52,67 +52,12 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)
         {
-            Interfaces.ImportSuppliers(file.InputStream);  //file.InputStream
-            const int FIRST_COLOUMN = 0;
-            const int SECOND_COLOUMN = 0;
+            //Interfaces.ImportSuppliers(file.InputStream);
+            
             if (!Authorized(RoleType.SystemManager)) return Error(Errors.NO_PERMISSION);
             if (file != null && file.ContentLength <= 0) return Error(Errors.INVALID_FORM);
 
-            List<Supplier> toAddSuppliers = new List<Supplier>();
-            byte[] fileBytes = new byte[file.InputStream.Length];
-            file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
-            string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
-
-            string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            int firstValuesLine = 3;
-
-            bool noErros = true;
-            string errorType = String.Empty;
-            using (SuppliersRepository suppliersRep = new SuppliersRepository())
-            {
-                for (int i = firstValuesLine; i < fileLines.Length; i++)
-                {
-                    string[] lineValues = fileLines[i].Split('\t');
-                    for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
-                    {
-                        lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
-                    }
-
-                    Supplier newSupplier;
-                    if (!(int.Parse(lineValues[FIRST_COLOUMN]) > 0))
-                    {
-                        errorType = Errors.INVALID_FORM;
-                        break;
-                    }
-                    if (int.Parse(lineValues[SECOND_COLOUMN]) == null)
-                    {
-                        errorType = Errors.INVALID_FORM;
-                        break;
-                    }
-                    try
-                    {
-                        newSupplier = new Supplier()
-                        {
-                            CompanyId = CurrentUser.CompanyId,
-                            ExternalId = lineValues[FIRST_COLOUMN],
-                            Name = lineValues[SECOND_COLOUMN],
-                        };
-                    }
-                    catch
-                    {
-                        noErros = false;
-                        errorType = Loc.Dic.Error_FileParseError;
-                        break;
-                    }
-                    toAddSuppliers.Add(newSupplier);
-                }
-                if (!suppliersRep.AddList(toAddSuppliers))
-                {
-                    noErros = false;
-                    errorType = Errors.DATABASE_ERROR;
-                }
-            }
-            if (!noErros) return Error(Errors.BUDGETS_CREATE_ERROR);
+            
             return RedirectToAction("index");
         }
 

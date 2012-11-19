@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using DA;
-using GAppsDev.Models.ErrorModels;
 using GAppsDev.OpenIdService;
 
 namespace GAppsDev.Controllers
@@ -36,7 +35,8 @@ namespace GAppsDev.Controllers
 
         public ActionResult Error(string errorMessage)
         {
-            return View("Error", new ErrorModel(errorMessage));
+            ViewBag.errorMessage;
+            return View("Error");
         }
 
         public ActionResult Error(ModelStateDictionary modelState)

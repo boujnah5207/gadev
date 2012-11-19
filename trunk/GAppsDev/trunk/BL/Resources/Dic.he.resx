@@ -714,4 +714,181 @@
   <data name="Role" xml:space="preserve">
     <value>תפקיד</value>
   </data>
+  <data name="error_allocations_amount_is_used" xml:space="preserve">
+    <value>סך ההזמנות מהקצאה זאת עולה על סכום ההקצאה שצויין</value>
+  </data>
+  <data name="error_allocations_delete_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הסרת ההקצאה, הפעולה לא הושלמה</value>
+  </data>
+  <data name="error_allocations_edit_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_allocations_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_allocations_has_approved_orders" xml:space="preserve">
+    <value>להקצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההקצאה</value>
+  </data>
+  <data name="error_budgets_already_active" xml:space="preserve">
+    <value>תקציב זה כבר פעיל</value>
+  </data>
+  <data name="error_budgets_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. התקציב לא נשמר במערכת</value>
+  </data>
+  <data name="error_budgets_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה לתקציבים בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_budgets_year_exists" xml:space="preserve">
+    <value>נוצר כבר תקציב לשנה זאת</value>
+  </data>
+  <data name="error_budgets_year_passed" xml:space="preserve">
+    <value>לא ניתן ליצור או לערוך תקציב לשנים קודמות</value>
+  </data>
+  <data name="error_database_error" xml:space="preserve">
+    <value>הייתה שגיאה בזמן הגישה לבסיס הנתונים. אנא נסה שנית</value>
+  </data>
+  <data name="error_expenses_allocations_exeeds_amount" xml:space="preserve">
+    <value>להוצאה זאת כבר הוקצה להוצאה סכום העולה על סך ההוצאה החדש. ההוצאה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב</value>
+  </data>
+  <data name="error_expenses_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההוצאה לא נשמרה במערכת</value>
+  </data>
+  <data name="error_expenses_delete_has_approved_orders" xml:space="preserve">
+    <value>להוצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההוצאה</value>
+  </data>
+  <data name="error_expenses_full_allocation" xml:space="preserve">
+    <value>לא נותר מספיק סכום להוצאה שצויינה על מנת להקצות את הסכום שבוקש</value>
+  </data>
+  <data name="error_expenses_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה להוצאות בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_income_allocations_exeeds_amount" xml:space="preserve">
+    <value>להכנסה זאת כבר הוקצה להוצאה סכום העולה על סך ההכנסה החדש. ההכנסה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב</value>
+  </data>
+  <data name="error_income_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההכנסה לא נשמרה במערכת</value>
+  </data>
+  <data name="error_income_delete_has_approved_orders" xml:space="preserve">
+    <value>להכנסה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההכנסה</value>
+  </data>
+  <data name="error_income_full_allocation" xml:space="preserve">
+    <value>לא נותר מספיק סכום להכנסה שצויינה על מנת להקצות את הסכום שבוקש</value>
+  </data>
+  <data name="error_income_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה להכנסות בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_invalid_form" xml:space="preserve">
+    <value>נמצאו שגיאות בטופס, לא כל השדות תקינים</value>
+  </data>
+  <data name="error_inventory_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי</value>
+  </data>
+  <data name="error_no_permission" xml:space="preserve">
+    <value>אין לך את ההרשאה המתאימה לביצוע פעולה זאת. אנא פנה למנהל המערכת</value>
+  </data>
+  <data name="error_orderitems_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה לפריטים להזמנה בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_orders_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההזמנה לא נשמרה במערכת</value>
+  </data>
+  <data name="error_orders_delete_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק את ההזמנה</value>
+  </data>
+  <data name="error_orders_delete_items_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק פריטים מההזמנה</value>
+  </data>
+  <data name="error_orders_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן משיכת ההזמנות מבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_order_already_has_invoice" xml:space="preserve">
+    <value>כבר נסרקה חשבונית להזמנה זאת</value>
+  </data>
+  <data name="error_order_delete_after_approval" xml:space="preserve">
+    <value>אין למחוק הזמנה לאחר אישורה\\ביטולה</value>
+  </data>
+  <data name="error_order_edit_after_approval" xml:space="preserve">
+    <value>אין לערוך הזמנה לאחר אישורה\\ביטולה, אנא צור הזמנה חדשה במקום</value>
+  </data>
+  <data name="error_order_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן משיכת ההזמנה מבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_order_has_no_items" xml:space="preserve">
+    <value>אין אפשרות ליצור הזמנה ללא פריטים. אנא הוסף פריט ונסה שוב</value>
+  </data>
+  <data name="error_order_insufficient_allocation" xml:space="preserve">
+    <value>סכום ההזמנה עולה על הסכום שנותר להקצאה שנבחרה</value>
+  </data>
+  <data name="error_order_not_approved" xml:space="preserve">
+    <value>ההזמנה עדיין לא אושרה. אנא המתן עד לאישור ההזמנה</value>
+  </data>
+  <data name="error_order_not_found" xml:space="preserve">
+    <value>לא הייתה אפשרות למצוא הזמנה בבסיס הנתונים</value>
+  </data>
+  <data name="error_order_save_items_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה נשמרו</value>
+  </data>
+  <data name="error_order_update_items_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה עודכנו</value>
+  </data>
+  <data name="error_permissions_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההרשאה לא נשמר במערכת</value>
+  </data>
+  <data name="error_permissions_delete_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הסרת ההרשאה, הפעולה לא הושלמה</value>
+  </data>
+  <data name="error_permissions_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה להרשאות בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_projects_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הפרוייקט לא נשמר במערכת</value>
+  </data>
+  <data name="error_projects_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה לפרוייקטים בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_sub_projects_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. התת-פרוייקט לא נשמר במערכת</value>
+  </data>
+  <data name="error_sub_projects_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה לתת-פרוייקטים בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_suppliers_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הספק לא נשמר במערכת</value>
+  </data>
+  <data name="error_suppliers_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן הגישה לספקים בבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_users_create_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. המשתמש לא נשמר במערכת</value>
+  </data>
+  <data name="error_users_delete_error" xml:space="preserve">
+    <value>לא הייתה אפשרות להסיר את המשתמש. אנא נסה שוב</value>
+  </data>
+  <data name="error_users_exist_error" xml:space="preserve">
+    <value>משתמש עם אימייל זהה כבר רשום במערכת</value>
+  </data>
+  <data name="error_users_get_error" xml:space="preserve">
+    <value>קרתה שגיאה בזמן משיכת המשתמשים מבסיס הנתונים. אנא נסה שוב</value>
+  </data>
+  <data name="error_users_limit_reached" xml:space="preserve">
+    <value>חברתך הגיעה לגבול מספר המשתמשים שלה. אין אפשרות ליצור משתמשים חדשים</value>
+  </data>
+  <data name="error_user_already_has_permissions" xml:space="preserve">
+    <value>למשתמש כבר יש  את ההרשאה שצויינה</value>
+  </data>
+  <data name="error_user_cannot_delete_self" xml:space="preserve">
+    <value>למשתמש אין אפשרות להסיר את עצמו</value>
+  </data>
+  <data name="error_user_edit_permissions_error" xml:space="preserve">
+    <value>היו שגיאות בזמן השמירה לבסיס הנתונים. לא כל ההרשאות נשמרו</value>
+  </data>
+  <data name="error_user_not_found" xml:space="preserve">
+    <value>לא הייתה אפשרות למצוא משתמש בבסיס הנתונים</value>
+  </data>
+  <data name="error_user_not_registerd" xml:space="preserve">
+    <value>חשבון משתשתמש זה אינו רשום במערכת</value>
+  </data>
+  <data name="error_user_was_canceled" xml:space="preserve">
+    <value>חשבון משתמש זה בוטל. אנא פנה למנהל המערכת</value>
+  </data>
 </root>

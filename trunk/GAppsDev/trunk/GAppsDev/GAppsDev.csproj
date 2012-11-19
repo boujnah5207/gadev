@@ -166,8 +166,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BudgetModels\CreateBudgetModel.cs" />
-    <Compile Include="Models\Error\ErrorModel.cs" />
-    <Compile Include="Models\Error\Errors.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\AddToInventoryModel.cs" />
     <Compile Include="Models\Order\CreateOrderModel.cs" />
@@ -185,26 +183,6 @@
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Shared\Dic.Designer.cs">
-      <DependentUpon>Dic.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Shared\Dic.ar.Designer.cs">
-      <DependentUpon>Dic.ar.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Shared\Dic.he.Designer.cs">
-      <DependentUpon>Dic.he.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Shared\Dic.ru.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Dic.ru.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images.large\aol.gif" />
@@ -588,27 +566,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Shared\Dic.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Dic.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Loc</CustomToolNamespace>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="..\BL\Resources\Dic.ar.resx">
+      <Link>Resources\Dic.ar.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\Dic.ar.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Dic.ar.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Loc</CustomToolNamespace>
+    <EmbeddedResource Include="..\BL\Resources\Dic.he.resx">
+      <Link>Resources\Dic.he.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\Dic.he.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Dic.he.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Loc</CustomToolNamespace>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="..\BL\Resources\Dic.resx">
+      <Link>Resources\Dic.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\Dic.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Dic.ru.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Loc</CustomToolNamespace>
+    <EmbeddedResource Include="..\BL\Resources\Dic.ru.resx">
+      <Link>Resources\Dic.ru.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
