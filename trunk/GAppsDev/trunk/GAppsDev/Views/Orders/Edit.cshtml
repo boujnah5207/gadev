@@ -25,10 +25,8 @@
     {
         @Html.ValidationSummary(true)
         
-        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId")
-        <br /><br />
-        
         @Html.HiddenFor(model => model.Order.SupplierId, new { id = "SupplierId" });
+        @Html.HiddenFor(model => model.Order.Id);
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
         <div class="editor-field">
@@ -54,13 +52,13 @@
         <span>@Loc.Dic.TotalPrice: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
         <br />
         <br />
-        if (Model.IsFutureOrder)
+        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
         {
         @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
         <br />
-        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
+        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationList, new { id = "allocationSelectList" }) 
         
-        <div id="FutureOrderContainer">
+        <div id="FutureOrderContainer" @if(!Model.IsFutureOrder){<text>style="display:none;"</text>}>
             @Loc.Dic.Month: 
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {

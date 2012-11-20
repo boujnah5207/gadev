@@ -34,6 +34,16 @@ $(function () {
     itemPriceField = $("#itemPrice");
     itemFinalPrice = $("#itemFinalPrice");
     totalOrderPriceField = $("#totalOrderPrice");
+
+    $("#allocationSelectList").change(function () {
+        $(".allocationMonthList").css("display", "none");
+        console.log($(this).val());
+        $("#allocation-" + $(this).val()).css("display", "inline-block");
+    });
+
+    $("#isFutureOrder").change(function () {
+        $("#FutureOrderContainer").toggle();
+    });
 });
 
 function beginForm(existingItems) {

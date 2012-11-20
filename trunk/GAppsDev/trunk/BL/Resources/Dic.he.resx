@@ -891,7 +891,4 @@
   <data name="error_user_was_canceled" xml:space="preserve">
     <value>חשבון משתמש זה בוטל. אנא פנה למנהל המערכת</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>שגיאה</value>
-  </data>
 </root>
