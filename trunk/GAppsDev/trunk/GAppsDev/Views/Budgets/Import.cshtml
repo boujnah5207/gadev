@@ -9,10 +9,19 @@
     @Html.ValidationSummary(true)
 
     <text>
-    <h2>קובץ תקציב</h2>
     שנת תקציב <input type="text" name="year" />
-    
-    <h2>קובץ תקציב</h2>
+    <h2>קובץ תקציב חודשי</h2>
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+    </text>
+}
+@using (Html.BeginForm("ImportYear", "Budgets", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <text>
+    שנת תקציב <input type="text" name="year" />
+    <h2>קובץ תקציב שנתי</h2>
     <input type="file" name="file" />
     <input type="submit" value="OK" />
     </text>
