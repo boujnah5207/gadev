@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using DA;
 using DB;
 using Mvc4.OpenId.Sample.Security;
+using BL;
 
 namespace GAppsDev.Controllers
 {
@@ -299,6 +300,17 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult ImportYear(HttpPostedFileBase file, int year = 0)
+        {
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
+            string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, year);
+            if (moved == "OK") return RedirectToAction("index");
+            else return Error(moved);
         }
 
         [OpenIdAuthorize]

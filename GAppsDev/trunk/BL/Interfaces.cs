@@ -59,7 +59,7 @@ namespace BL
                         errorType = Loc.Dic.Error_FileParseError;
                         break;
                     }
-                    List<Supplier> existingSuppliers = suppliersRep.GetList().Where(x=>x.CompanyId == companyId && x.ExternalId == newSupplier.ExternalId).ToList();
+                    List<Supplier> existingSuppliers = suppliersRep.GetList().Where(x => x.CompanyId == companyId && x.ExternalId == newSupplier.ExternalId).ToList();
                     if (existingSuppliers.Count == 0) toAddSuppliers.Add(newSupplier);
                     else
                     {
@@ -87,10 +87,11 @@ namespace BL
             const int JANUARY = 1;
 
             List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
+            Dictionary<int, decimal> tempAmountList = new Dictionary<int, decimal>();
+
             byte[] fileBytes = new byte[stream.Length];
             stream.Read(fileBytes, 0, Convert.ToInt32(stream.Length));
             string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
-
             string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             int firstValuesLine = 0;
             bool noErros = true;
@@ -123,7 +124,16 @@ namespace BL
                         break;
                     }
 
+                    if (budgetsRepository.GetList().SingleOrDefault(x => x.Year == budgetYear) == null)
+                    {
+                        Budget newBudget = new Budget();
+                        newBudget.Year = budgetYear;
+                        newBudget.CompanyId = companyId;
+                        budgetsRepository.Create(newBudget);
+                    }
+
                     Budget budget = budgetsRepository.GetList().SingleOrDefault(x => x.Year == budgetYear);
+
                     Budgets_Allocations newAllocation;
                     try
                     {
@@ -141,32 +151,63 @@ namespace BL
                         errorType = Loc.Dic.Error_FileParseError;
                         break;
                     }
-                    List<Budgets_Allocations> existingAllocations = allocationRep.GetList().Where(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId).ToList();
-                    if (existingAllocations.Count == 0) toAddAllocations.Add(newAllocation);
+                    if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId) == null) toAddAllocations.Add(newAllocation);
                     else
                     {
-                        foreach (Budgets_Allocations allocation in existingAllocations)
-                        {
-                            allocation.Name = lineValues[SECOND_COLOUMN];
-                            allocation.BudgetId = budget.Id;
-                            //allocation.Amount = decimal.Parse(lineValues[THIRD_COLOUMN]);
-                            allocationRep.Update(allocation);
-                        }
+                        Budgets_Allocations allocation = new Budgets_Allocations();
+                        allocation.Name = lineValues[SECOND_COLOUMN];
+                        allocation.BudgetId = budget.Id;
+                        allocationRep.Update(allocation);
                     }
+                    tempAmountList.Add(int.Parse(newAllocation.ExternalId), decimal.Parse(lineValues[THIRD_COLOUMN]));
                 }
                 if (!allocationRep.AddList(toAddAllocations))
                 {
                     noErros = false;
                     errorType = Loc.Dic.error_database_error;
                 }
-
+                //inserting amount
+                /*
                 foreach (Budgets_Allocations allocation in toAddAllocations)
                 {
                     Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.ExternalId == allocation.ExternalId);
-                    Budgets_AllocationToMonth allocationMonth = allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id);
-                    allocationMonth.MonthId = JANUARY;
-                    if(allocation.Amount.HasValue) allocationMonth.Amount = allocation.Amount.Value;
+                    if (allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id) == null)
+                    {
+                        toAddallocationMonth.AllocationId = allocation.Id;
+                        toAddallocationMonth.MonthId = JANUARY;
+                        foreach (var item in tempAmountList)
+                        {
+                            if (item.Key == int.Parse(allocation.ExternalId))
+                            {
+                                toAddallocationMonth.Amount = item.Value;
+                            }
+                        }
+                        allocationMonthRepository.Create(toAddallocationMonth);
+                    }
+                    else
+                    {
+                        toAddallocationMonth = allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id);
+                        toAddallocationMonth.MonthId = JANUARY;
+                        if (allocation.Amount.HasValue) toAddallocationMonth.Amount = allocation.Amount.Value;
+                        allocationMonthRepository.Update(toAddallocationMonth);
+                    }
                 }
+                */
+                Budgets_AllocationToMonth toAddallocationMonth = new Budgets_AllocationToMonth();
+                List<Budgets_AllocationToMonth> toAddAllocationMonthList = new List<Budgets_AllocationToMonth>();
+                foreach (var item in tempAmountList)
+                {
+                    string externalIdstring = item.Key.ToString();
+                    Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.ExternalId == externalIdstring);
+                    toAddallocationMonth.AllocationId = allocationFromDb.Id;
+                    toAddallocationMonth.MonthId = JANUARY;
+                    toAddallocationMonth.Amount = item.Value;
+                    if (allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id) == null) 
+                        toAddAllocationMonthList.Add(toAddallocationMonth);
+                    else
+                        allocationMonthRepository.Update(toAddallocationMonth);
+                }
+                allocationMonthRepository.AddList(toAddAllocationMonthList);
             }
             if (!noErros) return errorType;
             return "OK";
