@@ -201,6 +201,7 @@ namespace GAppsDev.Controllers
                                 {
                                     newAllocation = new Budgets_Allocations()
                                     {
+                                        Name = lineValues[2],
                                         BudgetId = newBudget.Id,
                                         CompanyId = CurrentUser.CompanyId,
                                         IncomeId = null,

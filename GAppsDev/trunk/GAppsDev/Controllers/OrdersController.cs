@@ -43,74 +43,74 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.OrdersViewer))
                 return Error(Loc.Dic.error_no_permission);
 
-                IEnumerable<Order> orders;
+            IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
+            {
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
 
-                    if (orders != null)
+                if (orders != null)
+                {
+                    int numberOfItems = orders.Count();
+                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                    if (numberOfItems % ITEMS_PER_PAGE != 0)
+                        numberOfPages++;
+
+                    if (page <= 0)
+                        page = FIRST_PAGE;
+                    if (page > numberOfPages)
+                        page = numberOfPages;
+
+                    if (sortby != NO_SORT_BY)
                     {
-                        int numberOfItems = orders.Count();
-                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                        if (numberOfItems % ITEMS_PER_PAGE != 0)
-                            numberOfPages++;
+                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
-                        if (page <= 0)
-                            page = FIRST_PAGE;
-                        if (page > numberOfPages)
-                            page = numberOfPages;
+                        if (order == DEFAULT_DESC_ORDER)
+                            orderFunction = x => orders.OrderByDescending(x);
+                        else
+                            orderFunction = x => orders.OrderBy(x);
 
-                        if (sortby != NO_SORT_BY)
+                        switch (sortby)
                         {
-                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                            if (order == DEFAULT_DESC_ORDER)
-                                orderFunction = x => orders.OrderByDescending(x);
-                            else
-                                orderFunction = x => orders.OrderBy(x);
-
-                            switch (sortby)
-                            {
-                                case "number":
-                                    orders = orderFunction(x => x.OrderNumber);
-                                    break;
-                                case "creation":
-                                    orders = orderFunction(x => x.CreationDate);
-                                    break;
-                                case "supplier":
-                                    orders = orderFunction(x => x.Supplier.Name);
-                                    break;
-                                case "status":
-                                    orders = orderFunction(x => x.StatusId);
-                                    break;
-                                case "price":
-                                    orders = orderFunction(x => x.Price);
-                                    break;
+                            case "number":
+                                orders = orderFunction(x => x.OrderNumber);
+                                break;
+                            case "creation":
+                                orders = orderFunction(x => x.CreationDate);
+                                break;
+                            case "supplier":
+                                orders = orderFunction(x => x.Supplier.Name);
+                                break;
+                            case "status":
+                                orders = orderFunction(x => x.StatusId);
+                                break;
+                            case "price":
+                                orders = orderFunction(x => x.Price);
+                                break;
                             case "username":
                             default:
                                 orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
                                 break;
-                            }
                         }
-
-                        orders = orders
-                            .Skip((page - 1) * ITEMS_PER_PAGE)
-                            .Take(ITEMS_PER_PAGE)
-                            .ToList();
-
-                        ViewBag.Sortby = sortby;
-                        ViewBag.Order = order;
-                        ViewBag.CurrPage = page;
-                        ViewBag.NumberOfPages = numberOfPages;
-
-                        return View(orders.ToList());
                     }
-                    else
-                    {
-                        return Error(Loc.Dic.error_orders_get_error);
-                    }
+
+                    orders = orders
+                        .Skip((page - 1) * ITEMS_PER_PAGE)
+                        .Take(ITEMS_PER_PAGE)
+                        .ToList();
+
+                    ViewBag.Sortby = sortby;
+                    ViewBag.Order = order;
+                    ViewBag.CurrPage = page;
+                    ViewBag.NumberOfPages = numberOfPages;
+
+                    return View(orders.ToList());
+                }
+                else
+                {
+                    return Error(Loc.Dic.error_orders_get_error);
                 }
             }
+        }
 
         //
         // GET: /Orders/Details/5
@@ -278,7 +278,7 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 OrderModel orderModel = new OrderModel();
-                    orderModel.Order = ordersRep.GetEntity(id);
+                orderModel.Order = ordersRep.GetEntity(id);
 
                 if (orderModel.Order == null)
                     return Error(Loc.Dic.error_order_get_error);
@@ -286,14 +286,14 @@ namespace GAppsDev.Controllers
                 if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
                     return Error(Loc.Dic.error_no_permission);
 
-                            orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+                orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
 
                 if (orderModel.OrderToItem == null)
                     return Error(Loc.Dic.error_database_error);
 
-                                return View(orderModel);
-                            }
-                }
+                return View(orderModel);
+            }
+        }
 
         [OpenIdAuthorize]
         [HttpPost]
@@ -944,8 +944,8 @@ namespace GAppsDev.Controllers
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
                             decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-                            
-                            if(monthNumber <= DateTime.Now.Month)
+
+                            if (monthNumber <= DateTime.Now.Month)
                                 totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
 
@@ -1021,7 +1021,7 @@ namespace GAppsDev.Controllers
                             if (totalOrderPrice != totalAllocation)
                                 return Error(Loc.Dic.error_order_insufficient_allocation);
                         }
-                        
+
                         bool wasOrderCreated;
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (AllocationRepository allocationsRep = new AllocationRepository())
@@ -1061,7 +1061,7 @@ namespace GAppsDev.Controllers
                             }
                             else
                             {
-                                if(!model.BudgetAllocationId.HasValue)
+                                if (!model.BudgetAllocationId.HasValue)
                                     return Error(Loc.Dic.error_invalid_form);
 
                                 Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
@@ -1223,20 +1223,20 @@ namespace GAppsDev.Controllers
                     List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
 
                     foreach (var allocation in existingOrderAllocations)
-	                {
+                    {
                         string allocationName = allocation.Budgets_Allocations.Name;
 
-		                model.Allocations.Add(
+                        model.Allocations.Add(
                             new OrderAllocation()
                             {
-                                AllocationId = allocation.Id,
+                                AllocationId = allocation.AllocationId,
                                 Name = allocationName,
                                 MonthId = allocation.MonthId,
                                 IsActive = true,
                                 Amount = allocation.Amount
                             }
                         );
-	                }
+                    }
 
                     foreach (var permission in permissions)
                     {
@@ -1264,7 +1264,7 @@ namespace GAppsDev.Controllers
                             if (monthNumber <= DateTime.Now.Month)
                                 totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
-                        
+
                         allocation.Amount = totalRemaining;
                     }
 
@@ -1276,7 +1276,8 @@ namespace GAppsDev.Controllers
 
                     ViewBag.Allocations = allocations;
                     ViewBag.UserRoles = CurrentUser.Roles;
-                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                    int selectedAllocation = model.Order.BudgetAllocationId.HasValue ? model.Order.BudgetAllocationId.Value : 0;
+                    ViewBag.BudgetAllocationList = new SelectList(allocationsSelectList, "Id", "Name", selectedAllocation);
                 }
 
                 if (model.Order.UserId == CurrentUser.UserId)
@@ -1317,7 +1318,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Edit(Order order, string itemsString)
+        public ActionResult Edit(CreateOrderModel model, string itemsString)
         {
             if (Authorized(RoleType.OrdersWriter))
             {
@@ -1329,9 +1330,13 @@ namespace GAppsDev.Controllers
                     List<Orders_OrderToItem> itemsToCreate = new List<Orders_OrderToItem>();
                     List<Orders_OrderToItem> itemsToUpdate = new List<Orders_OrderToItem>();
 
+                    decimal totalOrderPrice;
+                    decimal totalAllocation;
+                    List<Budgets_Allocations> orderAllocations = new List<Budgets_Allocations>();
+
                     using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
-                        orderFromDatabase = orderRep.GetEntity(order.Id, "Supplier", "Orders_OrderToItem");
+                        orderFromDatabase = orderRep.GetEntity(model.Order.Id, "Supplier", "Orders_OrderToItem", "Orders_OrderToAllocation");
                     }
 
                     if (orderFromDatabase != null)
@@ -1340,33 +1345,142 @@ namespace GAppsDev.Controllers
                         {
                             if (orderFromDatabase.StatusId == (int)StatusType.Pending || orderFromDatabase.Id == (int)StatusType.PendingOrderCreator)
                             {
-                                itemsFromEditForm = ItemsFromString(itemsString, order.Id);
+                                itemsFromEditForm = ItemsFromString(itemsString, model.Order.Id);
                                 if (itemsFromEditForm != null)
                                 {
                                     if (itemsFromEditForm.Count == 0)
                                         return Error(Loc.Dic.error_order_has_no_items);
 
-                                    decimal? totalUsedAllocation;
-                                    decimal totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
-                                    Budgets_Allocations budgetAllocation;
+                                    if (itemsFromEditForm.Count > 0)
+                                        totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
+                                    else
+                                        return Error(Loc.Dic.error_order_has_no_items);
+
+                                    if (model.IsFutureOrder && model.Allocations != null && model.Allocations.Count > 0)
+                                    {
+                                        model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
+                                        totalAllocation = model.Allocations.Sum(x => x.Amount);
+                                    }
+                                    else
+                                    {
+                                        model.Allocations = new List<OrderAllocation>();
+                                        totalAllocation = 0;
+                                    }
+
+                                    if (model.IsFutureOrder)
+                                    {
+                                        if (totalOrderPrice != totalAllocation)
+                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                    }
 
                                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                                     using (AllocationRepository allocationsRep = new AllocationRepository())
                                     {
-                                        budgetAllocation = allocationsRep.GetEntity(order.BudgetAllocationId.Value);
-
-                                        if (budgetAllocation != null)
+                                        if (model.IsFutureOrder)
                                         {
-                                            totalUsedAllocation = ordersRep.GetList()
-                                                    .Where(o => o.BudgetAllocationId == order.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                                    .Sum(x => (decimal?)x.Price);
+                                            int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
+                                            orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
+                                            bool IsValidAllocations =
+                                                (orderAllocations.Count == orderAllocationsIds.Length) &&
+                                                orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
+                                                model.Allocations.All(x => (x.MonthId >= 1 && x.MonthId <= 12) && x.Amount > 0);
 
-                                            if ((totalUsedAllocation ?? 0) + totalOrderPrice > budgetAllocation.Amount)
-                                                return Error(Loc.Dic.error_order_insufficient_allocation);
+                                            if (IsValidAllocations)
+                                            {
+                                                foreach (var allocation in orderAllocations)
+                                                {
+                                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                                    List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
+
+                                                    foreach (var month in allocationMonths)
+                                                    {
+                                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                                        if (month.Amount > allocationMonth.Amount)
+                                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                return Error(Loc.Dic.error_invalid_form);
+                                            }
                                         }
                                         else
                                         {
-                                            return Error(Loc.Dic.error_database_error);
+                                            if (!model.BudgetAllocationId.HasValue)
+                                                return Error(Loc.Dic.error_invalid_form);
+
+                                            Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
+
+                                            List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                            decimal remainingOrderPrice = totalOrderPrice;
+
+                                            for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
+                                            {
+                                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                                                if (remainingAmount.HasValue && remainingAmount.Value > 0)
+                                                {
+                                                    OrderAllocation newOrderAllocation = new OrderAllocation()
+                                                    {
+                                                        AllocationId = model.BudgetAllocationId.Value,
+                                                        Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
+                                                        MonthId = monthNumber,
+                                                        IsActive = true
+                                                    };
+
+                                                    model.Allocations.Add(newOrderAllocation);
+                                                    remainingOrderPrice -= newOrderAllocation.Amount;
+                                                }
+                                            }
+
+                                            if (remainingOrderPrice > 0)
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
+                                        }
+                                    }
+
+                                    foreach (var item in orderFromDatabase.Orders_OrderToAllocation)
+                                    {
+                                        using (OrderToAllocationRepository orderAllocationRep = new OrderToAllocationRepository())
+                                        {
+                                            orderAllocationRep.Delete(item.Id);
+                                        }
+                                    }
+
+                                    bool noAllocationErros = true;
+                                    List<Orders_OrderToAllocation> createdAllocations = new List<Orders_OrderToAllocation>();
+
+                                    foreach (var allocation in model.Allocations)
+                                    {
+                                        using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
+                                        {
+                                            Orders_OrderToAllocation newOrderAllocation = new Orders_OrderToAllocation()
+                                            {
+                                                OrderId = model.Order.Id,
+                                                AllocationId = allocation.AllocationId,
+                                                MonthId = allocation.MonthId,
+                                                Amount = allocation.Amount
+                                            };
+
+                                            if (orderAllocationsRep.Create(newOrderAllocation))
+                                                createdAllocations.Add(newOrderAllocation);
+                                            else
+                                            {
+                                                noAllocationErros = false;
+
+                                                foreach (var item in createdAllocations)
+                                                {
+                                                    orderAllocationsRep.Delete(item.Id);
+                                                }
+
+                                                break;
+                                            }
                                         }
                                     }
 
@@ -1421,21 +1535,22 @@ namespace GAppsDev.Controllers
                                                 noErrors = false;
                                         }
 
-                                        if (order.Notes != orderFromDatabase.Notes || order.BudgetAllocationId != orderFromDatabase.BudgetAllocationId)
-                                        {
                                             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                                             {
-                                                order.CompanyId = orderFromDatabase.CompanyId;
-                                                order.CreationDate = orderFromDatabase.CreationDate;
-                                                order.StatusId = orderFromDatabase.StatusId;
-                                                order.SupplierId = orderFromDatabase.SupplierId;
-                                                order.UserId = orderFromDatabase.UserId;
+                                                model.Order.CompanyId = orderFromDatabase.CompanyId;
+                                                model.Order.CreationDate = orderFromDatabase.CreationDate;
+                                                model.Order.StatusId = orderFromDatabase.StatusId;
+                                                model.Order.SupplierId = orderFromDatabase.SupplierId;
+                                                model.Order.UserId = orderFromDatabase.UserId;
+                                                model.Order.IsFutureOrder = model.IsFutureOrder;
 
-                                                order.Price = ordersRep.GetEntity(order.Id).Orders_OrderToItem.Sum(item => item.SingleItemPrice * item.Quantity);
+                                                if (!model.Order.IsFutureOrder)
+                                                    model.Order.BudgetAllocationId = model.BudgetAllocationId;
 
-                                                ordersRep.Update(order);
+                                                model.Order.Price = ordersRep.GetEntity(model.Order.Id).Orders_OrderToItem.Sum(item => item.SingleItemPrice * item.Quantity);
+
+                                                ordersRep.Update(model.Order);
                                             }
-                                        }
                                     }
 
                                     if (noErrors)
@@ -1886,7 +2001,7 @@ namespace GAppsDev.Controllers
 
                         foreach (var order in ordersToExport)
                         {
-                            DateTime paymentDate;
+                            DateTime paymentDate = DateTime.Now;
                             decimal orderPrice;
 
                             if (order.Price.HasValue)
@@ -1907,25 +2022,32 @@ namespace GAppsDev.Controllers
                             if (String.IsNullOrEmpty(order.Supplier.ExternalId))
                                 return Error("Insufficient supplier data for export");
 
-                            if (String.IsNullOrEmpty(order.Budgets_Allocations.ExternalId))
-                                return Error("Insufficient allocation data for export");
-
                             if (String.IsNullOrEmpty(order.InvoiceNumber) || order.InvoiceDate == null)
                                 return Error("Insufficient order data for export");
 
-                            string orderNotes = order.Notes == null ? String.Empty : order.Notes;
-
+                            int paymentMonthId = 0;
                             if (order.Orders_OrderToAllocation.Count > 0)
                             {
-                                int paymentMonthId = order.Orders_OrderToAllocation.Max(month => month.Id);
-                                paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, paymentMonthId, 1);
-                            }
-                            else
-                            {
-                                paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, order.CreationDate.Month, 1);
+                                paymentMonthId = order.Orders_OrderToAllocation.Max(o => o.MonthId);
                             }
 
-                            builder.AppendLine(
+                            string orderNotes = order.Notes == null ? String.Empty : order.Notes;
+
+                            if (!order.IsFutureOrder)
+                            {
+                                if (order.Budgets_Allocations == null || String.IsNullOrEmpty(order.Budgets_Allocations.ExternalId))
+                                    return Error("Insufficient allocation data for export");
+
+                                if (order.Orders_OrderToAllocation.Count > 0)
+                                {
+                                    paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, paymentMonthId, 1);
+                                }
+                                else
+                                {
+                                    paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, order.CreationDate.Month, 1);
+                                }
+
+                                builder.AppendLine(
                                 String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                                 userCompany.ExternalExpenseCode.PadLeft(3),
                                 order.InvoiceNumber.PadLeft(5),
@@ -1948,7 +2070,82 @@ namespace GAppsDev.Controllers
                                 String.Empty.PadLeft(12)
                                 )
                                 );
+                            }
+                            else
+                            {
+                                List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
+                                List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
+
+                                if (orderAllocations.Count == 0)
+                                    return Error("Insufficient allocation data for export");
+
+                                foreach (var allocation in distinctOrderAllocations)
+                                {
+                                    if (String.IsNullOrEmpty(allocation.ExternalId))
+                                        return Error("Insufficient allocation data for export");
+
+                                    if (order.Orders_OrderToAllocation.Count > 0)
+                                    {
+                                        paymentDate = new DateTime(allocation.Budget.Year, paymentMonthId, 1);
+                                    }
+                                    else
+                                    {
+                                        paymentDate = new DateTime(allocation.Budget.Year, order.CreationDate.Month, 1);
+                                    }
+
+                                    decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
+
+                                    builder.AppendLine(
+                                    String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
+                                    userCompany.ExternalExpenseCode.PadLeft(3),
+                                    order.InvoiceNumber.PadLeft(5),
+                                    order.InvoiceDate.Value.ToString("ddMMyy"),
+                                    String.Empty.PadLeft(5),
+                                    paymentDate.ToString("ddMMyy"),
+                                    userCompany.ExternalCoinCode.PadLeft(3),
+                                    String.Empty.PadLeft(22),
+                                    allocation.ExternalId.ToString().PadLeft(8),
+                                    String.Empty.PadLeft(8),
+                                    order.Supplier.ExternalId.ToString().PadLeft(8),
+                                    String.Empty.PadLeft(8),
+                                    allocationSum.ToString("0.00").PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12)
+                                    )
+                                    );
+                                }
+
+                                builder.AppendLine(
+                                    String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
+                                    userCompany.ExternalExpenseCode.PadLeft(3),
+                                    order.InvoiceNumber.PadLeft(5),
+                                    order.InvoiceDate.Value.ToString("ddMMyy"),
+                                    String.Empty.PadLeft(5),
+                                    paymentDate.ToString("ddMMyy"),
+                                    userCompany.ExternalCoinCode.PadLeft(3),
+                                    String.Empty.PadLeft(22),
+                                    String.Empty.PadLeft(8),
+                                    String.Empty.PadLeft(8),
+                                    order.Supplier.ExternalId.ToString().PadLeft(8),
+                                    String.Empty.PadLeft(8),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    orderPrice.ToString("0.00").PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12),
+                                    String.Empty.PadLeft(12)
+                                    )
+                                    );
+                            }
                         }
+
                         return File(Encoding.UTF8.GetBytes(builder.ToString()),
                              "text/plain",
                              "MOVEIN.DAT");
@@ -2006,7 +2203,7 @@ namespace GAppsDev.Controllers
                             if (order.Price.HasValue)
                             {
                                 if (order.Price.Value > 999999999)
-                                return Error("Price is too high");
+                                    return Error("Price is too high");
                                 else
                                     orderPrice = order.Price.Value;
                             }
