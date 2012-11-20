@@ -154,10 +154,9 @@ namespace BL
                     if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId) == null) toAddAllocations.Add(newAllocation);
                     else
                     {
-                        Budgets_Allocations allocation = new Budgets_Allocations();
-                        allocation.Name = lineValues[SECOND_COLOUMN];
-                        allocation.BudgetId = budget.Id;
-                        allocationRep.Update(allocation);
+                        Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId);
+                        existingAllocation.Name = newAllocation.Name;
+                        allocationRep.Update(existingAllocation);
                     }
                     tempAmountList.Add(int.Parse(newAllocation.ExternalId), decimal.Parse(lineValues[THIRD_COLOUMN]));
                 }
@@ -202,10 +201,15 @@ namespace BL
                     toAddallocationMonth.AllocationId = allocationFromDb.Id;
                     toAddallocationMonth.MonthId = JANUARY;
                     toAddallocationMonth.Amount = item.Value;
-                    if (allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id) == null) 
+                    if (allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id) == null)
                         toAddAllocationMonthList.Add(toAddallocationMonth);
                     else
-                        allocationMonthRepository.Update(toAddallocationMonth);
+                    {
+                        Budgets_AllocationToMonth existingAllocationMonth = allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id);
+                        existingAllocationMonth.MonthId = toAddallocationMonth.MonthId;
+                        existingAllocationMonth.Amount = toAddallocationMonth.Amount;
+                        allocationMonthRepository.Update(existingAllocationMonth);
+                    }
                 }
                 allocationMonthRepository.AddList(toAddAllocationMonthList);
             }
