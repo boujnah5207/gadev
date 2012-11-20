@@ -84,6 +84,8 @@ namespace BL
             const int FIRST_COLOUMN = 0;
             const int SECOND_COLOUMN = 1;
             const int THIRD_COLOUMN = 2;
+            const int JANUARY = 1;
+
             List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
             byte[] fileBytes = new byte[stream.Length];
             stream.Read(fileBytes, 0, Convert.ToInt32(stream.Length));
@@ -162,6 +164,8 @@ namespace BL
                 {
                     Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.ExternalId == allocation.ExternalId);
                     Budgets_AllocationToMonth allocationMonth = allocationMonthRepository.GetList().SingleOrDefault(x => x.AllocationId == allocationFromDb.Id);
+                    allocationMonth.MonthId = JANUARY;
+                    if(allocation.Amount.HasValue) allocationMonth.Amount = allocation.Amount.Value;
                 }
             }
             if (!noErros) return errorType;
