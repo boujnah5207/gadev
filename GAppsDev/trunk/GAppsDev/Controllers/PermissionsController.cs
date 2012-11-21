@@ -20,23 +20,19 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int year = 0)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            
+            List<Budgets_Permissions> model;
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                List<Budgets_Permissions> model;
-
-                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-                {
-                    model = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                }
-
-                return View(model);
+                model = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                Budget budget = budgetsRep.GetList().SingleOrDefault(x=>x.Year == year);
+                ViewBag.budgetId = budget.Id;
             }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
+            return View(model);
         }
 
         //
@@ -218,7 +214,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult EditAllocations(int id = 0)
+        public ActionResult EditAllocations(int id = 0, int budgetId = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -309,7 +305,7 @@ namespace GAppsDev.Controllers
                 {
                     permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
                     //TODO: Error gets ALL pemissions from DB
-                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select( y => y.Budgets_Allocations).ToList();
+                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select(y => y.Budgets_Allocations).ToList();
                     existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).ToList();
 
                     if (permissionFromDB != null)
@@ -317,16 +313,16 @@ namespace GAppsDev.Controllers
                         if (permissionFromDB.CompanyId == CurrentUser.CompanyId)
                         {
                             foreach (var budgetAllocation in model.BudgetAllocationsList)
-	                        {
+                            {
                                 Budget budgetFromDB = budgetsRep.GetEntity(budgetAllocation.Budget.Id);
 
-                                if(budgetFromDB != null && budgetFromDB.CompanyId == CurrentUser.CompanyId)
+                                if (budgetFromDB != null && budgetFromDB.CompanyId == CurrentUser.CompanyId)
                                 {
                                     foreach (var allocation in budgetAllocation.PermissionAllocations)
-	                                {
-		                                if(allocation.IsActive)
+                                    {
+                                        if (allocation.IsActive)
                                         {
-                                            if(!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                                            if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
                                             {
                                                 allocation.Allocation.BudgetId = budgetFromDB.Id;
                                                 allocation.Allocation.BudgetsPermissionsId = permissionFromDB.Id;
@@ -340,13 +336,13 @@ namespace GAppsDev.Controllers
                                                 permissionsAllocationsRep.Delete(allocation.Allocation.Id);
                                             }
                                         }
-	                                }
+                                    }
                                 }
                                 else
                                 {
                                     return Error("");
                                 }
-	                        }
+                            }
 
                             return RedirectToAction("Index");
                         }
