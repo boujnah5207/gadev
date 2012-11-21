@@ -394,10 +394,10 @@
     <value>צור חדש</value>
   </data>
   <data name="CreateNewPermission" xml:space="preserve">
-    <value>צור הרשאה חדשה</value>
+    <value>צור סל תקציבים חדש</value>
   </data>
   <data name="EditAllocations" xml:space="preserve">
-    <value>ערוך הקצאות</value>
+    <value>עריכת סעיפים תקציביים</value>
   </data>
   <data name="Department" xml:space="preserve">
     <value>אגף</value>
