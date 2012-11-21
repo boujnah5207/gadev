@@ -6,16 +6,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DB;
+using DA;
+using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class PermissionsAllocationsController : Controller
+    public class PermissionsAllocationsController : BaseController
     {
         private Entities db = new Entities();
 
         //
         // GET: /PermissionsAllocations/
 
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
             var budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Include("Budgets_Allocations").Include("Budgets_Permissions");
@@ -25,6 +28,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /PermissionsAllocations/Details/5
 
+        [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
             Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
@@ -38,34 +42,44 @@ namespace GAppsDev.Controllers
         //
         // GET: /PermissionsAllocations/Create
 
-        public ActionResult Create()
+    /*    public ActionResult Create()
         {
             ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
             ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name");
             return View();
-        }
+        }*/
 
+        [OpenIdAuthorize]
+        public ActionResult Create(int permissionId, int budgetId)
+        {
+            Budgets_PermissionsToAllocation perAlloc = new Budgets_PermissionsToAllocation();
+            using (AllocationRepository allocationRepository = new AllocationRepository())
+            {
+                ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).ToList(), "Id", "Name");
+                //ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
+                perAlloc.BudgetId = budgetId;
+                perAlloc.BudgetsPermissionsId = permissionId;
+            }
+            return View(perAlloc);
+        }
         //
         // POST: /PermissionsAllocations/Create
-
+        
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Create(Budgets_PermissionsToAllocation budgets_permissionstoallocation)
         {
-            if (ModelState.IsValid)
+            using (BudgetsPermissionsToAllocationRepository perToAllRep = new BudgetsPermissionsToAllocationRepository())
             {
-                db.Budgets_PermissionsToAllocation.AddObject(budgets_permissionstoallocation);
-                db.SaveChanges();
+                perToAllRep.Create(budgets_permissionstoallocation);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
-            ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
-            return View(budgets_permissionstoallocation);
         }
 
         //
         // GET: /PermissionsAllocations/Edit/5
-
+        [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
             Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
@@ -80,7 +94,7 @@ namespace GAppsDev.Controllers
 
         //
         // POST: /PermissionsAllocations/Edit/5
-
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(Budgets_PermissionsToAllocation budgets_permissionstoallocation)
         {
@@ -98,7 +112,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /PermissionsAllocations/Delete/5
-
+        [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
             Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
@@ -111,7 +125,7 @@ namespace GAppsDev.Controllers
 
         //
         // POST: /PermissionsAllocations/Delete/5
-
+        [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

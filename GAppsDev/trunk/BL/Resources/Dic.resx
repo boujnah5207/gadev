@@ -891,4 +891,7 @@
   <data name="error_user_was_canceled" xml:space="preserve">
     <value>error_user_was_canceled</value>
   </data>
+  <data name="AddAllocationToPermission" xml:space="preserve">
+    <value>Add Allocation To Permission</value>
+  </data>
 </root>
