@@ -31,7 +31,7 @@
         </td>
         <td>
             @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(Loc.Dic.EditAllocations, "EditAllocations", null, new { id=item.Id, budgetId= ViewBag.budgetId }) |
+            @Html.ActionLink(Loc.Dic.EditAllocations, "EditAllocations", "Allocations", null, new { id=item.Id, budgetId= ViewBag.budgetId }) |
             @Html.ActionLink(Loc.Dic.Details, "Details", new { id=item.Id }) |
             @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
         </td>

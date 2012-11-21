@@ -20,7 +20,7 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int year = 0)
+        public ActionResult Index(int id = 0)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             
@@ -29,8 +29,7 @@ namespace GAppsDev.Controllers
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
                 model = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                Budget budget = budgetsRep.GetList().SingleOrDefault(x=>x.Year == year);
-                ViewBag.budgetId = budget.Id;
+                ViewBag.budgetId = id;
             }
             return View(model);
         }
