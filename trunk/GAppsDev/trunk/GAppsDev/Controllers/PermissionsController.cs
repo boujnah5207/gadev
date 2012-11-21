@@ -25,11 +25,14 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             
             List<Budgets_Permissions> model;
+            Budgets_PermissionsToAllocation per = new Budgets_PermissionsToAllocation();
             using (BudgetsRepository budgetsRep = new BudgetsRepository())
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                model = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                model = permissionsRep.GetList("Budgets_PermissionsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
                 ViewBag.budgetId = id;
+                Budget budget = budgetsRep.GetList().SingleOrDefault(x => x.Id == id);
+                ViewBag.budgetYear = budget.Year;
             }
             return View(model);
         }
