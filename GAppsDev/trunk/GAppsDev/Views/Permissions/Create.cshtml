@@ -22,8 +22,9 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
-        </div>
 
+        </div>
+        <input type ="hidden", value ="@ViewBag.BudgetId", name="budgetId" />
         <p>
             <input type="submit" value="@Loc.Dic.CreateNewPermission" />
         </p>
@@ -31,7 +32,7 @@
 }
 
 <div>
-    @Html.ActionLink(Loc.Dic.BackToList, "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index", new { id = ViewBag.BudgetId })
 </div>
 
 @section Scripts {

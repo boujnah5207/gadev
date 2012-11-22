@@ -39,6 +39,16 @@ namespace GAppsDev.Controllers
             return View(budgets_permissionstoallocation);
         }
 
+        [OpenIdAuthorize]
+        public ActionResult PermissionAllocationList(int permissionId, int budgetId)
+        {
+            using (BudgetsPermissionsToAllocationRepository perAlloRep = new BudgetsPermissionsToAllocationRepository())
+            {
+                List<Budgets_PermissionsToAllocation> perAlloList = perAlloRep.GetList("Budgets_Allocations").Where(x => x.BudgetId == budgetId).Where(x => x.BudgetsPermissionsId == permissionId).ToList();
+                return View(perAlloList);  
+                
+            }
+        }
         //
         // GET: /PermissionsAllocations/Create
 
@@ -72,7 +82,7 @@ namespace GAppsDev.Controllers
             using (BudgetsPermissionsToAllocationRepository perToAllRep = new BudgetsPermissionsToAllocationRepository())
             {
                 perToAllRep.Create(budgets_permissionstoallocation);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Permissions", new { id = budgets_permissionstoallocation.BudgetId });
             }
 
         }

@@ -535,6 +535,7 @@
     <Content Include="Views\Orders\OrdersToExport.cshtml" />
     <Content Include="Views\Suppliers\SuppliersEntrence.cshtml" />
     <Content Include="Views\Suppliers\Import.cshtml" />
+    <Content Include="Views\PermissionsAllocations\PermissionAllocationList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />
