@@ -16,6 +16,10 @@
         <div class="editor-field">
             @Html.DropDownList("BudgetsExpensesToIncomesId", (SelectList)ViewBag.AllocationList)
         </div>
+                @Html.HiddenFor(model => model.BudgetId)
+                @Html.HiddenFor(model => model.BudgetsPermissionsId)
+
+
 
 
         <p>
