@@ -894,4 +894,7 @@
   <data name="AddAllocationToPermission" xml:space="preserve">
     <value>הוסף סעיף תקציבי לסל תקציבים</value>
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>ריק</value>
+  </data>
 </root>

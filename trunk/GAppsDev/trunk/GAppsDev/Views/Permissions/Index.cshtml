@@ -5,46 +5,44 @@
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllBudgets";
 }
-<p>
+<strong>
     @ViewBag.budgetYear
-</p>
+</strong>
 <p>
-    @Html.ActionLink(@Loc.Dic.CreateNewPermission, "Create")
+    @Html.ActionLink(@Loc.Dic.CreateNewPermission, "Create", new { budgetId = ViewBag.budgetId })
 </p>
 <table>
     <tr>
         <th>
-            @Loc.Dic.CreationDate
-        </th>
-        <th>
-            @Loc.Dic.Name
+            @Loc.Dic.Permissions
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @if(item.Budgets_PermissionsToAllocation.Where(x=>x.BudgetId == ViewBag.budgetId).Count() == 0)
-            {
-                @Html.ActionLink(Loc.Dic.AddAllocationToPermission, "Create", "PermissionsAllocations", new { permissionId = item.Id, budgetId = ViewBag.budgetId}, null )
-            }
-            else
-            {
-                @Html.ActionLink(Loc.Dic.EditAllocations, "EditAllocations", "Allocations", null, new { id=item.Id, budgetId= ViewBag.budgetId })
-            }
-            ||
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(Loc.Dic.Details, "Details", new { id=item.Id }) |
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @if (!(item.Budgets_PermissionsToAllocation.Where(x => x.BudgetId == ViewBag.budgetId).Count() == 0))
+                {
+                    @Html.ActionLink(Loc.Dic.Details, "PermissionAllocationList", "PermissionsAllocations", new { permissionId = item.Id, budgetId = ViewBag.budgetId }, null)
+                }
+                else
+                {
+                    <b>
+                        @Loc.Dic.Empty
+                    </b>
+                    <b>| </b>
+                    @Html.ActionLink(Loc.Dic.AddAllocationToPermission, "Create", "PermissionsAllocations", new { permissionId = item.Id, budgetId = ViewBag.budgetId }, null)
+                    <b>| </b>
+                    @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id, budgetId = ViewBag.budgetId })
+                
+                }
+            </td>
+        </tr>
+    }
 
 </table>

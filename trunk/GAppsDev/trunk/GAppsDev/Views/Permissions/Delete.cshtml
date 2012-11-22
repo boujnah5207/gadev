@@ -25,6 +25,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
+        <input type ="hidden", value ="@ViewBag.BudgetId", name="budgetId" />
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

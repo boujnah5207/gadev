@@ -33,6 +33,8 @@ namespace GAppsDev.Controllers
                 ViewBag.budgetId = id;
                 Budget budget = budgetsRep.GetList().SingleOrDefault(x => x.Id == id);
                 ViewBag.budgetYear = budget.Year;
+                ViewBag.budgetId = budget.Id;
+
             }
             return View(model);
         }
@@ -77,11 +79,11 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/Create
 
         [OpenIdAuthorize]
-        public ActionResult Create()
+        public ActionResult Create(int budgetId)
         {
             if (Authorized(RoleType.SystemManager))
             {
-                List<SelectListItemDB> budgetsList;
+               /* List<SelectListItemDB> budgetsList;
 
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
                 {
@@ -94,6 +96,8 @@ namespace GAppsDev.Controllers
                 }
 
                 ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
+                */
+                ViewBag.BudgetId = budgetId;
                 return View();
             }
             else
@@ -107,7 +111,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Budgets_Permissions budgets_permissions)
+        public ActionResult Create(Budgets_Permissions budgets_permissions, int budgetId = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -122,7 +126,7 @@ namespace GAppsDev.Controllers
                     }
 
                     if (wasCreated)
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", new { id = budgetId });
                     else
                         return Error(Loc.Dic.error_permissions_create_error);
 
@@ -369,7 +373,7 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/Delete/5
 
         [OpenIdAuthorize]
-        public ActionResult Delete(int id = 0)
+        public ActionResult Delete(int id = 0, int budgetId = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -383,6 +387,7 @@ namespace GAppsDev.Controllers
                     {
                         if (permission.CompanyId == CurrentUser.CompanyId)
                         {
+                            ViewBag.BudgetId = budgetId;
                             return View(permission);
                         }
                         else
@@ -407,7 +412,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int budgetId)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -444,7 +449,7 @@ namespace GAppsDev.Controllers
                                 noErrors = false;
 
                             if (noErrors)
-                                return RedirectToAction("Index");
+                                return RedirectToAction("Index", new { id = budgetId });
                             else
                                 return Error(Loc.Dic.error_permissions_delete_error);
                         }
