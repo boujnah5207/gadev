@@ -76,7 +76,9 @@
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {
                         DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
-                        <option data-amount="@monthAllocation.Amount" value="@month">@Html.GetMonthName(month) (@monthAllocation.Amount)</option>
+                        decimal amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        
+                        <option data-amount="@amount" value="@month">@Html.GetMonthName(month) (@amount)</option>
                     }
 
                 </select>

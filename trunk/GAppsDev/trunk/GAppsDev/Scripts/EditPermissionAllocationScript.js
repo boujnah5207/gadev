@@ -24,11 +24,9 @@ function addItem(budgetIndex) {
         var nextNumber = $(".budget-" + budgetIndex).length;
 
         var existingItems = $(".existingAllocations");
-        console.log(existingItems);
         var itemExists = false;
 
         for (var i = 0; i < existingItems.length; i++) {
-            console.log($(existingItems[i]).val() + "=" + allocationId);
             if ($(existingItems[i]).val() == allocationId) {
                 itemExists = true;
             }
@@ -67,11 +65,8 @@ function removeItem(budgetIndex, allocationIndex) {
 
     var existingRemovedItem = getRemovedItem(allocationIndex);
     if (existingRemovedItem == null) {
-        console.log(removedItems.length);
         var newRemovedItem = { id: allocationId, oldItem: container};
         removedItems[removedItems.length] = newRemovedItem;
-        //removedItems[removedItems.length].id = allocationId;
-        //removedItems[removedItems.length].oldItem = container;
 
         container.toggle(0);
     }
@@ -83,24 +78,18 @@ function unRemove(allocationId) {
         existingRemovedItem.oldItem.toggle(0);
         existingRemovedItem.oldItem.find(".isActiveField").val("true");
 
-        console.log("old list: " + removedItems.length);
         var itemIndex = null;
 
         var newRemovedList = new Array();
         
         for (var i = 0; i < removedItems.length; i++) {
-            console.log("index: " + i);
 
             if (removedItems[i] != existingRemovedItem) {
                 newRemovedList[newRemovedList.length] = removedItems[i];
             }
         }
 
-        console.log("new list: " + newRemovedList.length);
-
         removedItems = newRemovedList;
-
-        console.log(removedItems);
     }
 }
 

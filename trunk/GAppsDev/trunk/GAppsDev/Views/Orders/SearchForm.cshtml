@@ -1,8 +1,13 @@
 ﻿@model GAppsDev.Models.Search.OrdersSearchValuesModel
 
-<fieldset>
-    <legend class="bold">@Loc.Dic.AdvancedSearch</legend>
-    <div id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+@if (ViewBag.IsExpanding)
+{ 
+    <a class="bold" id="ExpandSearchButton">@Loc.Dic.AdvancedSearch</a>
+}
+
+<fieldset id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+    <legend class="bold">@Loc.Dic.Search:</legend>
+    <div >
 
     @using (Html.BeginForm("Search", "Orders"))
     {
@@ -101,8 +106,5 @@
             </p>
     }
     </div>
-    @if (ViewBag.IsExpanding)
-    { 
-        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){@Loc.Dic.Show}else {@Loc.Dic.Hide}" /> 
-    }
+    
 </fieldset>

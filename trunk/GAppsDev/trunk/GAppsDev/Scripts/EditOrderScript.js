@@ -37,7 +37,6 @@ $(function () {
 
     $("#allocationSelectList").change(function () {
         $(".allocationMonthList").css("display", "none");
-        console.log($(this).val());
         $("#allocation-" + $(this).val()).css("display", "inline-block");
     });
 
@@ -321,12 +320,10 @@ function addAllocation() {
     if (nextNumber == 0)
         $("#orderAllocations").html("");
 
-    console.log(existingAllocations);
     var allocationExists = false;
     var existingAllocation;
 
     for (var i = 0; i < existingAllocations.length; i++) {
-        console.log($(existingAllocations[i]).val() + "=" + allocationId);
         if ($(existingAllocations[i]).find(".allocationIdField").val() == allocationId && $(existingAllocations[i]).find(".monthIdField").val() == monthId) {
             allocationExists = true;
             existingAllocation = $(existingAllocations[i]);
@@ -370,13 +367,10 @@ function removeAllocation(allocationIndex) {
     var isActive = isActiveField.val();
     var allocationId = $("#allocationIdField-" + allocationIndex).val();
     var monthId = $("#monthIdField-" + allocationIndex).val();
-    console.log("index: " + allocationIndex);
-    console.log("id: " + allocationId);
     isActiveField.val("false");
 
     var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
     if (existingRemovedAllocation == null) {
-        console.log(removedAllocations.length);
         var newRemovedAllocation = { allocationId: allocationId, monthId: monthId, oldItem: container };
         removedAllocations[removedAllocations.length] = newRemovedAllocation;
 
@@ -392,24 +386,18 @@ function unRemove(allocationId, monthId) {
         existingRemovedAllocation.oldItem.toggle(0);
         existingRemovedAllocation.oldItem.find(".isActiveField").val("true");
 
-        console.log("old list: " + removedAllocations.length);
         var itemIndex = null;
 
         var newRemovedList = new Array();
 
         for (var i = 0; i < removedAllocations.length; i++) {
-            console.log("index: " + i);
 
             if (removedAllocations[i] != existingRemovedAllocation) {
                 newRemovedList[newRemovedList.length] = removedAllocations[i];
             }
         }
 
-        console.log("new list: " + newRemovedList.length);
-
         removedAllocations = newRemovedList;
-
-        console.log(removedAllocations);
     }
 }
 

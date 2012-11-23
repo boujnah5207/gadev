@@ -362,7 +362,6 @@
     <Content Include="Scripts\AddToInventoryScript.js" />
     <Content Include="Scripts\CreateBudgetScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
-    <Content Include="Scripts\CreatePermissionScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\EditPermissionAllocationScript.js" />
     <Content Include="Scripts\EditUserPermissions.js" />
@@ -536,6 +535,7 @@
     <Content Include="Views\Suppliers\SuppliersEntrence.cshtml" />
     <Content Include="Views\Suppliers\Import.cshtml" />
     <Content Include="Views\PermissionsAllocations\PermissionAllocationList.cshtml" />
+    <Content Include="Views\Orders\PartialDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

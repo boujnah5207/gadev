@@ -481,7 +481,7 @@
     <value>מיקום</value>
   </data>
   <data name="AddPermission" xml:space="preserve">
-    <value>הוסף הרשאה</value>
+    <value>הוסף סל</value>
   </data>
   <data name="DownloadInvoice" xml:space="preserve">
     <value>הורד חשבונית</value>
@@ -896,5 +896,8 @@
   </data>
   <data name="Empty" xml:space="preserve">
     <value>ריק</value>
+  </data>
+  <data name="PermissionAllocation" xml:space="preserve">
+    <value>סל תקציבי</value>
   </data>
 </root>

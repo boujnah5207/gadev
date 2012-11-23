@@ -6,14 +6,6 @@
         <ul>
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
             {
-                <!--
-                <li>Html.ActionLink(Loc.Dic.Departments, "Index", "Departments", null, new { id = "AllDepartmentsLink" })</li>
-                <li>|</li>
-                <li>Html.ActionLink(Loc.Dic.Projects, "Index", "Projects", null, new { id = "AllProjectsLink" })</li>
-                <li>|</li>
-                <li>Html.ActionLink(Loc.Dic.SubProject, "Index", "SubProjects", null, new { id = "AllSubProjectsLink" })</li>
-                <li>|</li>
-                    -->
                 <li>@Html.ActionLink(Loc.Dic.Users, "Index", "Users", null, new { id = "AllUsersLink" })</li>
                 <li>|</li>
                 <li>@Html.ActionLink(Loc.Dic.Budget, "index", "Budgets", null, new { id = "AllBudgetsLink" })</li>
