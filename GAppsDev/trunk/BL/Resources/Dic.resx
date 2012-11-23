@@ -217,7 +217,7 @@
     <value>Permission</value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>Budget Permissions</value>
+    <value>Budget Baskets</value>
   </data>
   <data name="PermissionsAllocations" xml:space="preserve">
     <value>Configure Budget Allocations</value>
@@ -478,7 +478,7 @@
     <value>Location</value>
   </data>
   <data name="AddPermission" xml:space="preserve">
-    <value>Add Permission</value>
+    <value>Add basket</value>
   </data>
   <data name="DownloadInvoice" xml:space="preserve">
     <value>Download Invoice</value>
@@ -896,5 +896,11 @@
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Empty</value>
+  </data>
+  <data name="PermissionAllocation" xml:space="preserve">
+    <value>Budget Basket</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -868,40 +868,8 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-            {
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User");
-
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
-                        {
-                            OrderModel orderModel = new OrderModel()
-                            {
-                                Order = order,
-                                OrderToItem = order.Orders_OrderToItem.ToList()
-                            };
-
-                            return View(orderModel);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_NoPermission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.Error_OrderNotFound);
-                }
-            }
+            ViewBag.OrderId = id;
+            return View();
         }
 
         //
@@ -1453,7 +1421,6 @@ namespace GAppsDev.Controllers
                                         }
                                     }
 
-                                    bool noAllocationErros = true;
                                     List<Orders_OrderToAllocation> createdAllocations = new List<Orders_OrderToAllocation>();
 
                                     foreach (var allocation in model.Allocations)
@@ -1472,8 +1439,6 @@ namespace GAppsDev.Controllers
                                                 createdAllocations.Add(newOrderAllocation);
                                             else
                                             {
-                                                noAllocationErros = false;
-
                                                 foreach (var item in createdAllocations)
                                                 {
                                                     orderAllocationsRep.Delete(item.Id);
@@ -2441,6 +2406,45 @@ namespace GAppsDev.Controllers
             ViewBag.UserRoles = (RoleType)CurrentUser.Roles;
 
             return PartialView("List", orders);
+        }
+
+        [ChildActionOnly]
+        public ActionResult PartialDetails(int id = 0)
+        {
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items");
+
+                if (order != null)
+                {
+                    if (order.CompanyId == CurrentUser.CompanyId)
+                    {
+                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
+                        {
+                            OrderModel orderModel = new OrderModel()
+                            {
+                                Order = order,
+                                OrderToItem = order.Orders_OrderToItem.ToList()
+                            };
+
+                            return PartialView(orderModel);
+                        }
+                        else
+                        {
+                            return Error(Loc.Dic.Error_NoPermission);
+                        }
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.Error_NoPermission);
+                    }
+                }
+                else
+                {
+                    return Error(Loc.Dic.Error_OrderNotFound);
+                }
+            }
         }
 
         [ChildActionOnly]

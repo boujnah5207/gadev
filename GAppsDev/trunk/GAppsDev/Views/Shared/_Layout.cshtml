@@ -47,12 +47,6 @@
                             <li id="InventoryPage">
                                 @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory", null, new { id = "InventoryLink" })
                             </li>
-                            <!--
-                            <li>|</li>
-                            <li id="BudgetsPage">
-                                Html.ActionLink(Loc.Dic.Budget, "Home", "Budgets", null, new { id = "BudgetsLink" })
-                            </li>
-                                -->
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
                                 <li>|</li>

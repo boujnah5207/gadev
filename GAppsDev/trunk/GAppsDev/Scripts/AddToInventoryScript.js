@@ -81,7 +81,6 @@ function split(id, index, quantity) {
         newItem.insertBefore(oldItem);
     }
 
-    console.log(splitedItems);
     var existingSplittedItem = getSplittedItem(id);
     if (existingSplittedItem == null) {
         splitedItems[splitedItems.length] = {};
@@ -95,13 +94,6 @@ function split(id, index, quantity) {
         existingSplittedItem.oldExpandBtn = oldExpandBtn;
         existingSplittedItem.oldSplitBtn = oldSplitBtn;
     }
-
-    /*
-    splitedItems[id] = {};
-    splitedItems[id].oldItem = oldItem;
-    splitedItems[id].oldExpandBtn = oldExpandBtn;
-    splitedItems[id].oldSplitBtn = oldSplitBtn;
-    */
 
     oldItem.remove();
     oldExpandBtn.replaceWith($("<input id='expandingGroupBtn-" + id + "' type='button' value='הסתר קבוצה' onClick='expandGroup(" + id + ")' />"));
@@ -130,7 +122,6 @@ function remove(id) {
     var oldItemHiddenCancel = $("#addToInventory-" + id);
     var oldItemTitle = oldItem.find("legend").html();
 
-    console.log(removedItems);
     var existingRemovedItem = getRemovedItem(id);
     if (existingRemovedItem == null) {
         removedItems[removedItems.length] = {};

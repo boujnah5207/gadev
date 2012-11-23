@@ -12,11 +12,9 @@ function addItem() {
     var existingItems = $(".existingPermissions");
     var nextNumber = existingItems.length;
 
-    console.log(existingItems);
     var itemExists = false;
 
     for (var i = 0; i < existingItems.length; i++) {
-        console.log($(existingItems[i]).val() + "=" + permissionId);
         if ($(existingItems[i]).val() == permissionId) {
             itemExists = true;
         }
@@ -46,20 +44,13 @@ function removeItem(permissionIndex) {
     var container = $("#permission-" + permissionIndex);
     var isActiveField = $("#isActiveField-" + permissionIndex);
     var isActive = isActiveField.val();
-    //var BudgetId = $("#BudgetField-" + budgetIndex + "-" + allocationIndex).val();
     var PermissionId = $("#permissionField-" + permissionIndex).val();
-    //var allocationId = $("#allocationField-" + budgetIndex + "-" + allocationIndex).val();
-    console.log("index: " + permissionIndex);
-    console.log("id: " + PermissionId);
     isActiveField.val("false");
 
     var existingRemovedItem = getRemovedItem(PermissionId);
     if (existingRemovedItem == null) {
-        console.log(removedItems.length);
         var newRemovedItem = { id: PermissionId, oldItem: container };
         removedItems[removedItems.length] = newRemovedItem;
-        //removedItems[removedItems.length].id = allocationId;
-        //removedItems[removedItems.length].oldItem = container;
 
         container.toggle(0);
     }
@@ -71,24 +62,17 @@ function unRemove(permissionId) {
         existingRemovedItem.oldItem.toggle(0);
         existingRemovedItem.oldItem.find(".isActiveField").val("true");
 
-        console.log("old list: " + removedItems.length);
         var itemIndex = null;
-
         var newRemovedList = new Array();
 
         for (var i = 0; i < removedItems.length; i++) {
-            console.log("index: " + i);
 
             if (removedItems[i] != existingRemovedItem) {
                 newRemovedList[newRemovedList.length] = removedItems[i];
             }
         }
 
-        console.log("new list: " + newRemovedList.length);
-
         removedItems = newRemovedList;
-
-        console.log(removedItems);
     }
 }
 
