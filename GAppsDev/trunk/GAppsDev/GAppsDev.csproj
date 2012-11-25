@@ -495,7 +495,7 @@
     <Content Include="Views\SubProjects\Create.cshtml" />
     <Content Include="Views\SubProjects\Edit.cshtml" />
     <Content Include="Views\SubProjects\Delete.cshtml" />
-    <Content Include="Views\Permissions\Index.cshtml" />
+    <Content Include="Views\Permissions\ExistPermissionsList.cshtml" />
     <Content Include="Views\Permissions\Details.cshtml" />
     <Content Include="Views\Permissions\Create.cshtml" />
     <Content Include="Views\Permissions\Edit.cshtml" />
@@ -536,6 +536,7 @@
     <Content Include="Views\Suppliers\Import.cshtml" />
     <Content Include="Views\PermissionsAllocations\PermissionAllocationList.cshtml" />
     <Content Include="Views\Orders\PartialDetails.cshtml" />
+    <Content Include="Views\Permissions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

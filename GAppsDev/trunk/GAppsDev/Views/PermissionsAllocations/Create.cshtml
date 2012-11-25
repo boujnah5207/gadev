@@ -3,29 +3,22 @@
 @{
     ViewBag.Title = "Create";
     ViewBag.PageName = "Managment";
-    ViewBag.SubPageName = "";
+    ViewBag.SubPageName = "AllBudgets";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
+<h2>@Loc.Dic.AddAllocationToPermission</h2>
 
 @using (Html.BeginForm())
 {
-    <fieldset>
-        <legend>Budgets_PermissionsToAllocation</legend>
-
         <div class="editor-field">
             @Html.DropDownList("BudgetsExpensesToIncomesId", (SelectList)ViewBag.AllocationList)
         </div>
                 @Html.HiddenFor(model => model.BudgetId)
                 @Html.HiddenFor(model => model.BudgetsPermissionsId)
-
-
-
-
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value=@Loc.Dic.Add />
         </p>
-    </fieldset>
 }
 
 <div>

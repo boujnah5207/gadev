@@ -900,4 +900,7 @@
   <data name="PermissionAllocation" xml:space="preserve">
     <value>סל תקציבי</value>
   </data>
+  <data name="Allocations" xml:space="preserve">
+    <value>סעיפים תקציביים</value>
+  </data>
 </root>

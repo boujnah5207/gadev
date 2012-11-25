@@ -6,15 +6,16 @@
     ViewBag.SubPageName = "AllBudgets";
 }
 
-<h2>PermissionAllocationList</h2>
+<h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Loc.Dic.Add, "Create", new { permissionId = ViewBag.PermissionId, budgetId = ViewBag.BudgetId})
 </p>
+
 <table>
     <tr>
         <th>
-            @Loc.Dic.BudgetAllocation
+            @Loc.Dic.Allocations
         </th>
         <th></th>
     </tr>
@@ -25,9 +26,7 @@
             @Html.DisplayFor(modelItem => item.Budgets_Allocations.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
         </td>
     </tr>
 }

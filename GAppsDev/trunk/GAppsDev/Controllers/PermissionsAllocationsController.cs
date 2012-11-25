@@ -45,6 +45,11 @@ namespace GAppsDev.Controllers
             using (BudgetsPermissionsToAllocationRepository perAlloRep = new BudgetsPermissionsToAllocationRepository())
             {
                 List<Budgets_PermissionsToAllocation> perAlloList = perAlloRep.GetList("Budgets_Allocations").Where(x => x.BudgetId == budgetId).Where(x => x.BudgetsPermissionsId == permissionId).ToList();
+                ViewBag.budgetYear = perAlloList[0].Budget.Year;
+                ViewBag.PermissionName = perAlloList[0].Budgets_Permissions.Name;
+                ViewBag.PermissionId = permissionId;
+                ViewBag.BudgetId = budgetId;
+
                 return View(perAlloList);  
                 
             }
@@ -63,12 +68,19 @@ namespace GAppsDev.Controllers
         public ActionResult Create(int permissionId, int budgetId)
         {
             Budgets_PermissionsToAllocation perAlloc = new Budgets_PermissionsToAllocation();
+            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+            using (BudgetsPermissionsRepository permissionsRepository = new BudgetsPermissionsRepository())
             using (AllocationRepository allocationRepository = new AllocationRepository())
             {
                 ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).ToList(), "Id", "Name");
                 //ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
                 perAlloc.BudgetId = budgetId;
                 perAlloc.BudgetsPermissionsId = permissionId;
+                Budget budget = budgetsRepository.GetEntity(budgetId);
+                ViewBag.budgetYear = budget.Year;
+                Budgets_Permissions permission = permissionsRepository.GetEntity(permissionId);
+                ViewBag.PermissionName = permission.Name;
+                
             }
             return View(perAlloc);
         }
@@ -82,7 +94,7 @@ namespace GAppsDev.Controllers
             using (BudgetsPermissionsToAllocationRepository perToAllRep = new BudgetsPermissionsToAllocationRepository())
             {
                 perToAllRep.Create(budgets_permissionstoallocation);
-                return RedirectToAction("Index", "Permissions", new { id = budgets_permissionstoallocation.BudgetId });
+                return RedirectToAction("PermissionAllocationList", "PermissionsAllocations", new { permissionId = budgets_permissionstoallocation.BudgetsPermissionsId, budgetId = budgets_permissionstoallocation.BudgetId });
             }
 
         }

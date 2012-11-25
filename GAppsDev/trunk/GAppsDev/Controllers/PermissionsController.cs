@@ -20,7 +20,20 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int id = 0)
+        public ActionResult Index()
+        {
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+
+            List<Budgets_Permissions> permissions = new List<Budgets_Permissions>();
+            using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+            {
+                permissions = permissionsRep.GetList("Budgets_PermissionsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+            }
+            return View(permissions);
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult ExistPermissionsList(int id = 0)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             
