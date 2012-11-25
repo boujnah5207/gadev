@@ -2,6 +2,9 @@
 
 @{
     ViewBag.Title = "Delete";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllBudgets";
+}
 }
 
 <h2>Delete</h2>
@@ -11,22 +14,24 @@
     <legend>Budgets_PermissionsToAllocation</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Budgets_Permissions.Name)
+        @Html.DisplayNameFor(model => model.Budgets_Permissions.Name)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Budgets_Permissions.Name)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Budgets_Allocations.Id)
+        @Html.DisplayNameFor(model => model.Budgets_Allocations.Id)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Budgets_Allocations.Id)
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     <p>
-        <input type="submit" value="Delete" /> |
+        <input type="submit" value="Delete" />
+        |
         @Html.ActionLink("Back to List", "Index")
     </p>
 }

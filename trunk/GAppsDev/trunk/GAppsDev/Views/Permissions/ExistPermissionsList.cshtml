@@ -1,24 +1,14 @@
 ﻿@model IEnumerable<DB.Budgets_Permissions>
 
 @{
-    ViewBag.Title = @Loc.Dic.AllPermissions;
+    ViewBag.Title = Loc.Dic.AllPermissions;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllBudgets";
 }
-<strong>
-    @ViewBag.budgetYear
-</strong>
-<p>
-    @Html.ActionLink(@Loc.Dic.CreateNewPermission, "Create", new { budgetId = ViewBag.budgetId })
-</p>
+<h2>
+    @ViewBag.budgetYear > @Loc.Dic.Permissions
+</h2>
 <table>
-    <tr>
-        <th>
-            @Loc.Dic.Permissions
-        </th>
-        <th></th>
-    </tr>
-
     @foreach (var item in Model)
     {
         <tr>
