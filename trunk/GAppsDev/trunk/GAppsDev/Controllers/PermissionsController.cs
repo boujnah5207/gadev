@@ -92,7 +92,7 @@ namespace GAppsDev.Controllers
         // GET: /Permissions/Create
 
         [OpenIdAuthorize]
-        public ActionResult Create(int budgetId)
+        public ActionResult Create()
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -110,7 +110,7 @@ namespace GAppsDev.Controllers
 
                 ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
                 */
-                ViewBag.BudgetId = budgetId;
+                //ViewBag.BudgetId = budgetId;
                 return View();
             }
             else

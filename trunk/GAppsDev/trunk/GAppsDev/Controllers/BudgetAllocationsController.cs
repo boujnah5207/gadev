@@ -50,6 +50,18 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [OpenIdAuthorize]
+        public ActionResult AllocationMontheList(int budgetId = 0)
+        {
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            List<Budgets_Allocations> allocationsList = new List<Budgets_Allocations>();
+           using (AllocationRepository allocationsRep = new AllocationRepository())
+            {
+                allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == budgetId).ToList();
+               
+            }
+           return View(allocationsList);
+        }
         //
         // GET: /BudgetAllocations/Details/5
 
@@ -258,22 +270,22 @@ namespace GAppsDev.Controllers
                     {
                         if (allocation.CompanyId == CurrentUser.CompanyId)
                         {
-                            
-                                incomesList = incomesRep.GetList()
-                                    .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == allocation.BudgetId)
-                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
-                                    .ToList();
 
-                                expensesList = expensesRep.GetList()
-                                    .Where(expense => expense.CompanyId == CurrentUser.CompanyId && expense.BudgetId == allocation.BudgetId)
-                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
-                                    .ToList();
+                            incomesList = incomesRep.GetList()
+                                .Where(income => income.CompanyId == CurrentUser.CompanyId && income.BudgetId == allocation.BudgetId)
+                                .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                .ToList();
 
-                                ViewBag.IncomeId = new SelectList(incomesList, "Id", "Name", allocation.IncomeId);
-                                ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name", allocation.ExpenseId);
+                            expensesList = expensesRep.GetList()
+                                .Where(expense => expense.CompanyId == CurrentUser.CompanyId && expense.BudgetId == allocation.BudgetId)
+                                .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.CustomName })
+                                .ToList();
 
-                                return View(allocation);
-                            
+                            ViewBag.IncomeId = new SelectList(incomesList, "Id", "Name", allocation.IncomeId);
+                            ViewBag.ExpenseId = new SelectList(expensesList, "Id", "Name", allocation.ExpenseId);
+
+                            return View(allocation);
+
                         }
                         else
                         {
@@ -319,59 +331,59 @@ namespace GAppsDev.Controllers
                         {
                             if (allocation.CompanyId == CurrentUser.CompanyId)
                             {
-                                    income = incomesRep.GetEntity(Budgets_Allocations.IncomeId.Value);
-                                    expense = expensesRep.GetEntity(Budgets_Allocations.ExpenseId.Value);
+                                income = incomesRep.GetEntity(Budgets_Allocations.IncomeId.Value);
+                                expense = expensesRep.GetEntity(Budgets_Allocations.ExpenseId.Value);
 
-                                    if (income != null && expense != null)
+                                if (income != null && expense != null)
+                                {
+                                    if (income.BudgetId == allocation.BudgetId && expense.BudgetId == allocation.BudgetId)
                                     {
-                                        if (income.BudgetId == allocation.BudgetId && expense.BudgetId == allocation.BudgetId)
-                                        {
-                                            decimal? totalUsed;
-                                            decimal? allocatedToExpense;
-                                            decimal? allocatedToIncome;
+                                        decimal? totalUsed;
+                                        decimal? allocatedToExpense;
+                                        decimal? allocatedToIncome;
 
-                                            totalUsed = ordersRep.GetList()
-                                                .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                                .Sum(x => (decimal?)x.Price);
+                                        totalUsed = ordersRep.GetList()
+                                            .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                            .Sum(x => (decimal?)x.Price);
 
-                                            if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
-                                                return Error(Loc.Dic.error_allocations_amount_is_used);
+                                        if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
+                                            return Error(Loc.Dic.error_allocations_amount_is_used);
 
-                                            allocatedToIncome = allocationsRep.GetList()
-                                                 .Where(x => x.IncomeId == income.Id && x.Id != Budgets_Allocations.Id)
-                                                 .Sum(alloc => (decimal?)alloc.Amount);
+                                        allocatedToIncome = allocationsRep.GetList()
+                                             .Where(x => x.IncomeId == income.Id && x.Id != Budgets_Allocations.Id)
+                                             .Sum(alloc => (decimal?)alloc.Amount);
 
-                                            if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
-                                                return Error(Loc.Dic.error_income_full_allocation);
+                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
+                                            return Error(Loc.Dic.error_income_full_allocation);
 
-                                            allocatedToExpense = allocationsRep.GetList()
-                                                .Where(x => x.ExpenseId == expense.Id && x.Id != Budgets_Allocations.Id)
-                                                .Sum(alloc => (decimal?)alloc.Amount);
+                                        allocatedToExpense = allocationsRep.GetList()
+                                            .Where(x => x.ExpenseId == expense.Id && x.Id != Budgets_Allocations.Id)
+                                            .Sum(alloc => (decimal?)alloc.Amount);
 
-                                            if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
-                                                return Error(Loc.Dic.error_expenses_full_allocation);
+                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
+                                            return Error(Loc.Dic.error_expenses_full_allocation);
 
-                                            allocation.IncomeId = Budgets_Allocations.IncomeId;
-                                            allocation.ExpenseId = Budgets_Allocations.ExpenseId;
-                                            allocation.Amount = Budgets_Allocations.Amount;
+                                        allocation.IncomeId = Budgets_Allocations.IncomeId;
+                                        allocation.ExpenseId = Budgets_Allocations.ExpenseId;
+                                        allocation.Amount = Budgets_Allocations.Amount;
 
-                                            Budgets_Allocations update = allocationsRep.Update(allocation);
+                                        Budgets_Allocations update = allocationsRep.Update(allocation);
 
-                                            if (update != null)
-                                                return RedirectToAction("Index");
-                                            else
-                                                return Error(Loc.Dic.error_allocations_get_error);
-                                        }
+                                        if (update != null)
+                                            return RedirectToAction("Index");
                                         else
-                                        {
-                                            return Error(Loc.Dic.error_invalid_form);
-
-                                        }
+                                            return Error(Loc.Dic.error_allocations_get_error);
                                     }
                                     else
                                     {
-                                        return Error(Loc.Dic.error_database_error);
+                                        return Error(Loc.Dic.error_invalid_form);
+
                                     }
+                                }
+                                else
+                                {
+                                    return Error(Loc.Dic.error_database_error);
+                                }
                             }
                             else
                             {

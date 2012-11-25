@@ -17,10 +17,10 @@
                 @Html.HiddenFor(model => model.BudgetId)
                 @Html.HiddenFor(model => model.BudgetsPermissionsId)
         <p>
-            <input type="submit" value=@Loc.Dic.Add />
+            <input type="submit" value="@Loc.Dic.Add" />
         </p>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "ExistPermissionsList", "Permissions", new { id = Model.BudgetId }, null)
 </div>
