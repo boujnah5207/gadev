@@ -828,7 +828,7 @@ namespace GAppsDev.Controllers
         }
 
         //[OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(int id = 0, string languageCode = "he")
+        public ActionResult PrintOrderToScreen(int id = 0, int companyId = 0, string languageCode = "he")
         {
             CultureInfo ci = new CultureInfo(languageCode);
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
@@ -837,7 +837,7 @@ namespace GAppsDev.Controllers
 
             PrintOrderModel model = new PrintOrderModel();
 
-            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 model.Order = ordersRep.GetEntity(id, "User", "Company", "Supplier");
@@ -862,7 +862,7 @@ namespace GAppsDev.Controllers
             cookies.Add(cookieName, cookie.Value);
 
             Order order = db.Orders.Single(o => o.Id == id);
-            return new ActionAsPdf("PrintOrderToScreen", new { id = id, languageCode = CurrentUser.LanguageCode }) { FileName = "Invoice.pdf" };
+            return new ActionAsPdf("PrintOrderToScreen", new { id = id, companyId = CurrentUser.CompanyId, currentUser = CurrentUser, languageCode = CurrentUser.LanguageCode }) { FileName = "Invoice.pdf" };
         }
 
         [OpenIdAuthorize]
@@ -966,6 +966,14 @@ namespace GAppsDev.Controllers
                     model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
                     model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
 
+                    if (model.IsFutureOrder)
+                    {
+                        if (!Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
+                            return Error(Loc.Dic.Error_NoPermission);
+
+                        model.Order.IsFutureOrder = true;
+                    }
+
                     if (ItemsList != null)
                     {
                         if (ItemsList.Count > 0)
@@ -993,7 +1001,15 @@ namespace GAppsDev.Controllers
                         bool wasOrderCreated;
                         using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                         using (AllocationRepository allocationsRep = new AllocationRepository())
+                        using (BudgetsRepository budgetsRep = new BudgetsRepository())
                         {
+                            Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+
+                            if (currentBudget == null)
+                                return Error(Loc.Dic.error_database_error);
+
+                            model.Order.BudgetId = currentBudget.Id;
+
                             if (model.IsFutureOrder)
                             {
                                 int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
@@ -1183,7 +1199,14 @@ namespace GAppsDev.Controllers
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
-                    model.IsFutureOrder = model.Order.IsFutureOrder;
+
+                    if (model.IsFutureOrder)
+                    {
+                        if (!Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
+                            return Error(Loc.Dic.Error_NoPermission);
+
+                        model.Order.IsFutureOrder = true;
+                    }
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
@@ -1343,7 +1366,15 @@ namespace GAppsDev.Controllers
 
                                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                                     using (AllocationRepository allocationsRep = new AllocationRepository())
+                                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
                                     {
+                                        Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+
+                                        if (currentBudget == null)
+                                            return Error(Loc.Dic.error_database_error);
+
+                                        model.Order.BudgetId = currentBudget.Id;
+
                                         if (model.IsFutureOrder)
                                         {
                                             int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
@@ -1883,24 +1914,6 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult Search()
-        {
-            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
-            {
-                if (!Authorized(RoleType.OrdersViewer))
-                {
-                    ViewBag.UserId = CurrentUser.UserId;
-                }
-
-                return View();
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
-
-        [OpenIdAuthorize]
         public ActionResult OrdersToExport()
         {
             if (Authorized(RoleType.SystemManager))
@@ -2240,6 +2253,24 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
+        public ActionResult Search()
+        {
+            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
+            {
+                if (!Authorized(RoleType.OrdersViewer))
+                {
+                    ViewBag.UserId = CurrentUser.UserId;
+                }
+
+                return View();
+            }
+            else
+            {
+                return Error(Loc.Dic.error_no_permission);
+            }
+        }
+
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Search(OrdersSearchValuesModel model)
         {
@@ -2276,7 +2307,7 @@ namespace GAppsDev.Controllers
                     }
 
                     if (model.BudgetId.HasValue && model.BudgetId.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.Budgets_Allocations.BudgetId == model.BudgetId.Value);
+                        ordersQuery = ordersQuery.Where(x => x.BudgetId == model.BudgetId.Value);
 
                     if (model.OrderNumber.HasValue && model.OrderNumber.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.OrderNumber == model.OrderNumber.Value);
@@ -2409,19 +2440,40 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
+        public ActionResult ListOrderItems(IEnumerable<Orders_OrderToItem> orderItems, string baseUrl)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = false;
+            ViewBag.IsPaged = false;
+            ViewBag.Sortby = null;
+            ViewBag.Order = null;
+            ViewBag.CurrPage = 1;
+            ViewBag.NumberOfPages = 1;
+
+            ViewBag.IsCheckBoxed = false;
+            ViewBag.ShowUserName = true;
+
+            return PartialView("ListOrderItems", orderItems);
+        }
+
+        [ChildActionOnly]
         public ActionResult PartialDetails(int id = 0)
         {
             Order order;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items");
-
+                
+                
                 if (order != null)
                 {
                     if (order.CompanyId == CurrentUser.CompanyId)
                     {
                         if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
                         {
+                            if (order.IsFutureOrder)
+                                ViewBag.FutureMonth = order.Orders_OrderToAllocation.Max(x => x.MonthId);
+
                             OrderModel orderModel = new OrderModel()
                             {
                                 Order = order,

@@ -8,9 +8,10 @@
 @section ExtraCss{
     <link href="~/Content/site.css" rel="stylesheet" />
     <style>
-        body { border:none; }
+        body { border:none; font-size:medium;}
         .itemTitle { text-decoration:underline }
         .itemDetail { margin: 0 5px }
+        legend{font-size:large;}
     </style>
     @if (ViewBag.LanguageCode == "he" || ViewBag.LanguageCode == "ar")
     {
@@ -36,33 +37,20 @@
     <br />
     <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)</span>
     <br />
-    <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.Order.CreationDate.ToShortDateString()</span>
-    <br />
     <span class="bold">@Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => model.Order.Supplier.Name)</span>
     <br />
+    <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.Order.CreationDate.ToShortDateString()</span>
+    <br />
+
+    @Html.Action("ListOrderItems", new { orderItems = Model.Items, baseUrl = Url.Action("Index") })    
+    <br />
+
+    <div class="floatToSide" style="font-size:large;">
+        <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => model.Order.Price)</span>
+    </div>
+    <br />
+
     <span class="bold">@Loc.Dic.Notes:</span><br />
     <span>@Html.DisplayFor(model => model.Order.Notes)</span>
     <br /><br />
-
-    <fieldset>
-        <legend>@Loc.Dic.OrderItems</legend>
-
-        @foreach (var item in Model.Items)
-        {
-            <div class="orderItemContainer">
-                &nbsp;&nbsp;<span class="bold itemTitle">@Loc.Dic.OrderItemTitle:</span> <span>@item.Orders_Items.Title</span><br />
-                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.OrderItemSubTitle:</span> <span>@item.Orders_Items.SubTitle</span><br />
-                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.Quantity:</span> <span>@item.Quantity</span><br />
-                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.SingleItemPrice:</span> <span>@item.SingleItemPrice</span><br />
-                &nbsp;&nbsp;<span class="bold itemDetail">@Loc.Dic.Total:</span> <span>@(item.SingleItemPrice * item.Quantity)</span><br />
-            </div>
-            <br />
-        }
-    </fieldset>
-    <br />
-
-    <div class="floatToSide">
-        <span class="bold">@Loc.Dic.Price:</span> <span>@Html.DisplayFor(model => model.Order.Price)</span>
-    </div>
-    <br />
 </fieldset>
