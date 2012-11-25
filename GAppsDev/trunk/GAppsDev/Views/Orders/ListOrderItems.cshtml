@@ -1,0 +1,79 @@
+﻿@model List<DB.Orders_OrderToItem>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.ItemName, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Loc.Dic.ItemDescription</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Quantity, "quantity", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Price, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>
+                @Loc.Dic.ItemName
+            </th>
+            <th>
+                @Loc.Dic.ItemDescription
+            </th>
+            <th>
+                @Loc.Dic.Quantity
+            </th>
+            <th>
+                @Loc.Dic.Price
+            </th>
+        }
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Orders_OrderToItem item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" value="@item.Id" name="selectedOrder" />
+                </td>
+            }
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Orders_Items.Title)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Orders_Items.SubTitle)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.SingleItemPrice)
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}

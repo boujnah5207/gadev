@@ -6,7 +6,7 @@
 }
 
 <fieldset id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
-    <legend class="bold">@Loc.Dic.Search:</legend>
+    <legend class="bold">@Loc.Dic.Search: </legend>
     <div >
 
     @using (Html.BeginForm("Search", "Orders"))

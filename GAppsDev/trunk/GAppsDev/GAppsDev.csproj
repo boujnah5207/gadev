@@ -536,6 +536,7 @@
     <Content Include="Views\Suppliers\Import.cshtml" />
     <Content Include="Views\PermissionsAllocations\PermissionAllocationList.cshtml" />
     <Content Include="Views\Orders\PartialDetails.cshtml" />
+    <Content Include="Views\Orders\ListOrderItems.cshtml" />
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Views\BudgetAllocations\AllocationMontheList.cshtml" />
   </ItemGroup>

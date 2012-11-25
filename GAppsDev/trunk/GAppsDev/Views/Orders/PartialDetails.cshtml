@@ -9,21 +9,10 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.User.FirstName)
         @Html.DisplayFor(model => model.Order.User.LastName)
+        <br />
+        (@Html.DisplayFor(model => model.Order.User.Email))
     </div>
-
-    <div class="display-label">
-        @Loc.Dic.Email
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.User.Email)
-    </div>
-
-    <div class="display-label">
-        @Loc.Dic.CreationDate
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.CreationDate)
-    </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.SupplierName
@@ -31,58 +20,48 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Supplier.Name)
     </div>
-
-    <table>
-        <tr class="display-label">
-            <th>@Loc.Dic.ItemName
-            </th>
-            <th>@Loc.Dic.ItemDescription
-            </th>
-            <th>@Loc.Dic.Price
-            </th>
-            <th>@Loc.Dic.Amount
-            </th>
-        </tr>
-        @foreach (var item in Model.OrderToItem)
-        {
-            <tr class="display-field">
-                <td>
-                    @item.Orders_Items.Title
-                </td>
-                <td>
-                    @item.Orders_Items.SubTitle
-                </td>
-                <td>
-                    @item.SingleItemPrice
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-            </tr>
-        }
-    </table>
-
-    <div class="display-label">
-        @Loc.Dic.Notes
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Notes)
-    </div>
-
-    <div class="display-label">
-        @Loc.Dic.Price
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Price)
-    </div>
-
+    <br />
+    
     <div class="display-label">
         @Loc.Dic.OrderStatusName
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
     </div>
+    <br />
+    
+    <div class="display-label">
+        @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Order.CreationDate)
+    </div>
+    <br />
 
+    @if (Model.Order.IsFutureOrder)
+    {
+    <div class="display-label">
+        @Loc.Dic.FutureOrder
+    </div>
+    <div class="display-field">
+        @Loc.Dic.Month: @Html.GetMonthName((int)ViewBag.FutureMonth)
+    </div>
+    <br />
+    }
+
+    @if (!String.IsNullOrEmpty(Model.Order.Notes))
+    {
+    <div class="display-label">
+        @Loc.Dic.Notes
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Order.Notes)
+    </div>
+    <br />
+    }
+
+    @if (!String.IsNullOrEmpty(Model.Order.OrderApproverNotes))
+    {
     <div class="display-label">
         @Loc.Dic.OrderApproverNotes
     </div>
@@ -90,24 +69,39 @@
         @Html.DisplayFor(model => model.Order.OrderApproverNotes)
     </div>
     <br />
+    }
+
+    <div class="display-label"> @Loc.Dic.OrderItems </div>
+    @Html.Action("ListOrderItems", new { orderItems = Model.OrderToItem, baseUrl = Url.Action("Index") })    
+    <br />
+    
+    <div class="display-label">
+        @Loc.Dic.Price
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Order.Price)
+    </div>
+    <br />
 
     @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
+        <div class="display-label"> @Loc.Dic.Actions </div>
         @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Order.Id });
         <br />
-    }
-    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
-    {
-        @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Order.Id });
+        if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
+        {
+            @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Order.Id });
+            <br />
+        }
         <br />
     }
 
     <p>
         @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Order.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
         {
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Order.Id }) 
+            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Order.Id })
         }
-        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
-
 </fieldset>
+
+@Html.ActionLink(Loc.Dic.BackToList, "Index")

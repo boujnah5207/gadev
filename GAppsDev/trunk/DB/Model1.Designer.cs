@@ -45,6 +45,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_PermissionsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_PermissionsToAllocation), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budget), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Expenses), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Incomes), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Budgets_AllocationToMonth", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_AllocationToMonth), true)]
@@ -1141,6 +1142,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_PermissionsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budgets_PermissionsToAllocation", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Budgets", "Order")]
+        public EntityCollection<Order> Orders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Budgets", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Budgets", "Order", value);
                 }
             }
         }
@@ -6714,6 +6737,30 @@ namespace DB
         private global::System.Boolean _IsFutureOrder;
         partial void OnIsFutureOrderChanging(global::System.Boolean value);
         partial void OnIsFutureOrderChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> BudgetId
+        {
+            get
+            {
+                return _BudgetId;
+            }
+            set
+            {
+                OnBudgetIdChanging(value);
+                ReportPropertyChanging("BudgetId");
+                _BudgetId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BudgetId");
+                OnBudgetIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _BudgetId;
+        partial void OnBudgetIdChanging(Nullable<global::System.Int32> value);
+        partial void OnBudgetIdChanged();
 
         #endregion
 
@@ -6776,6 +6823,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Inventory>("designModel.FK_Inventory_Orders", "Inventory", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Budgets", "Budget")]
+        public Budget Budget
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Orders_Budgets", "Budget").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Orders_Budgets", "Budget").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Budget> BudgetReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Orders_Budgets", "Budget");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget>("designModel.FK_Orders_Budgets", "Budget", value);
                 }
             }
         }

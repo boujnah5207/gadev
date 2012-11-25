@@ -15,15 +15,13 @@
 
 @if(Model != null)
 {
-    <fieldset>
-        <legend>@Loc.Dic.SearchResults</legend>
-    @if (Model.Matches.Count() != 0)
+    if (Model.Matches.Count() != 0)
     { 
+        <span>@Loc.Dic.SearchResults:</span>
         @Html.Action("SimpleList", new { orders = Model.Matches })
     }
     else
     {
         <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
     }
-    </fieldset>
 }
