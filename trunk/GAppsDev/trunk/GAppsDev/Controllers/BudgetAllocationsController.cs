@@ -490,7 +490,7 @@ namespace GAppsDev.Controllers
                                         noErrors = false;
                                 }
 
-                                List<int> allocationPermission = allocation.Budgets_PermissionsToAllocation.Select(x => x.Id).ToList();
+                                List<int> allocationPermission = allocation.Budgets_BasketsToAllocation.Select(x => x.Id).ToList();
                                 foreach (var itemId in allocationPermission)
                                 {
                                     if (!allocationsPermissionsRep.Delete(itemId))

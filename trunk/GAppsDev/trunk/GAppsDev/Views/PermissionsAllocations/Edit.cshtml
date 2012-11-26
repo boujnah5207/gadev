@@ -1,4 +1,4 @@
-﻿@model DB.Budgets_PermissionsToAllocation
+﻿@model DB.Budgets_BasketsToAllocation
 
 @{
     ViewBag.Title = "Edit";
@@ -10,16 +10,16 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Budgets_PermissionsToAllocation</legend>
+        <legend>Budgets_BasketsToAllocation</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.BudgetsPermissionsId, "Budgets_Permissions")
+            @Html.LabelFor(model => model.BasketId, "Budgets_Baskets")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("BudgetsPermissionsId", String.Empty)
-            @Html.ValidationMessageFor(model => model.BudgetsPermissionsId)
+            @Html.DropDownList("BasketId", String.Empty)
+            @Html.ValidationMessageFor(model => model.BasketId)
         </div>
 
         <div class="editor-label">

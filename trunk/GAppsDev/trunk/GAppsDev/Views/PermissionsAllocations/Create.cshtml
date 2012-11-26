@@ -1,4 +1,4 @@
-﻿@model DB.Budgets_PermissionsToAllocation
+﻿@model DB.Budgets_BasketsToAllocation
 
 @{
     ViewBag.Title = "Create";
@@ -15,7 +15,7 @@
             @Html.DropDownList("BudgetsExpensesToIncomesId", (SelectList)ViewBag.AllocationList)
         </div>
                 @Html.HiddenFor(model => model.BudgetId)
-                @Html.HiddenFor(model => model.BudgetsPermissionsId)
+                @Html.HiddenFor(model => model.BasketId)
         <p>
             <input type="submit" value="@Loc.Dic.Add" />
         </p>
