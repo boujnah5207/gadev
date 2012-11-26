@@ -131,187 +131,59 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult Import()
-        {
-            if (Authorized(RoleType.SystemManager))
-            {
-                return View();
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
-
-        [OpenIdAuthorize]
-        [HttpPost]
-        public ActionResult Import(HttpPostedFileBase file, int year = 0)
-        {
-            if (Authorized(RoleType.SystemManager))
-            {
-                if (file != null && file.ContentLength > 0)
-                {
-                    if (year < DateTime.Now.Year - 1)
-                        return Error(Loc.Dic.error_budgets_year_passed);
-
-                    List<Budgets_Allocations> createdAllocations = new List<Budgets_Allocations>();
-                    List<Budgets_AllocationToMonth> createdAllocationMonths = new List<Budgets_AllocationToMonth>();
-                    Budget newBudget = new Budget()
-                    {
-                        CompanyId = CurrentUser.CompanyId,
-                        ExternalBudget = true,
-                        IsActive = false,
-                        Year = year
-                    };
-
-                    bool wasCreated;
-                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                    {
-                        if (budgetsRep.GetList().Any(x => x.Year == year))
-                            return Error(Loc.Dic.error_budgets_year_exists);
-
-                        wasCreated = budgetsRep.Create(newBudget);
-                    }
-
-                    if (wasCreated)
-                    {
-                        byte[] fileBytes = new byte[file.InputStream.Length];
-                        file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.InputStream.Length));
-                        string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
-
-                        string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                        int firstValuesLine = 3;
-
-                        bool noErros = true;
-                        string errorType = String.Empty;
-                        using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
-                        using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
-                        {
-                            for (int i = firstValuesLine; i < fileLines.Length; i++)
-                            {
-                                string[] lineValues = fileLines[i].Split('\t');
-                                for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
-                                {
-                                    lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
-                                }
-
-                                Budgets_Allocations newAllocation;
-
-                                try
-                                {
-                                    newAllocation = new Budgets_Allocations()
-                                    {
-                                        Name = lineValues[2],
-                                        BudgetId = newBudget.Id,
-                                        CompanyId = CurrentUser.CompanyId,
-                                        IncomeId = null,
-                                        ExpenseId = null,
-                                        Amount = null
-                                    };
-                                }
-                                catch
-                                {
-                                    noErros = false;
-                                    errorType = Loc.Dic.Error_FileParseError;
-                                    break;
-                                }
-
-                                if (allocationsRep.Create(newAllocation))
-                                {
-                                    createdAllocations.Add(newAllocation);
-
-                                    for (int month = 1, valueIndex = 3; month <= 12; month++, valueIndex += 2)
-                                    {
-                                        string monthAmountString = lineValues[valueIndex];
-                                        if (String.IsNullOrEmpty(monthAmountString))
-                                        {
-                                            noErros = false;
-                                            break;
-                                        }
-
-                                        decimal amount;
-                                        if(!Decimal.TryParse(monthAmountString, out amount))
-                                        {
-                                            noErros = false;
-                                            break;
-                                        }
-
-                                        Budgets_AllocationToMonth newAllocationMonth = new Budgets_AllocationToMonth()
-                                        {
-                                            AllocationId = newAllocation.Id,
-                                            MonthId = month,
-                                            Amount = amount < 0 ? 0 : amount
-                                        };
-
-                                        if (!allocationMonthsRep.Create(newAllocationMonth))
-                                        {
-                                            noErros = false;
-                                            break;
-                                        }
-                                        
-                                        createdAllocationMonths.Add(newAllocationMonth);
-                                    }
-                                }
-                                else
-                                {
-                                    noErros = false;
-                                    errorType = Loc.Dic.error_database_error; 
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (noErros)
-                        {
-                            return RedirectToAction("index");
-                        }
-                        else
-                        {
-                            using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                            using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
-                            using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
-                            {
-                                foreach (var allocation in createdAllocations)
-                                {
-                                    allocationsRep.Delete(allocation.Id);
-                                }
-
-                                foreach (var allocationMonth in createdAllocationMonths)
-                                {
-                                    allocationMonthsRep.Delete(allocationMonth.Id);
-                                }
-
-                                budgetsRep.Delete(newBudget.Id);
-                            }
-
-                            return Error(errorType);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_budgets_create_error);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_invalid_form);
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
-
-        [OpenIdAuthorize]
-        [HttpPost]
-        public ActionResult ImportYear(HttpPostedFileBase file, int year = 0)
+        public ActionResult Import(int? id)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            return View(id);
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase file, int? id, int? year, string budgetType)
+        {
+            if (Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
-            string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, year);
-            if (moved == "OK") return RedirectToAction("index");
-            else return Error(moved);
+
+            if (id.HasValue)
+            {
+                if (budgetType == "Year")
+                {
+                    string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, id.Value);
+                    if (moved == "OK") return RedirectToAction("index");
+                    else return Error(moved);
+                }
+                if (budgetType == "Month")
+                {
+                    string moved = Interfaces.ImportMonthBudget(file.InputStream, CurrentUser.CompanyId, id.Value);
+                    if (moved == "OK") return RedirectToAction("index");
+                    else return Error(moved);
+                }
+            }
+            else if (year.HasValue)
+            {
+                using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+                {
+                    Budget newBudget = new Budget();
+                    newBudget.Year = year.Value;
+                    newBudget.CompanyId = CurrentUser.CompanyId;
+                    newBudget.IsActive = false;
+                    budgetsRepository.Create(newBudget);
+                    if (budgetType == "Year")
+                    {
+                        string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, newBudget.Id);
+                        if (moved == "OK") return RedirectToAction("index");
+                        else return Error(moved);
+                    }
+                    if (budgetType == "Month")
+                    {
+                        string moved = Interfaces.ImportMonthBudget(file.InputStream, CurrentUser.CompanyId, newBudget.Id);
+                        if (moved == "OK") return RedirectToAction("index");
+                        else return Error(moved);
+                    }
+                }
+
+            }
+            return Error(Loc.Dic.error_invalid_form);
         }
 
         [OpenIdAuthorize]
@@ -450,7 +322,7 @@ namespace GAppsDev.Controllers
                     {
                         if (!budget.IsActive)
                         {
-                            Budget oldBudget = budgetRep.GetList().Where( b => b.CompanyId == CurrentUser.CompanyId).SingleOrDefault(x => x.IsActive);
+                            Budget oldBudget = budgetRep.GetList().Where(b => b.CompanyId == CurrentUser.CompanyId).SingleOrDefault(x => x.IsActive);
 
                             if (oldBudget != null)
                             {

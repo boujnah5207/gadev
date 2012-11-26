@@ -17,6 +17,6 @@ namespace GAppsDev.Models
     public class UserPermission
     {
         public bool IsActive { get; set; }
-        public Budgets_Permissions Permission { get; set; }
+        public Budgets_Baskets Permission { get; set; }
     }
 }
