@@ -13,13 +13,13 @@
           <EntitySet Name="Budgets" EntityType="designModel.Store.Budgets" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Budgets_Allocations" EntityType="designModel.Store.Budgets_Allocations" store:Type="Tables" Schema="uddi" Table="Budgets.Allocations" />
           <EntitySet Name="Budgets_AllocationToMonth" EntityType="designModel.Store.Budgets_AllocationToMonth" store:Type="Tables" Schema="uddi" Table="Budgets.AllocationToMonth" />
+          <EntitySet Name="Budgets_Baskets" EntityType="designModel.Store.Budgets_Baskets" store:Type="Tables" Schema="uddi" Table="Budgets.Baskets" />
+          <EntitySet Name="Budgets_BasketsToAllocation" EntityType="designModel.Store.Budgets_BasketsToAllocation" store:Type="Tables" Schema="uddi" Table="Budgets.BasketsToAllocation" />
           <EntitySet Name="Budgets_Expenses" EntityType="designModel.Store.Budgets_Expenses" store:Type="Tables" Schema="uddi" Table="Budgets.Expenses" />
           <EntitySet Name="Budgets_Incomes" EntityType="designModel.Store.Budgets_Incomes" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes" />
           <EntitySet Name="Budgets_Incomes_Institutions" EntityType="designModel.Store.Budgets_Incomes_Institutions" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes.Institutions" />
           <EntitySet Name="Budgets_Incomes_types" EntityType="designModel.Store.Budgets_Incomes_types" store:Type="Tables" Schema="uddi" Table="Budgets.Incomes.types" />
-          <EntitySet Name="Budgets_Permissions" EntityType="designModel.Store.Budgets_Permissions" store:Type="Tables" Schema="uddi" Table="Budgets.Permissions" />
-          <EntitySet Name="Budgets_PermissionsToAllocation" EntityType="designModel.Store.Budgets_PermissionsToAllocation" store:Type="Tables" Schema="uddi" Table="Budgets.PermissionsToAllocation" />
-          <EntitySet Name="Budgets_UsersToPermissions" EntityType="designModel.Store.Budgets_UsersToPermissions" store:Type="Tables" Schema="uddi" Table="Budgets.UsersToPermissions" />
+          <EntitySet Name="Budgets_UsersToBaskets" EntityType="designModel.Store.Budgets_UsersToBaskets" store:Type="Tables" Schema="uddi" Table="Budgets.UsersToBaskets" />
           <EntitySet Name="Cookies" EntityType="designModel.Store.Cookies" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Departments" EntityType="designModel.Store.Departments" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Languages" EntityType="designModel.Store.Languages" store:Type="Tables" Schema="uddi" />
@@ -107,37 +107,37 @@
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_Permissions_Budgets_Permissions" Association="designModel.Store.FK_Budgets_Permissions_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_Permissions1" EntitySet="Budgets_Permissions" />
+          <AssociationSet Name="FK_Budgets_Baskets_Budgets_Baskets" Association="designModel.Store.FK_Budgets_Baskets_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_Baskets1" EntitySet="Budgets_Baskets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_Permissions_Companies" Association="designModel.Store.FK_Budgets_Permissions_Companies">
+          <AssociationSet Name="FK_Budgets_Baskets_Companies" Association="designModel.Store.FK_Budgets_Baskets_Companies">
             <End Role="Companies" EntitySet="Companies" />
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets" Association="designModel.Store.FK_Budgets_PermissionsToAllocation_Budgets">
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets" Association="designModel.Store.FK_Budgets_BasketsToAllocation_Budgets">
             <End Role="Budgets" EntitySet="Budgets" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.Store.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes">
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_Permissions" Association="designModel.Store.FK_Budgets_PermissionsToAllocation_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets_Baskets" Association="designModel.Store.FK_Budgets_BasketsToAllocation_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Budgets_Permissions" Association="designModel.Store.FK_Budgets_UsersToPermissions_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Budgets_Baskets" Association="designModel.Store.FK_Budgets_UsersToBaskets_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Companies" Association="designModel.Store.FK_Budgets_UsersToPermissions_Companies">
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Companies" Association="designModel.Store.FK_Budgets_UsersToBaskets_Companies">
             <End Role="Companies" EntitySet="Companies" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Users" Association="designModel.Store.FK_Budgets_UsersToPermissions_Users">
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Users" Association="designModel.Store.FK_Budgets_UsersToBaskets_Users">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
           <AssociationSet Name="FK_Cookies_Users" Association="designModel.Store.FK_Cookies_Users">
             <End Role="Users" EntitySet="Users" />
@@ -359,6 +359,24 @@
           <Property Name="MonthId" Type="int" Nullable="false" />
           <Property Name="Amount" Type="decimal" Nullable="false" />
         </EntityType>
+        <EntityType Name="Budgets_Baskets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Budgets_BasketsToAllocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BudgetId" Type="int" Nullable="false" />
+          <Property Name="BasketId" Type="int" Nullable="false" />
+          <Property Name="BudgetsExpensesToIncomesId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Budgets_Expenses">
           <Key>
             <PropertyRef Name="Id" />
@@ -404,25 +422,7 @@
           <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Budgets_Permissions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
-          <Property Name="CompanyId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="Budgets_PermissionsToAllocation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="BudgetId" Type="int" Nullable="false" />
-          <Property Name="BudgetsPermissionsId" Type="int" Nullable="false" />
-          <Property Name="BudgetsExpensesToIncomesId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Budgets_UsersToPermissions">
+        <EntityType Name="Budgets_UsersToBaskets">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -430,7 +430,7 @@
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="CreationDate" Type="datetime2" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="PermissionId" Type="int" Nullable="false" />
+          <Property Name="BasketId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Cookies">
           <Key>
@@ -819,98 +819,98 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_Permissions_Budgets_Permissions">
-          <End Role="Budgets_Permissions" Type="designModel.Store.Budgets_Permissions" Multiplicity="1" />
-          <End Role="Budgets_Permissions1" Type="designModel.Store.Budgets_Permissions" Multiplicity="0..1" />
+        <Association Name="FK_Budgets_Baskets_Budgets_Baskets">
+          <End Role="Budgets_Baskets" Type="designModel.Store.Budgets_Baskets" Multiplicity="1" />
+          <End Role="Budgets_Baskets1" Type="designModel.Store.Budgets_Baskets" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
+            <Principal Role="Budgets_Baskets">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_Permissions1">
+            <Dependent Role="Budgets_Baskets1">
               <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_Permissions_Companies">
+        <Association Name="FK_Budgets_Baskets_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
-          <End Role="Budgets_Permissions" Type="designModel.Store.Budgets_Permissions" Multiplicity="*" />
+          <End Role="Budgets_Baskets" Type="designModel.Store.Budgets_Baskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_Permissions">
+            <Dependent Role="Budgets_Baskets">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets">
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets">
           <End Role="Budgets" Type="designModel.Store.Budgets" Multiplicity="1" />
-          <End Role="Budgets_PermissionsToAllocation" Type="designModel.Store.Budgets_PermissionsToAllocation" Multiplicity="*" />
+          <End Role="Budgets_BasketsToAllocation" Type="designModel.Store.Budgets_BasketsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
+            <Dependent Role="Budgets_BasketsToAllocation">
               <PropertyRef Name="BudgetId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes">
           <End Role="Budgets_Allocations" Type="designModel.Store.Budgets_Allocations" Multiplicity="1" />
-          <End Role="Budgets_PermissionsToAllocation" Type="designModel.Store.Budgets_PermissionsToAllocation" Multiplicity="*" />
+          <End Role="Budgets_BasketsToAllocation" Type="designModel.Store.Budgets_BasketsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_Allocations">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
+            <Dependent Role="Budgets_BasketsToAllocation">
               <PropertyRef Name="BudgetsExpensesToIncomesId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_Permissions">
-          <End Role="Budgets_Permissions" Type="designModel.Store.Budgets_Permissions" Multiplicity="1" />
-          <End Role="Budgets_PermissionsToAllocation" Type="designModel.Store.Budgets_PermissionsToAllocation" Multiplicity="*" />
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets_Baskets">
+          <End Role="Budgets_Baskets" Type="designModel.Store.Budgets_Baskets" Multiplicity="1" />
+          <End Role="Budgets_BasketsToAllocation" Type="designModel.Store.Budgets_BasketsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
+            <Principal Role="Budgets_Baskets">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
-              <PropertyRef Name="BudgetsPermissionsId" />
+            <Dependent Role="Budgets_BasketsToAllocation">
+              <PropertyRef Name="BasketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Budgets_Permissions">
-          <End Role="Budgets_Permissions" Type="designModel.Store.Budgets_Permissions" Multiplicity="1" />
-          <End Role="Budgets_UsersToPermissions" Type="designModel.Store.Budgets_UsersToPermissions" Multiplicity="*" />
+        <Association Name="FK_Budgets_UsersToBaskets_Budgets_Baskets">
+          <End Role="Budgets_Baskets" Type="designModel.Store.Budgets_Baskets" Multiplicity="1" />
+          <End Role="Budgets_UsersToBaskets" Type="designModel.Store.Budgets_UsersToBaskets" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
+            <Principal Role="Budgets_Baskets">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
-              <PropertyRef Name="PermissionId" />
+            <Dependent Role="Budgets_UsersToBaskets">
+              <PropertyRef Name="BasketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Companies">
+        <Association Name="FK_Budgets_UsersToBaskets_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
-          <End Role="Budgets_UsersToPermissions" Type="designModel.Store.Budgets_UsersToPermissions" Multiplicity="*" />
+          <End Role="Budgets_UsersToBaskets" Type="designModel.Store.Budgets_UsersToBaskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
+            <Dependent Role="Budgets_UsersToBaskets">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Users">
+        <Association Name="FK_Budgets_UsersToBaskets_Users">
           <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
-          <End Role="Budgets_UsersToPermissions" Type="designModel.Store.Budgets_UsersToPermissions" Multiplicity="*" />
+          <End Role="Budgets_UsersToBaskets" Type="designModel.Store.Budgets_UsersToBaskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
+            <Dependent Role="Budgets_UsersToBaskets">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1299,13 +1299,13 @@
           <EntitySet Name="Budgets" EntityType="designModel.Budget" />
           <EntitySet Name="Budgets_Allocations" EntityType="designModel.Budgets_Allocations" />
           <EntitySet Name="Budgets_AllocationToMonth" EntityType="designModel.Budgets_AllocationToMonth" />
+          <EntitySet Name="Budgets_Baskets" EntityType="designModel.Budgets_Baskets" />
+          <EntitySet Name="Budgets_BasketsToAllocation" EntityType="designModel.Budgets_BasketsToAllocation" />
           <EntitySet Name="Budgets_Expenses" EntityType="designModel.Budgets_Expenses" />
           <EntitySet Name="Budgets_Incomes" EntityType="designModel.Budgets_Incomes" />
           <EntitySet Name="Budgets_Incomes_Institutions" EntityType="designModel.Budgets_Incomes_Institutions" />
           <EntitySet Name="Budgets_Incomes_types" EntityType="designModel.Budgets_Incomes_types" />
-          <EntitySet Name="Budgets_Permissions" EntityType="designModel.Budgets_Permissions" />
-          <EntitySet Name="Budgets_PermissionsToAllocation" EntityType="designModel.Budgets_PermissionsToAllocation" />
-          <EntitySet Name="Budgets_UsersToPermissions" EntityType="designModel.Budgets_UsersToPermissions" />
+          <EntitySet Name="Budgets_UsersToBaskets" EntityType="designModel.Budgets_UsersToBaskets" />
           <EntitySet Name="Cookies" EntityType="designModel.Cooky" />
           <EntitySet Name="Departments" EntityType="designModel.Department" />
           <EntitySet Name="Languages" EntityType="designModel.Language" />
@@ -1345,13 +1345,13 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_Permissions_Companies" Association="designModel.FK_Budgets_Permissions_Companies">
+          <AssociationSet Name="FK_Budgets_Baskets_Companies" Association="designModel.FK_Budgets_Baskets_Companies">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Companies" Association="designModel.FK_Budgets_UsersToPermissions_Companies">
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Companies" Association="designModel.FK_Budgets_UsersToBaskets_Companies">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
           <AssociationSet Name="FK_Deprtments_Companies" Association="designModel.FK_Deprtments_Companies">
             <End Role="Company" EntitySet="Companies" />
@@ -1421,9 +1421,9 @@
             <End Role="Budget" EntitySet="Budgets" />
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets">
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets" Association="designModel.FK_Budgets_BasketsToAllocation_Budgets">
             <End Role="Budget" EntitySet="Budgets" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Budgets" Association="designModel.FK_Orders_Budgets">
             <End Role="Budget" EntitySet="Budgets" />
@@ -1441,9 +1441,9 @@
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
             <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes">
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" Association="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes">
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
@@ -1456,6 +1456,18 @@
           <AssociationSet Name="FK_Budgets_AllocationToMonth_Monthes" Association="designModel.FK_Budgets_AllocationToMonth_Monthes">
             <End Role="Monthe" EntitySet="Monthes" />
             <End Role="Budgets_AllocationToMonth" EntitySet="Budgets_AllocationToMonth" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_Baskets_Budgets_Baskets" Association="designModel.FK_Budgets_Baskets_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_Baskets1" EntitySet="Budgets_Baskets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_BasketsToAllocation_Budgets_Baskets" Association="designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_BasketsToAllocation" EntitySet="Budgets_BasketsToAllocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Budgets_Baskets" Association="designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets">
+            <End Role="Budgets_Baskets" EntitySet="Budgets_Baskets" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
           <AssociationSet Name="FK_Budgets_Expenses_Departments" Association="designModel.FK_Budgets_Expenses_Departments">
             <End Role="Department" EntitySet="Departments" />
@@ -1477,21 +1489,9 @@
             <End Role="Budgets_Incomes_Institutions" EntitySet="Budgets_Incomes_Institutions" />
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Budgets_Permissions_Budgets_Permissions" Association="designModel.FK_Budgets_Permissions_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_Permissions1" EntitySet="Budgets_Permissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Budgets_PermissionsToAllocation_Budgets_Permissions" Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_PermissionsToAllocation" EntitySet="Budgets_PermissionsToAllocation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Budgets_Permissions" Association="designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions">
-            <End Role="Budgets_Permissions" EntitySet="Budgets_Permissions" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Budgets_UsersToPermissions_Users" Association="designModel.FK_Budgets_UsersToPermissions_Users">
+          <AssociationSet Name="FK_Budgets_UsersToBaskets_Users" Association="designModel.FK_Budgets_UsersToBaskets_Users">
             <End Role="User" EntitySet="Users" />
-            <End Role="Budgets_UsersToPermissions" EntitySet="Budgets_UsersToPermissions" />
+            <End Role="Budgets_UsersToBaskets" EntitySet="Budgets_UsersToBaskets" />
           </AssociationSet>
           <AssociationSet Name="FK_Cookies_Users" Association="designModel.FK_Cookies_Users">
             <End Role="User" EntitySet="Users" />
@@ -1576,8 +1576,8 @@
           <NavigationProperty Name="Budgets_Incomes_types" Relationship="designModel.FK_Budgets_Incomes_Categories_Companies" FromRole="Company" ToRole="Budgets_Incomes_types" />
           <NavigationProperty Name="Budgets_Incomes_Institutions" Relationship="designModel.FK_Budgets_Incomes_Institutions_Companies" FromRole="Company" ToRole="Budgets_Incomes_Institutions" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budgets_Incomes_Companies" FromRole="Company" ToRole="Budgets_Incomes" />
-          <NavigationProperty Name="Budgets_Permissions" Relationship="designModel.FK_Budgets_Permissions_Companies" FromRole="Company" ToRole="Budgets_Permissions" />
-          <NavigationProperty Name="Budgets_UsersToPermissions" Relationship="designModel.FK_Budgets_UsersToPermissions_Companies" FromRole="Company" ToRole="Budgets_UsersToPermissions" />
+          <NavigationProperty Name="Budgets_Baskets" Relationship="designModel.FK_Budgets_Baskets_Companies" FromRole="Company" ToRole="Budgets_Baskets" />
+          <NavigationProperty Name="Budgets_UsersToBaskets" Relationship="designModel.FK_Budgets_UsersToBaskets_Companies" FromRole="Company" ToRole="Budgets_UsersToBaskets" />
           <NavigationProperty Name="Departments" Relationship="designModel.FK_Deprtments_Companies" FromRole="Company" ToRole="Department" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Companies" FromRole="Company" ToRole="Inventory" />
           <NavigationProperty Name="Locations" Relationship="designModel.FK_Locations_Companies" FromRole="Company" ToRole="Location" />
@@ -1652,7 +1652,7 @@
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_Income_Budget" FromRole="Budget" ToRole="Budgets_Incomes" />
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budgets_Expenses_Budgets" FromRole="Budget" ToRole="Budgets_Expenses" />
           <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_ExpensesToIncomes_Budgets" FromRole="Budget" ToRole="Budgets_Allocations" />
-          <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets" FromRole="Budget" ToRole="Budgets_PermissionsToAllocation" />
+          <NavigationProperty Name="Budgets_BasketsToAllocation" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets" FromRole="Budget" ToRole="Budgets_BasketsToAllocation" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Budgets" FromRole="Budget" ToRole="Order" />
         </EntityType>
         <EntityType Name="Budgets_Allocations">
@@ -1673,7 +1673,7 @@
           <NavigationProperty Name="Budgets_Expenses" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" FromRole="Budgets_Allocations" ToRole="Budgets_Expenses" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budget_ExpensesToIncome_Budget_Income" FromRole="Budgets_Allocations" ToRole="Budgets_Incomes" />
           <NavigationProperty Name="Budgets_AllocationToMonth" Relationship="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Budgets_AllocationToMonth" />
-          <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Budgets_PermissionsToAllocation" />
+          <NavigationProperty Name="Budgets_BasketsToAllocation" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Budgets_BasketsToAllocation" />
           <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_Allocations" ToRole="Orders_OrderToAllocation" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Budget_ExpensesToIncome" FromRole="Budgets_Allocations" ToRole="Order" />
         </EntityType>
@@ -1687,6 +1687,32 @@
           <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" FromRole="Budgets_AllocationToMonth" ToRole="Budgets_Allocations" />
           <NavigationProperty Name="Monthe" Relationship="designModel.FK_Budgets_AllocationToMonth_Monthes" FromRole="Budgets_AllocationToMonth" ToRole="Monthe" />
+        </EntityType>
+        <EntityType Name="Budgets_Baskets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_Baskets_Companies" FromRole="Budgets_Baskets" ToRole="Company" />
+          <NavigationProperty Name="Budgets_Baskets1" Relationship="designModel.FK_Budgets_Baskets_Budgets_Baskets" FromRole="Budgets_Baskets" ToRole="Budgets_Baskets1" />
+          <NavigationProperty Name="Budgets_Baskets2" Relationship="designModel.FK_Budgets_Baskets_Budgets_Baskets" FromRole="Budgets_Baskets1" ToRole="Budgets_Baskets" />
+          <NavigationProperty Name="Budgets_BasketsToAllocation" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets" FromRole="Budgets_Baskets" ToRole="Budgets_BasketsToAllocation" />
+          <NavigationProperty Name="Budgets_UsersToBaskets" Relationship="designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets" FromRole="Budgets_Baskets" ToRole="Budgets_UsersToBaskets" />
+        </EntityType>
+        <EntityType Name="Budgets_BasketsToAllocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="BudgetId" Nullable="false" />
+          <Property Type="Int32" Name="BasketId" Nullable="false" />
+          <Property Type="Int32" Name="BudgetsExpensesToIncomesId" Nullable="false" />
+          <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets" FromRole="Budgets_BasketsToAllocation" ToRole="Budget" />
+          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_BasketsToAllocation" ToRole="Budgets_Allocations" />
+          <NavigationProperty Name="Budgets_Baskets" Relationship="designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets" FromRole="Budgets_BasketsToAllocation" ToRole="Budgets_Baskets" />
         </EntityType>
         <EntityType Name="Budgets_Expenses">
           <Key>
@@ -1748,33 +1774,7 @@
           <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_Incomes_Categories_Companies" FromRole="Budgets_Incomes_types" ToRole="Company" />
           <NavigationProperty Name="Budgets_Incomes" Relationship="designModel.FK_Budgets_Incomes_Budgets_Incomes_Categories" FromRole="Budgets_Incomes_types" ToRole="Budgets_Incomes" />
         </EntityType>
-        <EntityType Name="Budgets_Permissions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
-          <Property Type="Int32" Name="CompanyId" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_Permissions_Companies" FromRole="Budgets_Permissions" ToRole="Company" />
-          <NavigationProperty Name="Budgets_Permissions1" Relationship="designModel.FK_Budgets_Permissions_Budgets_Permissions" FromRole="Budgets_Permissions" ToRole="Budgets_Permissions1" />
-          <NavigationProperty Name="Budgets_Permissions2" Relationship="designModel.FK_Budgets_Permissions_Budgets_Permissions" FromRole="Budgets_Permissions1" ToRole="Budgets_Permissions" />
-          <NavigationProperty Name="Budgets_PermissionsToAllocation" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions" FromRole="Budgets_Permissions" ToRole="Budgets_PermissionsToAllocation" />
-          <NavigationProperty Name="Budgets_UsersToPermissions" Relationship="designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions" FromRole="Budgets_Permissions" ToRole="Budgets_UsersToPermissions" />
-        </EntityType>
-        <EntityType Name="Budgets_PermissionsToAllocation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="BudgetId" Nullable="false" />
-          <Property Type="Int32" Name="BudgetsPermissionsId" Nullable="false" />
-          <Property Type="Int32" Name="BudgetsExpensesToIncomesId" Nullable="false" />
-          <NavigationProperty Name="Budget" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets" FromRole="Budgets_PermissionsToAllocation" ToRole="Budget" />
-          <NavigationProperty Name="Budgets_Allocations" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" FromRole="Budgets_PermissionsToAllocation" ToRole="Budgets_Allocations" />
-          <NavigationProperty Name="Budgets_Permissions" Relationship="designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions" FromRole="Budgets_PermissionsToAllocation" ToRole="Budgets_Permissions" />
-        </EntityType>
-        <EntityType Name="Budgets_UsersToPermissions">
+        <EntityType Name="Budgets_UsersToBaskets">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1782,10 +1782,10 @@
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="Int32" Name="PermissionId" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_UsersToPermissions_Companies" FromRole="Budgets_UsersToPermissions" ToRole="Company" />
-          <NavigationProperty Name="Budgets_Permissions" Relationship="designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions" FromRole="Budgets_UsersToPermissions" ToRole="Budgets_Permissions" />
-          <NavigationProperty Name="User" Relationship="designModel.FK_Budgets_UsersToPermissions_Users" FromRole="Budgets_UsersToPermissions" ToRole="User" />
+          <Property Type="Int32" Name="BasketId" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Budgets_UsersToBaskets_Companies" FromRole="Budgets_UsersToBaskets" ToRole="Company" />
+          <NavigationProperty Name="Budgets_Baskets" Relationship="designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets" FromRole="Budgets_UsersToBaskets" ToRole="Budgets_Baskets" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Budgets_UsersToBaskets_Users" FromRole="Budgets_UsersToBaskets" ToRole="User" />
         </EntityType>
         <EntityType Name="Cooky">
           <Key>
@@ -1972,7 +1972,7 @@
           <Property Type="Int32" Name="OrdersApproverId" />
           <Property Type="Int32" Name="LanguageId" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Companies" FromRole="User" ToRole="Company" />
-          <NavigationProperty Name="Budgets_UsersToPermissions" Relationship="designModel.FK_Budgets_UsersToPermissions_Users" FromRole="User" ToRole="Budgets_UsersToPermissions" />
+          <NavigationProperty Name="Budgets_UsersToBaskets" Relationship="designModel.FK_Budgets_UsersToBaskets_Users" FromRole="User" ToRole="Budgets_UsersToBaskets" />
           <NavigationProperty Name="Cookies" Relationship="designModel.FK_Cookies_Users" FromRole="User" ToRole="Cooky" />
           <NavigationProperty Name="Department" Relationship="designModel.FK_Users_Budget_Deprtments" FromRole="User" ToRole="Department" />
           <NavigationProperty Name="Language" Relationship="designModel.FK_Users_Languages" FromRole="User" ToRole="Language" />
@@ -2075,26 +2075,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_Permissions_Companies">
+        <Association Name="FK_Budgets_Baskets_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="designModel.Budgets_Permissions" Role="Budgets_Permissions" Multiplicity="*" />
+          <End Type="designModel.Budgets_Baskets" Role="Budgets_Baskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_Permissions">
+            <Dependent Role="Budgets_Baskets">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Companies">
+        <Association Name="FK_Budgets_UsersToBaskets_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="designModel.Budgets_UsersToPermissions" Role="Budgets_UsersToPermissions" Multiplicity="*" />
+          <End Type="designModel.Budgets_UsersToBaskets" Role="Budgets_UsersToBaskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
+            <Dependent Role="Budgets_UsersToBaskets">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2303,14 +2303,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets">
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets">
           <End Type="designModel.Budget" Role="Budget" Multiplicity="1" />
-          <End Type="designModel.Budgets_PermissionsToAllocation" Role="Budgets_PermissionsToAllocation" Multiplicity="*" />
+          <End Type="designModel.Budgets_BasketsToAllocation" Role="Budgets_BasketsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budget">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
+            <Dependent Role="Budgets_BasketsToAllocation">
               <PropertyRef Name="BudgetId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2363,14 +2363,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes">
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes">
           <End Type="designModel.Budgets_Allocations" Role="Budgets_Allocations" Multiplicity="1" />
-          <End Type="designModel.Budgets_PermissionsToAllocation" Role="Budgets_PermissionsToAllocation" Multiplicity="*" />
+          <End Type="designModel.Budgets_BasketsToAllocation" Role="Budgets_BasketsToAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Budgets_Allocations">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
+            <Dependent Role="Budgets_BasketsToAllocation">
               <PropertyRef Name="BudgetsExpensesToIncomesId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2408,6 +2408,42 @@
             </Principal>
             <Dependent Role="Budgets_AllocationToMonth">
               <PropertyRef Name="MonthId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_Baskets_Budgets_Baskets">
+          <End Type="designModel.Budgets_Baskets" Role="Budgets_Baskets" Multiplicity="1" />
+          <End Type="designModel.Budgets_Baskets" Role="Budgets_Baskets1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Baskets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_Baskets1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_BasketsToAllocation_Budgets_Baskets">
+          <End Type="designModel.Budgets_Baskets" Role="Budgets_Baskets" Multiplicity="1" />
+          <End Type="designModel.Budgets_BasketsToAllocation" Role="Budgets_BasketsToAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Baskets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_BasketsToAllocation">
+              <PropertyRef Name="BasketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_UsersToBaskets_Budgets_Baskets">
+          <End Type="designModel.Budgets_Baskets" Role="Budgets_Baskets" Multiplicity="1" />
+          <End Type="designModel.Budgets_UsersToBaskets" Role="Budgets_UsersToBaskets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets_Baskets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Budgets_UsersToBaskets">
+              <PropertyRef Name="BasketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2471,50 +2507,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Budgets_Permissions_Budgets_Permissions">
-          <End Type="designModel.Budgets_Permissions" Role="Budgets_Permissions" Multiplicity="1" />
-          <End Type="designModel.Budgets_Permissions" Role="Budgets_Permissions1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Budgets_Permissions1">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Budgets_PermissionsToAllocation_Budgets_Permissions">
-          <End Type="designModel.Budgets_Permissions" Role="Budgets_Permissions" Multiplicity="1" />
-          <End Type="designModel.Budgets_PermissionsToAllocation" Role="Budgets_PermissionsToAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Budgets_PermissionsToAllocation">
-              <PropertyRef Name="BudgetsPermissionsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Budgets_Permissions">
-          <End Type="designModel.Budgets_Permissions" Role="Budgets_Permissions" Multiplicity="1" />
-          <End Type="designModel.Budgets_UsersToPermissions" Role="Budgets_UsersToPermissions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Budgets_Permissions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
-              <PropertyRef Name="PermissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Budgets_UsersToPermissions_Users">
+        <Association Name="FK_Budgets_UsersToBaskets_Users">
           <End Type="designModel.User" Role="User" Multiplicity="1" />
-          <End Type="designModel.Budgets_UsersToPermissions" Role="Budgets_UsersToPermissions" Multiplicity="*" />
+          <End Type="designModel.Budgets_UsersToBaskets" Role="Budgets_UsersToBaskets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Budgets_UsersToPermissions">
+            <Dependent Role="Budgets_UsersToBaskets">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2795,6 +2795,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Budgets_Baskets">
+            <EntityTypeMapping TypeName="designModel.Budgets_Baskets">
+              <MappingFragment StoreEntitySet="Budgets_Baskets">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Budgets_BasketsToAllocation">
+            <EntityTypeMapping TypeName="designModel.Budgets_BasketsToAllocation">
+              <MappingFragment StoreEntitySet="Budgets_BasketsToAllocation">
+                <ScalarProperty Name="BudgetsExpensesToIncomesId" ColumnName="BudgetsExpensesToIncomesId" />
+                <ScalarProperty Name="BasketId" ColumnName="BasketId" />
+                <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Budgets_Expenses">
             <EntityTypeMapping TypeName="designModel.Budgets_Expenses">
               <MappingFragment StoreEntitySet="Budgets_Expenses">
@@ -2844,30 +2864,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Budgets_Permissions">
-            <EntityTypeMapping TypeName="designModel.Budgets_Permissions">
-              <MappingFragment StoreEntitySet="Budgets_Permissions">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Budgets_PermissionsToAllocation">
-            <EntityTypeMapping TypeName="designModel.Budgets_PermissionsToAllocation">
-              <MappingFragment StoreEntitySet="Budgets_PermissionsToAllocation">
-                <ScalarProperty Name="BudgetsExpensesToIncomesId" ColumnName="BudgetsExpensesToIncomesId" />
-                <ScalarProperty Name="BudgetsPermissionsId" ColumnName="BudgetsPermissionsId" />
-                <ScalarProperty Name="BudgetId" ColumnName="BudgetId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Budgets_UsersToPermissions">
-            <EntityTypeMapping TypeName="designModel.Budgets_UsersToPermissions">
-              <MappingFragment StoreEntitySet="Budgets_UsersToPermissions">
-                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+          <EntitySetMapping Name="Budgets_UsersToBaskets">
+            <EntityTypeMapping TypeName="designModel.Budgets_UsersToBaskets">
+              <MappingFragment StoreEntitySet="Budgets_UsersToBaskets">
+                <ScalarProperty Name="BasketId" ColumnName="BasketId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -3082,43 +3082,43 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="3.3748767931828634" PointY="8.8029618900283069" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="5.1935111774101435" PointY="22.419342751810021" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="8.1047877613943022" PointY="3.6585575359214833" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="11.603818584049037" PointY="23.022206063858331" />
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="11.793118055813537" PointY="16.963607274444591" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="10.236424471361762" PointY="3.7982299047514005" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="11.36928111471668" PointY="25.54335258600458" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="4.2634154093747094" PointY="3.0367185189559676" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="5.5682409785540035" PointY="24.335807960636824" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="5.7475863423885709" PointY="19.418791183931191" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="3.8664231448743602" PointY="15.812633819790852" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Permissions" Width="1.5" PointX="11.283907072285146" PointY="14.186789787461418" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_PermissionsToAllocation" Width="1.5" PointX="10.879151885807119" PointY="22.847579549461408" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToPermissions" Width="1.5" PointX="6.66822867033455" PointY="25.354046460871608" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="8.2392865737151748" PointY="17.227774076735496" />
-        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="1.8105753743138981" PointY="13.012481501797439" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="5.7048790034395074" PointY="31.386104613256691" />
-        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="4.1733438187154679" PointY="26.681716424730475" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="1.0745858983484031" PointY="13.716320923397467" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="0.68073073433746156" PointY="28.311532465886106" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="3.0164742465207697" PointY="31.305452018652787" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="3.8882043305263876" PointY="17.587087460601278" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="3.8783827125459829" PointY="11.295151775374613" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="5.2218352263895023" PointY="10.62448052066587" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="8.669928150563468" PointY="13.927990487743164" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="3.2841055259500189" PointY="1.2223087107866577" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="11.05676919736749" PointY="22.869946177522628" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="0.95055553547598215" PointY="25.187037628696782" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="4.0172036364754682" PointY="31.662573352298967" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="8.2707054839798744" PointY="8.3564289102127916" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="3.4680030566956863" PointY="11.262138044118014" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="1.3944898105200798" PointY="7.6281938737389607" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="10.95736973870423" PointY="24.944396820359117" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="4.2177201175213419" PointY="10.511838157899602" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="3.9479181878026193" PointY="21.517119745499045" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="5.3382667346570019" PointY="3.4292133615488249" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="4.5123487918229532" PointY="5.283462646083656" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="1.9954916918629277" PointY="29.456726698883216" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="3.8595118521989842" PointY="28.179456411013128" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="6.6091596663972183" PointY="9.9103273497476838" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="10.366473169236665" PointY="15.736638225492387" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="2.4538147665810843" PointY="0.022890165458847846" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="10.520465578194925" PointY="21.924373666720641" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="3.3769353774268813" PointY="20.244735473880887" />
+        <edmx:EntityTypeShape EntityType="designModel.Department" Width="1.5" PointX="7.61842071060949" PointY="22.859686832344014" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="0.56052340779477894" PointY="27.463631747040726" />
+        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="3.884411463460145" PointY="25.511975806910534" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="1.5070914316489787" PointY="14.840381092783241" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="1.9098547147167169" PointY="13.230001679263079" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="6.2221814963138575" PointY="20.13904183550693" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="3.2018265292056958" PointY="23.184423993893166" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="1.1586965476901718" PointY="14.198167911822987" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="10.534125973719231" PointY="23.413757320220469" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="2.4835722048224751" PointY="29.613645537576474" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="3.6666183600512419" PointY="5.2246262753497" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.8786748726287286" PointY="12.784599727385025" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="1.780293960953268" PointY="12.144887274198647" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="4.767187672093133" PointY="25.511369925696108" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Categories_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Institutions_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Companies" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_Permissions_Companies" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToPermissions_Companies" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_Baskets_Companies" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToBaskets_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Deprtments_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Locations_Companies" />
@@ -3136,24 +3136,24 @@
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_ExpensesToIncomes_Budgets" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_BasketsToAllocation_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Budgets" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_ExpensesToIncome_Budget_Expenses" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_ExpensesToIncome_Budget_Income" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Budget_ExpensesToIncome" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_AllocationToMonth_Monthes" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_Baskets_Budgets_Baskets" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Departments" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_ParentProject" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Projects_SubProject" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Budgets_Incomes_Categories" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Incomes_Budgets_Incomes_Institutions" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_Permissions_Budgets_Permissions" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions" />
-        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToPermissions_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Budgets_UsersToBaskets_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Cookies_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Budget_Deprtments" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Languages" />

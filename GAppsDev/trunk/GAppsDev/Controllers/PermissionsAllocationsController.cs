@@ -21,7 +21,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Include("Budgets_Allocations").Include("Budgets_Permissions");
+            var budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Include("Budgets_Allocations").Include("Budgets_Baskets");
             return View(budgets_permissionstoallocation.ToList());
         }
 
@@ -31,7 +31,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
+            Budgets_BasketsToAllocation budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Single(b => b.Id == id);
             if (budgets_permissionstoallocation == null)
             {
                 return HttpNotFound();
@@ -44,10 +44,10 @@ namespace GAppsDev.Controllers
         {
             using (BudgetsPermissionsToAllocationRepository perAlloRep = new BudgetsPermissionsToAllocationRepository())
             {
-                List<Budgets_PermissionsToAllocation> perAlloList = perAlloRep.GetList("Budgets_Allocations").Where(x => x.BudgetId == budgetId).Where(x => x.BudgetsPermissionsId == permissionId).ToList();
+                List<Budgets_BasketsToAllocation> perAlloList = perAlloRep.GetList("Budgets_Allocations").Where(x => x.BudgetId == budgetId).Where(x => x.BasketId == permissionId).ToList();
                 ViewBag.budgetYear = perAlloList[0].Budget.Year;
-                ViewBag.PermissionName = perAlloList[0].Budgets_Permissions.Name;
-                ViewBag.PermissionId = permissionId;
+                ViewBag.PermissionName = perAlloList[0].Budgets_Baskets.Name;
+                ViewBag.BasketId = permissionId;
                 ViewBag.BudgetId = budgetId;
 
                 return View(perAlloList);  
@@ -60,14 +60,14 @@ namespace GAppsDev.Controllers
     /*    public ActionResult Create()
         {
             ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
-            ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name");
+            ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name");
             return View();
         }*/
 
         [OpenIdAuthorize]
         public ActionResult Create(int permissionId, int budgetId)
         {
-            Budgets_PermissionsToAllocation perAlloc = new Budgets_PermissionsToAllocation();
+            Budgets_BasketsToAllocation perAlloc = new Budgets_BasketsToAllocation();
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
             using (BudgetsPermissionsRepository permissionsRepository = new BudgetsPermissionsRepository())
             using (AllocationRepository allocationRepository = new AllocationRepository())
@@ -75,10 +75,10 @@ namespace GAppsDev.Controllers
                 ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).ToList(), "Id", "Name");
                 //ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
                 perAlloc.BudgetId = budgetId;
-                perAlloc.BudgetsPermissionsId = permissionId;
+                perAlloc.BasketId = permissionId;
                 Budget budget = budgetsRepository.GetEntity(budgetId);
                 ViewBag.budgetYear = budget.Year;
-                Budgets_Permissions permission = permissionsRepository.GetEntity(permissionId);
+                Budgets_Baskets permission = permissionsRepository.GetEntity(permissionId);
                 ViewBag.PermissionName = permission.Name;
                 
             }
@@ -89,12 +89,12 @@ namespace GAppsDev.Controllers
         
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Budgets_PermissionsToAllocation budgets_permissionstoallocation)
+        public ActionResult Create(Budgets_BasketsToAllocation budgets_permissionstoallocation)
         {
             using (BudgetsPermissionsToAllocationRepository perToAllRep = new BudgetsPermissionsToAllocationRepository())
             {
                 perToAllRep.Create(budgets_permissionstoallocation);
-                return RedirectToAction("PermissionAllocationList", "PermissionsAllocations", new { permissionId = budgets_permissionstoallocation.BudgetsPermissionsId, budgetId = budgets_permissionstoallocation.BudgetId });
+                return RedirectToAction("PermissionAllocationList", "PermissionsAllocations", new { permissionId = budgets_permissionstoallocation.BasketId, budgetId = budgets_permissionstoallocation.BudgetId });
             }
 
         }
@@ -104,13 +104,13 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
+            Budgets_BasketsToAllocation budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Single(b => b.Id == id);
             if (budgets_permissionstoallocation == null)
             {
                 return HttpNotFound();
             }
             ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
-            ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
+            ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }
 
@@ -118,17 +118,17 @@ namespace GAppsDev.Controllers
         // POST: /PermissionsAllocations/Edit/5
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Edit(Budgets_PermissionsToAllocation budgets_permissionstoallocation)
+        public ActionResult Edit(Budgets_BasketsToAllocation budgets_permissionstoallocation)
         {
             if (ModelState.IsValid)
             {
-                db.Budgets_PermissionsToAllocation.Attach(budgets_permissionstoallocation);
+                db.Budgets_BasketsToAllocation.Attach(budgets_permissionstoallocation);
                 db.ObjectStateManager.ChangeObjectState(budgets_permissionstoallocation, EntityState.Modified);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
-            ViewBag.BudgetsPermissionsId = new SelectList(db.Budgets_Permissions, "Id", "Name", budgets_permissionstoallocation.BudgetsPermissionsId);
+            ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }
 
@@ -137,7 +137,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
+            Budgets_BasketsToAllocation budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Single(b => b.Id == id);
             if (budgets_permissionstoallocation == null)
             {
                 return HttpNotFound();
@@ -151,8 +151,8 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Budgets_PermissionsToAllocation budgets_permissionstoallocation = db.Budgets_PermissionsToAllocation.Single(b => b.Id == id);
-            db.Budgets_PermissionsToAllocation.DeleteObject(budgets_permissionstoallocation);
+            Budgets_BasketsToAllocation budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Single(b => b.Id == id);
+            db.Budgets_BasketsToAllocation.DeleteObject(budgets_permissionstoallocation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

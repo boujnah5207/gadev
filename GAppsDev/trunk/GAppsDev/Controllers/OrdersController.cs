@@ -888,13 +888,13 @@ namespace GAppsDev.Controllers
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
 
                     foreach (var permission in permissions)
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BudgetsPermissionsId == permission.Budgets_Permissions.Id)
+                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id)
                                 .Select(x => x.Budgets_Allocations)
                                 .ToList()
                                 );
@@ -1210,7 +1210,7 @@ namespace GAppsDev.Controllers
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToPermissions> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
                     List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
 
                     foreach (var allocation in existingOrderAllocations)
@@ -1233,7 +1233,7 @@ namespace GAppsDev.Controllers
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BudgetsPermissionsId == permission.Budgets_Permissions.Id)
+                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id)
                                 .Select(x => x.Budgets_Allocations)
                                 .ToList()
                                 );

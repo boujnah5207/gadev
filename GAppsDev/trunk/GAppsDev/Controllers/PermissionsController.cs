@@ -24,10 +24,10 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
 
-            List<Budgets_Permissions> permissions = new List<Budgets_Permissions>();
+            List<Budgets_Baskets> permissions = new List<Budgets_Baskets>();
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                permissions = permissionsRep.GetList("Budgets_PermissionsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                permissions = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
             }
             return View(permissions);
         }
@@ -37,12 +37,12 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             
-            List<Budgets_Permissions> model;
-            Budgets_PermissionsToAllocation per = new Budgets_PermissionsToAllocation();
+            List<Budgets_Baskets> model;
+            Budgets_BasketsToAllocation per = new Budgets_BasketsToAllocation();
             using (BudgetsRepository budgetsRep = new BudgetsRepository())
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                model = permissionsRep.GetList("Budgets_PermissionsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                model = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
                 ViewBag.budgetId = id;
                 Budget budget = budgetsRep.GetList().SingleOrDefault(x => x.Id == id);
                 ViewBag.budgetYear = budget.Year;
@@ -60,7 +60,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permission;
+                Budgets_Baskets permission;
                 using (BudgetsPermissionsRepository permissionRep = new BudgetsPermissionsRepository())
                 {
                     permission = permissionRep.GetEntity(id);
@@ -124,7 +124,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Budgets_Permissions budgets_permissions, int budgetId = 0)
+        public ActionResult Create(Budgets_Baskets budgets_permissions, int budgetId = 0)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -163,7 +163,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permission;
+                Budgets_Baskets permission;
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
                 {
                     permission = permissionsRep.GetEntity(id);
@@ -196,11 +196,11 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Edit(Budgets_Permissions budgets_permissions)
+        public ActionResult Edit(Budgets_Baskets budgets_permissions)
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permissionFromDB;
+                Budgets_Baskets permissionFromDB;
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
                 {
                     permissionFromDB = permissionsRep.GetEntity(budgets_permissions.Id);
@@ -265,7 +265,7 @@ namespace GAppsDev.Controllers
                                         .ToList();
 
                                     List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_Allocations", "Budgets_Allocations.Budgets_Incomes", "Budgets_Allocations.Budgets_Expenses")
-                                        .Where(x => x.BudgetId == budget.Id && x.BudgetsPermissionsId == model.Permission.Id)
+                                        .Where(x => x.BudgetId == budget.Id && x.BasketId == model.Permission.Id)
                                         .AsEnumerable()
                                         .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
                                         .ToList();
@@ -313,9 +313,9 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permissionFromDB;
+                Budgets_Baskets permissionFromDB;
                 List<Budgets_Allocations> existingPermissionAllocations;
-                List<Budgets_PermissionsToAllocation> existingPermissionToAllocations;
+                List<Budgets_BasketsToAllocation> existingPermissionToAllocations;
 
                 using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
@@ -324,8 +324,8 @@ namespace GAppsDev.Controllers
                 {
                     permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
                     //TODO: Error gets ALL pemissions from DB
-                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).Select(y => y.Budgets_Allocations).ToList();
-                    existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BudgetsPermissionsId == permissionFromDB.Id).ToList();
+                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).Select(y => y.Budgets_Allocations).ToList();
+                    existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).ToList();
 
                     if (permissionFromDB != null)
                     {
@@ -344,7 +344,7 @@ namespace GAppsDev.Controllers
                                             if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
                                             {
                                                 allocation.Allocation.BudgetId = budgetFromDB.Id;
-                                                allocation.Allocation.BudgetsPermissionsId = permissionFromDB.Id;
+                                                allocation.Allocation.BasketId = permissionFromDB.Id;
                                                 permissionsAllocationsRep.Create(allocation.Allocation);
                                             }
                                         }
@@ -390,7 +390,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permission;
+                Budgets_Baskets permission;
 
                 using (BudgetsPermissionsRepository permissiosRep = new BudgetsPermissionsRepository())
                 {
@@ -429,7 +429,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Permissions permission;
+                Budgets_Baskets permission;
 
                 using (OrdersRepository orderssRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
@@ -443,8 +443,8 @@ namespace GAppsDev.Controllers
                         if (permission.CompanyId == CurrentUser.CompanyId)
                         {
                             bool noErrors = true;
-                            List<int> permissionAllocations = permission.Budgets_PermissionsToAllocation.Select(x => x.Id).ToList();
-                            List<int> usersPermissions = permission.Budgets_UsersToPermissions.Select(x => x.Id).ToList();
+                            List<int> permissionAllocations = permission.Budgets_BasketsToAllocation.Select(x => x.Id).ToList();
+                            List<int> usersPermissions = permission.Budgets_UsersToBaskets.Select(x => x.Id).ToList();
 
                             foreach (var itemId in permissionAllocations)
                             {

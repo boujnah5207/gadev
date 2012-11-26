@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Budgets_PermissionsToAllocation>
+﻿@model IEnumerable<DB.Budgets_BasketsToAllocation>
 
 @{
     ViewBag.Title = "Index";
@@ -13,7 +13,7 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Budgets_Permissions.Name)
+            @Html.DisplayNameFor(model => model.Budgets_Baskets.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Budgets_Allocations.Id)
@@ -24,7 +24,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Budgets_Permissions.Name)
+            @Html.DisplayFor(modelItem => item.Budgets_Baskets.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Budgets_Allocations.Id)

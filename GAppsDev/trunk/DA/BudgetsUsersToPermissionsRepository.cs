@@ -8,9 +8,9 @@ using DB;
 
 namespace DA
 {
-    public class BudgetsUsersToPermissionsRepository : BaseRepository<Budgets_UsersToPermissions, Entities>, IDisposable
+    public class BudgetsUsersToPermissionsRepository : BaseRepository<Budgets_UsersToBaskets, Entities>, IDisposable
     {
-        public override bool Create(Budgets_UsersToPermissions entity)
+        public override bool Create(Budgets_UsersToBaskets entity)
         {
             entity.CreationDate = DateTime.Now;
             return base.Create(entity);

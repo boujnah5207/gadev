@@ -58,7 +58,7 @@ function removeItem(budgetIndex, allocationIndex) {
     var isActiveField = $("#isActiveField-" + budgetIndex + "-" + allocationIndex);
     var isActive = $("#isActiveField-" + budgetIndex + "-" + allocationIndex).val();
     var BudgetId = $("#BudgetField-" + budgetIndex + "-" + allocationIndex).val();
-    var PermissionId = $("#PermissionField-" + budgetIndex + "-" + allocationIndex).val();
+    var BasketId = $("#PermissionField-" + budgetIndex + "-" + allocationIndex).val();
     var allocationId = $("#allocationField-" + budgetIndex + "-" + allocationIndex).val();
 
     isActiveField.val("false");

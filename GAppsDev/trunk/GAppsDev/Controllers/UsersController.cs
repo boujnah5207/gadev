@@ -293,7 +293,7 @@ namespace GAppsDev.Controllers
             {
                 UserPermissionsModel model = new UserPermissionsModel();
                 User user;
-                List<Budgets_Permissions> allPermissions;
+                List<Budgets_Baskets> allPermissions;
 
                 using (UsersRepository usersRep = new UsersRepository())
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
@@ -302,7 +302,7 @@ namespace GAppsDev.Controllers
 
                     if (user != null)
                     {
-                        model.UserPermissions = user.Budgets_UsersToPermissions.Select(x => new UserPermission() { Permission = x.Budgets_Permissions, IsActive = true }).ToList();
+                        model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).ToList();
 
                         if (model.UserPermissions != null)
                         {
@@ -349,7 +349,7 @@ namespace GAppsDev.Controllers
                 if (Authorized(RoleType.SystemManager))
                 {
                     User userFromDB;
-                    List<Budgets_UsersToPermissions> existingPermissions;
+                    List<Budgets_UsersToBaskets> existingPermissions;
                     bool noErrors = true;
 
                     using (UsersRepository usersRep = new UsersRepository())
@@ -369,12 +369,12 @@ namespace GAppsDev.Controllers
                                     {
                                         if (permission.IsActive)
                                         {
-                                            if (!existingPermissions.Any(x => x.PermissionId == permission.Permission.Id))
+                                            if (!existingPermissions.Any(x => x.BasketId == permission.Permission.Id))
                                             {
-                                                Budgets_UsersToPermissions newPermission = new Budgets_UsersToPermissions()
+                                                Budgets_UsersToBaskets newPermission = new Budgets_UsersToBaskets()
                                                 {
                                                     UserId = userFromDB.Id,
-                                                    PermissionId = permission.Permission.Id,
+                                                    BasketId = permission.Permission.Id,
                                                     CompanyId = CurrentUser.CompanyId
                                                 };
 
@@ -384,7 +384,7 @@ namespace GAppsDev.Controllers
                                         }
                                         else
                                         {
-                                            Budgets_UsersToPermissions existingPermission = existingPermissions.SingleOrDefault(x => x.PermissionId == permission.Permission.Id);
+                                            Budgets_UsersToBaskets existingPermission = existingPermissions.SingleOrDefault(x => x.BasketId == permission.Permission.Id);
                                             if (existingPermission != null)
                                             {
                                                 if (!userPermissionsRep.Delete(existingPermission.Id))

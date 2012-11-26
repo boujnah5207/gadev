@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Budgets_PermissionsToAllocation>
+﻿@model IEnumerable<DB.Budgets_BasketsToAllocation>
 
 @{
     ViewBag.Title = "PermissionAllocationList";
@@ -9,7 +9,7 @@
 <h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
 
 <p>
-    @Html.ActionLink(Loc.Dic.Add, "Create", new { permissionId = ViewBag.PermissionId, budgetId = ViewBag.BudgetId})
+    @Html.ActionLink(Loc.Dic.Add, "Create", new { permissionId = ViewBag.BasketId, budgetId = ViewBag.BudgetId})
 </p>
 
 <table>

@@ -432,7 +432,7 @@ namespace GAppsDev.Controllers
                         if (expense.CompanyId == CurrentUser.CompanyId)
                         {
                             List<Budgets_Allocations> expenseAllocations;
-                            List<Budgets_PermissionsToAllocation> expensePermissions;
+                            List<Budgets_BasketsToAllocation> expensePermissions;
                             List<Order> expenseOrders = ordersRep.GetList().Where(x => x.Budgets_Allocations.ExpenseId == expense.Id).ToList();
 
                             if (!expenseOrders.Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice))

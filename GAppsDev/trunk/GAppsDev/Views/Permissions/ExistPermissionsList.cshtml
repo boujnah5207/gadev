@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DB.Budgets_Permissions>
+﻿@model IEnumerable<DB.Budgets_Baskets>
 
 @{
     ViewBag.Title = Loc.Dic.AllPermissions;
@@ -16,7 +16,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @if (!(item.Budgets_PermissionsToAllocation.Where(x => x.BudgetId == ViewBag.budgetId).Count() == 0))
+                @if (!(item.Budgets_BasketsToAllocation.Where(x => x.BudgetId == ViewBag.budgetId).Count() == 0))
                 {
                     @Html.ActionLink(Loc.Dic.Details, "PermissionAllocationList", "PermissionsAllocations", new { permissionId = item.Id, budgetId = ViewBag.budgetId }, null)
                 }

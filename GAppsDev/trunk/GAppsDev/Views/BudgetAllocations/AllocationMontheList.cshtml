@@ -6,18 +6,15 @@
     ViewBag.SubPageName = "AllBudgets";
 }
 
-<h2>AllocationMonthList</h2>
+<h2>@Loc.Dic.Allocations</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Loc.Dic.Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExternalId)
+            @Loc.Dic.Number
         </th>
         <th>@Loc.Dic.January</th>
         <th>@Loc.Dic.February</th>
