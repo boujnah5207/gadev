@@ -12,6 +12,6 @@ namespace GAppsDev.Models.BudgetModels
         public List<Budgets_Expenses> Expenses { get; set; }
 
         public List<Budgets_Allocations> Allocations { get; set; }
-        public List<Budgets_PermissionsToAllocation> PermissionsAllocations { get; set; }
+        public List<Budgets_BasketsToAllocation> PermissionsAllocations { get; set; }
     }
 }
