@@ -9,7 +9,7 @@ namespace GAppsDev.Models.PermissionModels
 {
     public class PermissionAllocationsModel
     {
-        public Budgets_Permissions Permission { get; set; }
+        public Budgets_Baskets Permission { get; set; }
         public List<BudgetAllocations> BudgetAllocationsList { get; set; }
 
         public PermissionAllocationsModel()
@@ -33,6 +33,6 @@ namespace GAppsDev.Models.PermissionModels
     public class PermissionAllocation
     {
         public bool IsActive { get; set; }
-        public Budgets_PermissionsToAllocation Allocation { get; set; }
+        public Budgets_BasketsToAllocation Allocation { get; set; }
     }
 }
