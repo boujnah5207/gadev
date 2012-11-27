@@ -793,7 +793,8 @@ namespace GAppsDev.Controllers
 
                     foreach (var allocation in allocations)
                     {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                        
                         decimal totalRemaining = 0;
 
                         for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
@@ -801,6 +802,7 @@ namespace GAppsDev.Controllers
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
                             decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
                             if (monthNumber <= DateTime.Now.Month)
                                 totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
@@ -912,7 +914,8 @@ namespace GAppsDev.Controllers
                                 {
                                     foreach (var allocation in orderAllocations)
                                     {
-                                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                                        
                                         List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
 
                                         foreach (var month in allocationMonths)
@@ -939,7 +942,12 @@ namespace GAppsDev.Controllers
 
                                 Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
 
-                                List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                if(allocation == null)
+                                    return Error(Loc.Dic.error_invalid_form);
+
+                                model.Order.BudgetAllocationId = allocation.Id;
+
+                                List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                                 decimal remainingOrderPrice = totalOrderPrice;
 
                                 for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
@@ -1132,7 +1140,7 @@ namespace GAppsDev.Controllers
 
                     foreach (var allocation in allocations)
                     {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                         decimal totalRemaining = 0;
 
                         for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
@@ -1277,7 +1285,7 @@ namespace GAppsDev.Controllers
                                             {
                                                 foreach (var allocation in orderAllocations)
                                                 {
-                                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                                                     List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
 
                                                     foreach (var month in allocationMonths)
@@ -1304,7 +1312,7 @@ namespace GAppsDev.Controllers
 
                                             Budgets_Allocations allocation = allocationsRep.GetEntity(model.BudgetAllocationId.Value);
 
-                                            List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders.Where(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice).SelectMany(a => a.Orders_OrderToAllocation).ToList();
+                                            List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                                             decimal remainingOrderPrice = totalOrderPrice;
 
                                             for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
