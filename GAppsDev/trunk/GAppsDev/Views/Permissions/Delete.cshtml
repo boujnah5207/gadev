@@ -6,21 +6,21 @@
     ViewBag.SubPageName = "Permissions";
 }
 
-<h2>Delete</h2>
+<h2>@Loc.Dic.Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Loc.Dic.DeleteAlertMessege</h3>
 <fieldset>
-    <legend>Budgets_Baskets</legend>
+    <legend>@Loc.Dic.BudgetBasket</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
+         @Loc.Dic.CreationDate
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CreationDate)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+         @Loc.Dic.Name
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
@@ -29,7 +29,7 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="@Loc.Dic.Delete" /> |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }

@@ -903,6 +903,18 @@
   <data name="Allocations" xml:space="preserve">
     <value>סעיפים תקציביים</value>
   </data>
+  <data name="Monthly" xml:space="preserve">
+    <value>חודשי</value>
+  </data>
+  <data name="Yearly" xml:space="preserve">
+    <value>שנתי</value>
+  </data>
+  <data name="FileFormat" xml:space="preserve">
+    <value>מבנה קובץ</value>
+  </data>
+  <data name="BudgetBasket" xml:space="preserve">
+    <value>סל תקציב</value>
+  </data>
   <data name="Found" xml:space="preserve">
     <value>נמצאו</value>
   </data>

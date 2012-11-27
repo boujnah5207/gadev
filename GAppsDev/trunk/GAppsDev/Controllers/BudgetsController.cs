@@ -134,7 +134,12 @@ namespace GAppsDev.Controllers
         public ActionResult Import(int? id)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
-            return View(id);
+            if (!id.HasValue)
+                return View();
+            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+            {
+                return View(budgetsRepository.GetEntity(id.Value).Year);
+            }
         }
 
         [OpenIdAuthorize]

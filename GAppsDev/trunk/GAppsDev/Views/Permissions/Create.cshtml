@@ -4,17 +4,15 @@
     ViewBag.Title = Loc.Dic.CreateNewPermission;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllPermissions";
-    ViewBag.PageName = "Managment";
-    ViewBag.SubPageName = "Permissions";
 }
 
 <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
-
+<h2>@Loc.Dic.BudgetBasket</h2>
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>@Loc.Dic.Permission</legend>
+        <legend>@Loc.Dic.CreateNew</legend>
 
         <div class="editor-label">
             @Loc.Dic.Name
