@@ -1,5 +1,8 @@
 ﻿@model GAppsDev.Models.AddToInventoryModel
 
+@using (Html.BeginForm("AddToInventory", "Orders"))
+{
+    @Html.ValidationSummary(true)
 <fieldset>
     <legend>הוספה למלאי</legend>
         @Html.HiddenFor(model => model.OrderId)
@@ -43,3 +46,4 @@
             <input type="submit" value="אשר והמשך" />
         </p>
 </fieldset>
+}

@@ -11,6 +11,12 @@
                 <li>
                     @Html.ActionLink(Loc.Dic.InventoryList, "index", "Inventory", null, new { id = "AllInventory" })
                 </li>
+                @if (DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.InventoryManager))
+                {
+                <li>
+                    @Html.ActionLink(Loc.Dic.PendingOrders, "PendingInventory", "Orders", null, new { id = "PendingInventory" })
+                </li>
+                }
         </ul>
     </div>
 </nav>

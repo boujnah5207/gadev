@@ -930,4 +930,7 @@
   <data name="error_order_was_added_to_inventory" xml:space="preserve">
     <value>This order was already added to the inventory</value>
   </data>
+  <data name="PendingInventory" xml:space="preserve">
+    <value>Pending inventory insertion</value>
+  </data>
 </root>

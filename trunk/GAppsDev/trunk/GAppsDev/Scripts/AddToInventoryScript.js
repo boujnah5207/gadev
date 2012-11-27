@@ -4,8 +4,8 @@ var locationList;
 
 $(function () {
 
-    splitedItems = {};
-    removedItems = {};
+    splitedItems = new Array();
+    removedItems = new Array();
     locationList = $($(".locationList")[0]).clone();
 });
 
@@ -58,21 +58,21 @@ function split(id, index, quantity) {
     for (var i = 0; i < quantity; i++) {
         var newLocationList = locationList.clone();
         newLocationList.attr("id", "#locationList-" + id + "-" + i);
-        newLocationList.attr("name", "InventoryItems[" + index + "][" + i + "].LocationId");
+        newLocationList.attr("name", "InventoryItems[" + index + "].ItemsToAdd[" + i + "].LocationId");
 
         var newItem = $(
             "<fieldset class='originalItem-" + id + "' id='item-" + id + "-" + i + "'>" +
                     "<legend>" + oldItemTitle + " " + (i + 1) + "</legend>" +
                     "<div id='expandingDiv-" + id + "-" + i + "' class='expanding-div' style='display:none;'>" +
-                        "<input type='hidden' name='InventoryItems[" + index + "][" + i + "].ItemId' value='" + id + "' />" +
+                        "<input type='hidden' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].ItemId' value='" + id + "' />" +
                         "<label>מיקום: </label> " +
                         $('<div>').append(newLocationList.clone()).html()  +
-                        "<label>משוייך ל: </label> <input type='text' name='InventoryItems[" + index + "][" + i + "].AssignedTo' />" +
-                        "<label>מספר סידורי: </label> <input type='text' name='InventoryItems[" + index + "][" + i + "].SerialNumber' />" +
+                        "<label>משוייך ל: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].AssignedTo' />" +
+                        "<label>מספר סידורי: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].SerialNumber' />" +
                         "<br /> <span>תקופת אחריות: </span> <br />" +
-                        "<label>מ- </label> <input type='text' name='InventoryItems[" + index + "][" + i + "].WarrentyPeriodStart' /> - <input type='text' name='InventoryItems[" + index + "][" + i + "].WarrentyPeriodEnd' />" +
-                        "<label>הערות: </label> <textarea name='InventoryItems[" + index + "][" + i + "].Notes' ></textarea>" +
-                        "<label>מצב: </label> <input type='text' name='InventoryItems[" + index + "][" + i + "].Status' />" +
+                        "<label>מ- </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> - <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
+                        "<label>הערות: </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
+                        "<label>מצב: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Status' />" +
                     "</div>" +
                     "<input id='expandingBtn-" + id + "-" + i + "' type='button' value='הצג פרטים' onClick='expand(" + id + "," + i + ")' />" +
                 "</fieldset>"
@@ -83,11 +83,8 @@ function split(id, index, quantity) {
 
     var existingSplittedItem = getSplittedItem(id);
     if (existingSplittedItem == null) {
-        splitedItems[splitedItems.length] = {};
-        splitedItems[splitedItems.length].id = id;
-        splitedItems[splitedItems.length].oldItem = oldItem;
-        splitedItems[splitedItems.length].oldExpandBtn = oldExpandBtn;
-        splitedItems[splitedItems.length].oldSplitBtn = oldSplitBtn;
+        var newSplittedItem = { id: id, oldItem: oldItem, oldExpandBtn: oldExpandBtn, oldSplitBtn: oldSplitBtn };
+        splitedItems[splitedItems.length] = newSplittedItem;
     }
     else {
         existingSplittedItem.item = oldItem;
@@ -124,15 +121,12 @@ function remove(id) {
 
     var existingRemovedItem = getRemovedItem(id);
     if (existingRemovedItem == null) {
-        removedItems[removedItems.length] = {};
-        removedItems[removedItems.length].id = id;
-        removedItems[removedItems.length].oldItem = oldItem;
+        var newRemovedItem = { id: id, oldItem: oldItem };
+        removedItems[removedItems.length] = newRemovedItem;
     }
     else {
         existingRemovedItem.oldItem = oldItem;
     }
-
-    //removedItems[id] = oldItem;
 
     oldItem.toggle(0);
     oldItemHiddenCancel.val("false");
