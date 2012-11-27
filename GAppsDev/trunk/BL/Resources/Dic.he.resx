@@ -921,4 +921,10 @@
   <data name="Results" xml:space="preserve">
     <value>תוצאות</value>
   </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>הוסף למלאי</value>
+  </data>
+  <data name="error_order_was_added_to_inventory" xml:space="preserve">
+    <value>הזמנה זאת כבר הוכנסה למלאי</value>
+  </data>
 </root>

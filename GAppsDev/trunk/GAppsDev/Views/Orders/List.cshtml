@@ -108,7 +108,7 @@
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id })
                     <text>|</text> @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
-                    if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersApprover))
+                    if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersApprover) && item.NextOrderApproverId == ViewBag.CurrentUserId)
                     {
                     <text>|</text> @Html.ActionLink(Loc.Dic.UpdateStatus, "ModifyStatus", new { id = item.Id })
                     }

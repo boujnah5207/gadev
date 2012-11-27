@@ -12,12 +12,13 @@
 }
 
 @Html.Action("SearchForm", new { model = Model, isExpanding = false, isCollapsed= false, userId = ViewBag.UserId, statusId = ViewBag.StatusId, supplierId = ViewBag.SupplierId, hideUserField = ViewBag.HideUserField, hideStatusField = ViewBag.HideStatusField, hideSupplierField = ViewBag.HideSupplierField })
+<br />
 
 @if(Model != null)
 {
     if (Model.Matches.Count() != 0)
     { 
-        <span>@Loc.Dic.Found @Model.Matches.Count @Loc.Dic.Results: </span>
+        <span class="bold">@Loc.Dic.Found @Model.Matches.Count @Loc.Dic.Results: </span>
         @Html.Action("SimpleList", new { orders = Model.Matches })
     }
     else

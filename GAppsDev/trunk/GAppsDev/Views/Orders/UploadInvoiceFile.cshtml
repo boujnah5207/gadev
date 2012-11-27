@@ -4,18 +4,11 @@
     ViewBag.noSubMenu = true;
 }
 
-@section ExtraScripts{
-    <script src="~/Scripts/AddToInventoryScript.js"></script>
-}
-
-@using (Html.BeginForm("UploadInvoiceFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadInvoiceFile", "Orders", new { id = ViewBag.OrderID }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
     
-    <h2>סרוק חשבונית</h2>
+    <h2>@Loc.Dic.UploadInvoice</h2>
     <input type="file" name="file" />
     <input type="submit" value="OK" />
-    
-    <h2>הכנסה למלאי</h2>
-    @Html.Action("AddToInventory", new { ViewBag.OrderID})
 }
