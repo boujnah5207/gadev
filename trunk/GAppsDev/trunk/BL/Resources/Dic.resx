@@ -924,4 +924,10 @@
   <data name="Results" xml:space="preserve">
     <value>Results</value>
   </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>Add to inventory</value>
+  </data>
+  <data name="error_order_was_added_to_inventory" xml:space="preserve">
+    <value>This order was already added to the inventory</value>
+  </data>
 </root>

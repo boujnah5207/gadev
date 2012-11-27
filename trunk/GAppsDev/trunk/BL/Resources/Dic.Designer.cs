@@ -142,6 +142,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add to inventory.
+        /// </summary>
+        public static string AddToInventory {
+            get {
+                return ResourceManager.GetString("AddToInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Search.
         /// </summary>
         public static string AdvancedSearch {
@@ -1065,6 +1074,15 @@ namespace Loc {
         public static string error_order_update_items_error {
             get {
                 return ResourceManager.GetString("error_order_update_items_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This order was already added to the inventory.
+        /// </summary>
+        public static string error_order_was_added_to_inventory {
+            get {
+                return ResourceManager.GetString("error_order_was_added_to_inventory", resourceCulture);
             }
         }
         

@@ -19,6 +19,7 @@ namespace DA
         public override bool Create(Order entity)
         {
             entity.CreationDate = DateTime.Now;
+            entity.WasAddedToInventory = false;
             return base.Create(entity);
         }
 

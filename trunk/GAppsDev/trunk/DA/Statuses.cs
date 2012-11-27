@@ -9,15 +9,15 @@ namespace DA
 {
     public enum StatusType : int
     {
+        OrderCancelled = 0,
         Pending = 1,
         Declined = 2,
-        PartiallyApproved = 3,
-        ApprovedPendingInvoice = 4,
-        InvoiceScannedPendingOrderCreator = 5,
-        InvoiceApprovedByOrderCreatorPendingFileExport = 6,
-        InvoiceExportedToFilePendingReceipt = 7,
-        ReceiptScanned = 8,
-        PendingOrderCreator = 9,
-        OrderCancelled = 10
+        PendingOrderCreator = 3,
+        PartiallyApproved = 4,
+        ApprovedPendingInvoice = 5,
+        InvoiceScannedPendingOrderCreator = 6,
+        InvoiceApprovedByOrderCreatorPendingFileExport = 7,
+        InvoiceExportedToFilePendingReceipt = 8,
+        ReceiptScanned = 9
     }
 }

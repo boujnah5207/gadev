@@ -458,7 +458,7 @@
     <Content Include="Views\Locations\Create.cshtml" />
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Delete.cshtml" />
-    <Content Include="Views\Orders\AddToInventory.cshtml" />
+    <Content Include="Views\Orders\PartialAddToInventory.cshtml" />
     <Content Include="Views\Budgets\Index.cshtml" />
     <Content Include="Views\Budgets\Details.cshtml" />
     <Content Include="Views\Budgets\Create.cshtml" />
@@ -539,6 +539,7 @@
     <Content Include="Views\Orders\ListOrderItems.cshtml" />
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Views\BudgetAllocations\AllocationMontheList.cshtml" />
+    <Content Include="Views\Orders\AddToInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

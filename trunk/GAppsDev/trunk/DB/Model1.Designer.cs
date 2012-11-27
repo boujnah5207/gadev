@@ -25,8 +25,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Categories_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Incomes_types", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes_types), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Institutions_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Incomes_Institutions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes_Institutions), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Baskets_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Baskets), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToBaskets_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Permissions_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Baskets), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToPermissions_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Deprtments_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Department), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Locations_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Location), true)]
@@ -44,24 +44,24 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_Income_Budget", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budget), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Budgets", "Budget", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budget), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Expenses", "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Expenses), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budget_ExpensesToIncome_Budget_Income", "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Incomes), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_AllocationToMonth_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Budgets_AllocationToMonth", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_AllocationToMonth), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Budget_ExpensesToIncome", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Allocations), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_AllocationToMonth_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Budgets_AllocationToMonth", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_AllocationToMonth), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_Baskets1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Baskets), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_Baskets1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Baskets), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Departments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Department), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Projects_ParentProject", "Projects_ParentProject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Projects_ParentProject), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Expenses_Projects_SubProject", "Projects_SubProject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Projects_SubProject), "Budgets_Expenses", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Expenses), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Budgets_Incomes_Categories", "Budgets_Incomes_types", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Incomes_types), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Incomes_Budgets_Incomes_Institutions", "Budgets_Incomes_Institutions", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Incomes_Institutions), "Budgets_Incomes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Incomes), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToBaskets_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_UsersToPermissions_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Budgets_UsersToBaskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_UsersToBaskets), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Budget_Deprtments", "Department", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Department), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
@@ -1130,18 +1130,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets", "Budgets_BasketsToAllocation")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budgets_BasketsToAllocation")]
         public EntityCollection<Budgets_BasketsToAllocation> Budgets_BasketsToAllocation
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budgets_BasketsToAllocation");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budgets_BasketsToAllocation");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budgets_BasketsToAllocation", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budgets_BasketsToAllocation", value);
                 }
             }
         }
@@ -1609,18 +1609,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation")]
         public EntityCollection<Budgets_BasketsToAllocation> Budgets_BasketsToAllocation
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_BasketsToAllocation", value);
                 }
             }
         }
@@ -2029,16 +2029,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Baskets_Companies", "Company")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Permissions_Companies", "Company")]
         public Company Company
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Baskets_Companies", "Company").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Permissions_Companies", "Company").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Baskets_Companies", "Company").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Permissions_Companies", "Company").Value = value;
             }
         }
         /// <summary>
@@ -2050,13 +2050,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Baskets_Companies", "Company");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_Permissions_Companies", "Company");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budgets_Baskets_Companies", "Company", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budgets_Permissions_Companies", "Company", value);
                 }
             }
         }
@@ -2067,16 +2067,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets1")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets1")]
         public Budgets_Baskets Budgets_Baskets1
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets1").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets1").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets1").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets1").Value = value;
             }
         }
         /// <summary>
@@ -2088,13 +2088,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets1");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets1", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets1", value);
                 }
             }
         }
@@ -2105,16 +2105,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets")]
         public Budgets_Baskets Budgets_Baskets2
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets").Value = value;
             }
         }
         /// <summary>
@@ -2126,13 +2126,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Budgets_Baskets", "Budgets_Baskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets", value);
                 }
             }
         }
@@ -2143,18 +2143,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_BasketsToAllocation")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_BasketsToAllocation")]
         public EntityCollection<Budgets_BasketsToAllocation> Budgets_BasketsToAllocation
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_BasketsToAllocation");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_BasketsToAllocation");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_BasketsToAllocation", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_BasketsToAllocation>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_BasketsToAllocation", value);
                 }
             }
         }
@@ -2165,18 +2165,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_UsersToBaskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_UsersToBaskets")]
         public EntityCollection<Budgets_UsersToBaskets> Budgets_UsersToBaskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_UsersToBaskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_UsersToBaskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_UsersToBaskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_UsersToBaskets", value);
                 }
             }
         }
@@ -2326,16 +2326,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets", "Budget")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets", "Budget")]
         public Budget Budget
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budget").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budget").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budget").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budget").Value = value;
             }
         }
         /// <summary>
@@ -2347,13 +2347,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budget");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budget>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budget");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget>("designModel.FK_Budgets_BasketsToAllocation_Budgets", "Budget", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budget>("designModel.FK_Budgets_PermissionsToAllocation_Budgets", "Budget", value);
                 }
             }
         }
@@ -2364,16 +2364,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations")]
         public Budgets_Allocations Budgets_Allocations
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations").Value = value;
             }
         }
         /// <summary>
@@ -2385,13 +2385,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_BasketsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Allocations>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", value);
                 }
             }
         }
@@ -2402,16 +2402,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets")]
         public Budgets_Baskets Budgets_Baskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets").Value = value;
             }
         }
         /// <summary>
@@ -2423,13 +2423,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_BasketsToAllocation_Budgets_Baskets", "Budgets_Baskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets", value);
                 }
             }
         }
@@ -3895,16 +3895,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Companies", "Company")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Companies", "Company")]
         public Company Company
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToBaskets_Companies", "Company").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToPermissions_Companies", "Company").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToBaskets_Companies", "Company").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToPermissions_Companies", "Company").Value = value;
             }
         }
         /// <summary>
@@ -3916,13 +3916,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToBaskets_Companies", "Company");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Budgets_UsersToPermissions_Companies", "Company");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budgets_UsersToBaskets_Companies", "Company", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Budgets_UsersToPermissions_Companies", "Company", value);
                 }
             }
         }
@@ -3933,16 +3933,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets")]
         public Budgets_Baskets Budgets_Baskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets").Value = value;
             }
         }
         /// <summary>
@@ -3954,13 +3954,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToBaskets_Budgets_Baskets", "Budgets_Baskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Budgets_Baskets>("designModel.FK_Budgets_UsersToPermissions_Budgets_Permissions", "Budgets_Baskets", value);
                 }
             }
         }
@@ -3971,16 +3971,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Users", "User")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Users", "User")]
         public User User
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToBaskets_Users", "User").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToPermissions_Users", "User").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToBaskets_Users", "User").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToPermissions_Users", "User").Value = value;
             }
         }
         /// <summary>
@@ -3992,13 +3992,13 @@ namespace DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToBaskets_Users", "User");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Budgets_UsersToPermissions_Users", "User");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Budgets_UsersToBaskets_Users", "User", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Budgets_UsersToPermissions_Users", "User", value);
                 }
             }
         }
@@ -4588,18 +4588,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Baskets_Companies", "Budgets_Baskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_Permissions_Companies", "Budgets_Baskets")]
         public EntityCollection<Budgets_Baskets> Budgets_Baskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Companies", "Budgets_Baskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Companies", "Budgets_Baskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_Baskets>("designModel.FK_Budgets_Baskets_Companies", "Budgets_Baskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_Baskets>("designModel.FK_Budgets_Permissions_Companies", "Budgets_Baskets", value);
                 }
             }
         }
@@ -4610,18 +4610,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Companies", "Budgets_UsersToBaskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Companies", "Budgets_UsersToBaskets")]
         public EntityCollection<Budgets_UsersToBaskets> Budgets_UsersToBaskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Companies", "Budgets_UsersToBaskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Companies", "Budgets_UsersToBaskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Companies", "Budgets_UsersToBaskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Companies", "Budgets_UsersToBaskets", value);
                 }
             }
         }
@@ -6333,7 +6333,8 @@ namespace DB
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
         /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder)
+        /// <param name="wasAddedToInventory">Initial value of the WasAddedToInventory property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory)
         {
             Order order = new Order();
             order.Id = id;
@@ -6344,6 +6345,7 @@ namespace DB
             order.SupplierId = supplierId;
             order.StatusId = statusId;
             order.IsFutureOrder = isFutureOrder;
+            order.WasAddedToInventory = wasAddedToInventory;
             return order;
         }
 
@@ -6761,6 +6763,30 @@ namespace DB
         private Nullable<global::System.Int32> _BudgetId;
         partial void OnBudgetIdChanging(Nullable<global::System.Int32> value);
         partial void OnBudgetIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean WasAddedToInventory
+        {
+            get
+            {
+                return _WasAddedToInventory;
+            }
+            set
+            {
+                OnWasAddedToInventoryChanging(value);
+                ReportPropertyChanging("WasAddedToInventory");
+                _WasAddedToInventory = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("WasAddedToInventory");
+                OnWasAddedToInventoryChanged();
+            }
+        }
+        private global::System.Boolean _WasAddedToInventory;
+        partial void OnWasAddedToInventoryChanging(global::System.Boolean value);
+        partial void OnWasAddedToInventoryChanged();
 
         #endregion
 
@@ -9610,18 +9636,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToBaskets_Users", "Budgets_UsersToBaskets")]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_UsersToPermissions_Users", "Budgets_UsersToBaskets")]
         public EntityCollection<Budgets_UsersToBaskets> Budgets_UsersToBaskets
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Users", "Budgets_UsersToBaskets");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Users", "Budgets_UsersToBaskets");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToBaskets_Users", "Budgets_UsersToBaskets", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Budgets_UsersToBaskets>("designModel.FK_Budgets_UsersToPermissions_Users", "Budgets_UsersToBaskets", value);
                 }
             }
         }

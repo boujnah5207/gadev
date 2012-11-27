@@ -4,12 +4,16 @@
     ViewBag.SubPageName = "MyOrders";
 }
 
-<h2>InvoiceApproval</h2>
+<h2>@Loc.Dic.InvoiceApproval</h2>
+<br />
+
 @using (Html.BeginForm())
 {
     @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = ViewBag.orderId });
     
     <input type="hidden" name="orderId" value = "@ViewBag.orderId" />
+    <br />
+    <br />
     <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveInvoce" />
     <input type="submit" name="selectedStatus" value="@Loc.Dic.CancelOrder" />
 }
