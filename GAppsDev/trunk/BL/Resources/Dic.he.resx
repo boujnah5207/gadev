@@ -927,4 +927,7 @@
   <data name="error_order_was_added_to_inventory" xml:space="preserve">
     <value>הזמנה זאת כבר הוכנסה למלאי</value>
   </data>
+  <data name="PendingInventory" xml:space="preserve">
+    <value>הזמנות ממתינות להכנסה למלאי</value>
+  </data>
 </root>

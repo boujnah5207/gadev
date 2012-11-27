@@ -1,4 +1,6 @@
-﻿@{
+﻿@model GAppsDev.Models.AddToInventoryModel
+
+@{
     ViewBag.Title = @Loc.Dic.AddToInventory;
     ViewBag.PageName = "Orders";
     ViewBag.noSubMenu = true;
@@ -9,4 +11,6 @@
 }
 
 <h2>@Loc.Dic.AddToInventory</h2>
-@Html.Action("PartialAddToInventory", new { ViewBag.OrderID})
+<br />
+
+@Html.Action("PartialAddToInventory", new { model = Model})

@@ -1623,10 +1623,101 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        [ChildActionOnly]
-        public ActionResult PartialAddToInventory(int id = 0)
+        public ActionResult PendingInventory(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.OrdersApprover))
+            if (Authorized(RoleType.InventoryManager))
+            {
+                if (!Authorized(RoleType.OrdersViewer))
+                    return Error(Loc.Dic.error_no_permission);
+
+                IEnumerable<Order> orders;
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+                {
+                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => !x.WasAddedToInventory && x.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator);
+
+                    if (orders != null)
+                    {
+                        int numberOfItems = orders.Count();
+                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+                        if (numberOfItems % ITEMS_PER_PAGE != 0)
+                            numberOfPages++;
+
+                        if (page <= 0)
+                            page = FIRST_PAGE;
+                        if (page > numberOfPages)
+                            page = numberOfPages;
+
+                        if (sortby != NO_SORT_BY)
+                        {
+                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
+
+                            if (order == DEFAULT_DESC_ORDER)
+                                orderFunction = x => orders.OrderByDescending(x);
+                            else
+                                orderFunction = x => orders.OrderBy(x);
+
+                            switch (sortby)
+                            {
+                                case "number":
+                                    orders = orderFunction(x => x.OrderNumber);
+                                    break;
+                                case "creation":
+                                    orders = orderFunction(x => x.CreationDate);
+                                    break;
+                                case "supplier":
+                                    orders = orderFunction(x => x.Supplier.Name);
+                                    break;
+                                case "status":
+                                    orders = orderFunction(x => x.StatusId);
+                                    break;
+                                case "price":
+                                    orders = orderFunction(x => x.Price);
+                                    break;
+                                case "lastChange":
+                                    orders = orderFunction(x => x.LastStatusChangeDate);
+                                    break;
+                                case "username":
+                                default:
+                                    orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
+                                    break;
+                            }
+                        }
+
+                        orders = orders
+                            .Skip((page - 1) * ITEMS_PER_PAGE)
+                            .Take(ITEMS_PER_PAGE)
+                            .ToList();
+
+                        ViewBag.Sortby = sortby;
+                        ViewBag.Order = order;
+                        ViewBag.CurrPage = page;
+                        ViewBag.NumberOfPages = numberOfPages;
+
+                        return View(orders.ToList());
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.error_orders_get_error);
+                    }
+                }
+            }
+            else
+            {
+                return Error(Loc.Dic.error_no_permission);
+            }
+        }
+
+        [OpenIdAuthorize]
+        [ChildActionOnly]
+        public ActionResult PartialAddToInventory(AddToInventoryModel model)
+        {
+            return PartialView(model);
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult AddToInventory(int id = 0)
+        {
+            if (Authorized(RoleType.InventoryManager))
             {
                 AddToInventoryModel model = new AddToInventoryModel();
                 Order order;
@@ -1651,7 +1742,7 @@ namespace GAppsDev.Controllers
                         {
                             model.OrderId = order.Id;
                             model.LocationsList = new SelectList(locations, "Id", "Name");
-                            return PartialView(model);
+                            return View(model);
                         }
                         else
                         {
@@ -1678,7 +1769,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult AddToInventory(AddToInventoryModel model)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (Authorized(RoleType.InventoryManager))
             {
                 Order order;
                 List<Inventory> createdItems = new List<Inventory>();

@@ -2005,6 +2005,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending inventory insertion.
+        /// </summary>
+        public static string PendingInventory {
+            get {
+                return ResourceManager.GetString("PendingInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending Orders.
         /// </summary>
         public static string PendingOrders {

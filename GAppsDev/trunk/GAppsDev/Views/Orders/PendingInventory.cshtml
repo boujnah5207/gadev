@@ -1,0 +1,20 @@
+﻿@model List<DB.Order>
+
+@{
+    ViewBag.Title = Loc.Dic.Inventory;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageName = "Inventory";
+    ViewBag.SubPageName = "PendingInventory";
+}
+
+<h2>@Loc.Dic.PendingInventory</h2>
+<br />
+
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("PendingInventory"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
+}
