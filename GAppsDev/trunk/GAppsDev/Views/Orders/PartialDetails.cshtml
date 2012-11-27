@@ -97,11 +97,9 @@
     }
 
     <p>
-        @if (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Order.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
+        @if (Model.Order.UserId == ViewBag.CurrentUserId && (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Order.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
         {
             @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Order.Id })
         }
     </p>
 </fieldset>
-
-@Html.ActionLink(Loc.Dic.BackToList, "Index")
