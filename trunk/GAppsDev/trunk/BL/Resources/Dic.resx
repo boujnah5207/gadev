@@ -906,6 +906,18 @@
   <data name="Allocations" xml:space="preserve">
     <value>Allocations</value>
   </data>
+  <data name="Monthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="Yearly" xml:space="preserve">
+    <value>Yearly</value>
+  </data>
+  <data name="FileFormat" xml:space="preserve">
+    <value>File Format</value>
+  </data>
+  <data name="BudgetBasket" xml:space="preserve">
+    <value>Budget Basket</value>
+  </data>
   <data name="Found" xml:space="preserve">
     <value>Found</value>
   </data>

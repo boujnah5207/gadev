@@ -55,11 +55,14 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             List<Budgets_Allocations> allocationsList = new List<Budgets_Allocations>();
-           using (AllocationRepository allocationsRep = new AllocationRepository())
+            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository())
             {
                 allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == budgetId).ToList();
-               
+                ViewBag.Year = budgetsRepository.GetEntity(budgetId).Year;
             }
+
+
            return View(allocationsList);
         }
         //

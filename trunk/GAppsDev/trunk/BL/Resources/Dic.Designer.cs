@@ -376,6 +376,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Basket.
+        /// </summary>
+        public static string BudgetBasket {
+            get {
+                return ResourceManager.GetString("BudgetBasket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -1375,6 +1384,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Format.
+        /// </summary>
+        public static string FileFormat {
+            get {
+                return ResourceManager.GetString("FileFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Final price.
         /// </summary>
         public static string FinalPrice {
@@ -1740,6 +1758,15 @@ namespace Loc {
         public static string Month {
             get {
                 return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly.
+        /// </summary>
+        public static string Monthly {
+            get {
+                return ResourceManager.GetString("Monthly", resourceCulture);
             }
         }
         
@@ -2442,6 +2469,15 @@ namespace Loc {
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yearly.
+        /// </summary>
+        public static string Yearly {
+            get {
+                return ResourceManager.GetString("Yearly", resourceCulture);
             }
         }
     }
