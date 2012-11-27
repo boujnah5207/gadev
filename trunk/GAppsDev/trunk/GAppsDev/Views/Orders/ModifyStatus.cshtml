@@ -6,73 +6,11 @@
     ViewBag.SubPageName = "";
 }
 
+@Html.Action("PartialDetails", new { id = ViewBag.OrderId})
+<br />
+
 @using (Html.BeginForm()) {
-
-<fieldset>
-    <legend>@Loc.Dic.Order</legend>
-    <div class="display-label">
-        @Loc.Dic.CreationDate
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.CreationDate)
-    </div>
-    <div class="display-label">
-        @Loc.Dic.OrderCreatorName
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)
-    </div>
-    <div class="display-label">
-        @Loc.Dic.Supplier
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Supplier.Name)
-    </div>
-    <table>
-        <tr class="display-label">
-            <th>@Loc.Dic.ItemName
-            </th>
-            <th>@Loc.Dic.ItemDescription
-            </th>
-            <th>@Loc.Dic.SingleItemPrice
-            </th>
-            <th>@Loc.Dic.Quantity
-            </th>
-        </tr>
-        @foreach (var item in Model.OrderToItem)
-        {
-            <tr class="display-field">
-                <td>
-                    @item.Orders_Items.Title
-                </td>
-                <td>
-                    @item.Orders_Items.SubTitle
-                </td>
-                <td>
-                    @item.SingleItemPrice
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-            </tr>
-        }
-    </table>
-
-    <div class="display-label">
-        @Loc.Dic.Notes
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Notes)
-    </div>
-
-    <div class="display-label">
-        @Loc.Dic.Price
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Price)
-    </div>
-
-
+    
     <div class="display-label">
         @Loc.Dic.OrderApproverNotes
     </div>
@@ -86,8 +24,8 @@
         <input type="submit" name="selectedStatus" value="@Loc.Dic.SendBackToUser" />
 
     </p>
-</fieldset>
 }
+
 <p>
     @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

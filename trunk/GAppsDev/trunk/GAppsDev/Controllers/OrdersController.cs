@@ -24,6 +24,7 @@ namespace GAppsDev.Controllers
         const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
+        const string DEFAULT_INDEX_SORT = "lastChange";
         const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
@@ -38,7 +39,7 @@ namespace GAppsDev.Controllers
         // GET: /Orders/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_INDEX_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.OrdersViewer))
                 return Error(Loc.Dic.error_no_permission);
@@ -285,9 +286,10 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 OrderModel orderModel = new OrderModel();
-                orderModel.Order = ordersRep.GetEntity(id);
+                orderModel.Order = ordersRep.GetEntity(id, "User", "Supplier");
 
                 if (orderModel.Order == null)
                     return Error(Loc.Dic.error_order_get_error);
@@ -295,7 +297,8 @@ namespace GAppsDev.Controllers
                 if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
                     return Error(Loc.Dic.error_no_permission);
 
-                orderModel.OrderToItem = orderModel.Order.Orders_OrderToItem.ToList();
+                ViewBag.OrderId = id;
+                orderModel.OrderToItem = orderItemsRep.GetList("Orders_Items").Where(x => x.OrderId == id).ToList();
 
                 if (orderModel.OrderToItem == null)
                     return Error(Loc.Dic.error_database_error);
@@ -324,37 +327,59 @@ namespace GAppsDev.Controllers
                         {
                             if (selectedStatus == Loc.Dic.ApproveOrder)
                             {
-                                budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
-
-                                if (budgetAllocation != null)
+                                if (orderFromDB.IsFutureOrder)
                                 {
-                                    totalUsedAllocation = ordersRep.GetList()
-                                            .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                            .Sum(x => x.Price);
+                                    List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
+                                    List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
 
-                                    if ((totalUsedAllocation ?? 0) + orderFromDB.Price <= budgetAllocation.Amount)
+                                    foreach (var allocation in orderAllocations)
                                     {
-                                        if (CurrentUser.OrdersApproverId.HasValue)
+                                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
+
+                                        List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
+
+                                        foreach (var month in allocationMonths)
                                         {
-                                            orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                                            orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
-                                            orderFromDB.LastStatusChangeDate = DateTime.Now;
+                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                            if (month.Amount > allocationMonth.Amount)
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
                                         }
-                                        else
-                                        {
-                                            orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                                            orderFromDB.LastStatusChangeDate = DateTime.Now;
-                                            orderFromDB.NextOrderApproverId = null;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        return Error(Loc.Dic.error_order_insufficient_allocation);
                                     }
                                 }
                                 else
                                 {
-                                    return Error(Loc.Dic.error_allocations_get_error);
+                                    budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
+
+                                    if (budgetAllocation != null)
+                                    {
+                                        totalUsedAllocation = ordersRep.GetList()
+                                                .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                                .Sum(x => x.Price);
+
+                                        if ((totalUsedAllocation ?? 0) + orderFromDB.Price > budgetAllocation.Amount)
+                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                    }
+                                    else
+                                    {
+                                        return Error(Loc.Dic.error_allocations_get_error);
+                                    }
+                                }
+
+                                if (CurrentUser.OrdersApproverId.HasValue)
+                                {
+                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                                    orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                                    orderFromDB.LastStatusChangeDate = DateTime.Now;
+                                }
+                                else
+                                {
+                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                    orderFromDB.LastStatusChangeDate = DateTime.Now;
+                                    orderFromDB.NextOrderApproverId = null;
                                 }
                             }
                             else if (selectedStatus == Loc.Dic.DeclineOrder)
@@ -2386,6 +2411,7 @@ namespace GAppsDev.Controllers
                                 OrderToItem = order.Orders_OrderToItem.ToList()
                             };
 
+                            ViewBag.CurrentUserId = CurrentUser.UserId;
                             return PartialView(orderModel);
                         }
                         else
