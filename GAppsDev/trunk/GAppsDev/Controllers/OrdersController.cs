@@ -24,7 +24,7 @@ namespace GAppsDev.Controllers
         const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
-        const string DEFAULT_INDEX_SORT = "lastChange";
+        const string DEFAULT_SORT = "lastChange";
         const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
@@ -39,7 +39,7 @@ namespace GAppsDev.Controllers
         // GET: /Orders/
 
         [OpenIdAuthorize]
-        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_INDEX_SORT, string order = DEFAULT_DESC_ORDER)
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.OrdersViewer))
                 return Error(Loc.Dic.error_no_permission);
@@ -120,7 +120,7 @@ namespace GAppsDev.Controllers
         // GET: /Orders/Details/5
 
         [OpenIdAuthorize]
-        public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
+        public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (Authorized(RoleType.OrdersWriter))
             {
@@ -200,7 +200,7 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_DESC_ORDER)
+        public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (Authorized(RoleType.OrdersApprover))
             {

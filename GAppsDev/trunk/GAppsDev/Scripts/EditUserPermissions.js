@@ -44,12 +44,12 @@ function removeItem(permissionIndex) {
     var container = $("#permission-" + permissionIndex);
     var isActiveField = $("#isActiveField-" + permissionIndex);
     var isActive = isActiveField.val();
-    var PermissionId = $("#permissionField-" + permissionIndex).val();
+    var BasketId = $("#permissionField-" + permissionIndex).val();
     isActiveField.val("false");
 
-    var existingRemovedItem = getRemovedItem(PermissionId);
+    var existingRemovedItem = getRemovedItem(BasketId);
     if (existingRemovedItem == null) {
-        var newRemovedItem = { id: PermissionId, oldItem: container };
+        var newRemovedItem = { id: BasketId, oldItem: container };
         removedItems[removedItems.length] = newRemovedItem;
 
         container.toggle(0);
