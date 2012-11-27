@@ -574,15 +574,19 @@
   <ItemGroup>
     <EmbeddedResource Include="..\BL\Resources\Dic.ar.resx">
       <Link>Resources\Dic.ar.resx</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\BL\Resources\Dic.he.resx">
       <Link>Resources\Dic.he.resx</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\BL\Resources\Dic.resx">
       <Link>Resources\Dic.resx</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\BL\Resources\Dic.ru.resx">
       <Link>Resources\Dic.ru.resx</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
