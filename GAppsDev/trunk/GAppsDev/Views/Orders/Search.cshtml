@@ -17,7 +17,7 @@
 {
     if (Model.Matches.Count() != 0)
     { 
-        <span>@Loc.Dic.SearchResults:</span>
+        <span>@Loc.Dic.Found @Model.Matches.Count @Loc.Dic.Results: </span>
         @Html.Action("SimpleList", new { orders = Model.Matches })
     }
     else
