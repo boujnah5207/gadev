@@ -23,6 +23,7 @@
         @if ((bool)ViewBag.IsOrdered)
         {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderNumber, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.LastChangeDate, "lastChange", ReverseOrder, (string)ViewBag.Sortby)</th>
             if (ViewBag.ShowUserName)
             {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderCreatorName, "username", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -30,12 +31,13 @@
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.SupplierName, "supplier", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Price, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Status, "status", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.CreationDate, "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.LastChangeDate, "lastChange", ReverseOrder, (string)ViewBag.Sortby)</th>
             
         }
         else
         { 
+            <th>
+                @Loc.Dic.LastChangeDate
+            </th>
             <th>
                 @Loc.Dic.OrderNumber
             </th>
@@ -54,12 +56,7 @@
             <th>
                 @Loc.Dic.Status
             </th>
-            <th>
-                @Loc.Dic.CreationDate
-            </th>
-            <th>
-                @Loc.Dic.LastChangeDate
-            </th>
+
         }
 
         <th>@Loc.Dic.Actions</th>
@@ -81,6 +78,9 @@
             <td>
                 @Html.DisplayTextFor(modelItem => item.OrderNumber)
             </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.LastStatusChangeDate)
+            </td>
             @if (ViewBag.ShowUserName)
             {
                 <td>
@@ -96,12 +96,7 @@
             <td>
                 @Html.DisplayTextFor(modelItem => item.Orders_Statuses.Name)
             </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.LastStatusChangeDate)
-            </td>
+
             <td>
                 @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
