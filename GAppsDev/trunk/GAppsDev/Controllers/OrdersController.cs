@@ -86,6 +86,9 @@ namespace GAppsDev.Controllers
                             case "price":
                                 orders = orderFunction(x => x.Price);
                                 break;
+                            case "lastChange":
+                                orders = orderFunction(x => x.LastStatusChangeDate);
+                                break;
                             case "username":
                             default:
                                 orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
@@ -162,6 +165,9 @@ namespace GAppsDev.Controllers
                                     break;
                                 case "price":
                                     orders = orderFunction(x => x.Price);
+                                    break;
+                                case "lastChange":
+                                    orders = orderFunction(x => x.LastStatusChangeDate);
                                     break;
                             }
                         }
@@ -246,6 +252,9 @@ namespace GAppsDev.Controllers
                                 break;
                             case "price":
                                 orders = orderFunction(x => x.Price);
+                                break;
+                            case "lastChange":
+                                orders = orderFunction(x => x.LastStatusChangeDate);
                                 break;
                         }
                     }
