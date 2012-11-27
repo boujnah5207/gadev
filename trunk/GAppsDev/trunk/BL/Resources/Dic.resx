@@ -906,4 +906,10 @@
   <data name="Allocations" xml:space="preserve">
     <value>Allocations</value>
   </data>
+  <data name="Found" xml:space="preserve">
+    <value>Found</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
 </root>

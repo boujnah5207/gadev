@@ -903,4 +903,10 @@
   <data name="Allocations" xml:space="preserve">
     <value>סעיפים תקציביים</value>
   </data>
+  <data name="Found" xml:space="preserve">
+    <value>נמצאו</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>תוצאות</value>
+  </data>
 </root>
