@@ -1600,6 +1600,33 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invoice date.
+        /// </summary>
+        public static string InvoiceDate {
+            get {
+                return ResourceManager.GetString("InvoiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice file.
+        /// </summary>
+        public static string InvoiceFile {
+            get {
+                return ResourceManager.GetString("InvoiceFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice number.
+        /// </summary>
+        public static string InvoiceNumber {
+            get {
+                return ResourceManager.GetString("InvoiceNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
         public static string Item {
@@ -2478,6 +2505,15 @@ namespace Loc {
         public static string UsersManagment {
             get {
                 return ResourceManager.GetString("UsersManagment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Date.
+        /// </summary>
+        public static string ValueDate {
+            get {
+                return ResourceManager.GetString("ValueDate", resourceCulture);
             }
         }
         

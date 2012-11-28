@@ -280,7 +280,7 @@ namespace GAppsDev.Controllers
                                         {
                                             allocatedIncome = allocationsRep.GetList()
                                                 .Where(x => x.IncomeId == incomeFromDB.Id)
-                                                .Sum(allocation => (decimal?)allocation.Amount);
+                                                .Sum(allocation => (decimal?)allocation.CompanyId);//.Sum(allocation => (decimal?)allocation.Amount);
                                         }
 
                                         if (allocatedIncome.HasValue && allocatedIncome > budgets_incomes.Amount)

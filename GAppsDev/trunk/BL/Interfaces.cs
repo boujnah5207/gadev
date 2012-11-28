@@ -183,10 +183,11 @@ namespace BL
             if (!noErros) return errorType;
             return "OK";
         }
+
         public static string ImportMonthBudget(Stream stream, int companyId, int budgetId)
         {
             string errorType = String.Empty;
-            Budget budget = new Budget();
+            Budget budget;
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
             {
                 budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
@@ -220,16 +221,19 @@ namespace BL
 
                     Budgets_Allocations newAllocation;
 
+                    if (lineValues[1].Length != 8 || lineValues[2].Length > 100)
+                        return Loc.Dic.Error_FileParseError;
+
                     try
                     {
                         newAllocation = new Budgets_Allocations()
                         {
+                            ExternalId = lineValues[1],
                             Name = lineValues[2],
                             BudgetId = budget.Id,
                             CompanyId = companyId,
                             IncomeId = null,
-                            ExpenseId = null,
-                            Amount = null
+                            ExpenseId = null
                         };
                     }
                     catch
@@ -249,8 +253,9 @@ namespace BL
                         string monthAmountString = lineValues[valueIndex];
                         if (String.IsNullOrEmpty(monthAmountString))
                         {
-                            noErros = false;
-                            break;
+                            monthAmountString = "0";
+                            //noErros = false;
+                            //break;
                         }
 
                         decimal amount;
@@ -277,7 +282,10 @@ namespace BL
                     }
                 }
             }
-            if (!noErros) return errorType;
+
+            if (!noErros) 
+                return errorType;
+
             return "OK";
         }
     }

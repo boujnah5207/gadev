@@ -936,4 +936,16 @@
   <data name="error_no_active_budget" xml:space="preserve">
     <value>There is no active budget</value>
   </data>
+  <data name="InvoiceDate" xml:space="preserve">
+    <value>Invoice date</value>
+  </data>
+  <data name="InvoiceFile" xml:space="preserve">
+    <value>Invoice file</value>
+  </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+    <value>Invoice number</value>
+  </data>
+  <data name="ValueDate" xml:space="preserve">
+    <value>Value Date</value>
+  </data>
 </root>

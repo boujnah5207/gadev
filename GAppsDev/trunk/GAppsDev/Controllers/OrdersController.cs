@@ -313,7 +313,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersApprover))
             {
                 Budgets_Allocations budgetAllocation;
-                decimal? totalUsedAllocation;
+                //decimal? totalUsedAllocation;
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (AllocationRepository allocationsRep = new AllocationRepository())
@@ -355,11 +355,24 @@ namespace GAppsDev.Controllers
 
                                     if (budgetAllocation != null)
                                     {
-                                        totalUsedAllocation = ordersRep.GetList()
-                                                .Where(o => o.BudgetAllocationId == orderFromDB.BudgetAllocationId && o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                                .Sum(x => x.Price);
+                                        List<Orders_OrderToAllocation> approvedAllocations = budgetAllocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
+                                        decimal orderPrice = orderFromDB.Price ?? 0;
 
-                                        if ((totalUsedAllocation ?? 0) + orderFromDB.Price > budgetAllocation.Amount)
+                                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && orderPrice > 0; monthNumber++)
+                                        {
+                                            var allocationMonth = budgetAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                                            if (remainingAmount.HasValue && remainingAmount.Value > 0)
+                                            {
+                                                decimal substractionAmount = remainingAmount.Value < orderPrice ? remainingAmount.Value : orderPrice;
+
+                                                orderPrice -= substractionAmount;
+                                            }
+                                        }
+
+                                        if (orderPrice > 0)
                                             return Error(Loc.Dic.error_order_insufficient_allocation);
                                     }
                                     else
@@ -471,7 +484,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadInvoiceFile(int id, HttpPostedFileBase file)
+        public ActionResult UploadInvoiceFile(int id, HttpPostedFileBase file, UploadInvoiceModel model)
         {
             if (Authorized(RoleType.SystemManager))
             {
@@ -494,6 +507,9 @@ namespace GAppsDev.Controllers
 
                                     order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
                                     order.LastStatusChangeDate = DateTime.Now;
+                                    order.InvoiceNumber = model.InvoiceNumber;
+                                    order.InvoiceDate = model.InvoiceDate;
+                                    order.ValueDate = model.ValueDate;
 
                                     ordersRep.Update(order);
 
@@ -794,17 +810,9 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
-                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId & x.IsActive);
-
-                    if (activeBudget == null)
-                        return Error(Loc.Dic.error_no_active_budget);
-
-                    bool isMonthlyBudget = activeBudget.IsMonthly;
-
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
@@ -828,44 +836,28 @@ namespace GAppsDev.Controllers
                         List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                         
                         decimal totalRemaining = 0;
-
-                        if (isMonthlyBudget)
+                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
                         {
-                            for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
-                            {
-                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-                                allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                                if (monthNumber <= DateTime.Now.Month)
-                                    totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-                            }
-
-                            allocation.Amount = totalRemaining;
-                        }
-                        else
-                        {
-                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == 1);
+                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
+                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
                             allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
-                            totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                            if (monthNumber <= DateTime.Now.Month)
+                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
 
-                        allocation.Amount = totalRemaining;
+                        //allocation.Amount = totalRemaining;
                     }
 
                     allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Amount) })
+                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
 
                     ViewBag.Allocations = allocations;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
-                    ViewBag.IsMonthlyBudget = isMonthlyBudget;
                 }
 
                 ViewBag.UserRoles = CurrentUser.Roles;
@@ -997,7 +989,7 @@ namespace GAppsDev.Controllers
                                 List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                                 decimal remainingOrderPrice = totalOrderPrice;
 
-                                for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
+                                for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
                                 {
                                     var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                                     decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
@@ -1190,7 +1182,7 @@ namespace GAppsDev.Controllers
                         List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                         decimal totalRemaining = 0;
 
-                        for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
+                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
                         {
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
@@ -1200,11 +1192,11 @@ namespace GAppsDev.Controllers
                                 totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
 
-                        allocation.Amount = totalRemaining;
+                        //allocation.Amount = totalRemaining;
                     }
 
                     allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Amount) })
+                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
                         .ToList();
@@ -1362,7 +1354,7 @@ namespace GAppsDev.Controllers
                                             List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
                                             decimal remainingOrderPrice = totalOrderPrice;
 
-                                            for (int monthNumber = 1; monthNumber <= 12 && remainingOrderPrice > 0; monthNumber++)
+                                            for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
                                             {
                                                 var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                                                 decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
