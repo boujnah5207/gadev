@@ -970,6 +970,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no active budget.
+        /// </summary>
+        public static string error_no_active_budget {
+            get {
+                return ResourceManager.GetString("error_no_active_budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_no_permission.
         /// </summary>
         public static string error_no_permission {

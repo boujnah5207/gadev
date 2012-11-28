@@ -795,9 +795,17 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
+                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId & x.IsActive);
+
+                    if (activeBudget == null)
+                        return Error(Loc.Dic.error_no_active_budget);
+
+                    bool isMonthlyBudget = activeBudget.IsMonthly;
+
                     ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
@@ -822,15 +830,29 @@ namespace GAppsDev.Controllers
                         
                         decimal totalRemaining = 0;
 
-                        for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
+                        if (isMonthlyBudget)
                         {
-                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                            for (int monthNumber = 1; monthNumber <= 12; monthNumber++)
+                            {
+                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+                                allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                if (monthNumber <= DateTime.Now.Month)
+                                    totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                            }
+
+                            allocation.Amount = totalRemaining;
+                        }
+                        else
+                        {
+                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == 1);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == 1).Select(d => (decimal?)d.Amount).Sum();
                             allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
-                            if (monthNumber <= DateTime.Now.Month)
-                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                            totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
                         }
 
                         allocation.Amount = totalRemaining;
@@ -844,6 +866,7 @@ namespace GAppsDev.Controllers
 
                     ViewBag.Allocations = allocations;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                    ViewBag.IsMonthlyBudget = isMonthlyBudget;
                 }
 
                 ViewBag.UserRoles = CurrentUser.Roles;

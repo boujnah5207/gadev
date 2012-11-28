@@ -933,4 +933,7 @@
   <data name="PendingInventory" xml:space="preserve">
     <value>Pending inventory insertion</value>
   </data>
+  <data name="error_no_active_budget" xml:space="preserve">
+    <value>There is no active budget</value>
+  </data>
 </root>
