@@ -853,7 +853,8 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="year">Initial value of the Year property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive)
+        /// <param name="isMonthly">Initial value of the IsMonthly property.</param>
+        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive, global::System.Boolean isMonthly)
         {
             Budget budget = new Budget();
             budget.Id = id;
@@ -861,6 +862,7 @@ namespace DB
             budget.CompanyId = companyId;
             budget.Year = year;
             budget.IsActive = isActive;
+            budget.IsMonthly = isMonthly;
             return budget;
         }
 
@@ -1014,6 +1016,30 @@ namespace DB
         private Nullable<global::System.Boolean> _ExternalBudget;
         partial void OnExternalBudgetChanging(Nullable<global::System.Boolean> value);
         partial void OnExternalBudgetChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsMonthly
+        {
+            get
+            {
+                return _IsMonthly;
+            }
+            set
+            {
+                OnIsMonthlyChanging(value);
+                ReportPropertyChanging("IsMonthly");
+                _IsMonthly = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsMonthly");
+                OnIsMonthlyChanged();
+            }
+        }
+        private global::System.Boolean _IsMonthly;
+        partial void OnIsMonthlyChanging(global::System.Boolean value);
+        partial void OnIsMonthlyChanged();
 
         #endregion
 

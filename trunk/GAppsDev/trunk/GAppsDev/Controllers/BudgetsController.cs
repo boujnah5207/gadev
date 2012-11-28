@@ -26,6 +26,9 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
             var budgets = db.Budgets.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(budgets.ToList());
         }
@@ -146,7 +149,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file, int? id, int? year, string budgetType)
         {
-            if (Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
 
             if (id.HasValue)

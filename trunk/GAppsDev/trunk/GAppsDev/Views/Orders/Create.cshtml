@@ -61,7 +61,7 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
-        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
+        if (ViewBag.IsMonthlyBudget && DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
         {
         @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
         <br />

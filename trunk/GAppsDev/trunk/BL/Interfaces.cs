@@ -124,8 +124,6 @@ namespace BL
                         break;
                     }
 
-
-
                     Budget budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
 
                     Budgets_Allocations newAllocation;
@@ -166,7 +164,7 @@ namespace BL
                 foreach (var item in tempAmountList)
                 {
                     string externalIdstring = item.Key.ToString();
-                    Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.ExternalId == externalIdstring);
+                    Budgets_Allocations allocationFromDb = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == externalIdstring);
                     toAddallocationMonth.AllocationId = allocationFromDb.Id;
                     toAddallocationMonth.MonthId = JANUARY;
                     toAddallocationMonth.Amount = item.Value;

@@ -930,4 +930,7 @@
   <data name="PendingInventory" xml:space="preserve">
     <value>הזמנות ממתינות להכנסה למלאי</value>
   </data>
+  <data name="error_no_active_budget" xml:space="preserve">
+    <value>לא נמצא תקציב פעיל</value>
+  </data>
 </root>
