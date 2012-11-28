@@ -12,8 +12,8 @@ namespace BL
     {
         public static string ImportSuppliers(Stream stream, int companyId)
         {
-            const int FIRST_COLOUMN = 0;
-            const int SECOND_COLOUMN = 1;
+            const int EXTERNALID = 0;
+            const int NAME = 1;
             List<Supplier> toAddSuppliers = new List<Supplier>();
             byte[] fileBytes = new byte[stream.Length];
             stream.Read(fileBytes, 0, Convert.ToInt32(stream.Length));
@@ -34,12 +34,12 @@ namespace BL
                     }
 
                     Supplier newSupplier;
-                    if (!(int.Parse(lineValues[FIRST_COLOUMN]) > 0))
+                    if (!(int.Parse(lineValues[EXTERNALID]) > 0))
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
-                    if (lineValues[SECOND_COLOUMN] == null)
+                    if (lineValues[NAME] == null)
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
@@ -49,8 +49,8 @@ namespace BL
                         newSupplier = new Supplier()
                         {
                             CompanyId = companyId,
-                            ExternalId = lineValues[FIRST_COLOUMN],
-                            Name = lineValues[SECOND_COLOUMN],
+                            ExternalId = lineValues[EXTERNALID],
+                            Name = lineValues[NAME],
                         };
                     }
                     catch
@@ -65,7 +65,7 @@ namespace BL
                     {
                         foreach (Supplier supplier in existingSuppliers)
                         {
-                            supplier.Name = lineValues[SECOND_COLOUMN];
+                            supplier.Name = lineValues[NAME];
                             suppliersRep.Update(supplier);
                         }
                     }
@@ -81,9 +81,9 @@ namespace BL
         }
         public static string ImportYearBudget(Stream stream, int companyId, int budgetId)
         {
-            const int FIRST_COLOUMN = 0;
-            const int SECOND_COLOUMN = 1;
-            const int THIRD_COLOUMN = 2;
+            const int EXTERNALID = 0;
+            const int NAME = 1;
+            const int AMOUNT = 2;
             const int JANUARY = 1;
 
             List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
@@ -108,17 +108,17 @@ namespace BL
                     {
                         lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
                     }
-                    if (!(int.Parse(lineValues[FIRST_COLOUMN]) > 0))
+                    if (!(int.Parse(lineValues[EXTERNALID]) > 0))
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
-                    if (lineValues[SECOND_COLOUMN] == null)
+                    if (lineValues[NAME] == null)
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
                     }
-                    if (!(decimal.Parse(lineValues[THIRD_COLOUMN]) >= 0))
+                    if (!(decimal.Parse(lineValues[AMOUNT]) >= 0))
                     {
                         errorType = Loc.Dic.error_invalid_form;
                         break;
@@ -133,8 +133,8 @@ namespace BL
                         {
                             CompanyId = companyId,
                             BudgetId = budget.Id,
-                            ExternalId = lineValues[FIRST_COLOUMN],
-                            Name = lineValues[SECOND_COLOUMN],
+                            ExternalId = lineValues[EXTERNALID],
+                            Name = lineValues[NAME],
                         };
                     }
                     catch
@@ -151,7 +151,7 @@ namespace BL
                         existingAllocation.Name = newAllocation.Name;
                         allocationRep.Update(existingAllocation);
                     }
-                    tempAmountList.Add(int.Parse(newAllocation.ExternalId), decimal.Parse(lineValues[THIRD_COLOUMN]));
+                    tempAmountList.Add(int.Parse(newAllocation.ExternalId), decimal.Parse(lineValues[AMOUNT]));
                 }
                 if (!allocationRep.AddList(toAddAllocations))
                 {

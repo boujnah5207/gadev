@@ -139,10 +139,11 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (!id.HasValue)
                 return View();
+
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
-            {
-                return View(budgetsRepository.GetEntity(id.Value).Year);
-            }
+                ViewBag.Year = budgetsRepository.GetEntity(id.Value).Year;
+
+            return View(id);
         }
 
         [OpenIdAuthorize]

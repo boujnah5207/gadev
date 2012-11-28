@@ -11,7 +11,7 @@
     <text>
     @if (Model.HasValue)
     {
-        <h2>@Loc.Dic.UpdateBudget @Model</h2>
+        <h2>@Loc.Dic.UpdateBudget @ViewBag.Year</h2>
         <input type="hidden" name="id" value="@Model" />
     }
     else
