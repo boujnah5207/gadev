@@ -171,6 +171,7 @@
     <Compile Include="Models\Order\CreateOrderModel.cs" />
     <Compile Include="Models\Order\OrderModel.cs" />
     <Compile Include="Models\Order\PrintOrderModel.cs" />
+    <Compile Include="Models\Order\UploadInvoiceModel.cs" />
     <Compile Include="Models\PermissionModels\PermissionAllocationsModel.cs" />
     <Compile Include="Models\Search\UsersSearchFormModel.cs" />
     <Compile Include="Models\Search\UsersSearchValuesModel.cs" />

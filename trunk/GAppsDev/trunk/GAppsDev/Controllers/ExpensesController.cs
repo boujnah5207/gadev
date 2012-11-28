@@ -308,7 +308,7 @@ namespace GAppsDev.Controllers
                                             {
                                                 allocatedToExpense = allocationsRep.GetList()
                                                     .Where(x => x.ExpenseId == expenseFromDB.Id)
-                                                    .Sum(allocation => (decimal?)allocation.Amount);
+                                                    .Sum(allocation => (decimal?)allocation.CompanyId); //.Sum(allocation => (decimal?)allocation.Amount);
                                             }
 
                                             if (allocatedToExpense.HasValue && allocatedToExpense > budgets_expenses.Amount)

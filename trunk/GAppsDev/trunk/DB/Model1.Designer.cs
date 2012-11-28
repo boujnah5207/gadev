@@ -853,8 +853,7 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="year">Initial value of the Year property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        /// <param name="isMonthly">Initial value of the IsMonthly property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive, global::System.Boolean isMonthly)
+        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive)
         {
             Budget budget = new Budget();
             budget.Id = id;
@@ -862,7 +861,6 @@ namespace DB
             budget.CompanyId = companyId;
             budget.Year = year;
             budget.IsActive = isActive;
-            budget.IsMonthly = isMonthly;
             return budget;
         }
 
@@ -1016,30 +1014,6 @@ namespace DB
         private Nullable<global::System.Boolean> _ExternalBudget;
         partial void OnExternalBudgetChanging(Nullable<global::System.Boolean> value);
         partial void OnExternalBudgetChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsMonthly
-        {
-            get
-            {
-                return _IsMonthly;
-            }
-            set
-            {
-                OnIsMonthlyChanging(value);
-                ReportPropertyChanging("IsMonthly");
-                _IsMonthly = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsMonthly");
-                OnIsMonthlyChanged();
-            }
-        }
-        private global::System.Boolean _IsMonthly;
-        partial void OnIsMonthlyChanging(global::System.Boolean value);
-        partial void OnIsMonthlyChanged();
 
         #endregion
 
@@ -1425,30 +1399,6 @@ namespace DB
         private Nullable<global::System.Int32> _ExpenseId;
         partial void OnExpenseIdChanging(Nullable<global::System.Int32> value);
         partial void OnExpenseIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> Amount
-        {
-            get
-            {
-                return _Amount;
-            }
-            set
-            {
-                OnAmountChanging(value);
-                ReportPropertyChanging("Amount");
-                _Amount = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Amount");
-                OnAmountChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _Amount;
-        partial void OnAmountChanging(Nullable<global::System.Decimal> value);
-        partial void OnAmountChanged();
 
         #endregion
 
@@ -6741,6 +6691,30 @@ namespace DB
         private Nullable<global::System.DateTime> _InvoiceDate;
         partial void OnInvoiceDateChanging(Nullable<global::System.DateTime> value);
         partial void OnInvoiceDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> ValueDate
+        {
+            get
+            {
+                return _ValueDate;
+            }
+            set
+            {
+                OnValueDateChanging(value);
+                ReportPropertyChanging("ValueDate");
+                _ValueDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ValueDate");
+                OnValueDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _ValueDate;
+        partial void OnValueDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnValueDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

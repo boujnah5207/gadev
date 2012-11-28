@@ -1,14 +1,54 @@
-﻿@{
+﻿@model GAppsDev.Models.UploadInvoiceModel
+
+@{
     ViewBag.Title = "UploadInvoiceFile";
     ViewBag.PageName = "Orders";
     ViewBag.noSubMenu = true;
 }
 
+<h2>@Loc.Dic.UploadInvoice</h2>
+<br />
+
 @using (Html.BeginForm("UploadInvoiceFile", "Orders", new { id = ViewBag.OrderID }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @Html.ValidationSummary(true)
+{
+    @Html.ValidationSummary(true)
     
-    <h2>@Loc.Dic.UploadInvoice</h2>
-    <input type="file" name="file" />
-    <input type="submit" value="OK" />
+    <div class="editor-label">
+        @Loc.Dic.InvoiceNumber
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.InvoiceNumber)
+        @Html.ValidationMessageFor(model => model.InvoiceNumber)
+    </div>
+    <br />
+    
+    <div class="editor-label">
+        @Loc.Dic.InvoiceDate (DD/MM/YYYY)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.InvoiceDate)
+        @Html.ValidationMessageFor(model => model.InvoiceDate)
+    </div>
+    <br />
+    
+    <div class="editor-label">
+        <span>@Loc.Dic.ValueDate (DD/MM/YYYY)</span>
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ValueDate)
+        @Html.ValidationMessageFor(model => model.ValueDate)
+    </div>
+    <br />
+    
+    <div class="editor-label">
+        @Loc.Dic.InvoiceFile
+    </div>
+    <div class="editor-field">
+        <input type="file" name="file" />
+    </div>
+    <br />
+    
+    <p>
+        <input type="submit" value="OK" />
+    </p>
 }

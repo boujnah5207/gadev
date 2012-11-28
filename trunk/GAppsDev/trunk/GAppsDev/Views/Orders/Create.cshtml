@@ -61,7 +61,7 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
-        if (ViewBag.IsMonthlyBudget && DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
+        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
         {
         @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
         <br />
@@ -71,8 +71,7 @@
             @Loc.Dic.Month: 
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
-                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
-                                                                                               {<text>style="display:none;"</text>}>
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
 
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {

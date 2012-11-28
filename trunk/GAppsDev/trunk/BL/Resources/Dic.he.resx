@@ -933,4 +933,16 @@
   <data name="error_no_active_budget" xml:space="preserve">
     <value>לא נמצא תקציב פעיל</value>
   </data>
+  <data name="InvoiceDate" xml:space="preserve">
+    <value>תאריך חשבונית</value>
+  </data>
+  <data name="InvoiceFile" xml:space="preserve">
+    <value>קובץ חשבונית</value>
+  </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+    <value>מספר חשבונית</value>
+  </data>
+  <data name="ValueDate" xml:space="preserve">
+    <value>תאריך ערך</value>
+  </data>
 </root>

@@ -196,16 +196,16 @@ namespace GAppsDev.Controllers
 
                                         allocatedToIncome = allocationsRep.GetList()
                                              .Where(x => x.IncomeId == income.Id)
-                                             .Sum(allocation => (decimal?)allocation.Amount);
+                                             .Sum(allocation => (decimal?)allocation.CompanyId);//.Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
+                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.CompanyId > income.Amount)//if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
                                             return Error(Loc.Dic.error_income_full_allocation);
 
                                         allocatedToExpense = allocationsRep.GetList()
                                             .Where(x => x.ExpenseId == expense.Id)
-                                            .Sum(allocation => (decimal?)allocation.Amount);
+                                            .Sum(allocation => (decimal?)allocation.CompanyId);//.Sum(allocation => (decimal?)allocation.Amount);
 
-                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
+                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.CompanyId > expense.Amount)//if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
                                             return Error(Loc.Dic.error_expenses_full_allocation);
 
                                         Budgets_Allocations.CompanyId = CurrentUser.CompanyId;
@@ -349,26 +349,26 @@ namespace GAppsDev.Controllers
                                             .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
                                             .Sum(x => (decimal?)x.Price);
 
-                                        if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
+                                        if ((totalUsed ?? 0) > Budgets_Allocations.CompanyId)//if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
                                             return Error(Loc.Dic.error_allocations_amount_is_used);
 
                                         allocatedToIncome = allocationsRep.GetList()
                                              .Where(x => x.IncomeId == income.Id && x.Id != Budgets_Allocations.Id)
-                                             .Sum(alloc => (decimal?)alloc.Amount);
+                                             .Sum(alloc => (decimal?)alloc.CompanyId);//.Sum(alloc => (decimal?)alloc.Amount);
 
-                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
+                                        if ((allocatedToIncome ?? 0) + Budgets_Allocations.CompanyId > income.Amount)//if ((allocatedToIncome ?? 0) + Budgets_Allocations.Amount > income.Amount)
                                             return Error(Loc.Dic.error_income_full_allocation);
 
                                         allocatedToExpense = allocationsRep.GetList()
                                             .Where(x => x.ExpenseId == expense.Id && x.Id != Budgets_Allocations.Id)
-                                            .Sum(alloc => (decimal?)alloc.Amount);
+                                            .Sum(alloc => (decimal?)alloc.CompanyId);//.Sum(alloc => (decimal?)alloc.Amount);
 
-                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
+                                        if ((allocatedToExpense ?? 0) + Budgets_Allocations.CompanyId > expense.Amount)//if ((allocatedToExpense ?? 0) + Budgets_Allocations.Amount > expense.Amount)
                                             return Error(Loc.Dic.error_expenses_full_allocation);
 
                                         allocation.IncomeId = Budgets_Allocations.IncomeId;
                                         allocation.ExpenseId = Budgets_Allocations.ExpenseId;
-                                        allocation.Amount = Budgets_Allocations.Amount;
+                                        allocation.CompanyId = Budgets_Allocations.CompanyId;//allocation.Amount = Budgets_Allocations.Amount;
 
                                         Budgets_Allocations update = allocationsRep.Update(allocation);
 
