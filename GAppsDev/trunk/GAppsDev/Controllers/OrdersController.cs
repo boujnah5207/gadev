@@ -229,10 +229,9 @@ namespace GAppsDev.Controllers
                         Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
 
                         if (order == DEFAULT_DESC_ORDER)
-                            orderFunction = x => orders.OrderBy(x);
-                        else
                             orderFunction = x => orders.OrderByDescending(x);
-
+                        else
+                            orderFunction = x => orders.OrderBy(x);
                         switch (sortby)
                         {
                             case "username":

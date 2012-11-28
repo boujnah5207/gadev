@@ -38,19 +38,22 @@
                     @Html.Partial("_LoginPartial")
                 </section>
                 <nav>
-                    <div id="mainMenu">
+                    <div id="mainMenu" style="text-align:center">
                         <ul>
                             <li id="OrdersPage">
+                                <img src="~/Content/images/GoldCoins.png" />
                                 @Html.ActionLink(Loc.Dic.Procurement, "Home", "Orders", null, new { id = "OrdersLink" })
                             </li>
                             <li>|</li>
                             <li id="InventoryPage">
+                                <img src="~/Content/images/filing_cabinet-g42.png" />
                                 @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory", null, new { id = "InventoryLink" })
                             </li>
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
                                 <li>|</li>
                                 <li id="CompaniesPage">
+                                    <img src="~/Content/images/50px-Tools_clipart.png"/>
                                     @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id = "ManagmentLink" })
                                 </li>
                             }

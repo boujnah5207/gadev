@@ -177,9 +177,6 @@ tr.oddRow
 
 #mainMenu ul li :hover {
     display:inline-block;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    border-radius: 13px;
     background-color:none;
 
 }

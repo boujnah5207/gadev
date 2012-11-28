@@ -268,9 +268,12 @@
     <Content Include="Content\images.small\yandex.ico" />
     <Content Include="Content\images.small\yandex.ico.gif" />
     <Content Include="Content\images.small\yandex.ico.png" />
+    <Content Include="Content\images\50px-Tools_clipart.png" />
     <Content Include="Content\images\ASC.png" />
     <Content Include="Content\images\CloudERP-Logo.png" />
     <Content Include="Content\images\DESC.png" />
+    <Content Include="Content\images\filing_cabinet-g42.png" />
+    <Content Include="Content\images\GoldCoins.png" />
     <Content Include="Content\images\openid-inputicon.gif" />
     <Content Include="Content\images\openid-providers-en.png" />
     <Content Include="Content\images\openid-providers-ru.png" />

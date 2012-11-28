@@ -13,6 +13,7 @@
                 </li>
                 @if (DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.InventoryManager))
                 {
+                <li>|</li>
                 <li>
                     @Html.ActionLink(Loc.Dic.PendingOrders, "PendingInventory", "Orders", null, new { id = "PendingInventory" })
                 </li>
