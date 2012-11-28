@@ -85,6 +85,9 @@ namespace BL
             const int NAME = 1;
             const int AMOUNT = 2;
             const int JANUARY = 1;
+            const int FEBRUARY = 2;
+            const int MONTHESINYEAR = 12;
+
 
             List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
             Dictionary<int, decimal> tempAmountList = new Dictionary<int, decimal>();
@@ -151,7 +154,7 @@ namespace BL
                     }
                     else
                     {
-                        Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId);
+                        Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId);
                         
                         existingAllocation.Name = newAllocation.Name;
                         allocationRep.Update(existingAllocation);
@@ -176,6 +179,14 @@ namespace BL
                         Budgets_AllocationToMonth existingAllocationMonth = allocationMonthRepository.GetList().Where(x => x.AllocationId == item.Key).SingleOrDefault(x => x.MonthId == JANUARY);
                         existingAllocationMonth.Amount = item.Value;
                         allocationMonthRepository.Update(existingAllocationMonth);
+                    }
+                    for (int i = FEBRUARY; i <= MONTHESINYEAR; i++)
+                    {
+                        Budgets_AllocationToMonth toAddZeroallocationMonth = new Budgets_AllocationToMonth();
+                        toAddZeroallocationMonth.AllocationId = item.Key;
+                        toAddZeroallocationMonth.MonthId = i;
+                        toAddZeroallocationMonth.Amount = 0;
+                        toAddAllocationMonthList.Add(toAddZeroallocationMonth);
                     }
                 }
                 allocationMonthRepository.AddList(toAddAllocationMonthList);
