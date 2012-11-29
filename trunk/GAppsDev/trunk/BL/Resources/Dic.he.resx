@@ -1002,4 +1002,7 @@
   <data name="Save" xml:space="preserve">
     <value>שמור</value>
   </data>
+  <data name="Allocation" xml:space="preserve">
+    <value>הקצאה</value>
+  </data>
 </root>

@@ -818,7 +818,7 @@ namespace GAppsDev.Controllers
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
                     List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
-
+                    
                     foreach (var permission in permissions)
                     {
                         allocations.AddRange(
