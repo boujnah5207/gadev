@@ -511,7 +511,7 @@ namespace GAppsDev.Controllers
                             userFromDatabase.LastName = user.LastName;
                             userFromDatabase.Email = user.Email;
                             userFromDatabase.Roles = (int)combinedRoles;
-                            userFromDatabase.OrdersApproverId = user.OrdersApproverId;
+                            userFromDatabase.OrdersApproverId = user.OrdersApproverId.Value == -1 ? null : user.OrdersApproverId;
 
                             User updatedUser = userRep.Update(userFromDatabase);
                             if (updatedUser != null)
