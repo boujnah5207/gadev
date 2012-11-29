@@ -165,15 +165,12 @@ namespace GAppsDev.Controllers
             {
                 List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
                 List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
-                SelectList departmentsList;
                 SelectList languagesList;
 
-                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (UsersRepository usersRep = new UsersRepository())
                 using (LanguagesRepository languagesRep = new LanguagesRepository())
                 {
                     usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
-                    departmentsList = new SelectList(departmentsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
                     languagesList = new SelectList(languagesRep.GetList().ToList(), "Id", "Name");
                 }
 
@@ -182,7 +179,6 @@ namespace GAppsDev.Controllers
 
                 ViewBag.RolesList = roleNames;
                 ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
-                ViewBag.DepartmentsList = departmentsList;
                 ViewBag.LanguagesList = languagesList;
 
                 return View();
