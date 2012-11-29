@@ -305,15 +305,21 @@ namespace GAppsDev.Controllers
                 if (model.UserPermissions == null)
                     return Error(Loc.Dic.error_permissions_get_error);
 
-
                 allPermissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-
-
                 if (allPermissions == null)
                     return Error(Loc.Dic.error_database_error);
 
+                List<Budgets_Baskets> allWithoutUserBasket = new List<Budgets_Baskets>();
+                foreach (Budgets_Baskets basket in allPermissions)
+                    allWithoutUserBasket.Add(basket);
+
+                foreach (UserPermission UserBasket in model.UserPermissions)
+                    foreach (Budgets_Baskets basket in allPermissions)
+                        if (UserBasket.Permission.Id == basket.Id)
+                            allWithoutUserBasket.Remove(basket);
+
                 model.UserId = user.Id;
-                model.PermissionsSelectList = new SelectList(allPermissions, "Id", "Name");
+                model.PermissionsSelectList = new SelectList(allWithoutUserBasket, "Id", "Name");
 
                 return View(model);
             }
