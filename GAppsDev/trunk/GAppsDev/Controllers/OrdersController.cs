@@ -1208,7 +1208,7 @@ namespace GAppsDev.Controllers
                     ViewBag.Allocations = allocations;
                     ViewBag.UserRoles = CurrentUser.Roles;
                     int selectedAllocation = model.Order.BudgetAllocationId.HasValue ? model.Order.BudgetAllocationId.Value : 0;
-                    ViewBag.BudgetAllocationList = new SelectList(allocationsSelectList, "Id", "Name", selectedAllocation);
+                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name", selectedAllocation);
                 }
 
                 if (model.Order.UserId == CurrentUser.UserId)
@@ -1274,7 +1274,7 @@ namespace GAppsDev.Controllers
                     {
                         if (orderFromDatabase.UserId == CurrentUser.UserId)
                         {
-                            if (orderFromDatabase.StatusId == (int)StatusType.Pending || orderFromDatabase.Id == (int)StatusType.PendingOrderCreator)
+                            if (orderFromDatabase.StatusId == (int)StatusType.Pending || orderFromDatabase.StatusId == (int)StatusType.PendingOrderCreator)
                             {
                                 itemsFromEditForm = ItemsFromString(itemsString, model.Order.Id);
                                 if (itemsFromEditForm != null)
@@ -2598,13 +2598,11 @@ namespace GAppsDev.Controllers
                 {
                     order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport;
                     order.LastStatusChangeDate = DateTime.Now;
-
                 }
                 if (selectedStatus == Loc.Dic.CancelOrder)
                 {
                     order.StatusId = (int)StatusType.OrderCancelled;
                     order.LastStatusChangeDate = DateTime.Now;
-
                 }
                 ordersRepository.Update(order);
             }
