@@ -5,6 +5,9 @@
     ViewBag.Title = Loc.Dic.CreateNewOrder;
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "MyOrders";
+    
+    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter);
+
 }
 
 @section ExtraScripts{
@@ -25,7 +28,7 @@
 <fieldset id="formContainer" style="display: none;">
     <legend>@Loc.Dic.OrderItems</legend>
 
-    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { style = "display:none;" }))
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { id="mainForm", style = "display:none;" }))
     {
         @Html.ValidationSummary(true)
 
@@ -61,14 +64,31 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
-        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
-        {
-        @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
-        <br />
-        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" }) 
         
-        <div id="FutureOrderContainer" style="display:none;">
-            @Loc.Dic.Month: 
+        <div id="OrderAllocationsContainer">
+        @if (hasFuturePermission)
+        {
+            @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
+            <br />
+        }
+        else
+        {
+            @Html.Hidden("IsFutureOrder", false, new { id = "isFutureOrder" })
+        }
+        <select id="allocationsSelectList" class="allocationsList" name="BudgetAllocationId">
+        @for (int i = 0; i < ViewBag.Allocations.Count; i++)
+        {
+            DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
+            decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= DateTime.Now.Month).Sum(x => x.Amount);
+            <option data-amount="@amount" value="@allocation.Id">@allocation.Name (@amount)</option>
+        }
+        </select>
+
+        @if (hasFuturePermission)
+        {
+            <span id="monthSelectContainer" style="display:none;">
+            @Loc.Dic.Month:
+            
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
                 <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
@@ -83,27 +103,44 @@
 
                 </select>
             }
-            @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
-            <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+            </span>
+        }
         
-            <fieldset>
+        @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
+        <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+
+        @if (hasFuturePermission)
+        {
+        <div id="FutureOrderContainer" style="display:none;">
+            <fieldset id="futureAllocationsFieldset">
                 <legend>@Loc.Dic.BudgetAllocations</legend>
 
-                <div id="orderAllocations">
+                <div id="futureAllocationsContainer">
                     <span>@Loc.Dic.NoAllocationsInOrder.</span>
                 </div>
             </fieldset>
             <br />
             <span>@Loc.Dic.TotalAllocation: </span>
-            <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+            <input class="display" type="text" id="totalFutureAllocation" value="0" disabled="disabled" />
         </div>
         }
-        else
-        {
-            @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationId, new { id = "allocationSelectList" })
-        }
+
+        <div id="NormalOrderContainer">
+            <fieldset id="normalAllocationsFieldset">
+                <legend>@Loc.Dic.BudgetAllocations</legend>
+        
+                <div id="normalAllocationsContainer">
+                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                </div>
+            </fieldset>
+            <br />
+            <span>@Loc.Dic.TotalAllocation: </span> <input class="display" type="text" id="totalNormalAllocation" value="0" disabled="disabled" />
+        </div>
+        
+        </div>
         <br />
         <br />
+        
         <div class="editor-label">
             @Loc.Dic.Notes:
         </div>
@@ -115,7 +152,7 @@
         <p>
             <input type="submit" value="@Loc.Dic.Submit" />
         </p>
-    }
+        }
 </fieldset>
 
 <div>

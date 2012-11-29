@@ -214,6 +214,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allocation.
+        /// </summary>
+        public static string Allocation {
+            get {
+                return ResourceManager.GetString("Allocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allocations.
         /// </summary>
         public static string Allocations {
