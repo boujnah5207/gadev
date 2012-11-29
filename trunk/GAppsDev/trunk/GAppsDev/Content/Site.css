@@ -186,7 +186,6 @@ tr.oddRow
     margin: 0;
 }
 #mainMenu ul li a {
-    display:inline-block;
     -webkit-border-radius: 13px;
     -moz-border-radius: 13px;
     border-radius: 13px;
@@ -201,6 +200,7 @@ tr.oddRow
 }
 #mainMenu ul li a:hover {
     background-color:none;
+    display:block;
 }
 #mainMenu li:hover ul {
     display: block;
