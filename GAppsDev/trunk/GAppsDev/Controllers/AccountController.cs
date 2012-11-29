@@ -37,11 +37,13 @@ namespace GAppsDev.Controllers
                 }
                 else if (result.IsCanceled)
                 {
-                    return View("Error_NoLayout", Loc.Dic.error_user_was_canceled);
+                    ViewBag.ErrorMessage = Loc.Dic.error_user_was_canceled;
+                    return View("Error_NoLayout");
                 }
                 else
                 {
-                    return View("Error_NoLayout", Loc.Dic.error_user_not_registerd);
+                    ViewBag.ErrorMessage = Loc.Dic.error_user_not_registerd;
+                    return View("Error_NoLayout");
                 }
             }
 
