@@ -13,7 +13,7 @@
     <legend>תקציב שנתי</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Year)
+         @Loc.Dic.Year
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Year)
@@ -22,7 +22,7 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="הפעל תקציב" /> |
-        @Html.ActionLink("חזור", "Index")
+        <input type="submit" value="@Loc.Dic.Activate" /> |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }

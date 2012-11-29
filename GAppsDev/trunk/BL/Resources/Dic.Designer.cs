@@ -133,6 +133,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Supplier.
         /// </summary>
         public static string AddSupplier {
@@ -1681,6 +1690,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Out Of Inventory.
+        /// </summary>
+        public static string IsOutOfInventory {
+            get {
+                return ResourceManager.GetString("IsOutOfInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
         public static string Item {
@@ -1812,6 +1830,15 @@ namespace Loc {
         public static string Location {
             get {
                 return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locations.
+        /// </summary>
+        public static string Locations {
+            get {
+                return ResourceManager.GetString("Locations", resourceCulture);
             }
         }
         
@@ -2257,6 +2284,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Related Inventory Item.
+        /// </summary>
+        public static string RelatedInventoryItem {
+            get {
+                return ResourceManager.GetString("RelatedInventoryItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace.
         /// </summary>
         public static string Replace {
@@ -2352,6 +2388,15 @@ namespace Loc {
         public static string September {
             get {
                 return ResourceManager.GetString("September", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        public static string SerialNumber {
+            get {
+                return ResourceManager.GetString("SerialNumber", resourceCulture);
             }
         }
         
@@ -2622,6 +2667,24 @@ namespace Loc {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrenty Period End.
+        /// </summary>
+        public static string WarrentyPeriodEnd {
+            get {
+                return ResourceManager.GetString("WarrentyPeriodEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrenty Period Start.
+        /// </summary>
+        public static string WarrentyPeriodStart {
+            get {
+                return ResourceManager.GetString("WarrentyPeriodStart", resourceCulture);
             }
         }
         

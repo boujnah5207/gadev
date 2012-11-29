@@ -978,4 +978,28 @@
   <data name="User" xml:space="preserve">
     <value>משתמש</value>
   </data>
+  <data name="IsOutOfInventory" xml:space="preserve">
+    <value>יצא מהמלאי</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>מיקומים</value>
+  </data>
+  <data name="RelatedInventoryItem" xml:space="preserve">
+    <value>פריט מיוחס</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>מספר סידורי</value>
+  </data>
+  <data name="WarrentyPeriodEnd" xml:space="preserve">
+    <value>תאריך סיום אחריות</value>
+  </data>
+  <data name="WarrentyPeriodStart" xml:space="preserve">
+    <value>תאריך תחילת אחריות</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>כתובת</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>שמור</value>
+  </data>
 </root>

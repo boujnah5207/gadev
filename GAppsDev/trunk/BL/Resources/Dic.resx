@@ -981,4 +981,25 @@
   <data name="User" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="IsOutOfInventory" xml:space="preserve">
+    <value>Is Out Of Inventory</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="RelatedInventoryItem" xml:space="preserve">
+    <value>Related Inventory Item</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="WarrentyPeriodEnd" xml:space="preserve">
+    <value>Warrenty Period End</value>
+  </data>
+  <data name="WarrentyPeriodStart" xml:space="preserve">
+    <value>Warrenty Period Start</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
 </root>

@@ -1,56 +1,44 @@
 ﻿@model DB.Location
 
 @{
-    ViewBag.Title = "Delete";
-    ViewBag.PageName = "Orders";
-    ViewBag.SubPageName = "";
+    ViewBag.Title = Loc.Dic.Delete;
+    ViewBag.PageName = "Inventory";
+    ViewBag.SubPageName = "Locations";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>@Loc.Dic.Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Loc.Dic.DeleteAlertMessege</h3>
 <fieldset>
-    <legend>Location</legend>
+    <legend>@Loc.Dic.Location</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Company.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.City)
+        @Loc.Dic.City
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.City)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Address)
+        @Loc.Dic.Address
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Address)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
+        @Loc.Dic.Name
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="@Loc.Dic.Delete" />
+        |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }
