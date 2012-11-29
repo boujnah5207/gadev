@@ -103,7 +103,7 @@ namespace Mvc4.OpenId.Sample.Security
                             User newUser = new User()
                             {
                                 CompanyId = pendingUser.CompanyId,
-                                DepartmentId = pendingUser.DepartmentId,
+                                DepartmentId = null,
                                 Email = logInResult.User.Email,
                                 FirstName = logInResult.User.FirstName,
                                 LastName = logInResult.User.LastName,
