@@ -35,13 +35,23 @@ $(function () {
     itemFinalPrice = $("#itemFinalPrice");
     totalOrderPriceField = $("#totalOrderPrice");
 
-    $("#allocationSelectList").change(function () {
+    $("#allocationsSelectList").change(function () {
         $(".allocationMonthList").css("display", "none");
         $("#allocation-" + $(this).val()).css("display", "inline-block");
     });
 
     $("#isFutureOrder").change(function () {
         $("#FutureOrderContainer").toggle();
+        $("#monthSelectContainer").toggle();
+        $("#NormalOrderContainer").toggle();
+    });
+
+    $('#mainForm').submit(function () {
+        var isFutureOrder = $("#isFutureOrder").is(':checked');
+        if (isFutureOrder)
+            $("#NormalOrderContainer").remove();
+        else
+            $("#FutureOrderContainer").remove();
     });
 });
 
@@ -100,6 +110,7 @@ function beginForm(existingItems) {
 
     itemPriceField.keyup(updateItemFinalPrice);
     itemQuantityField.keyup(updateItemFinalPrice);
+    updateTotalAllocation();
 }
 
 function addOrderItem() {
@@ -297,61 +308,109 @@ function isInt(value) {
 
 
 function addAllocation() {
-    var allocationId = $("#allocationSelectList").val();
+
+    var allocationId = $("#allocationsSelectList option:selected").val();
     var monthId = $("#allocation-" + allocationId + " option:selected").val();
     var monthName = $("#allocation-" + allocationId + " option:selected").text();
     var wantedAmount = $("#allocationAmount").val();
-    var remainingAmount = $("#allocation-" + allocationId + " option:selected").data("amount");
-    var allocationText = $("#allocationSelectList option:selected").text();
-    var container = $("#orderAllocations");
+    var remainingMonthAmount = $("#allocation-" + allocationId + " option:selected").data("amount");
+    var remainingAllocationAmount = $("#allocationsSelectList option:selected").data("amount");
+    var allocationText = $("#allocationsSelectList option:selected").text();
+    var allocationExists = false;
+    var existingAllocation;
+    var existingRemovedAllocation;
+    var divClass;
+    var monthText;
 
-    if (!isInt(wantedAmount) || wantedAmount <= 0) {
+    if (!isInt(wantedAmount) && wantedAmount <= 0) {
         alert(local.InvalidAmount);
         return;
     }
-    if (wantedAmount > remainingAmount) {
-        alert(local.AmountExceedsAllocation);
-        return;
+
+    var isFutureOrder = $("#isFutureOrder").is(':checked');
+    console.log(isFutureOrder);
+
+    var container;
+    var existingAllocations;
+    if (isFutureOrder) {
+        container = $("#futureAllocationsContainer");
+        existingAllocations = $(".existingFutureAllocations");
+
+        if (wantedAmount > remainingMonthAmount) {
+            alert(local.AmountExceedsAllocation);
+            return;
+        }
+
+        for (var i = 0; i < existingAllocations.length; i++) {
+            if ($(existingAllocations[i]).find(".allocationIdField").val() == allocationId && $(existingAllocations[i]).find(".monthIdField").val() == monthId) {
+                allocationExists = true;
+                existingAllocation = $(existingAllocations[i]);
+            }
+        }
+
+        divClass = "existingFutureAllocations";
+        divId = "futureAllocation";
+        monthText = "<span class='bold'>" + local.Month + ":</span> " + monthName + " ";
+    }
+    else {
+        container = $("#normalAllocationsContainer");
+        existingAllocations = $(".existingNormalAllocations");
+        console.log(existingAllocations);
+
+        if (wantedAmount > remainingAllocationAmount) {
+            alert(local.AmountExceedsAllocation);
+            return;
+        }
+
+        for (var i = 0; i < existingAllocations.length; i++) {
+            if ($(existingAllocations[i]).find(".allocationIdField").val() == allocationId) {
+                allocationExists = true;
+                existingAllocation = $(existingAllocations[i]);
+            }
+        }
+
+        monthId = '';
+        divClass = "existingNormalAllocations";
+        divId = "normalAllocation";
+        monthText = "";
     }
 
-    var existingAllocations = $(".existingAllocations");
     var nextNumber = existingAllocations.length;
 
     if (nextNumber == 0)
-        $("#orderAllocations").html("");
+        container.html("");
 
-    var allocationExists = false;
-    var existingAllocation;
+    existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
+    console.log("removedAllocations: ");
+    console.log(removedAllocations);
+    console.log("allocationId: " + allocationId);
+    console.log("monthId: " + monthId);
+    console.log("existingRemovedAllocation: ");
+    console.log(existingRemovedAllocation);
 
-    for (var i = 0; i < existingAllocations.length; i++) {
-        if ($(existingAllocations[i]).find(".allocationIdField").val() == allocationId && $(existingAllocations[i]).find(".monthIdField").val() == monthId) {
-            allocationExists = true;
-            existingAllocation = $(existingAllocations[i]);
-        }
-    }
-
-    var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
     if (existingRemovedAllocation == null) {
         if (!allocationExists) {
             var newAllocation = $(
-                "<div id='allocation-" + nextNumber + "' class='existingAllocations'>" +
-                    "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='Allocations[" + nextNumber + "].IsActive' value='true' />" +
-                    "<input type='hidden' class='allocationIdField' id='allocationIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].AllocationId' value='" + allocationId + "' />" +
-                    "<input type='hidden' class='monthIdField' id='monthIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].MonthId' value='" + monthId + "' />" +
-                    "<input type='hidden' class='amountField' id='amountField-" + nextNumber + "' name='Allocations[" + nextNumber + "].Amount' value='" + wantedAmount + "' />" +
-                    "<span class='allocationText'> Allocation: " + allocationText + " Month: " + monthName + " Amount: <span class='amountText'>" + wantedAmount + "</span></span>" +
-                    "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(" + nextNumber + ") '/>" +
+                "<div id='" + divId + "-" + nextNumber + "' class='" + divClass + "'>" +
+                    "<input type='hidden' class='isActiveField' id='" + divId + "-isActiveField-" + nextNumber + "' name='Allocations[" + nextNumber + "].IsActive' value='true' />" +
+                    "<input type='hidden' class='allocationIdField' id='" + divId + "-allocationIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].AllocationId' value='" + allocationId + "' />" +
+                    "<input type='hidden' class='monthIdField' id='" + divId + "-monthIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].MonthId' value='" + monthId + "' />" +
+                    "<input type='hidden' class='amountField' id='" + divId + "-amountField-" + nextNumber + "' name='Allocations[" + nextNumber + "].Amount' value='" + wantedAmount + "' />" +
+                    "<span class='allocationText'> <span class='bold'>" + local.Allocation + ": </span>" + allocationText + " " + monthText + "<span class='bold'>" + local.Amount + ":</span> <span class='amountText'>" + wantedAmount + "</span></span>" +
+                    "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(\"" + divId + "\", " + nextNumber + ") '/>" +
                 "</div>"
                 );
 
             container.append(newAllocation);
         }
         else {
+            console.log("editExisting");
             existingAllocation.find(".amountField").val(wantedAmount);
             existingAllocation.find(".amountText").html(wantedAmount);
         }
     }
     else {
+        console.log("unRemove");
         unRemove(allocationId, monthId);
         existingAllocation.find(".amountField").val(wantedAmount);
         existingAllocation.find(".amountText").html(wantedAmount);
@@ -361,12 +420,12 @@ function addAllocation() {
     $("#allocationAmount").val("");
 }
 
-function removeAllocation(allocationIndex) {
-    var container = $("#allocation-" + allocationIndex);
-    var isActiveField = $("#isActiveField-" + allocationIndex);
+function removeAllocation(divId, allocationIndex) {
+    var container = $("#" + divId + "-" + allocationIndex);
+    var isActiveField = $("#" + divId + "-isActiveField-" + allocationIndex);
     var isActive = isActiveField.val();
-    var allocationId = $("#allocationIdField-" + allocationIndex).val();
-    var monthId = $("#monthIdField-" + allocationIndex).val();
+    var allocationId = $("#" + divId + "-allocationIdField-" + allocationIndex).val();
+    var monthId = $("#" + divId + "-monthIdField-" + allocationIndex).val();
     isActiveField.val("false");
 
     var existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
@@ -412,13 +471,21 @@ function getRemovedAllocation(allocationId, monthId) {
 }
 
 function updateTotalAllocation() {
-    var existingAllocations = $(".existingAllocations");
-    var totalAllocation = 0;
+    var existingFutureAllocations = $(".existingFutureAllocations");
+    var existingNormalAllocations = $(".existingNormalAllocations");
+    var totalFutureAllocation = 0;
+    var totalNormalAllocation = 0;
 
-    for (var i = 0; i < existingAllocations.length; i++) {
-        if ($(existingAllocations[i]).find(".isActiveField").val() == "true")
-            totalAllocation += parseInt($(existingAllocations[i]).find(".amountField").val());
+    for (var i = 0; i < existingFutureAllocations.length; i++) {
+        if ($(existingFutureAllocations[i]).find(".isActiveField").val() == "true")
+            totalFutureAllocation += parseInt($(existingFutureAllocations[i]).find(".amountField").val());
     }
 
-    $("#totalAllocation").val(totalAllocation);
+    for (var i = 0; i < existingNormalAllocations.length; i++) {
+        if ($(existingNormalAllocations[i]).find(".isActiveField").val() == "true")
+            totalNormalAllocation += parseInt($(existingNormalAllocations[i]).find(".amountField").val());
+    }
+
+    $("#totalNormalAllocation").val(totalNormalAllocation);
+    $("#totalFutureAllocation").val(totalFutureAllocation);
 }

@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "AllOrders";
+
+    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter);
 }
 
 @section ExtraScripts{
@@ -52,44 +54,70 @@
         <span>@Loc.Dic.TotalPrice: </span><input class="display" type="text" id="totalOrderPrice" disabled="disabled"/>
         <br />
         <br />
-        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter))
-        {
-        @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
-        <br />
-        @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", (SelectList)ViewBag.BudgetAllocationList, new { id = "allocationSelectList" }) 
         
-        <div id="FutureOrderContainer" @if(!Model.IsFutureOrder){<text>style="display:none;"</text>}>
-            @Loc.Dic.Month: 
+        <div id="OrderAllocationsContainer">
+        @if (hasFuturePermission)
+        {
+            @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
+            <br />
+        }
+        else
+        {
+            @Html.Hidden("IsFutureOrder", false, new { id = "isFutureOrder" })
+        }
+        <select id="allocationsSelectList" class="allocationsList" name="BudgetAllocationId">
+        @for (int i = 0; i < ViewBag.Allocations.Count; i++)
+        {
+            DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
+            decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= DateTime.Now.Month).Sum(x => x.Amount);
+            <option data-amount="@amount" value="@allocation.Id">@allocation.Name (@amount)</option>
+        }
+        </select>
+
+        @if (hasFuturePermission)
+        {
+            <span id="monthSelectContainer" style="display:none;">
+            @Loc.Dic.Month:
+            
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
-                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
+                                                                                               {<text>style="display:none;"</text>}>
 
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {
                         DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
-                        <option data-amount="@monthAllocation.Amount" value="@month">@Html.GetMonthName(month) (@monthAllocation.Amount)</option>
+                        decimal amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        
+                        <option data-amount="@amount" value="@month">@Html.GetMonthName(month) (@amount)</option>
                     }
 
                 </select>
             }
-            @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
-            <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+            </span>
+        }
         
-            <fieldset>
+        @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
+        <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+
+        @if (hasFuturePermission)
+        {
+        <div id="FutureOrderContainer" style="display:none;">
+            <fieldset id="futureAllocationsFieldset">
                 <legend>@Loc.Dic.BudgetAllocations</legend>
 
-                <div id="orderAllocations">
-                    @if(Model.IsFutureOrder && Model.Allocations.Count > 0)
+                <div id="futureAllocationsContainer">
+                    @if (Model.IsFutureOrder && Model.Allocations.Count > 0)
                     {
                         for (int i = 0; i < Model.Allocations.Count; i++)
-			            {
-                        <div id='allocation-@i' class='existingAllocations'>
-                        <input type='hidden' class='isActiveField' id='isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
-                        <input type='hidden' class='allocationIdField' id='allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
-                        <input type='hidden' class='monthIdField' id='monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
-                        <input type='hidden' class='amountField' id='amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
-                        <span class='allocationText'> Allocation: @Model.Allocations[i].Name Month: @Html.GetMonthName(Model.Allocations[i].MonthId) Amount: <span class='amountText'> @Model.Allocations[i].Amount </span></span>
-                        <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation(@i)' />
+                        {
+                        <div id='futureAllocation-@i' class='existingFutureAllocations'>
+                        <input type='hidden' class='isActiveField' id='futureAllocation-isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
+                        <input type='hidden' class='allocationIdField' id='futureAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
+                        <input type='hidden' class='monthIdField' id='futureAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
+                        <input type='hidden' class='amountField' id='futureAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("futureAllocation", @i)' />
                         </div>
                         }
                     }
@@ -101,13 +129,40 @@
             </fieldset>
             <br />
             <span>@Loc.Dic.TotalAllocation: </span>
-            <input class="display" type="text" id="totalAllocation" value="0" disabled="disabled" />
+            <input class="display" type="text" id="totalFutureAllocation" value="0" disabled="disabled" />
         </div>
         }
-        else
-        {
-            @Loc.Dic.BudgetAllocation<text>:</text> @Html.DropDownList("BudgetAllocationId", null, new { id = "allocationSelectList" })
-        }
+
+        <div id="NormalOrderContainer">
+            <fieldset id="normalAllocationsFieldset">
+                <legend>@Loc.Dic.BudgetAllocations</legend>
+        
+                <div id="normalAllocationsContainer">
+                    @if (!Model.IsFutureOrder && Model.Allocations.Count > 0)
+                    {
+                        for (int i = 0; i < Model.Allocations.Count; i++)
+                        {
+                        <div id='normalAllocation-@i' class='existingNormalAllocations'>
+                        <input type='hidden' class='isActiveField' id='normalAllocation-isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
+                        <input type='hidden' class='allocationIdField' id='normalAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
+                        <input type='hidden' class='monthIdField' id='normalAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
+                        <input type='hidden' class='amountField' id='normalAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("normalAllocation", @i)' />
+                        </div>
+                        }
+                    }
+                    else
+                    {
+                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                    }
+                </div>
+            </fieldset>
+            <br />
+            <span>@Loc.Dic.TotalAllocation: </span> <input class="display" type="text" id="totalNormalAllocation" value="0" disabled="disabled" />
+        </div>
+        
+        </div>
         <br />
         <br />
         

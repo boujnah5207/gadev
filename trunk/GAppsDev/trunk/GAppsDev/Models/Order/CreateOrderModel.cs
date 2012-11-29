@@ -27,7 +27,7 @@ namespace GAppsDev.Models
         public bool IsActive { get; set; }
         public string Name { get; set; }
         public int AllocationId { get; set; }
-        public int MonthId { get; set; }
+        public int? MonthId { get; set; }
         public decimal Amount { get; set; }
     }
 }
