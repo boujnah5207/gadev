@@ -8,16 +8,20 @@
 <nav>
     <div id="mainMenu">
         <ul>
-                <li>
-                    @Html.ActionLink(Loc.Dic.InventoryList, "index", "Inventory", null, new { id = "AllInventory" })
-                </li>
-                @if (DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.InventoryManager))
-                {
+            <li>
+                @Html.ActionLink(Loc.Dic.InventoryList, "index", "Inventory", null, new { id = "AllInventory" })
+            </li>
+            @if (DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.InventoryManager))
+            {
                 <li>|</li>
                 <li>
                     @Html.ActionLink(Loc.Dic.PendingOrders, "PendingInventory", "Orders", null, new { id = "PendingInventory" })
                 </li>
-                }
+                <li>|</li>
+                <li>
+                    @Html.ActionLink(Loc.Dic.Locations, "Index", "Locations", null, new { id = "Locations" })
+                </li>
+            }
         </ul>
     </div>
 </nav>

@@ -285,51 +285,37 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult EditPermissions(int id = 0)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                UserPermissionsModel model = new UserPermissionsModel();
-                User user;
-                List<Budgets_Baskets> allPermissions;
-
-                using (UsersRepository usersRep = new UsersRepository())
-                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-                {
-                    user = usersRep.GetEntity(id);
-
-                    if (user != null)
-                    {
-                        model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).ToList();
-
-                        if (model.UserPermissions != null)
-                        {
-                            allPermissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-
-                            if (allPermissions != null)
-                            {
-                                model.UserId = user.Id;
-                                model.PermissionsSelectList = new SelectList(allPermissions, "Id", "Name");
-
-                                return View(model);
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_database_error);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_permissions_get_error);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_users_get_error);
-                    }
-                }
-            }
-            else
-            {
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
+
+            UserPermissionsModel model = new UserPermissionsModel();
+            User user;
+            List<Budgets_Baskets> allPermissions;
+
+            using (UsersRepository usersRep = new UsersRepository())
+            using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+            {
+                user = usersRep.GetEntity(id);
+
+                if (user == null)
+                    return Error(Loc.Dic.error_users_get_error);
+
+                model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).ToList();
+
+                if (model.UserPermissions == null)
+                    return Error(Loc.Dic.error_permissions_get_error);
+
+
+                allPermissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+
+
+                if (allPermissions == null)
+                    return Error(Loc.Dic.error_database_error);
+
+                model.UserId = user.Id;
+                model.PermissionsSelectList = new SelectList(allPermissions, "Id", "Name");
+
+                return View(model);
             }
         }
 

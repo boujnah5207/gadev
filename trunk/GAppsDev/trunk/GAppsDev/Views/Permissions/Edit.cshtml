@@ -1,23 +1,23 @@
 ﻿@model DB.Budgets_Baskets
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = Loc.Dic.Edit;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "Permissions";
 }
 
-<h2>Edit</h2>
+<h2>@Loc.Dic.Edit</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Budgets_Baskets</legend>
+        <legend>@Loc.Dic.BudgetBasket</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Loc.Dic.Name
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
@@ -25,13 +25,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value=@Loc.Dic.Save />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {

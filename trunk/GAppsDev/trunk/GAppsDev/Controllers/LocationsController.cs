@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DB;
+using Mvc4.OpenId.Sample.Security;
+using DA;
 
 namespace GAppsDev.Controllers
 {
@@ -16,6 +18,7 @@ namespace GAppsDev.Controllers
         //
         // GET: /Locations/
 
+        [OpenIdAuthorize]
         public ActionResult Index()
         {
             var locations = db.Locations.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
@@ -24,6 +27,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Locations/Details/5
+        [OpenIdAuthorize]
 
         public ActionResult Details(int id = 0)
         {
@@ -37,6 +41,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Locations/Create
+        [OpenIdAuthorize]
 
         public ActionResult Create()
         {
@@ -46,14 +51,18 @@ namespace GAppsDev.Controllers
 
         //
         // POST: /Locations/Create
-
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Create(Location location)
         {
+            
             if (ModelState.IsValid)
             {
-                db.Locations.AddObject(location);
-                db.SaveChanges();
+                location.CompanyId = CurrentUser.CompanyId;
+                using (LocationsRepository locationsRepository = new LocationsRepository())
+                {
+                    locationsRepository.Create(location);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -63,7 +72,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Locations/Edit/5
-
+        [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
             Location location = db.Locations.Single(l => l.Id == id);
@@ -77,7 +86,7 @@ namespace GAppsDev.Controllers
 
         //
         // POST: /Locations/Edit/5
-
+        [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(Location location)
         {
@@ -94,7 +103,7 @@ namespace GAppsDev.Controllers
 
         //
         // GET: /Locations/Delete/5
-
+        [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
             Location location = db.Locations.Single(l => l.Id == id);
@@ -107,7 +116,7 @@ namespace GAppsDev.Controllers
 
         //
         // POST: /Locations/Delete/5
-
+        [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
