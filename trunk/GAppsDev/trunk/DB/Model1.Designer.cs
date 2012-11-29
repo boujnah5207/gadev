@@ -7651,9 +7651,8 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="email">Initial value of the Email property.</param>
         /// <param name="roles">Initial value of the Roles property.</param>
-        /// <param name="departmentId">Initial value of the DepartmentId property.</param>
         /// <param name="languageId">Initial value of the LanguageId property.</param>
-        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles, global::System.Int32 departmentId, global::System.Int32 languageId)
+        public static PendingUser CreatePendingUser(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String email, global::System.Int32 roles, global::System.Int32 languageId)
         {
             PendingUser pendingUser = new PendingUser();
             pendingUser.Id = id;
@@ -7661,7 +7660,6 @@ namespace DB
             pendingUser.CompanyId = companyId;
             pendingUser.Email = email;
             pendingUser.Roles = roles;
-            pendingUser.DepartmentId = departmentId;
             pendingUser.LanguageId = languageId;
             return pendingUser;
         }
@@ -7816,30 +7814,6 @@ namespace DB
         private Nullable<global::System.Int32> _OrdersApproverId;
         partial void OnOrdersApproverIdChanging(Nullable<global::System.Int32> value);
         partial void OnOrdersApproverIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 DepartmentId
-        {
-            get
-            {
-                return _DepartmentId;
-            }
-            set
-            {
-                OnDepartmentIdChanging(value);
-                ReportPropertyChanging("DepartmentId");
-                _DepartmentId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DepartmentId");
-                OnDepartmentIdChanged();
-            }
-        }
-        private global::System.Int32 _DepartmentId;
-        partial void OnDepartmentIdChanging(global::System.Int32 value);
-        partial void OnDepartmentIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
