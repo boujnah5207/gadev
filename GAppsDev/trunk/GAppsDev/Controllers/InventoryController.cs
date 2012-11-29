@@ -65,7 +65,7 @@ namespace GAppsDev.Controllers
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
             ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId");
             ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title");
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "City");
+            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name");
             return View();
         }
 
@@ -86,7 +86,7 @@ namespace GAppsDev.Controllers
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", inventory.CompanyId);
             ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId", inventory.RelatedInventoryItem);
             ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", inventory.ItemId);
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "City", inventory.LocationId);
+            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventory.LocationId);
             return View(inventory);
         }
 
