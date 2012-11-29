@@ -51,7 +51,6 @@
     <Compile Include="BudgetsUsersToPermissionsRepository.cs" />
     <Compile Include="CompaniesRepository.cs" />
     <Compile Include="CookiesRepository.cs" />
-    <Compile Include="DepartmentsRepository.cs" />
     <Compile Include="ExpensesToIncomeRepository.cs" />
     <Compile Include="IncomeTypesRepository.cs" />
     <Compile Include="InstitutionsRepository.cs" />

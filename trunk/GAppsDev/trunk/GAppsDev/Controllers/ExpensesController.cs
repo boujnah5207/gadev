@@ -71,7 +71,6 @@ namespace GAppsDev.Controllers
             {
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
-                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                 {
@@ -80,11 +79,6 @@ namespace GAppsDev.Controllers
                         .Select(a => new { Id = a.Id, Name = a.Year })
                         .AsEnumerable()
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                        .ToList();
-
-                    List<SelectListItemDB> departmentsList = departmentsRep.GetList()
-                        .Where(department => department.CompanyId == CurrentUser.CompanyId)
-                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
                     List<SelectListItemDB> projectsList = projectsRep.GetList()
@@ -98,7 +92,6 @@ namespace GAppsDev.Controllers
                        .ToList();
 
                     ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
-                    ViewBag.DepartmentId = new SelectList(departmentsList, "Id", "Name");
                     ViewBag.ParentProjectId = new SelectList(projectsList, "Id", "Name");
                     ViewBag.SubProjectId = new SelectList(subProjectsList, "Id", "Name");
                 }
@@ -123,24 +116,21 @@ namespace GAppsDev.Controllers
                 if (ModelState.IsValid)
                 {
                     Budget budget;
-                    Department department;
                     Projects_ParentProject project;
                     Projects_SubProject subProject;
 
                     using (BudgetsRepository budgetRep = new BudgetsRepository())
-                    using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                     using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                     using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                     {
                         budget = budgetRep.GetEntity(budgets_expenses.BudgetId);
-                        department = departmentsRep.GetEntity(budgets_expenses.DepartmentId);
                         project = projectsRep.GetEntity(budgets_expenses.ParentProjectId);
                         subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId);
                     }
 
-                    if (budget != null && department != null && project != null && subProject != null)
+                    if (budget != null && project != null && subProject != null)
                     {
-                        if (budget.CompanyId == CurrentUser.CompanyId && department.CompanyId == CurrentUser.CompanyId && project.CompanyId == CurrentUser.CompanyId && subProject.CompanyId == CurrentUser.CompanyId)
+                        if (budget.CompanyId == CurrentUser.CompanyId && project.CompanyId == CurrentUser.CompanyId && subProject.CompanyId == CurrentUser.CompanyId)
                         {
                             if (project.IsActive && subProject.IsActive)
                             {
@@ -195,7 +185,6 @@ namespace GAppsDev.Controllers
 
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
-                using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                 {
@@ -206,7 +195,6 @@ namespace GAppsDev.Controllers
                         if (expense.CompanyId == CurrentUser.CompanyId)
                         {
                             List<SelectListItemDB> budgetsList;
-                            List<SelectListItemDB> departmentsList;
                             List<SelectListItemDB> projectsList;
                             List<SelectListItemDB> subProjectsList;
 
@@ -217,11 +205,6 @@ namespace GAppsDev.Controllers
                                     .Select(a => new { Id = a.Id, Name = a.Year })
                                     .AsEnumerable()
                                     .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                                    .ToList();
-
-                                departmentsList = departmentsRep.GetList()
-                                    .Where(type => type.CompanyId == CurrentUser.CompanyId)
-                                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                                     .ToList();
 
                                 projectsList = projectsRep.GetList()
@@ -240,7 +223,6 @@ namespace GAppsDev.Controllers
                             }
 
                             ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name", expense.BudgetId);
-                            ViewBag.DepartmentId = new SelectList(departmentsList, "Id", "Name", expense.DepartmentId);
                             ViewBag.ParentProjectId = new SelectList(projectsList, "Id", "Name", expense.ParentProjectId);
                             ViewBag.SubProjectId = new SelectList(subProjectsList, "Id", "Name", expense.SubProjectId);
 
@@ -276,28 +258,25 @@ namespace GAppsDev.Controllers
                 {
                     Budgets_Expenses expenseFromDB;
                     Budget budget;
-                    Department department;
                     Projects_ParentProject project;
                     Projects_SubProject subProject;
 
                     using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                     using (BudgetsRepository budgetRep = new BudgetsRepository())
-                    using (DepartmentsRepository departmentsRep = new DepartmentsRepository())
                     using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                     using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                     {
                         expenseFromDB = expensesRep.GetEntity(budgets_expenses.Id);
 
                         budget = budgetRep.GetEntity(budgets_expenses.BudgetId);
-                        department = departmentsRep.GetEntity(budgets_expenses.DepartmentId);
                         project = projectsRep.GetEntity(budgets_expenses.ParentProjectId);
                         subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId);
 
                         if (expenseFromDB != null)
                         {
-                            if (budget != null && department != null && project != null && subProject != null)
+                            if (budget != null && project != null && subProject != null)
                             {
-                                if (budget.CompanyId == CurrentUser.CompanyId && department.CompanyId == CurrentUser.CompanyId && project.CompanyId == CurrentUser.CompanyId && subProject.CompanyId == CurrentUser.CompanyId)
+                                if (budget.CompanyId == CurrentUser.CompanyId && project.CompanyId == CurrentUser.CompanyId && subProject.CompanyId == CurrentUser.CompanyId)
                                 {
                                     if (project.IsActive && subProject.IsActive)
                                     {
@@ -316,7 +295,6 @@ namespace GAppsDev.Controllers
                                         }
 
                                         expenseFromDB.BudgetId = budgets_expenses.BudgetId;
-                                        expenseFromDB.DepartmentId = budgets_expenses.DepartmentId;
                                         expenseFromDB.ParentProjectId = budgets_expenses.ParentProjectId;
                                         expenseFromDB.SubProjectId = budgets_expenses.SubProjectId;
                                         expenseFromDB.Amount = budgets_expenses.Amount;

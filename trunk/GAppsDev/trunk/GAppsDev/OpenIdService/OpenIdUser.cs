@@ -117,7 +117,6 @@ namespace GAppsDev.OpenIdService
                                     IsSignedByProvider = false,
                                     ClaimedIdentifier = claimedIdentifier,
                                     OrdersApproverId = loggingUser.OrdersApproverId,
-                                    DepartmentId = loggingUser.DepartmentId,
                                     IsActive = loggingUser.IsActive,
                                     LanguageCode = loggingUser.Language.Code
                                 };
