@@ -16,7 +16,6 @@ namespace GAppsDev.OpenIdService
         public int UserId { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public int? DepartmentId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

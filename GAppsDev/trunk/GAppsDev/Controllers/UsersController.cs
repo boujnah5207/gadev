@@ -62,9 +62,9 @@ namespace GAppsDev.Controllers
                 using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
                 {
-                    activeUsers = usersRep.GetList("Department").Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
+                    activeUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
                     model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                    model.NonActiveUsers = usersRep.GetList("Department").Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+                    model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
 
                     if (model.ActiveUsers != null && model.PendingUsers != null && model.NonActiveUsers != null)
                     {
@@ -895,7 +895,7 @@ namespace GAppsDev.Controllers
             {
                 using (UsersRepository usersRep = new UsersRepository())
                 {
-                    IQueryable<User> usersQuery = usersRep.GetList("Budget_Departments").Where(x => x.CompanyId == CurrentUser.CompanyId);
+                    IQueryable<User> usersQuery = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
 
                     if (usersQuery != null)
                     {

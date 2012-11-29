@@ -501,7 +501,6 @@
           <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Roles" Type="int" Nullable="false" />
           <Property Name="OrdersApproverId" Type="int" />
-          <Property Name="DepartmentId" Type="int" Nullable="false" />
           <Property Name="LanguageId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Projects_ParentProject">
@@ -1815,7 +1814,6 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Roles" Nullable="false" />
           <Property Type="Int32" Name="OrdersApproverId" />
-          <Property Type="Int32" Name="DepartmentId" Nullable="false" />
           <Property Type="Int32" Name="LanguageId" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_PendingUsers_Companies" FromRole="PendingUser" ToRole="Company" />
           <NavigationProperty Name="Language" Relationship="designModel.FK_PendingUsers_Languages" FromRole="PendingUser" ToRole="Language" />
@@ -2834,7 +2832,6 @@
             <EntityTypeMapping TypeName="designModel.PendingUser">
               <MappingFragment StoreEntitySet="PendingUsers">
                 <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="OrdersApproverId" ColumnName="OrdersApproverId" />
                 <ScalarProperty Name="Roles" ColumnName="Roles" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -2947,34 +2944,34 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="55">
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="9.0487275501008746" PointY="12.669915220080835" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="1.1636856855655489" PointY="14.296379647355703" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="2.1942365123863503" PointY="20.723455617541195" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="4.1986672804684693" PointY="10.148443673806472" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="6.7789069631970058" PointY="13.894957086953781" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="2.2655731245249386" PointY="27.715125528962876" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="0.64821579523767148" PointY="5.6318457152842756" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="0.22709677565242012" PointY="0.30124056353291523" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="7.1089679762297155" PointY="29.713543115981643" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="8.3524931894394072" PointY="23.614189158945432" />
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="8.170329935928029" PointY="31.033881067779792" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="3.3595040195432979" PointY="20.51639848412778" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="10.048790958732734" PointY="31.503952130444326" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="0.54071889842893872" PointY="24.645817708524792" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="1.0175145142793258" PointY="27.991831002753148" />
-        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="8.3003497162369762" PointY="10.496389110803785" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="1.2504235642265638" PointY="12.161518206895105" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="5.8231681761439749" PointY="23.457953955725745" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="3.7089549562469841" PointY="17.612717890000305" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="1.6027490299207854" PointY="28.321465386227455" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="7.8374211880552682" PointY="9.5806538954287088" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="0.32404072784075544" PointY="24.627512719774391" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="0.29019774882597743" PointY="16.429535053870424" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="9.1007200764029843" PointY="12.374504706065405" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="0.90402362351493148" PointY="20.462008709303106" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="11.275694533845268" PointY="16.616446294177532" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="1.4439691460896138" PointY="14.102105579386514" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="6.0457347287078083" PointY="25.096059065822541" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="1.3917141879870156" PointY="14.586763344047014" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="7.3123514090256538" PointY="6.347345235919275" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="7.2305769581490091" PointY="18.550628372724461" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="2.7881518633981011" PointY="22.085254232438864" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="8.91025919137069" PointY="27.545139221262716" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="9.1427485091345133" PointY="21.567057247072018" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="8.2887739670876286" PointY="9.1476374460140413" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="8.404010255077857" PointY="1.3445300466122712" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="9.53982963857233" PointY="25.951849785610964" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="1.017899746549269" PointY="12.206892600379369" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="11.313664672576666" PointY="16.3311646656744" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="7.4034516827219408" PointY="10.367240836083536" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="2.7132619725136373" PointY="21.067412356411765" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="8.3381580171818648" PointY="14.251363328775094" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="11.221242092187163" PointY="5.5178196157877428" />
+        <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="2.4921767704618056" PointY="21.232357258550991" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.514834598877856" PointY="22.432389403894724" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="7.4050185454101394" PointY="27.303783205944942" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="11.292417799724461" PointY="29.926652177202818" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="3.389972561686287" PointY="2.3491614620895875" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="0.80459334738766464" PointY="10.778854375136483" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="0.32505807854470709" PointY="5.2287214422732227" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="9.018327136066894" PointY="2.7015296233359396" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="8.3516652976868979" PointY="25.263092216692442" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="11.269243010910806" PointY="28.723988710308443" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.6913377217442438" PointY="9.89873460396134" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="4.2703898457206737" PointY="3.9150666761747872" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="10.097357477106787" PointY="19.38007316895764" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />

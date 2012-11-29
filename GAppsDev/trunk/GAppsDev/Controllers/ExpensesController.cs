@@ -21,7 +21,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
-            var budgets_expenses = db.Budgets_Expenses.Include("Department").Include("Projects_ParentProject").Include("Projects_SubProject").Where(x => x.CompanyId == CurrentUser.CompanyId);
+            var budgets_expenses = db.Budgets_Expenses.Include("Projects_ParentProject").Include("Projects_SubProject").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(budgets_expenses.ToList());
         }
 
@@ -36,7 +36,7 @@ namespace GAppsDev.Controllers
                 Budgets_Expenses expense;
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 {
-                    expense = expensesRep.GetEntity(id, "Budget", "Department", "Projects_ParentProject", "Projects_SubProject");
+                    expense = expensesRep.GetEntity(id, "Budget", "Projects_ParentProject", "Projects_SubProject");
                 }
 
                 if (expense != null)
@@ -351,7 +351,7 @@ namespace GAppsDev.Controllers
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 {
-                    expense = expensesRep.GetEntity(id, "Budget", "Department", "Projects_ParentProject", "Projects_SubProject");
+                    expense = expensesRep.GetEntity(id, "Budget", "Projects_ParentProject", "Projects_SubProject");
 
                     if (expense != null)
                     {
