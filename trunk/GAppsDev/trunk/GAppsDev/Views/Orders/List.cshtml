@@ -101,8 +101,11 @@
                 @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
                 {
+                    if (item.UserId == ViewBag.CurrentUserId)
+                    {
                     <text>|</text> @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id })
                     <text>|</text> @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
+                    }
                     if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.OrdersApprover) && item.NextOrderApproverId == ViewBag.CurrentUserId)
                     {
                     <text>|</text> @Html.ActionLink(Loc.Dic.UpdateStatus, "ModifyStatus", new { id = item.Id })
