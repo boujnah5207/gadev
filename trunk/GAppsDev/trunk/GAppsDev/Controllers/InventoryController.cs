@@ -38,6 +38,7 @@ namespace GAppsDev.Controllers
             using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
                 List<Inventory> inventories = inventoryRepository.GetList("Orders_Items","Location").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                ViewBag.CurrentUser = CurrentUser;
                 return View(inventories);
             }
         }
@@ -48,6 +49,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
+            
             Inventory inventory = db.Inventories.Single(i => i.Id == id);
             if (inventory == null)
             {

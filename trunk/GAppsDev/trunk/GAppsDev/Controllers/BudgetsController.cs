@@ -152,6 +152,8 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
+            if (string.IsNullOrEmpty(budgetType))
+                return Error(Loc.Dic.Error_chooseMonthelyOrYearlyBudget);
 
             if (id.HasValue)
             {

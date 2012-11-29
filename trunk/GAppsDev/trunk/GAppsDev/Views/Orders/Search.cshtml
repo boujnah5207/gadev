@@ -9,6 +9,7 @@
 
 @section ExtraScripts{
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
+
 }
 
 @Html.Action("SearchForm", new { model = Model, isExpanding = false, isCollapsed= false, userId = ViewBag.UserId, statusId = ViewBag.StatusId, supplierId = ViewBag.SupplierId, hideUserField = ViewBag.HideUserField, hideStatusField = ViewBag.HideStatusField, hideSupplierField = ViewBag.HideSupplierField })

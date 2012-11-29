@@ -5,6 +5,16 @@
     ViewBag.PageName = "Orders";
     ViewBag.noSubMenu = true;
 }
+@section ExtraScripts{
+    <script>
+    $(function() {
+        $("#InvoiceDate").datepicker($.datepicker.regional["he"]);
+        $("#InvoiceDate").datepicker("option", "dateFormat", "dd/mm/yy");
+        $("#ValueDate").datepicker($.datepicker.regional["he"]);
+        $("#ValueDate").datepicker("option", "dateFormat", "dd/mm/yy");
+    });
+    </script>   
+    }
 
 <h2>@Loc.Dic.UploadInvoice</h2>
 <br />
@@ -26,7 +36,7 @@
         @Loc.Dic.InvoiceDate (DD/MM/YYYY)
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.InvoiceDate)
+        @Html.TextBoxFor(model => model.InvoiceDate, new { id = "InvoiceDate" })
         @Html.ValidationMessageFor(model => model.InvoiceDate)
     </div>
     <br />
@@ -35,7 +45,7 @@
         <span>@Loc.Dic.ValueDate (DD/MM/YYYY)</span>
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.ValueDate)
+        @Html.EditorFor(model => model.ValueDate, new { id = "ValueDate" })
         @Html.ValidationMessageFor(model => model.ValueDate)
     </div>
     <br />

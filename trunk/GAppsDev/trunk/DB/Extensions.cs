@@ -17,4 +17,14 @@ namespace DB
     {
     }
 
+    public partial class Budgets_Allocations
+    {
+        public string DisplayName
+        {
+            get
+            {
+                return this.ExternalId + this.Name;
+            }
+        }
+    }
 }

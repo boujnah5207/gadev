@@ -142,6 +142,8 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.budgetYear = budgets_permissionstoallocation.Budget.Year;
+            ViewBag.PermissionName = budgets_permissionstoallocation.Budgets_Baskets.Name;
             return View(budgets_permissionstoallocation);
         }
 
