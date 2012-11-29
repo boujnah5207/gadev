@@ -1,8 +1,7 @@
 ﻿@model DB.PendingUser
 
 @{
-    ViewBag.Title = "משתמש חדש";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.NewUser;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllUsers";
 }
@@ -11,18 +10,19 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>צור משתמש חדש</legend>
+        <legend>@Loc.Dic.NewUser</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
+            @Loc.Dic.Email
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Roles)
+            @Loc.Dic.Role
         </div>
         <div class="editor-field">
             @foreach (string roleName in ViewBag.RolesList)
@@ -30,36 +30,31 @@
                 <input name="roleNames" type="checkbox" value="@roleName" /> <span>@roleName</span> <br />
             }
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.OrdersApproverId)
+            @Loc.Dic.OrderApprover
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.OrdersApproverId, (SelectList)ViewBag.UsersList)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.DepartmentId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.DepartmentId, (SelectList)ViewBag.DepartmentsList)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.LanguageId)
+            @Loc.Dic.DisplayLanguage
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.LanguageId, (SelectList)ViewBag.LanguagesList)
         </div>
 
         <p>
-            <input type="submit" value="צור משתמש" />
+            <input type="submit" value="@Loc.Dic.Submit" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {

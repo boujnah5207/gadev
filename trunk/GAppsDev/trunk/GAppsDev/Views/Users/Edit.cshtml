@@ -1,47 +1,48 @@
 ﻿@model DB.User
 
 @{
-    ViewBag.Title = "עריכת משתמש";
+    ViewBag.Title = Loc.Dic.EditUser;
     ViewBag.PageName = "Managment";
-    ViewBag.SubPageName = "";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.SubPageName = "AllUsers";
 }
-
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>משתמש</legend>
+        <legend>@Loc.Dic.User</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
+            @Loc.Dic.Email
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FirstName)
+            @Loc.Dic.FirstName
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.FirstName)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LastName)
+            @Loc.Dic.LastName
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.LastName)
             @Html.ValidationMessageFor(model => model.LastName)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Roles)
+            @Loc.Dic.Role
         </div>
         <div class="editor-field">
             @foreach (string roleName in ViewBag.RolesList)
@@ -49,15 +50,23 @@
                 <input name="roleNames" type="checkbox" value="@roleName" @if (((List<string>)ViewBag.ExistingRoles).Contains(roleName)) { <text>checked="checked" </text>}/> <span>@roleName</span> <br />
             }
         </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.OrderApprover
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.OrdersApproverId, null)
+        </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="@Loc.Dic.Submit" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {

@@ -825,6 +825,7 @@ namespace GAppsDev.Controllers
                             budgetsPermissionsToAllocationRepository.GetList()
                                 .Where(x => x.BasketId == permission.Budgets_Baskets.Id)
                                 .Select(x => x.Budgets_Allocations)
+                                .Where(x => x.CompanyId == CurrentUser.CompanyId)
                                 .ToList()
                                 );
                     }
@@ -880,6 +881,9 @@ namespace GAppsDev.Controllers
             {
                 if (Authorized(RoleType.OrdersWriter))
                 {
+                    if (String.IsNullOrEmpty(model.ItemsString))
+                        return Error(Loc.Dic.error_invalid_form);
+
                     List<Orders_OrderToItem> ItemsList = ItemsFromString(model.ItemsString, 0);
                     List<Budgets_Allocations> orderAllocations;
 

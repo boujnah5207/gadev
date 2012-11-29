@@ -933,6 +933,9 @@
   <data name="error_no_active_budget" xml:space="preserve">
     <value>לא נמצא תקציב פעיל</value>
   </data>
+  <data name="error_supplier_item_create_error" xml:space="preserve">
+    <value>קרתה שגיאה, הפריט לא נוצר</value>
+  </data>
   <data name="InvoiceDate" xml:space="preserve">
     <value>תאריך חשבונית</value>
   </data>
@@ -944,5 +947,35 @@
   </data>
   <data name="ValueDate" xml:space="preserve">
     <value>תאריך ערך</value>
+  </data>
+  <data name="DisplayLanguage" xml:space="preserve">
+    <value>שפת תצוגה</value>
+  </data>
+  <data name="EditPendingUser" xml:space="preserve">
+    <value>עריכת משתמש חדש</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>עריכת משתמש</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>שגיאה</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>שם פרטי</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>שם משפחה</value>
+  </data>
+  <data name="NewUser" xml:space="preserve">
+    <value>משתמש חדש</value>
+  </data>
+  <data name="OrderApprover" xml:space="preserve">
+    <value>מאשר הזמנות</value>
+  </data>
+  <data name="PendingUser" xml:space="preserve">
+    <value>משתמש חדש</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>משתמש</value>
   </data>
 </root>
