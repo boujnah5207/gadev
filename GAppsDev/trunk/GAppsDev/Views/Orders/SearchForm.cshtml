@@ -90,7 +90,7 @@
                 <span class="bold">@Loc.Dic.CreationDate (DD/MM/YYYY):</span>
             </div>
             <div class="editor-field">
-                @Loc.Dic.From- @Html.TextBox("CreationMin") @Loc.Dic.To- @Html.TextBox("CreationMax")
+                @Loc.Dic.From- @Html.TextBox("CreationMin", String.Empty, new { id = "CreationMin" }) @Loc.Dic.To- @Html.TextBox("CreationMax", String.Empty, new { @class = "CreationMax" })
             </div>
             <br />
             
@@ -106,5 +106,12 @@
             </p>
     }
     </div>
-    
+    <script>
+    $(function() {
+        $("#CreationMax").datepicker($.datepicker.regional["he"]);
+        $("#CreationMax").datepicker("option", "dateFormat", "dd/mm/yy");
+        $("#CreationMin").datepicker($.datepicker.regional["he"]);
+        $("#CreationMin").datepicker("option", "dateFormat", "dd/mm/yy");
+    });
+    </script>    
 </fieldset>

@@ -1005,4 +1005,10 @@
   <data name="Allocation" xml:space="preserve">
     <value>Allocation</value>
   </data>
+  <data name="Error_chooseMonthelyOrYearlyBudget" xml:space="preserve">
+    <value>choose Monthely Or Yearly Budget</value>
+  </data>
+  <data name="BasketsToAllocation" xml:space="preserve">
+    <value>Baskets To Allocation</value>
+  </data>
 </root>

@@ -5,33 +5,34 @@
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllBudgets";
 }
-}
 
-<h2>Delete</h2>
+<h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
+<h2>@Loc.Dic.Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Loc.Dic.DeleteAlertMessege</h3>
 <fieldset>
-    <legend>Budgets_BasketsToAllocation</legend>
+    <legend>@Loc.Dic.BasketsToAllocation</legend>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Budgets_Baskets.Name)
+        @Loc.Dic.BudgetBasket
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Budgets_Baskets.Name)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Budgets_Allocations.Id)
+        @Loc.Dic.BudgetAllocation
     </div>
+
     <div class="display-field">
-        @Html.DisplayFor(model => model.Budgets_Allocations.Id)
+        @Html.DisplayFor(model => model.Budgets_Allocations.DisplayName)
     </div>
 </fieldset>
 @using (Html.BeginForm())
 {
     <p>
-        <input type="submit" value="Delete" />
+        <input type="submit" value="@Loc.Dic.Delete" />
         |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink(@Loc.Dic.BackToList, "Index", )
     </p>
 }

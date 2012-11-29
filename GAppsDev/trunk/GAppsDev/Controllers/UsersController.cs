@@ -353,6 +353,9 @@ namespace GAppsDev.Controllers
 
                                 if (existingPermissions != null)
                                 {
+                                    if(model.UserPermissions == null)
+                                        return RedirectToAction("Index");
+                                        
                                     foreach (var permission in model.UserPermissions)
                                     {
                                         if (permission.IsActive)
