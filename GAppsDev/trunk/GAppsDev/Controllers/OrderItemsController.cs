@@ -114,7 +114,7 @@ namespace GAppsDev.Controllers
                 if (wasCreated)
                     return Json(new { success = true, message = String.Empty, newItemId = orderItem.Id }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, message = Loc.Dic.error_suppliers_create_error }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = Loc.Dic.error_supplier_item_create_error }, JsonRequestBehavior.AllowGet);
             }
             else
             {

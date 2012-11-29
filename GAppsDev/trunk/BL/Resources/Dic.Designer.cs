@@ -637,6 +637,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display language.
+        /// </summary>
+        public static string DisplayLanguage {
+            get {
+                return ResourceManager.GetString("DisplayLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Invoice.
         /// </summary>
         public static string DownloadInvoice {
@@ -691,6 +700,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit pending user.
+        /// </summary>
+        public static string EditPendingUser {
+            get {
+                return ResourceManager.GetString("EditPendingUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit user.
+        /// </summary>
+        public static string EditUser {
+            get {
+                return ResourceManager.GetString("EditUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -714,6 +741,15 @@ namespace Loc {
         public static string EnterVatNumber {
             get {
                 return ResourceManager.GetString("EnterVatNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -1240,6 +1276,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create Item.
+        /// </summary>
+        public static string error_supplier_item_create_error {
+            get {
+                return ResourceManager.GetString("error_supplier_item_create_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_suppliers_create_error.
         /// </summary>
         public static string error_suppliers_create_error {
@@ -1425,6 +1470,15 @@ namespace Loc {
         public static string FinalPrice {
             get {
                 return ResourceManager.GetString("FinalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
             }
         }
         
@@ -1726,6 +1780,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {
@@ -1843,6 +1906,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New user.
+        /// </summary>
+        public static string NewUser {
+            get {
+                return ResourceManager.GetString("NewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No allocations in the order.
         /// </summary>
         public static string NoAllocationsInOrder {
@@ -1920,6 +1992,15 @@ namespace Loc {
         public static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order approver.
+        /// </summary>
+        public static string OrderApprover {
+            get {
+                return ResourceManager.GetString("OrderApprover", resourceCulture);
             }
         }
         
@@ -2055,6 +2136,15 @@ namespace Loc {
         public static string PendingOrders {
             get {
                 return ResourceManager.GetString("PendingOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending user.
+        /// </summary>
+        public static string PendingUser {
+            get {
+                return ResourceManager.GetString("PendingUser", resourceCulture);
             }
         }
         
@@ -2460,6 +2550,15 @@ namespace Loc {
         public static string UploadReceipt {
             get {
                 return ResourceManager.GetString("UploadReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
             }
         }
         

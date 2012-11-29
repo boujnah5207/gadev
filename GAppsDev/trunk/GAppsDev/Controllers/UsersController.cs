@@ -357,9 +357,9 @@ namespace GAppsDev.Controllers
                     {
                         userFromDB = usersRep.GetEntity(model.UserId);
 
-                        if(userFromDB != null)
+                        if (userFromDB != null)
                         {
-                            if(userFromDB.CompanyId == CurrentUser.CompanyId)
+                            if (userFromDB.CompanyId == CurrentUser.CompanyId)
                             {
                                 existingPermissions = userPermissionsRep.GetList().Where(x => x.UserId == userFromDB.Id).ToList();
 
@@ -434,31 +434,36 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 User user;
-                using (UserRepository userRep = new UserRepository())
+                List<SelectListItemDB> usersList = new List<SelectListItemDB> { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+
+                using (UserRepository usersRep = new UserRepository())
                 {
-                    user = userRep.GetEntity(id);
-                }
+                    user = usersRep.GetEntity(id);
+                    usersList.AddRange(usersRep.GetList().Where(u => u.CompanyId == CurrentUser.CompanyId && ((RoleType)u.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
 
-                if (user != null)
-                {
-                    if (user.CompanyId != CurrentUser.CompanyId)
-                        return Error(Loc.Dic.error_no_permission);
+                    if (user != null)
+                    {
+                        if (user.CompanyId != CurrentUser.CompanyId)
+                            return Error(Loc.Dic.error_no_permission);
 
-                    List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                    roleNames.Remove(RoleType.None.ToString());
-                    roleNames.Remove(RoleType.SuperAdmin.ToString());
-                    ViewBag.RolesList = roleNames;
+                        ViewBag.OrdersApproverId = new SelectList(usersList, "Id", "Name", user.OrdersApproverId.HasValue ? user.OrdersApproverId.Value : -1);
 
-                    ViewBag.ExistingRoles =
-                        Roles.GetAllRoles((RoleType)user.Roles)
-                        .Select(x => x.ToString())
-                        .ToList();
+                        List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                        roleNames.Remove(RoleType.None.ToString());
+                        roleNames.Remove(RoleType.SuperAdmin.ToString());
+                        ViewBag.RolesList = roleNames;
 
-                    return View(user);
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_user_not_found);
+                        ViewBag.ExistingRoles =
+                            Roles.GetAllRoles((RoleType)user.Roles)
+                            .Select(x => x.ToString())
+                            .ToList();
+
+                        return View(user);
+                    }
+                    else
+                    {
+                        return Error(Loc.Dic.error_user_not_found);
+                    }
                 }
             }
             else
@@ -502,11 +507,11 @@ namespace GAppsDev.Controllers
                                 }
                             }
 
+                            userFromDatabase.FirstName = user.FirstName;
+                            userFromDatabase.LastName = user.LastName;
+                            userFromDatabase.Email = user.Email;
                             userFromDatabase.Roles = (int)combinedRoles;
-                            userFromDatabase.CompanyId = userFromDatabase.CompanyId;
-                            userFromDatabase.IsActive = userFromDatabase.IsActive;
-                            userFromDatabase.LastLogInTime = userFromDatabase.LastLogInTime;
-                            userFromDatabase.CreationTime = userFromDatabase.CreationTime;
+                            userFromDatabase.OrdersApproverId = user.OrdersApproverId;
 
                             User updatedUser = userRep.Update(userFromDatabase);
                             if (updatedUser != null)
@@ -538,9 +543,13 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 PendingUser user;
+                List<SelectListItemDB> usersList = new List<SelectListItemDB> { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+
+                using (UsersRepository usersRep = new UsersRepository())
                 using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
                 {
                     user = pendingUserRep.GetEntity(id);
+                    usersList.AddRange(usersRep.GetList().Where(u => u.CompanyId == CurrentUser.CompanyId && ((RoleType)u.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                 }
 
                 if (user.CompanyId != CurrentUser.CompanyId)
@@ -548,6 +557,8 @@ namespace GAppsDev.Controllers
 
                 if (user != null)
                 {
+                    ViewBag.OrdersApproverId = new SelectList(usersList, "Id", "Name", user.OrdersApproverId.HasValue ? user.OrdersApproverId.Value : -1);
+
                     List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
                     roleNames.Remove(RoleType.None.ToString());
                     roleNames.Remove(RoleType.SuperAdmin.ToString());
@@ -606,10 +617,11 @@ namespace GAppsDev.Controllers
                                 }
                             }
 
-                            user.Roles = (int)combinedRoles;
-                            user.CompanyId = userFromDatabase.CompanyId;
+                            userFromDatabase.Email = user.Email;
+                            userFromDatabase.Roles = (int)combinedRoles;
+                            userFromDatabase.OrdersApproverId = user.OrdersApproverId;
 
-                            pendingUserRep.Update(user);
+                            pendingUserRep.Update(userFromDatabase);
                             return RedirectToAction("Index");
                         }
                         else

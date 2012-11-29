@@ -936,6 +936,9 @@
   <data name="error_no_active_budget" xml:space="preserve">
     <value>There is no active budget</value>
   </data>
+  <data name="error_supplier_item_create_error" xml:space="preserve">
+    <value>Could not create Item</value>
+  </data>
   <data name="InvoiceDate" xml:space="preserve">
     <value>Invoice date</value>
   </data>
@@ -947,5 +950,35 @@
   </data>
   <data name="ValueDate" xml:space="preserve">
     <value>Value Date</value>
+  </data>
+  <data name="DisplayLanguage" xml:space="preserve">
+    <value>Display language</value>
+  </data>
+  <data name="EditPendingUser" xml:space="preserve">
+    <value>Edit pending user</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Edit user</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="NewUser" xml:space="preserve">
+    <value>New user</value>
+  </data>
+  <data name="OrderApprover" xml:space="preserve">
+    <value>Order approver</value>
+  </data>
+  <data name="PendingUser" xml:space="preserve">
+    <value>Pending user</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

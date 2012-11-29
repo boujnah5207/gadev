@@ -1,30 +1,30 @@
 ﻿@model DB.PendingUser
 
 @{
-    ViewBag.Title = "EditPending";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.EditPendingUser;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
-
-<h2>EditPending</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>PendingUser</legend>
+        <legend>@Loc.Dic.PendingUser</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
+            @Loc.Dic.Email
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Roles)
+            @Loc.Dic.Role
         </div>
         <div class="editor-field">
             @foreach (string roleName in ViewBag.RolesList)
@@ -32,9 +32,17 @@
                 <input name="roleNames" type="checkbox" value="@roleName" @if (((List<string>)ViewBag.ExistingRoles).Contains(roleName)) { <text>checked="checked" </text>}/> <span>@roleName</span> <br />
             }
         </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.OrderApprover
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.OrdersApproverId, null)
+        </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="@Loc.Dic.Submit" />
         </p>
     </fieldset>
 }

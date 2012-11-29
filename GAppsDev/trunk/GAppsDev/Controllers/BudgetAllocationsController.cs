@@ -108,6 +108,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create(int id = 0)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budget budget;
@@ -164,6 +165,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Create(Budgets_Allocations Budgets_Allocations, int id = 0)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 if (ModelState.IsValid)
@@ -256,6 +258,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Allocations allocation;
@@ -314,6 +317,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Edit(Budgets_Allocations Budgets_Allocations)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 if (ModelState.IsValid)
@@ -416,6 +420,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Allocations allocation;
@@ -462,6 +467,7 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            return Error(Loc.Dic.error_no_permission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Allocations allocation;
@@ -528,12 +534,6 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
-        }
-
-        [ChildActionOnly]
-        public ActionResult SubMenu()
-        {
-            return PartialView();
         }
 
         protected override void Dispose(bool disposing)
