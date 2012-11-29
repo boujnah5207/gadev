@@ -35,7 +35,7 @@ $(function () {
     itemFinalPrice = $("#itemFinalPrice");
     totalOrderPriceField = $("#totalOrderPrice");
 
-    $("#allocationSelectList").change(function () {
+    $("#allocationsSelectList").change(function () {
         $(".allocationMonthList").css("display", "none");
         $("#allocation-" + $(this).val()).css("display", "inline-block");
     });
@@ -440,7 +440,7 @@ function addAllocation() {
             }
         }
 
-        monthId = null;
+        monthId = '';
         divClass = "existingNormalAllocations";
         divId = "normalAllocation";
         monthText = "";
@@ -531,9 +531,6 @@ function unRemove(allocationId, monthId) {
 }
 
 function getRemovedAllocation(allocationId, monthId) {
-    if (monthId == null)
-        monthId = "null";
-
     for (var index in removedAllocations) {
         if (removedAllocations[index].allocationId == allocationId && removedAllocations[index].monthId == monthId) {
             return removedAllocations[index];
