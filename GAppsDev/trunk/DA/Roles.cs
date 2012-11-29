@@ -12,7 +12,7 @@ namespace DA
     {
         None = 0,
         OrdersWriter = 1,
-        OrdersApprover = 2 | OrdersViewer,
+        OrdersApprover = 2,
         OrdersViewer = 4,
         SystemManager = 8 | OrdersViewer | OrdersWriter,
         UsersManager = 16,
