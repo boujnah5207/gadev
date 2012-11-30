@@ -1537,7 +1537,8 @@ namespace GAppsDev.Controllers
                     {
                         if (model.Order.StatusId == (int)StatusType.Pending || model.Order.StatusId == (int)StatusType.PendingOrderCreator)
                         {
-                            return View(model);
+                            ViewBag.OrderId = model.Order.Id;
+                            return View();
                         }
                         else
                         {
