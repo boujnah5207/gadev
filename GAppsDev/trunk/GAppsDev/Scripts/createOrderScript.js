@@ -369,7 +369,7 @@ function updateItems() {
     var value = "";
     var totalPrice = 0;
     for (var i in itemList) {
-        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span> " + itemList[i].title + " " + local.Quantity + ": " + itemList[i].quantity + " " + local.FinalPrice + ": " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='" + local.Delete + "'/></div>"));
+        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span class='bold'>" + itemList[i].title + ":</span> <span class='bold'>" + local.Quantity + ":</span> " + itemList[i].quantity + " <span class='bold'>" + local.FinalPrice + ":</span> " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='" + local.Delete + "'/></div>"));
         value += itemList[i].id + "," + itemList[i].quantity + "," + itemList[i].price + ";";
         totalPrice += itemList[i].quantity * itemList[i].price;
     }
