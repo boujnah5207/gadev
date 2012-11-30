@@ -850,9 +850,9 @@ namespace GAppsDev.Controllers
                     }
 
                     allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
+                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.DisplayName, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
                         .AsEnumerable()
-                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
                     ViewBag.Allocations = allocations;
@@ -1464,6 +1464,13 @@ namespace GAppsDev.Controllers
                                             model.Order.StatusId = orderFromDatabase.StatusId;
                                             model.Order.SupplierId = orderFromDatabase.SupplierId;
                                             model.Order.UserId = orderFromDatabase.UserId;
+                                            model.Order.OrderNumber = orderFromDatabase.OrderNumber;
+                                            model.Order.InvoiceNumber = orderFromDatabase.InvoiceNumber;
+                                            model.Order.InvoiceDate = orderFromDatabase.InvoiceDate;
+                                            model.Order.LastStatusChangeDate = orderFromDatabase.LastStatusChangeDate;
+                                            model.Order.NextOrderApproverId = orderFromDatabase.NextOrderApproverId;
+                                            model.Order.ValueDate = orderFromDatabase.ValueDate;
+                                            model.Order.WasAddedToInventory = orderFromDatabase.WasAddedToInventory;
                                             model.Order.IsFutureOrder = model.IsFutureOrder;
 
                                             model.Order.Price = ordersRep.GetEntity(model.Order.Id).Orders_OrderToItem.Sum(item => item.SingleItemPrice * item.Quantity);

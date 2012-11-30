@@ -23,7 +23,7 @@ namespace DB
         {
             get
             {
-                return this.ExternalId + this.Name;
+                return String.Format("{0} - {1}", this.ExternalId, this.Name);
             }
         }
     }

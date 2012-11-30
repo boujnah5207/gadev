@@ -1011,4 +1011,10 @@
   <data name="BasketsToAllocation" xml:space="preserve">
     <value>סעיף תקציבי בסל</value>
   </data>
+  <data name="error_allocation_exceeds_price" xml:space="preserve">
+    <value>סכום ההקצאה עולה על סכום ההזמנה</value>
+  </data>
+  <data name="error_allocation_smaller_then_price" xml:space="preserve">
+    <value>סכום ההקצאה קטן מסכום ההזמנה</value>
+  </data>
 </root>

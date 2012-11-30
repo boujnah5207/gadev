@@ -23,7 +23,7 @@
 <fieldset id="formContainer">
     <legend>@Loc.Dic.OrderDetails</legend>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit", "Orders", FormMethod.Post, new { id = "mainForm"}))
     {
         @Html.ValidationSummary(true)
         
@@ -70,7 +70,7 @@
         {
             DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
             decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= DateTime.Now.Month).Sum(x => x.Amount);
-            <option data-amount="@amount" value="@allocation.Id">@allocation.Name (@amount)</option>
+            <option data-amount="@amount" value="@allocation.Id">@allocation.DisplayName (@amount)</option>
         }
         </select>
 
@@ -147,7 +147,7 @@
                         <input type='hidden' class='allocationIdField' id='normalAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
                         <input type='hidden' class='monthIdField' id='normalAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
                         <input type='hidden' class='amountField' id='normalAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
-                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
                         <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("normalAllocation", @i)' />
                         </div>
                         }
