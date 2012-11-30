@@ -322,7 +322,7 @@ function addAllocation() {
     var divClass;
     var monthText;
 
-    if (!isInt(wantedAmount) && wantedAmount <= 0) {
+    if (!isInt(wantedAmount) || parseInt(wantedAmount) <= 0) {
         alert(local.InvalidAmount);
         return;
     }
