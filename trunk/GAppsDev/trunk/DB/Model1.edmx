@@ -2943,7 +2943,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <edmx:Diagram Name="Model1" ZoomLevel="55">
+      <edmx:Diagram Name="Model1" ZoomLevel="124">
         <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="2.17430902373712" PointY="15.998862110077806" />
         <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="4.4860647695539821" PointY="12.755485287287964" />
         <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="2.9841044428684302" PointY="9.505015332952615" />
@@ -2960,9 +2960,9 @@
         <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="8.7201863102243209" PointY="20.568037534397114" />
         <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="10.078349265306418" PointY="5.3575111205491757" />
         <edmx:EntityTypeShape EntityType="designModel.Monthe" Width="1.5" PointX="7.2665264491301613" PointY="2.8439974947106084" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="3.7418029139478706" PointY="17.381698825108678" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="2.25" PointX="0.875" PointY="19.875" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="0.39636073279956391" PointY="4.2693711241098917" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="4.8655468415774159" PointY="20.357653567734012" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="2.625" PointX="4.25" PointY="20.5" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="11.845411973002094" PointY="5.6896912333041856" />
         <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="10.19162271832657" PointY="24.494919862828645" />
         <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="8.4315392581892858" PointY="27.775353101908859" />

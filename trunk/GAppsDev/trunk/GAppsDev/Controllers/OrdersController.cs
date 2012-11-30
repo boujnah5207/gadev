@@ -1571,65 +1571,66 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 Order order;
+                using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                using (OrderToAllocationRepository orderToAllocationRep = new OrderToAllocationRepository())
                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem");
-                }
+                    order = orderRep.GetEntity(id);
 
-                if (order != null)
-                {
-                    if (order.UserId == CurrentUser.UserId)
+                    if (order != null)
                     {
-                        if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
+                        if (order.UserId == CurrentUser.UserId)
                         {
-                            bool noItemErrors = true;
-                            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                            using (OrderToAllocationRepository orderToAllocationRep = new OrderToAllocationRepository())
+                            if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
                             {
-                                foreach (var item in order.Orders_OrderToItem)
-                                {
-                                    if (!orderToItemRep.Delete(item.Id))
-                                        noItemErrors = false;
-                                }
+                                bool noItemErrors = true;
 
-                                foreach (var item in order.Orders_OrderToAllocation)
-                                {
-                                    if (!orderToAllocationRep.Delete(item.Id))
-                                        noItemErrors = false;
-                                }
-
-                                if (noItemErrors)
-                                {
-                                    if (orderRep.Delete(order.Id))
+                                    foreach (var item in order.Orders_OrderToItem)
                                     {
-                                        return RedirectToAction("MyOrders");
+                                        if (!orderToItemRep.Delete(item.Id))
+                                            noItemErrors = false;
+                                    }
+
+                                    foreach (var item in order.Orders_OrderToAllocation)
+                                    {
+                                        if (!orderToAllocationRep.Delete(item.Id))
+                                            noItemErrors = false;
+                                    }
+
+                                    if (noItemErrors)
+                                    {
+                                        orderToItemRep.Dispose();
+                                        orderToAllocationRep.Dispose();
+                                        if (orderRep.Delete(order.Id))
+                                        {
+                                            return RedirectToAction("MyOrders");
+                                        }
+                                        else
+                                        {
+                                            return Error(Loc.Dic.error_orders_delete_error);
+                                        }
                                     }
                                     else
                                     {
-                                        return Error(Loc.Dic.error_orders_delete_error);
+                                        return Error(Loc.Dic.error_orders_delete_items_error);
                                     }
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.error_orders_delete_items_error);
-                                }
+                            }
+                            else
+                            {
+                                return Error(Loc.Dic.error_order_delete_after_approval);
                             }
                         }
                         else
                         {
-                            return Error(Loc.Dic.error_order_delete_after_approval);
+                            return Error(Loc.Dic.error_no_permission);
                         }
                     }
                     else
                     {
-                        return Error(Loc.Dic.error_no_permission);
+                        return Error(Loc.Dic.error_order_not_found);
                     }
                 }
-                else
-                {
-                    return Error(Loc.Dic.error_order_not_found);
-                }
+
             }
             else
             {
