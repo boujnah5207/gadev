@@ -1585,10 +1585,17 @@ namespace GAppsDev.Controllers
                             bool noItemErrors = true;
                             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                             using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+                            using (OrderToAllocationRepository orderToAllocationRep = new OrderToAllocationRepository())
                             {
                                 foreach (var item in order.Orders_OrderToItem)
                                 {
                                     if (!orderToItemRep.Delete(item.Id))
+                                        noItemErrors = false;
+                                }
+
+                                foreach (var item in order.Orders_OrderToAllocation)
+                                {
+                                    if (!orderToAllocationRep.Delete(item.Id))
                                         noItemErrors = false;
                                 }
 
