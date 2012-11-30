@@ -23,7 +23,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Budgets_Allocations.Name)
+            @Html.DisplayFor(modelItem => item.Budgets_Allocations.DisplayName)
         </td>
         <td>
             @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
