@@ -1011,4 +1011,10 @@
   <data name="BasketsToAllocation" xml:space="preserve">
     <value>Baskets To Allocation</value>
   </data>
+  <data name="error_allocation_exceeds_price" xml:space="preserve">
+    <value>Allocation amount is more then the total order price</value>
+  </data>
+  <data name="error_allocation_smaller_then_price" xml:space="preserve">
+    <value>Allocation amount is less then the total order price</value>
+  </data>
 </root>

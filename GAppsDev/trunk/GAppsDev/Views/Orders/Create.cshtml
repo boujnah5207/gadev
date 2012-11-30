@@ -79,7 +79,7 @@
         {
             DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
             decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= DateTime.Now.Month).Sum(x => x.Amount);
-            <option data-amount="@amount" value="@allocation.Id">@allocation.Name (@amount)</option>
+            <option data-amount="@amount" value="@allocation.Id">@allocation.DisplayName (@amount)</option>
         }
         </select>
 

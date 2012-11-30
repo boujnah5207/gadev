@@ -47,12 +47,33 @@ $(function () {
     });
 
     $('#mainForm').submit(function () {
-        var isFutureOrder = $("#isFutureOrder").is(':checked');
-        if(isFutureOrder)
-            $("#NormalOrderContainer").remove();
+
+        var totalAllocation;
+        var totalOrderPrice = parseInt($("#totalOrderPrice").val());
+
+        if (isFutureOrder)
+            totalAllocation = parseInt($("#totalFutureAllocation").val());
         else
+            totalAllocation = parseInt($("#totalNormalAllocation").val());
+
+        if (totalAllocation > totalOrderPrice) {
+            alert(local.error_allocation_exceeds_price);
+            return false;
+        }
+        else if (totalAllocation < totalOrderPrice) {
+            alert(local.error_allocation_smaller_then_price);
+            return false;
+        }
+
+        var isFutureOrder = $("#isFutureOrder").is(':checked');
+        if (isFutureOrder) {
+            $("#NormalOrderContainer").remove();
+        }
+        else {
             $("#FutureOrderContainer").remove();
+        }
     });
+
 });
 
 function beginForm() {
