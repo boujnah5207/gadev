@@ -1,114 +1,16 @@
-﻿@model GAppsDev.Models.OrderModel
-
-@{
+﻿@{
     ViewBag.Title = Loc.Dic.Delete;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "AllOrders";
 }
 
 <h3>@Loc.Dic.ConfirmDelete</h3>
-<fieldset>
-    <legend>@Loc.Dic.Order</legend>
-    <div class="display-label">
-         @Loc.Dic.Company
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Company.Name)
-    </div>
-    <br />
 
-    <div class="display-label">
-         @Loc.Dic.Email
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.User.Email)
-    </div>
-    <br />
+@Html.Action("PartialDetails", new { id = ViewBag.OrderId})
 
-    <div class="display-label">
-         @Loc.Dic.CreationDate
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.CreationDate)
-    </div>
-    <br />
-
-    <div class="display-label">
-         @Loc.Dic.Supplier
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Supplier.Name)
-    </div>
-    <br />
-    
-    <table>
-        <tr class="display-label">
-            <th>@Loc.Dic.ItemName
-            </th>
-            <th>@Loc.Dic.ItemDescription
-            </th>
-            <th>@Loc.Dic.SingleItemPrice
-            </th>
-            <th>@Loc.Dic.Quantity
-            </th>
-        </tr>
-        @foreach (var item in Model.OrderToItem)
-        {
-            <tr class="display-field">
-                <td>
-                    @item.Orders_Items.Title
-                </td>
-                <td>
-                    @item.Orders_Items.SubTitle
-                </td>
-                <td>
-                    @item.SingleItemPrice
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-            </tr>
-        }
-    </table>
-    <br />
-
-    <div class="display-label">
-         @Loc.Dic.Notes
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Notes)
-    </div>
-    <br />
-
-    <div class="display-label">
-         @Loc.Dic.Price
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Price)
-    </div>
-    <br />
-
-    <div class="display-label">
-         @Loc.Dic.Status
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
-    </div>
-    <br />
-    
-    <div class="display-label">
-         @Loc.Dic.OrderApproverNotes
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Order.OrderApproverNotes)
-    </div>
-    <br />
-
-</fieldset>
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="@Loc.Dic.Delete" /> |
-        @Html.ActionLink(Loc.Dic.BackToList, "Index")
+        @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
     </p>
 }
