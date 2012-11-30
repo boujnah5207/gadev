@@ -326,58 +326,24 @@ namespace GAppsDev.Controllers
                         {
                             if (selectedStatus == Loc.Dic.ApproveOrder)
                             {
-                                if (orderFromDB.IsFutureOrder)
+                                List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
+                                List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
+
+                                foreach (var allocation in orderAllocations)
                                 {
-                                    List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
-                                    List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
+                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
 
-                                    foreach (var allocation in orderAllocations)
+                                    List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
+
+                                    foreach (var month in allocationMonths)
                                     {
-                                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
+                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
-                                        List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
-
-                                        foreach (var month in allocationMonths)
-                                        {
-                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                                            if (month.Amount > allocationMonth.Amount)
-                                                return Error(Loc.Dic.error_order_insufficient_allocation);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    budgetAllocation = allocationsRep.GetEntity(orderFromDB.BudgetAllocationId.Value);
-
-                                    if (budgetAllocation != null)
-                                    {
-                                        List<Orders_OrderToAllocation> approvedAllocations = budgetAllocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
-                                        decimal orderPrice = orderFromDB.Price ?? 0;
-
-                                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && orderPrice > 0; monthNumber++)
-                                        {
-                                            var allocationMonth = budgetAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                                            if (remainingAmount.HasValue && remainingAmount.Value > 0)
-                                            {
-                                                decimal substractionAmount = remainingAmount.Value < orderPrice ? remainingAmount.Value : orderPrice;
-
-                                                orderPrice -= substractionAmount;
-                                            }
-                                        }
-
-                                        if (orderPrice > 0)
+                                        if (month.Amount > allocationMonth.Amount)
                                             return Error(Loc.Dic.error_order_insufficient_allocation);
-                                    }
-                                    else
-                                    {
-                                        return Error(Loc.Dic.error_allocations_get_error);
                                     }
                                 }
 
@@ -1585,35 +1551,35 @@ namespace GAppsDev.Controllers
                             {
                                 bool noItemErrors = true;
 
-                                    foreach (var item in order.Orders_OrderToItem)
-                                    {
-                                        if (!orderToItemRep.Delete(item.Id))
-                                            noItemErrors = false;
-                                    }
+                                foreach (var item in order.Orders_OrderToItem)
+                                {
+                                    if (!orderToItemRep.Delete(item.Id))
+                                        noItemErrors = false;
+                                }
 
-                                    foreach (var item in order.Orders_OrderToAllocation)
-                                    {
-                                        if (!orderToAllocationRep.Delete(item.Id))
-                                            noItemErrors = false;
-                                    }
+                                foreach (var item in order.Orders_OrderToAllocation)
+                                {
+                                    if (!orderToAllocationRep.Delete(item.Id))
+                                        noItemErrors = false;
+                                }
 
-                                    if (noItemErrors)
+                                if (noItemErrors)
+                                {
+                                    orderToItemRep.Dispose();
+                                    orderToAllocationRep.Dispose();
+                                    if (orderRep.Delete(order.Id))
                                     {
-                                        orderToItemRep.Dispose();
-                                        orderToAllocationRep.Dispose();
-                                        if (orderRep.Delete(order.Id))
-                                        {
-                                            return RedirectToAction("MyOrders");
-                                        }
-                                        else
-                                        {
-                                            return Error(Loc.Dic.error_orders_delete_error);
-                                        }
+                                        return RedirectToAction("MyOrders");
                                     }
                                     else
                                     {
-                                        return Error(Loc.Dic.error_orders_delete_items_error);
+                                        return Error(Loc.Dic.error_orders_delete_error);
                                     }
+                                }
+                                else
+                                {
+                                    return Error(Loc.Dic.error_orders_delete_items_error);
+                                }
                             }
                             else
                             {
@@ -2048,19 +2014,27 @@ namespace GAppsDev.Controllers
 
                             string orderNotes = order.Notes == null ? String.Empty : order.Notes;
 
-                            if (!order.IsFutureOrder)
+                            List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
+                            List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
+
+                            if (orderAllocations.Count == 0)
+                                return Error("Insufficient allocation data for export");
+
+                            foreach (var allocation in distinctOrderAllocations)
                             {
-                                if (order.Budgets_Allocations == null || String.IsNullOrEmpty(order.Budgets_Allocations.ExternalId))
+                                if (String.IsNullOrEmpty(allocation.ExternalId))
                                     return Error("Insufficient allocation data for export");
 
                                 if (order.Orders_OrderToAllocation.Count > 0)
                                 {
-                                    paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, paymentMonthId, 1);
+                                    paymentDate = new DateTime(allocation.Budget.Year, paymentMonthId, 1);
                                 }
                                 else
                                 {
-                                    paymentDate = new DateTime(order.Budgets_Allocations.Budget.Year, order.CreationDate.Month, 1);
+                                    paymentDate = new DateTime(allocation.Budget.Year, order.CreationDate.Month, 1);
                                 }
+
+                                decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
 
                                 builder.AppendLine(
                                 String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
@@ -2071,11 +2045,36 @@ namespace GAppsDev.Controllers
                                 paymentDate.ToString("ddMMyy"),
                                 userCompany.ExternalCoinCode.PadLeft(3),
                                 String.Empty.PadLeft(22),
-                                order.Budgets_Allocations.ExternalId.ToString().PadLeft(8),
+                                allocation.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
                                 order.Supplier.ExternalId.ToString().PadLeft(8),
                                 String.Empty.PadLeft(8),
-                                orderPrice.ToString("0.00").PadLeft(12),
+                                allocationSum.ToString("0.00").PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12),
+                                String.Empty.PadLeft(12)
+                                )
+                                );
+                            }
+
+                            builder.AppendLine(
+                                String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
+                                userCompany.ExternalExpenseCode.PadLeft(3),
+                                order.InvoiceNumber.PadLeft(5),
+                                order.InvoiceDate.Value.ToString("ddMMyy"),
+                                String.Empty.PadLeft(5),
+                                paymentDate.ToString("ddMMyy"),
+                                userCompany.ExternalCoinCode.PadLeft(3),
+                                String.Empty.PadLeft(22),
+                                String.Empty.PadLeft(8),
+                                String.Empty.PadLeft(8),
+                                order.Supplier.ExternalId.ToString().PadLeft(8),
+                                String.Empty.PadLeft(8),
+                                String.Empty.PadLeft(12),
                                 String.Empty.PadLeft(12),
                                 orderPrice.ToString("0.00").PadLeft(12),
                                 String.Empty.PadLeft(12),
@@ -2085,80 +2084,6 @@ namespace GAppsDev.Controllers
                                 String.Empty.PadLeft(12)
                                 )
                                 );
-                            }
-                            else
-                            {
-                                List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
-                                List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
-
-                                if (orderAllocations.Count == 0)
-                                    return Error("Insufficient allocation data for export");
-
-                                foreach (var allocation in distinctOrderAllocations)
-                                {
-                                    if (String.IsNullOrEmpty(allocation.ExternalId))
-                                        return Error("Insufficient allocation data for export");
-
-                                    if (order.Orders_OrderToAllocation.Count > 0)
-                                    {
-                                        paymentDate = new DateTime(allocation.Budget.Year, paymentMonthId, 1);
-                                    }
-                                    else
-                                    {
-                                        paymentDate = new DateTime(allocation.Budget.Year, order.CreationDate.Month, 1);
-                                    }
-
-                                    decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
-
-                                    builder.AppendLine(
-                                    String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                                    userCompany.ExternalExpenseCode.PadLeft(3),
-                                    order.InvoiceNumber.PadLeft(5),
-                                    order.InvoiceDate.Value.ToString("ddMMyy"),
-                                    String.Empty.PadLeft(5),
-                                    paymentDate.ToString("ddMMyy"),
-                                    userCompany.ExternalCoinCode.PadLeft(3),
-                                    String.Empty.PadLeft(22),
-                                    allocation.ExternalId.ToString().PadLeft(8),
-                                    String.Empty.PadLeft(8),
-                                    order.Supplier.ExternalId.ToString().PadLeft(8),
-                                    String.Empty.PadLeft(8),
-                                    allocationSum.ToString("0.00").PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12)
-                                    )
-                                    );
-                                }
-
-                                builder.AppendLine(
-                                    String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                                    userCompany.ExternalExpenseCode.PadLeft(3),
-                                    order.InvoiceNumber.PadLeft(5),
-                                    order.InvoiceDate.Value.ToString("ddMMyy"),
-                                    String.Empty.PadLeft(5),
-                                    paymentDate.ToString("ddMMyy"),
-                                    userCompany.ExternalCoinCode.PadLeft(3),
-                                    String.Empty.PadLeft(22),
-                                    String.Empty.PadLeft(8),
-                                    String.Empty.PadLeft(8),
-                                    order.Supplier.ExternalId.ToString().PadLeft(8),
-                                    String.Empty.PadLeft(8),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    orderPrice.ToString("0.00").PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12),
-                                    String.Empty.PadLeft(12)
-                                    )
-                                    );
-                            }
                         }
 
                         return File(Encoding.UTF8.GetBytes(builder.ToString()),
