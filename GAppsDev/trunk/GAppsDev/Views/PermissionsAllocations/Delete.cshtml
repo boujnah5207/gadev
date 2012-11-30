@@ -6,7 +6,7 @@
     ViewBag.SubPageName = "AllBudgets";
 }
 
-<h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
+<h2>@Model.Budget.Year > @Loc.Dic.Permissions > @Model.Budgets_Baskets.Name</h2>
 <h2>@Loc.Dic.Delete</h2>
 
 <h3>@Loc.Dic.DeleteAlertMessege</h3>
@@ -33,6 +33,6 @@
     <p>
         <input type="submit" value="@Loc.Dic.Delete" />
         |
-        @Html.ActionLink(@Loc.Dic.BackToList, "Index", )
+        @Html.ActionLink(@Loc.Dic.BackToList, "PermissionAllocationList", new { permissionId = Model.Budgets_Baskets.Id, budgetId = Model.BudgetId  }, null)
     </p>
 }

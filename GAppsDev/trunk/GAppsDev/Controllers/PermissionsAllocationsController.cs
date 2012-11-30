@@ -72,7 +72,7 @@ namespace GAppsDev.Controllers
             using (BudgetsPermissionsRepository permissionsRepository = new BudgetsPermissionsRepository())
             using (AllocationRepository allocationRepository = new AllocationRepository())
             {
-                ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).ToList(), "Id", "Name");
+                ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).OrderBy( x => x.ExternalId).ToList(), "Id", "DisplayName");
                 //ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
                 perAlloc.BudgetId = budgetId;
                 perAlloc.BasketId = permissionId;
@@ -142,8 +142,6 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.budgetYear = budgets_permissionstoallocation.Budget.Year;
-            ViewBag.PermissionName = budgets_permissionstoallocation.Budgets_Baskets.Name;
             return View(budgets_permissionstoallocation);
         }
 
@@ -156,7 +154,7 @@ namespace GAppsDev.Controllers
             Budgets_BasketsToAllocation budgets_permissionstoallocation = db.Budgets_BasketsToAllocation.Single(b => b.Id == id);
             db.Budgets_BasketsToAllocation.DeleteObject(budgets_permissionstoallocation);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("PermissionAllocationList", new { permissionId = budgets_permissionstoallocation.BasketId, budgetId = budgets_permissionstoallocation.BudgetId });
         }
 
         protected override void Dispose(bool disposing)

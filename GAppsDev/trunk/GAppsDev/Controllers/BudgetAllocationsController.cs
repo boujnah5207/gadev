@@ -58,7 +58,7 @@ namespace GAppsDev.Controllers
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
             using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == budgetId).ToList();
+                allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == budgetId).OrderBy(x => x.ExternalId).ToList();
                 ViewBag.Year = budgetsRepository.GetEntity(budgetId).Year;
             }
 
