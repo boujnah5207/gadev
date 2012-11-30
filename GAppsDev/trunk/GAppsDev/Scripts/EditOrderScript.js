@@ -48,6 +48,8 @@ $(function () {
 
     $('#mainForm').submit(function () {
 
+        var isFutureOrder = $("#isFutureOrder").is(':checked');
+
         var totalAllocation;
         var totalOrderPrice = parseInt($("#totalOrderPrice").val());
 
@@ -65,7 +67,6 @@ $(function () {
             return false;
         }
 
-        var isFutureOrder = $("#isFutureOrder").is(':checked');
         if (isFutureOrder) {
             $("#NormalOrderContainer").remove();
         }
