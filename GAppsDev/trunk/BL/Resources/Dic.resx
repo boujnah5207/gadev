@@ -1143,4 +1143,10 @@
   <data name="vatNumber" xml:space="preserve">
     <value>VAT number</value>
   </data>
+  <data name="NoAllocationsWereFound" xml:space="preserve">
+    <value>No allocations were found</value>
+  </data>
+  <data name="NoBudgetsWereFound" xml:space="preserve">
+    <value>No budgets were found</value>
+  </data>
 </root>

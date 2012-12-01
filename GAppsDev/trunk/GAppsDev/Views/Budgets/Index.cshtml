@@ -8,35 +8,12 @@
 <p>
     @Html.ActionLink(Loc.Dic.ImportBudget, "Import", "Budgets")
 </p>
-<table>
-    <tr>
-        <th>
-            @Loc.Dic.Active
-        </th>
-        <th>
-            @Loc.Dic.Year
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-
-            @Html.ActionLink(Loc.Dic.View, "AllocationMontheList", "BudgetAllocations",  new { budgetId = item.Id }, null) |
-            @Html.ActionLink(Loc.Dic.UpdateBudget, "Import", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Permissions, "ExistPermissionsList", "Permissions", new { id = item.Id }, null) |
-            @Html.ActionLink(Loc.Dic.Activate, "Activate", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { budgets = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoBudgetsWereFound).</span> 
+}

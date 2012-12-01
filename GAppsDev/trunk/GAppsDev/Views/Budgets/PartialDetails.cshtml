@@ -1,0 +1,30 @@
+﻿@model DB.Budget
+
+<fieldset>
+    <legend>@Loc.Dic.Budget</legend>
+
+    <div class="display-label">
+         @Loc.Dic.Year
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Year)
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.Active
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActive)
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+    <br />
+
+</fieldset>

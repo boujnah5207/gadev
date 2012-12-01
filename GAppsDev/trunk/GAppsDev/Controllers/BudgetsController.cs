@@ -15,6 +15,12 @@ namespace GAppsDev.Controllers
 {
     public class BudgetsController : BaseController
     {
+        const int ITEMS_PER_PAGE = 10;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_SORT = "name";
+        const string DEFAULT_DESC_ORDER = "DESC";
+
         private Entities db = new Entities();
 
         [OpenIdAuthorize]
@@ -24,13 +30,20 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
 
-            var budgets = db.Budgets.Include("Company").Where(x => x.CompanyId == CurrentUser.CompanyId);
-            return View(budgets.ToList());
+            IEnumerable<Budget> budgets;
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            {
+                budgets = budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                budgets = Pagination(budgets, page, sortby, order);
+
+                return View(budgets.ToList());
+            }
         }
 
         //
@@ -67,6 +80,13 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
+        }
+
+        [ChildActionOnly]
+        [OpenIdAuthorize]
+        public ActionResult PartialDetails(Budget budget)
+        {
+            return PartialView(budget);
         }
 
         //
@@ -364,9 +384,68 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult SubMenu()
+        public ActionResult List(IEnumerable<Budget> budgets, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
         {
-            return PartialView();
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            ViewBag.UserRoles = CurrentUser.Roles;
+
+            return PartialView(budgets);
+        }
+
+        private IEnumerable<Budget> Pagination(IEnumerable<Budget> budgets, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        {
+            int numberOfItems = budgets.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<Budget, dynamic>, IEnumerable<Budget>> orderFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    orderFunction = x => budgets.OrderByDescending(x);
+                else
+                    orderFunction = x => budgets.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "active":
+                        budgets = orderFunction(x => x.IsActive);
+                        break;
+                    case "year":
+                    default:
+                        budgets = orderFunction(x => x.Year);
+                        break;
+                }
+            }
+
+            budgets = budgets
+                .Skip((page - 1) * ITEMS_PER_PAGE)
+                .Take(ITEMS_PER_PAGE)
+                .ToList();
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return budgets;
         }
 
         protected override void Dispose(bool disposing)
