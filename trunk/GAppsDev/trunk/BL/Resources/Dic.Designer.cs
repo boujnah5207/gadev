@@ -2329,6 +2329,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order allocations.
+        /// </summary>
+        public static string OrderAllocations {
+            get {
+                return ResourceManager.GetString("OrderAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order approver.
         /// </summary>
         public static string OrderApprover {

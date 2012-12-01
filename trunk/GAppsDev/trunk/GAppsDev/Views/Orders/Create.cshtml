@@ -94,8 +94,16 @@
 
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {
-                        DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
-                        decimal amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        decimal amount;
+                        if (month == DateTime.Now.Month)
+                        {
+                            amount = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.Where(m => m.MonthId <= month).Sum(x => x.Amount);
+                        }
+                        else
+                        {
+                            DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
+                            amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        }
                         
                         <option data-amount="@amount" value="@month">@Html.GetMonthName(month) (@amount)</option>
                     }

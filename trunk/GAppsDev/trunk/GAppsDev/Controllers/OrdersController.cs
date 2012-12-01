@@ -288,8 +288,8 @@ namespace GAppsDev.Controllers
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 OrderModel orderModel = new OrderModel();
-                orderModel.Order = ordersRep.GetEntity(id, "User", "Supplier");
-
+                orderModel.Order = ordersRep.GetEntity(id, "User", "Supplier", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
+                
                 if (orderModel.Order == null)
                     return Error(Loc.Dic.error_order_get_error);
 
@@ -789,6 +789,7 @@ namespace GAppsDev.Controllers
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
                             decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
                             allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
                             if (monthNumber <= DateTime.Now.Month)
@@ -822,7 +823,6 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Create(CreateOrderModel model)
         {
-            //return Error("Stop");
             if (ModelState.IsValid)
             {
                 if (Authorized(RoleType.OrdersWriter))
@@ -894,6 +894,8 @@ namespace GAppsDev.Controllers
 
                             if (model.IsFutureOrder)
                             {
+                                List<OrderAllocation> allocationsToRemove = new List<OrderAllocation>();
+
                                 foreach (var allocation in orderAllocations)
                                 {
                                     List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
@@ -902,14 +904,54 @@ namespace GAppsDev.Controllers
 
                                     foreach (var month in allocationMonths)
                                     {
-                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                                        if (month.MonthId == DateTime.Now.Month)
+                                        {
+                                            OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
 
-                                        if (month.Amount > allocationMonth.Amount)
-                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                            allocationsToRemove.Add(currentAllocation);
+
+                                            decimal remainingOrderPrice = currentAllocation.Amount;
+
+                                            for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
+                                            {
+                                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                                                if (remainingAmount.HasValue && remainingAmount.Value > 0)
+                                                {
+                                                    OrderAllocation newOrderAllocation = new OrderAllocation()
+                                                    {
+                                                        AllocationId = allocation.Id,
+                                                        Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
+                                                        MonthId = monthNumber,
+                                                        IsActive = true
+                                                    };
+
+                                                    model.Allocations.Add(newOrderAllocation);
+                                                    remainingOrderPrice -= newOrderAllocation.Amount;
+                                                }
+                                            }
+
+                                            if (remainingOrderPrice > 0)
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
+                                        }
+                                        else
+                                        {
+                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                            if (month.Amount > allocationMonth.Amount)
+                                                return Error(Loc.Dic.error_order_insufficient_allocation);
+                                        }
                                     }
+                                }
+
+                                foreach (var item in allocationsToRemove)
+                                {
+                                    model.Allocations.Remove(item);
                                 }
                             }
                             else
@@ -1080,13 +1122,7 @@ namespace GAppsDev.Controllers
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
 
-                    if (model.IsFutureOrder)
-                    {
-                        if (!Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
-                            return Error(Loc.Dic.Error_NoPermission);
-
-                        model.Order.IsFutureOrder = true;
-                    }
+                    model.IsFutureOrder = model.Order.IsFutureOrder;
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
@@ -1256,6 +1292,8 @@ namespace GAppsDev.Controllers
 
                                         if (model.IsFutureOrder)
                                         {
+                                            List<OrderAllocation> allocationsToRemove = new List<OrderAllocation>();
+
                                             foreach (var allocation in orderAllocations)
                                             {
                                                 List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.OrderId != orderFromDatabase.Id && x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
@@ -1264,14 +1302,54 @@ namespace GAppsDev.Controllers
 
                                                 foreach (var month in allocationMonths)
                                                 {
-                                                    var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                                    decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                                    decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                                    allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                                                    if (month.MonthId == DateTime.Now.Month)
+                                                    {
+                                                        OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
 
-                                                    if (month.Amount > allocationMonth.Amount)
-                                                        return Error(Loc.Dic.error_order_insufficient_allocation);
+                                                        allocationsToRemove.Add(currentAllocation);
+
+                                                        decimal remainingOrderPrice = currentAllocation.Amount;
+
+                                                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
+                                                        {
+                                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                                                            if (remainingAmount.HasValue && remainingAmount.Value > 0)
+                                                            {
+                                                                OrderAllocation newOrderAllocation = new OrderAllocation()
+                                                                {
+                                                                    AllocationId = allocation.Id,
+                                                                    Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
+                                                                    MonthId = monthNumber,
+                                                                    IsActive = true
+                                                                };
+
+                                                                model.Allocations.Add(newOrderAllocation);
+                                                                remainingOrderPrice -= newOrderAllocation.Amount;
+                                                            }
+                                                        }
+
+                                                        if (remainingOrderPrice > 0)
+                                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                                    }
+                                                    else
+                                                    {
+                                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                                                        if (month.Amount > allocationMonth.Amount)
+                                                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                                                    }
                                                 }
+                                            }
+
+                                            foreach (var item in allocationsToRemove)
+                                            {
+                                                model.Allocations.Remove(item);
                                             }
                                         }
                                         else
@@ -2278,13 +2356,30 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
+        public ActionResult ListOrderAllocations(IEnumerable<Orders_OrderToAllocation> orderAllocations, bool isFutureOrder, string baseUrl)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = false;
+            ViewBag.IsPaged = false;
+            ViewBag.Sortby = null;
+            ViewBag.Order = null;
+            ViewBag.CurrPage = 1;
+            ViewBag.NumberOfPages = 1;
+
+            ViewBag.IsCheckBoxed = false;
+            ViewBag.ShowUserName = true;
+            ViewBag.IsFutureOrder = isFutureOrder;
+
+            return PartialView(orderAllocations);
+        }
+
+        [ChildActionOnly]
         public ActionResult PartialDetails(int id = 0)
         {
             Order order;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items");
-
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
 
                 if (order != null)
                 {
@@ -2301,6 +2396,7 @@ namespace GAppsDev.Controllers
                                 OrderToItem = order.Orders_OrderToItem.ToList()
                             };
 
+                            ViewBag.IsFutureOrder = order.IsFutureOrder;
                             ViewBag.CurrentUserId = CurrentUser.UserId;
                             return PartialView(orderModel);
                         }

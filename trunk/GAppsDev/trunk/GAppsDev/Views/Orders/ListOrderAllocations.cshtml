@@ -1,0 +1,104 @@
+﻿@model List<DB.Orders_OrderToAllocation>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+    List<DB.Orders_OrderToAllocation> displayAllocations;
+    
+    if (!ViewBag.IsFutureOrder)
+    {
+        List<int> distinctAllocationsIds = Model.Select(x => x.AllocationId).Distinct().ToList();
+        displayAllocations = new List<DB.Orders_OrderToAllocation>();
+
+        foreach (int allocationId in distinctAllocationsIds)
+        {
+            displayAllocations.Add(
+                new DB.Orders_OrderToAllocation()
+                {
+                    Budgets_Allocations = Model.First(x => x.AllocationId == allocationId).Budgets_Allocations,
+                    MonthId = 0,
+                    Amount = Model.Where(x => x.AllocationId == allocationId).Sum( a => a.Amount)
+                }
+                );
+        }
+    }
+    else
+    {
+        displayAllocations = Model;
+    }
+}
+
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+            if (ViewBag.IsFutureOrder)
+            {
+                <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Month, "month", ReverseOrder, (string)ViewBag.Sortby)</th>
+            }
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Amount, "amount", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>
+                @Loc.Dic.Name
+            </th>
+            if (ViewBag.IsFutureOrder)
+            {
+            <th>
+                @Loc.Dic.Month
+            </th>
+            }
+            <th>
+                @Loc.Dic.Amount
+            </th>
+        }
+    </tr>
+    @for (int index = 0; index < displayAllocations.Count; index++)
+    {
+        DB.Orders_OrderToAllocation item = displayAllocations[index];
+    
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" value="@item.Id" name="selectedOrderAllocation" />
+                </td>
+            }
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.Name)
+            </td>
+            @if (ViewBag.IsFutureOrder)
+            {
+            <td>
+            @Html.GetMonthName(item.MonthId)
+            </td>
+            }
+            <td>
+            @Html.DisplayTextFor(modelItem => item.Amount)
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}
