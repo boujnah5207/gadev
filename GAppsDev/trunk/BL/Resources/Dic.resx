@@ -1158,4 +1158,7 @@
   <data name="error_ValueDateHaveToBeLaterThenLatestAllocationDate" xml:space="preserve">
     <value>Value Date Have To Be Later Then Latest Allocation Date</value>
   </data>
+  <data name="error_wrongStatus" xml:space="preserve">
+    <value>wrong Status</value>
+  </data>
 </root>
