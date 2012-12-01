@@ -76,18 +76,25 @@
 
         @if (hasFuturePermission)
         {
-            <span id="monthSelectContainer" style="display:none;">
+            <span id="monthSelectContainer" @if(!Model.IsFutureOrder){<text>style="display:none;"</text>}>
             @Loc.Dic.Month:
             
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
-                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0)
-                                                                                               {<text>style="display:none;"</text>}>
+                <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
 
                     @for (int month = DateTime.Now.Month; month <= 12; month++)
                     {
-                        DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
-                        decimal amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        decimal amount;
+                        if (month == DateTime.Now.Month)
+                        {
+                            amount = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.Where(m => m.MonthId <= month).Sum(x => x.Amount);
+                        }
+                        else
+                        {
+                            DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
+                            amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                        }
                         
                         <option data-amount="@amount" value="@month">@Html.GetMonthName(month) (@amount)</option>
                     }
@@ -102,7 +109,7 @@
 
         @if (hasFuturePermission)
         {
-        <div id="FutureOrderContainer" style="display:none;">
+        <div id="FutureOrderContainer" @if(!Model.IsFutureOrder){<text>style="display:none;"</text>}>
             <fieldset id="futureAllocationsFieldset">
                 <legend>@Loc.Dic.BudgetAllocations</legend>
 
@@ -133,7 +140,7 @@
         </div>
         }
 
-        <div id="NormalOrderContainer">
+        <div id="NormalOrderContainer" @if(Model.IsFutureOrder){<text>style="display:none;"</text>}>
             <fieldset id="normalAllocationsFieldset">
                 <legend>@Loc.Dic.BudgetAllocations</legend>
         

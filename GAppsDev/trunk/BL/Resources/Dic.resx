@@ -1149,6 +1149,9 @@
   <data name="NoBudgetsWereFound" xml:space="preserve">
     <value>No budgets were found</value>
   </data>
+  <data name="OrderAllocations" xml:space="preserve">
+    <value>Order allocations</value>
+  </data>
   <data name="OrdersRecovery" xml:space="preserve">
     <value>Orders Recovery</value>
   </data>
