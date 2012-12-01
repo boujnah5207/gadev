@@ -6,40 +6,15 @@
     ViewBag.SubPageName = "AllSuppliers";
 }
 
-<p>
+<p class="bold">
     @Html.ActionLink(Loc.Dic.Import, "Import")
 </p>
 
-<table>
-    <tr>
-        <th>
-            @Loc.Dic.Name
-        </th>
-        <th>
-            @Loc.Dic.ImportedSupplierNumber
-        </th>
-        <th>
-            @Loc.Dic.ImportDate
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExternalId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { suppliers = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoSuppliersWereFound).</span> 
+}

@@ -1,0 +1,210 @@
+﻿@model DB.Supplier
+
+<fieldset>
+    <legend>@Loc.Dic.Supplier</legend>
+
+    <div class="display-label">
+         @Loc.Dic.Name
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.ImportedSupplierNumber
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExternalId)
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.vatNumber
+    </div>
+    <div class="display-field">
+        @if (Model.VAT_Number.HasValue)
+        {
+            @Html.DisplayFor(model => model.VAT_Number)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.Address
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Address))
+        {
+            @Html.DisplayFor(model => model.Address)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.PhoneNumber
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Phone_Number))
+        {
+            @Html.DisplayFor(model => model.Phone_Number)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.AdditionalPhoneNumber
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Additional_Phone))
+        {
+            @Html.DisplayFor(model => model.Additional_Phone)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.CustomerNumber
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Customer_Number))
+        {
+            @Html.DisplayFor(model => model.Customer_Number)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.Email
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.EMail))
+        {
+            @Html.DisplayFor(model => model.EMail)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.Fax
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Fax))
+        {
+            @Html.DisplayFor(model => model.Fax)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.ActivityHours
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Activity_Hours))
+        {
+            @Html.DisplayFor(model => model.Activity_Hours)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.BranchLine
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Branch_line))
+        {
+            @Html.DisplayFor(model => model.Branch_line)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.PresentorName
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Presentor_name))
+        {
+            @Html.DisplayFor(model => model.Presentor_name)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.CrewNumber
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Crew_Number))
+        {
+            @Html.DisplayFor(model => model.Crew_Number)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.Notes
+    </div>
+    <div class="display-field">
+        @if (!String.IsNullOrEmpty(Model.Notes))
+        {
+            @Html.DisplayFor(model => model.Notes)
+        }
+        else
+        {
+            @Loc.Dic.Empty
+        }
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+    <br />
+
+</fieldset>
