@@ -1158,4 +1158,7 @@
   <data name="OrdersRecovery" xml:space="preserve">
     <value>שחזור הזמנות</value>
   </data>
+  <data name="error_wrongStatus" xml:space="preserve">
+    <value>סטטוס הזמנה שגוי</value>
+  </data>
 </root>

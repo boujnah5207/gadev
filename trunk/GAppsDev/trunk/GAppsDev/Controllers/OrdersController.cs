@@ -529,45 +529,27 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult UploadReceiptFile(int id = 0)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                Order order;
-                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    order = orderRep.GetEntity(id);
-
-                    if (order != null)
-                    {
-                        if (order.CompanyId == CurrentUser.CompanyId)
-                        {
-                            if (order.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                            {
-                                ViewBag.OrderId = id;
-                                return View();
-                            }
-                            else if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                            {
-                                return Error(Loc.Dic.Error_InvoiceNotApproved);
-                            }
-                            else //if (order.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
-                            {
-                                return Error(Loc.Dic.Error_OrderAlreadyHasReceipt);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_OrderNotFound);
-                    }
-                }
-            }
-            else
-            {
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.Error_NoPermission);
+
+            Order order;
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = orderRep.GetEntity(id);
+
+                if (order == null)
+                    return Error(Loc.Dic.Error_OrderNotFound);
+
+                if (order.CompanyId != CurrentUser.CompanyId)
+                    return Error(Loc.Dic.Error_NoPermission);
+
+                if (order.StatusId >= (int)StatusType.InvoiceExportedToFilePendingReceipt)
+                {
+                    ViewBag.OrderId = id;
+                    return View();
+                }
+                else
+                    return Error(Loc.Dic.error_wrongStatus);
             }
         }
 
@@ -575,51 +557,36 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult UploadReceiptFile(HttpPostedFileBase file, int orderId = 0)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                Order order;
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    order = ordersRep.GetEntity(orderId);
-
-                    if (order != null)
-                    {
-                        if (order.CompanyId == CurrentUser.CompanyId)
-                        {
-                            if (order.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                            {
-                                order.StatusId = (int)StatusType.ReceiptScanned;
-                                order.LastStatusChangeDate = DateTime.Now;
-
-
-                                if (ordersRep.Update(order) != null)
-                                    return RedirectToAction("Index");
-                                else
-                                    return Error(Loc.Dic.Error_DatabaseError);
-                            }
-                            else if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                            {
-                                return Error(Loc.Dic.Error_InvoiceNotApproved);
-                            }
-                            else //if (order.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingReceipt)
-                            {
-                                return Error(Loc.Dic.Error_OrderAlreadyHasReceipt);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_OrderNotFound);
-                    }
-                }
-            }
-            else
-            {
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.Error_NoPermission);
+
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = ordersRep.GetEntity(orderId);
+
+                if (order == null)
+                    return Error(Loc.Dic.Error_OrderNotFound);
+
+                if (order.CompanyId != CurrentUser.CompanyId)
+                    return Error(Loc.Dic.Error_NoPermission);
+
+                if (order.StatusId >= (int)StatusType.InvoiceExportedToFilePendingReceipt)
+                {
+                    var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                    var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
+                    file.SaveAs(path);
+                    order.StatusId = (int)StatusType.ReceiptScanned;
+                    order.LastStatusChangeDate = DateTime.Now;
+
+
+                    if (ordersRep.Update(order) != null)
+                        return RedirectToAction("Index");
+                    else
+                        return Error(Loc.Dic.Error_DatabaseError);
+                }
+                else
+                    return Error(Loc.Dic.error_wrongStatus);
             }
         }
 

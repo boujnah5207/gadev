@@ -1582,6 +1582,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to wrong Status.
+        /// </summary>
+        public static string error_wrongStatus {
+            get {
+                return ResourceManager.GetString("error_wrongStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expense.
         /// </summary>
         public static string Expense {
