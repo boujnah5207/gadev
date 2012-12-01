@@ -13,6 +13,12 @@ namespace GAppsDev.Controllers
 {
     public class BudgetAllocationsController : BaseController
     {
+        const int ITEMS_PER_PAGE = 10;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_SORT = "name";
+        const string DEFAULT_DESC_ORDER = "DESC";
+
         public const string YOUR_ALLOCATION_WAS_REVOKED = "מערכת: הקצאה זאת בוטלה.";
 
         private Entities db = new Entities();
@@ -51,19 +57,24 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult AllocationMontheList(int budgetId = 0)
+        public ActionResult AllocationMontheList(int id = 0, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
-            List<Budgets_Allocations> allocationsList = new List<Budgets_Allocations>();
+            if (!Authorized(RoleType.SystemManager)) 
+                return Error(Loc.Dic.error_no_permission);
+
+            IEnumerable<Budgets_Allocations> allocationsList;
+
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
             using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == budgetId).OrderBy(x => x.ExternalId).ToList();
-                ViewBag.Year = budgetsRepository.GetEntity(budgetId).Year;
+                allocationsList = allocationsRep.GetList("Budgets_AllocationToMonth").Where(x => x.BudgetId == id);
+
+                allocationsList = Pagination(allocationsList, page, sortby, order);
+
+                ViewBag.BudgetId = id;
+                ViewBag.Year = budgetsRepository.GetEntity(id).Year;
+                return View(allocationsList.ToList());
             }
-
-
-           return View(allocationsList);
         }
         //
         // GET: /BudgetAllocations/Details/5
@@ -533,6 +544,108 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<Budgets_Allocations> allocations, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            ViewBag.UserRoles = CurrentUser.Roles;
+
+            return PartialView(allocations);
+        }
+
+        private IEnumerable<Budgets_Allocations> Pagination(IEnumerable<Budgets_Allocations> allocations, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        {
+            int numberOfItems = allocations.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<Budgets_Allocations, dynamic>, IEnumerable<Budgets_Allocations>> orderFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    orderFunction = x => allocations.OrderByDescending(x);
+                else
+                    orderFunction = x => allocations.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "number":
+                        allocations = orderFunction(x => x.ExternalId);
+                        break;
+                    case "january":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single( a => a.MonthId == 1).Amount);
+                        break;
+                    case "february":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 2).Amount);
+                        break;
+                    case "march":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 3).Amount);
+                        break;
+                    case "april":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 4).Amount);
+                        break;
+                    case "may":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 5).Amount);
+                        break;
+                    case "june":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 6).Amount);
+                        break;
+                    case "july":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 7).Amount);
+                        break;
+                    case "august":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 8).Amount);
+                        break;
+                    case "september":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 9).Amount);
+                        break;
+                    case "october":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 10).Amount);
+                        break;
+                    case "november":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 11).Amount);
+                        break;
+                    case "december":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 12).Amount);
+                        break;
+                    case "name":
+                    default:
+                        allocations = orderFunction(x => x.Name);
+                        break;
+                }
+            }
+
+            allocations = allocations
+                .Skip((page - 1) * ITEMS_PER_PAGE)
+                .Take(ITEMS_PER_PAGE)
+                .ToList();
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return allocations;
         }
 
         protected override void Dispose(bool disposing)

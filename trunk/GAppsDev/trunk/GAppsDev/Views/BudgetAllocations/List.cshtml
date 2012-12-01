@@ -1,0 +1,97 @@
+﻿@model List<DB.Budgets_Allocations>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+@if (ViewBag.IsCheckBoxed)
+{
+    <button type="button" id="selectAllAllocations" onclick="$('.allocationCheckbox').attr('checked', true)">@Loc.Dic.SelectAll</button> 
+    <button type="button" id="deselectAllAllocations" onclick="$('.allocationCheckbox').attr('checked', false)">@Loc.Dic.SelectNone</button>
+}
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Number, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.January, "january", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.February, "february", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.March, "march", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.April, "april", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.May, "may", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.June, "june", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.July, "july", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.August, "august", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.September, "september", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.October, "october", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.November, "november", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.December, "december", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>@Loc.Dic.Name</th>
+            <th>@Loc.Dic.Number</th>
+            <th>@Loc.Dic.January</th>
+            <th>@Loc.Dic.February</th>
+            <th>@Loc.Dic.March</th>
+            <th>@Loc.Dic.April</th>
+            <th>@Loc.Dic.May</th>
+            <th>@Loc.Dic.June</th>
+            <th>@Loc.Dic.July</th>
+            <th>@Loc.Dic.August</th>
+            <th>@Loc.Dic.September</th>
+            <th>@Loc.Dic.October</th>
+            <th>@Loc.Dic.November</th>
+            <th>@Loc.Dic.December</th>
+        }
+
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Budgets_Allocations item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" class="budgetCheckbox" value="@item.Id" name="selectedBudget" />
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.ExternalId)
+            </td>
+            @for(int i = 1; i<=12 ;i++)
+	        {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount)
+                </td> 
+	        }
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}

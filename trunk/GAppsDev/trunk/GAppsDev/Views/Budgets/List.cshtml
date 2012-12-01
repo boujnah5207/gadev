@@ -1,0 +1,83 @@
+﻿@model List<DB.Budget>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+@if (ViewBag.IsCheckBoxed)
+{
+    <button type="button" id="selectAllBudgets" onclick="$('.budgetCheckbox').attr('checked', true)">@Loc.Dic.SelectAll</button> 
+    <button type="button" id="deselectAllBudgets" onclick="$('.budgetCheckbox').attr('checked', false)">@Loc.Dic.SelectNone</button>
+}
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Active, "active", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Year, "year", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>
+                @Loc.Dic.Active
+            </th>
+            <th>
+                @Loc.Dic.Year
+            </th>
+        }
+
+        <th>@Loc.Dic.Actions</th>
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Budget item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" class="budgetCheckbox" value="@item.Id" name="selectedBudget" />
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Year)
+            </td>
+
+            <td>
+                @Html.ActionLink(Loc.Dic.View, "AllocationMontheList", "BudgetAllocations",  new { budgetId = item.Id }, null) |
+                @Html.ActionLink(Loc.Dic.UpdateBudget, "Import", new { id = item.Id }) |
+                @Html.ActionLink(Loc.Dic.Permissions, "ExistPermissionsList", "Permissions", new { id = item.Id }, null) |
+                @if(!item.IsActive)
+                {
+                @Html.ActionLink(Loc.Dic.Activate, "Activate", new { id = item.Id }) <text>|</text>
+                }
+                @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}

@@ -2158,6 +2158,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No allocations were found.
+        /// </summary>
+        public static string NoAllocationsWereFound {
+            get {
+                return ResourceManager.GetString("NoAllocationsWereFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No budgets were found.
+        /// </summary>
+        public static string NoBudgetsWereFound {
+            get {
+                return ResourceManager.GetString("NoBudgetsWereFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No canceled users found.
         /// </summary>
         public static string NoCanceledUsersFound {

@@ -545,6 +545,9 @@
     <Content Include="Views\Users\PendingUserDetails.cshtml" />
     <Content Include="Views\Suppliers\List.cshtml" />
     <Content Include="Views\Suppliers\PartialDetails.cshtml" />
+    <Content Include="Views\Budgets\List.cshtml" />
+    <Content Include="Views\Budgets\PartialDetails.cshtml" />
+    <Content Include="Views\BudgetAllocations\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

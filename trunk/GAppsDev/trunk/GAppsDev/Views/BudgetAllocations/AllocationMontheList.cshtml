@@ -7,47 +7,13 @@
 }
 
 <h2>@Loc.Dic.Allocations @ViewBag.Year</h2>
+<br />
 
-<table>
-    <tr>
-        <th>
-            @Loc.Dic.Name
-        </th>
-        <th>
-            @Loc.Dic.Number
-        </th>
-        <th>@Loc.Dic.January</th>
-        <th>@Loc.Dic.February</th>
-        <th>@Loc.Dic.March</th>
-        <th>@Loc.Dic.April</th>
-        <th>@Loc.Dic.May</th>
-        <th>@Loc.Dic.June</th>
-        <th>@Loc.Dic.July</th>
-        <th>@Loc.Dic.August</th>
-        <th>@Loc.Dic.September</th>
-        <th>@Loc.Dic.October</th>
-        <th>@Loc.Dic.November</th>
-        <th>@Loc.Dic.December</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExternalId)
-            </td>
-            @for(int i = 1; i<=12 ;i++)
-	        {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount)
-                </td> 
-	        }
-
-            <td></td>
-        </tr>
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { allocations = Model, baseUrl = Url.Action("AllocationMontheList", new { id = (int)ViewBag.BudgetId }), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
 }
-
-</table>
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoAllocationsWereFound).</span> 
+}
