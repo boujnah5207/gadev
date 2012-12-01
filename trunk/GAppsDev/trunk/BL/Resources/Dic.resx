@@ -1149,4 +1149,13 @@
   <data name="NoBudgetsWereFound" xml:space="preserve">
     <value>No budgets were found</value>
   </data>
+  <data name="OrdersRecovery" xml:space="preserve">
+    <value>Orders Recovery</value>
+  </data>
+  <data name="error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate" xml:space="preserve">
+    <value>Invoice Date Have To Be Later Then Invoice Creation Date</value>
+  </data>
+  <data name="error_ValueDateHaveToBeLaterThenLatestAllocationDate" xml:space="preserve">
+    <value>Value Date Have To Be Later Then Latest Allocation Date</value>
+  </data>
 </root>
