@@ -546,7 +546,7 @@ namespace GAppsDev.Controllers
                 if (order.StatusId >= (int)StatusType.InvoiceExportedToFilePendingReceipt)
                 {
                     ViewBag.OrderId = id;
-                    return View();
+                    return View(order);
                 }
                 else
                     return Error(Loc.Dic.error_wrongStatus);
