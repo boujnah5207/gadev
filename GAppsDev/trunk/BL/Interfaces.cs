@@ -79,6 +79,7 @@ namespace BL
             if (!noErros) return errorType;
             return "OK";
         }
+
         public static string ImportYearBudget(Stream stream, int companyId, int budgetId)
         {
             const int EXTERNALID = 0;
@@ -130,24 +131,20 @@ namespace BL
                     Budget budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
 
                     Budgets_Allocations newAllocation;
-                    try
-                    {
-                        newAllocation = new Budgets_Allocations()
-                        {
-                            CompanyId = companyId,
-                            BudgetId = budget.Id,
-                            ExternalId = lineValues[EXTERNALID],
-                            Name = lineValues[NAME],
-                        };
-                    }
-                    catch
-                    {
-                        noErros = false;
-                        errorType = Loc.Dic.Error_FileParseError;
-                        break;
-                    }
 
-                    if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId  && x.BudgetId == budgetId) == null)
+                    if (lineValues[EXTERNALID].Length != 8 || lineValues[NAME].Length > 100)
+                        return Loc.Dic.Error_FileParseError;
+
+                    newAllocation = new Budgets_Allocations()
+                    {
+                        CompanyId = companyId,
+                        BudgetId = budget.Id,
+                        ExternalId = lineValues[EXTERNALID],
+                        Name = lineValues[NAME],
+                        CreationDate = DateTime.Now
+                    };
+
+                    if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId) == null)
                     {
                         allocationRep.Create(newAllocation);
                         tempAmountList.Add(newAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
@@ -155,7 +152,7 @@ namespace BL
                     else
                     {
                         Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId);
-                        
+
                         existingAllocation.Name = newAllocation.Name;
                         allocationRep.Update(existingAllocation);
                         tempAmountList.Add(existingAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
@@ -235,24 +232,16 @@ namespace BL
                     if (lineValues[1].Length != 8 || lineValues[2].Length > 100)
                         return Loc.Dic.Error_FileParseError;
 
-                    try
+                    newAllocation = new Budgets_Allocations()
                     {
-                        newAllocation = new Budgets_Allocations()
-                        {
-                            ExternalId = lineValues[1],
-                            Name = lineValues[2],
-                            BudgetId = budget.Id,
-                            CompanyId = companyId,
-                            IncomeId = null,
-                            ExpenseId = null
-                        };
-                    }
-                    catch
-                    {
-                        noErros = false;
-                        errorType = Loc.Dic.Error_FileParseError;
-                        break;
-                    }
+                        ExternalId = lineValues[1],
+                        Name = lineValues[2],
+                        BudgetId = budget.Id,
+                        CompanyId = companyId,
+                        CreationDate = DateTime.Now,
+                        IncomeId = null,
+                        ExpenseId = null
+                    };
 
                     if (!allocationsRep.Create(newAllocation))
                         return Loc.Dic.error_database_error;
@@ -294,7 +283,7 @@ namespace BL
                 }
             }
 
-            if (!noErros) 
+            if (!noErros)
                 return errorType;
 
             return "OK";

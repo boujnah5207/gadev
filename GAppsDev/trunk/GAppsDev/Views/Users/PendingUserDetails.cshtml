@@ -1,4 +1,4 @@
-﻿@model DB.User
+﻿@model DB.PendingUser
 
 @{
     ViewBag.Title = Loc.Dic.Details;
@@ -6,10 +6,10 @@
     ViewBag.SubPageName = "AllUsers";
 }
 
-@Html.Action("PartialDetails", new { user = Model})
+@Html.Action("PendingUserPartialDetails", new { user = Model})
 <br />
 
 <p>
-    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Loc.Dic.Edit, "EditPending", new { id = Model.Id }) |
     @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

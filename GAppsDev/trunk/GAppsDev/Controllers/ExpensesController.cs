@@ -21,6 +21,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index()
         {
+            return Error(Loc.Dic.Error_NoPermission);
             var budgets_expenses = db.Budgets_Expenses.Include("Projects_ParentProject").Include("Projects_SubProject").Where(x => x.CompanyId == CurrentUser.CompanyId);
             return View(budgets_expenses.ToList());
         }
@@ -31,6 +32,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Expenses expense;
@@ -67,6 +69,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 using (BudgetsRepository budgetRep = new BudgetsRepository())
@@ -111,6 +114,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Create(Budgets_Expenses budgets_expenses)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 if (ModelState.IsValid)
@@ -179,6 +183,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Expenses expense;
@@ -252,6 +257,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult Edit(Budgets_Expenses budgets_expenses)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 if (ModelState.IsValid)
@@ -345,6 +351,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Expenses expense;
@@ -360,7 +367,7 @@ namespace GAppsDev.Controllers
                             
                             if (
                                 !ordersRep.GetList()
-                                .Where(x => x.Budgets_Allocations.ExpenseId == expense.Id)
+                                .Where(x => x.CompanyId == expense.Id) //.Where(x => x.Budgets_Allocations.ExpenseId == expense.Id)
                                 .Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice)
                                 )
                             {
@@ -395,6 +402,7 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
+            return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
                 Budgets_Expenses expense;
@@ -411,7 +419,7 @@ namespace GAppsDev.Controllers
                         {
                             List<Budgets_Allocations> expenseAllocations;
                             List<Budgets_BasketsToAllocation> expensePermissions;
-                            List<Order> expenseOrders = ordersRep.GetList().Where(x => x.Budgets_Allocations.ExpenseId == expense.Id).ToList();
+                            List<Order> expenseOrders = ordersRep.GetList().Where(x => x.CompanyId == expense.Id).ToList(); //List<Order> expenseOrders = ordersRep.GetList().Where(x => x.Budgets_Allocations.ExpenseId == expense.Id).ToList();
 
                             if (!expenseOrders.Any(o => o.StatusId >= (int)StatusType.ApprovedPendingInvoice))
                             {
@@ -464,12 +472,6 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
-        }
-
-        [ChildActionOnly]
-        public ActionResult SubMenu()
-        {
-            return PartialView();
         }
 
         protected override void Dispose(bool disposing)

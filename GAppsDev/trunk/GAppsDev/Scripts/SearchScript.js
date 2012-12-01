@@ -4,6 +4,7 @@ var ExpandingSearchBox;
 $(function () {
     expandSearchButton = $("#ExpandSearchButton");
     ExpandingSearchBox = $("#ExpandingSearchBox");
+    SearchFormContainer = $("#SearchFormContainer");
 
     expandSearchButton.click(function () {
         if (expandSearchButton.val() == local.Show) {
@@ -13,7 +14,20 @@ $(function () {
             expandSearchButton.val(local.Show)
         }
 
-        ExpandingSearchBox.slideToggle(300);
+        if (ExpandingSearchBox.css('display') == "none") {
+            ExpandingSearchBox.toggle();
+            SearchFormContainer.slideToggle(300);
+        }
+        else {
+            SearchFormContainer.slideToggle(300).promise().done(function () {
+                ExpandingSearchBox.toggle();
+            });;
+        }
+
+        //ExpandingSearchBox.slideToggle(300).promise().done(function () {
+        //    SearchFormContainer.toggleClass("hidden");
+        //});;
+        
     });
 
 });

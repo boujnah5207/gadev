@@ -1017,4 +1017,97 @@
   <data name="error_allocation_smaller_then_price" xml:space="preserve">
     <value>סכום ההקצאה קטן מסכום ההזמנה</value>
   </data>
+  <data name="CancelSplit" xml:space="preserve">
+    <value>בטל פיצול</value>
+  </data>
+  <data name="error_no_selected_orders" xml:space="preserve">
+    <value>לא נבחרו הזמנות</value>
+  </data>
+  <data name="HideDetails" xml:space="preserve">
+    <value>הסתר פרטים</value>
+  </data>
+  <data name="HideGroup" xml:space="preserve">
+    <value>הסתר קבוצה</value>
+  </data>
+  <data name="ItemsQuantity" xml:space="preserve">
+    <value>מספר פריטים</value>
+  </data>
+  <data name="NotInventoryItem" xml:space="preserve">
+    <value>אינו פריט מלאי</value>
+  </data>
+  <data name="RemovedItems" xml:space="preserve">
+    <value>פריטים שהוסרו</value>
+  </data>
+  <data name="ReturnItemToList" xml:space="preserve">
+    <value>החזר פריט לרשימה</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>בחר הכל</value>
+  </data>
+  <data name="SelectNone" xml:space="preserve">
+    <value>בחר כלום</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>הצג פרטים</value>
+  </data>
+  <data name="ShowGroup" xml:space="preserve">
+    <value>הצג קבוצה</value>
+  </data>
+  <data name="SplitItems" xml:space="preserve">
+    <value>פצל פריטים</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>מצב</value>
+  </data>
+  <data name="WarrantyPeriod" xml:space="preserve">
+    <value>תקופת אחריות</value>
+  </data>
+  <data name="NoUsersFound" xml:space="preserve">
+    <value>לא נמצאו משתמשים</value>
+  </data>
+  <data name="UsersSearch" xml:space="preserve">
+    <value>חיפוש משתמשים</value>
+  </data>
+  <data name="DeleteUser" xml:space="preserve">
+    <value>ביטול משתמש</value>
+  </data>
+  <data name="OrderApproverFor" xml:space="preserve">
+    <value>מאשר הזמנות של</value>
+  </data>
+  <data name="ActiveUsers" xml:space="preserve">
+    <value>משתמשים פעילים</value>
+  </data>
+  <data name="CanceledUser" xml:space="preserve">
+    <value>משתמש מבוטל</value>
+  </data>
+  <data name="CanceledUsers" xml:space="preserve">
+    <value>משתמשים מבוטלים</value>
+  </data>
+  <data name="NewUsers" xml:space="preserve">
+    <value>משתמשים חדשים</value>
+  </data>
+  <data name="NoActiveUsersFound" xml:space="preserve">
+    <value>לא נמצאו משתמשים פעילים</value>
+  </data>
+  <data name="NoCanceledUsersFound" xml:space="preserve">
+    <value>לא נמצאו משתמשים מבוטלים</value>
+  </data>
+  <data name="NoNewUsersFound" xml:space="preserve">
+    <value>לא נמצאו משתמשים חדשים</value>
+  </data>
+  <data name="ReturnUser" xml:space="preserve">
+    <value>החזר משתמש</value>
+  </data>
+  <data name="UserDeleteConfirm" xml:space="preserve">
+    <value>האם אתה בטוח שברצונך לבטל את המשתמש?</value>
+  </data>
+  <data name="UsersQuota" xml:space="preserve">
+    <value>מכסת משתמשים</value>
+  </data>
+  <data name="UserUndoDeleteConfirm" xml:space="preserve">
+    <value>האם אתה בטוח שברצונך להחזיר את המשתמש?</value>
+  </data>
+  <data name="NoMoreBasketsToAdd" xml:space="preserve">
+    <value>אין עוד סלים להוספה</value>
+  </data>
 </root>

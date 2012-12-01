@@ -1,50 +1,62 @@
 ﻿@model GAppsDev.Models.Search.UsersSearchFormModel
 
-<fieldset>
-    <legend>חיפוש מתקדם</legend>
-    <div id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+@if (ViewBag.IsExpanding)
+{ 
+    <a class="bold" id="ExpandSearchButton">@Loc.Dic.Search</a>
+}
+
+<fieldset id="ExpandingSearchBox" @if(ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
+    <legend class="bold">@Loc.Dic.Search: </legend>
+    <div id="SearchFormContainer" @if (ViewBag.IsCollapsed) { <text>style="display:none;"</text> }>
 
     @using (Html.BeginForm("Search", "Users"))
     {
         @Html.ValidationSummary(true)
             
             <div class="editor-label">
-                <span>שם משתמש:</span>
+                <span class="bold">@Loc.Dic.UserName:</span>
             </div>
             <div class="editor-field">
-                 שם פרטי: @Html.TextBox("FirstName") 
+                 <span>@Loc.Dic.FirstName:</span> @Html.TextBoxFor( model => model.SearchValues.FirstName) 
                 <br />
-                 שם משפחה: @Html.TextBox("LastName")
+                 <span>@Loc.Dic.LastName:</span> @Html.TextBoxFor( model => model.SearchValues.LastName)
             </div>
+            <br />
             
             <div class="editor-label">
-                <span>אימייל:</span>
+                <span class="bold">@Loc.Dic.Email:</span>
             </div>
             <div class="editor-field">
-                 @Html.TextBox("Email")
+                 @Html.TextBoxFor( model => model.SearchValues.Email)
             </div>
+            <br />
             
             <div class="editor-label">
-            <span>הרשאה:</span>
+            <span class="bold">@Loc.Dic.Role:</span>
             </div>
             <div class="editor-field">
                 @Html.DropDownList("Role", Model.RolesList)
             </div>
-            
+            <br />
+        
             <div class="editor-label">
-                <span>תאריך הצטרפות (DD/MM/YYYY):</span>
+                <span class="bold">@Loc.Dic.CreationDate (DD/MM/YYYY):</span>
             </div>
             <div class="editor-field">
-                מ- @Html.TextBox("CreationMin") עד- @Html.TextBox("CreationMax")
+                @Loc.Dic.From- @Html.TextBoxFor(model => model.SearchValues.CreationMin, new { id="CreationMin" }) @Loc.Dic.To- @Html.TextBoxFor(model => model.SearchValues.CreationMax, new { id="CreationMax" })
             </div>
             
             <p>
-                <input type="submit" value="חפש"/>
+                <input type="submit" value="@Loc.Dic.Search"/>
             </p>
     }
     </div>
-    @if (ViewBag.IsExpanding)
-    { 
-        <input id="ExpandSearchButton" type="button" value="@if(ViewBag.IsCollapsed){<text>הצג</text>}else {<text>הסתר</text>}" /> 
-    }
+    <script>
+        $(function () {
+            $("#CreationMax").datepicker($.datepicker.regional["he"]);
+            $("#CreationMax").datepicker("option", "dateFormat", "dd/mm/yy");
+            $("#CreationMin").datepicker($.datepicker.regional["he"]);
+            $("#CreationMin").datepicker("option", "dateFormat", "dd/mm/yy");
+        });
+    </script>    
 </fieldset>

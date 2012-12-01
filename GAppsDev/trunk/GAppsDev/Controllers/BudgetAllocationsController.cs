@@ -349,9 +349,9 @@ namespace GAppsDev.Controllers
                                         decimal? allocatedToExpense;
                                         decimal? allocatedToIncome;
 
-                                        totalUsed = ordersRep.GetList()
-                                            .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
-                                            .Sum(x => (decimal?)x.Price);
+                                        totalUsed = 0; //totalUsed = ordersRep.GetList()
+                                        //    .Where(order => order.BudgetAllocationId == Budgets_Allocations.Id && order.StatusId >= (int)StatusType.ApprovedPendingInvoice)
+                                        //    .Sum(x => (decimal?)x.Price);
 
                                         if ((totalUsed ?? 0) > Budgets_Allocations.CompanyId)//if ((totalUsed ?? 0) > Budgets_Allocations.Amount)
                                             return Error(Loc.Dic.error_allocations_amount_is_used);
@@ -434,7 +434,7 @@ namespace GAppsDev.Controllers
                     {
                         if (allocation.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
+                            if (false) //if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
                             {
                                 return View(allocation);
                             }
@@ -481,14 +481,13 @@ namespace GAppsDev.Controllers
                     {
                         if (allocation.CompanyId == CurrentUser.CompanyId)
                         {
-                            if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
+                            if (false) //if (allocation.Orders.All(x => x.StatusId < (int)StatusType.ApprovedPendingInvoice))
                             {
                                 bool noErrors = true;
-                                List<Order> allocationOrders = allocation.Orders.ToList();
+                                List<Order> allocationOrders = new List<Order>();//List<Order> allocationOrders = allocation.Orders.ToList();
 
                                 foreach (var item in allocationOrders)
                                 {
-                                    item.BudgetAllocationId = null;
                                     item.StatusId = (int)StatusType.Declined;
                                     item.LastStatusChangeDate = DateTime.Now;
 

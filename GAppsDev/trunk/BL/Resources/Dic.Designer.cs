@@ -88,6 +88,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active users.
+        /// </summary>
+        public static string ActiveUsers {
+            get {
+                return ResourceManager.GetString("ActiveUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -430,11 +439,38 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Canceled user.
+        /// </summary>
+        public static string CanceledUser {
+            get {
+                return ResourceManager.GetString("CanceledUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Canceled users.
+        /// </summary>
+        public static string CanceledUsers {
+            get {
+                return ResourceManager.GetString("CanceledUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Order.
         /// </summary>
         public static string CancelOrder {
             get {
                 return ResourceManager.GetString("CancelOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel split.
+        /// </summary>
+        public static string CancelSplit {
+            get {
+                return ResourceManager.GetString("CancelSplit", resourceCulture);
             }
         }
         
@@ -624,6 +660,15 @@ namespace Loc {
         public static string DeleteAlertMessege {
             get {
                 return ResourceManager.GetString("DeleteAlertMessege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel user.
+        /// </summary>
+        public static string DeleteUser {
+            get {
+                return ResourceManager.GetString("DeleteUser", resourceCulture);
             }
         }
         
@@ -1074,6 +1119,15 @@ namespace Loc {
         public static string error_no_permission {
             get {
                 return ResourceManager.GetString("error_no_permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No orders were selected.
+        /// </summary>
+        public static string error_no_selected_orders {
+            get {
+                return ResourceManager.GetString("error_no_selected_orders", resourceCulture);
             }
         }
         
@@ -1573,6 +1627,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide details.
+        /// </summary>
+        public static string HideDetails {
+            get {
+                return ResourceManager.GetString("HideDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide group.
+        /// </summary>
+        public static string HideGroup {
+            get {
+                return ResourceManager.GetString("HideGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {
@@ -1776,6 +1848,15 @@ namespace Loc {
         public static string ItemName {
             get {
                 return ResourceManager.GetString("ItemName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items quantity.
+        /// </summary>
+        public static string ItemsQuantity {
+            get {
+                return ResourceManager.GetString("ItemsQuantity", resourceCulture);
             }
         }
         
@@ -1987,11 +2068,38 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New users.
+        /// </summary>
+        public static string NewUsers {
+            get {
+                return ResourceManager.GetString("NewUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No active users found.
+        /// </summary>
+        public static string NoActiveUsersFound {
+            get {
+                return ResourceManager.GetString("NoActiveUsersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No allocations in the order.
         /// </summary>
         public static string NoAllocationsInOrder {
             get {
                 return ResourceManager.GetString("NoAllocationsInOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No canceled users found.
+        /// </summary>
+        public static string NoCanceledUsersFound {
+            get {
+                return ResourceManager.GetString("NoCanceledUsersFound", resourceCulture);
             }
         }
         
@@ -2014,6 +2122,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The are no more baskets to add.
+        /// </summary>
+        public static string NoMoreBasketsToAdd {
+            get {
+                return ResourceManager.GetString("NoMoreBasketsToAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No new users found.
+        /// </summary>
+        public static string NoNewUsersFound {
+            get {
+                return ResourceManager.GetString("NoNewUsersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No orders were found.
         /// </summary>
         public static string NoOrdersWereFound {
@@ -2028,6 +2154,24 @@ namespace Loc {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not an inventory item.
+        /// </summary>
+        public static string NotInventoryItem {
+            get {
+                return ResourceManager.GetString("NotInventoryItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No users found.
+        /// </summary>
+        public static string NoUsersFound {
+            get {
+                return ResourceManager.GetString("NoUsersFound", resourceCulture);
             }
         }
         
@@ -2073,6 +2217,15 @@ namespace Loc {
         public static string OrderApprover {
             get {
                 return ResourceManager.GetString("OrderApprover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order approver for.
+        /// </summary>
+        public static string OrderApproverFor {
+            get {
+                return ResourceManager.GetString("OrderApproverFor", resourceCulture);
             }
         }
         
@@ -2338,6 +2491,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removed items.
+        /// </summary>
+        public static string RemovedItems {
+            get {
+                return ResourceManager.GetString("RemovedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace.
         /// </summary>
         public static string Replace {
@@ -2352,6 +2514,24 @@ namespace Loc {
         public static string Results {
             get {
                 return ResourceManager.GetString("Results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return item to list.
+        /// </summary>
+        public static string ReturnItemToList {
+            get {
+                return ResourceManager.GetString("ReturnItemToList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return user.
+        /// </summary>
+        public static string ReturnUser {
+            get {
+                return ResourceManager.GetString("ReturnUser", resourceCulture);
             }
         }
         
@@ -2401,11 +2581,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected.
         /// </summary>
         public static string SelectedItems {
             get {
                 return ResourceManager.GetString("SelectedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select None.
+        /// </summary>
+        public static string SelectNone {
+            get {
+                return ResourceManager.GetString("SelectNone", resourceCulture);
             }
         }
         
@@ -2455,11 +2653,47 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show details.
+        /// </summary>
+        public static string ShowDetails {
+            get {
+                return ResourceManager.GetString("ShowDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show group.
+        /// </summary>
+        public static string ShowGroup {
+            get {
+                return ResourceManager.GetString("ShowGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Single Item Price.
         /// </summary>
         public static string SingleItemPrice {
             get {
                 return ResourceManager.GetString("SingleItemPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Split items.
+        /// </summary>
+        public static string SplitItems {
+            get {
+                return ResourceManager.GetString("SplitItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string State {
+            get {
+                return ResourceManager.GetString("State", resourceCulture);
             }
         }
         
@@ -2653,6 +2887,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to cancel this user?.
+        /// </summary>
+        public static string UserDeleteConfirm {
+            get {
+                return ResourceManager.GetString("UserDeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         public static string UserName {
@@ -2698,6 +2941,33 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users quota.
+        /// </summary>
+        public static string UsersQuota {
+            get {
+                return ResourceManager.GetString("UsersQuota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users search.
+        /// </summary>
+        public static string UsersSearch {
+            get {
+                return ResourceManager.GetString("UsersSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to return this user?.
+        /// </summary>
+        public static string UserUndoDeleteConfirm {
+            get {
+                return ResourceManager.GetString("UserUndoDeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value Date.
         /// </summary>
         public static string ValueDate {
@@ -2712,6 +2982,15 @@ namespace Loc {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warranty period.
+        /// </summary>
+        public static string WarrantyPeriod {
+            get {
+                return ResourceManager.GetString("WarrantyPeriod", resourceCulture);
             }
         }
         
