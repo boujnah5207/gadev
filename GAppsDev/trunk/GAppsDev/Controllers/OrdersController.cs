@@ -2044,7 +2044,7 @@ namespace GAppsDev.Controllers
                             )
                             );
                         }
-
+                        
                         builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                             userCompany.ExternalExpenseCode.PadLeft(3),
@@ -2068,6 +2068,8 @@ namespace GAppsDev.Controllers
                             String.Empty.PadLeft(12)
                             )
                             );
+                        order.StatusId = (int)StatusType.InvoiceExportedToFilePendingReceipt;
+                        ordersRep.Update(order);
                     }
 
                     return File(Encoding.UTF8.GetBytes(builder.ToString()),
