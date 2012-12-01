@@ -44,6 +44,16 @@ body {
     font-weight:bold;
 }
 
+.hidden
+{
+    visibility:hidden;
+}
+
+.visible
+{
+    visibility:visible;
+}
+
 .bold {
     font-weight:bold;
 }
@@ -51,10 +61,6 @@ body {
 .inlineLabel {
     margin-left:10px;
     display:inline-block;
-}
-
-.hidden {
-    visibility:hidden;
 }
 
 form {
@@ -578,6 +584,9 @@ fieldset {
     border: 1px solid #a0a0a0;
     margin: 0;
     padding: 15px;
+    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:hidden;
 }
 
 fieldset legend{

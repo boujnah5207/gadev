@@ -509,7 +509,7 @@
     </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
     <Content Include="Views\Users\LanguageSet.cshtml" />
-    <Content Include="Views\Users\EditPermissions.cshtml" />
+    <Content Include="Views\Users\EditBaskets.cshtml" />
     <Content Include="Views\Orders\Home.cshtml" />
     <Content Include="Views\Companies\Home.cshtml" />
     <Content Include="Views\Budgets\Home.cshtml" />
@@ -539,6 +539,11 @@
     <Content Include="Views\BudgetAllocations\AllocationMontheList.cshtml" />
     <Content Include="Views\Orders\AddToInventory.cshtml" />
     <Content Include="Views\Orders\PendingInventory.cshtml" />
+    <Content Include="Views\Users\PartialDetails.cshtml" />
+    <Content Include="Views\Users\PendingUsersList.cshtml" />
+    <Content Include="Views\Users\PendingUserPartialDetails.cshtml" />
+    <Content Include="Views\Users\PendingUserDetails.cshtml" />
+    <Content Include="Views\Suppliers\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />
@@ -603,7 +608,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>6104</DevelopmentServerPort>
+          <DevelopmentServerPort>35912</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

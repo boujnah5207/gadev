@@ -1,24 +1,25 @@
-﻿@model IEnumerable<DB.User>
+﻿@model List<DB.User>
 
 @{
-    ViewBag.Title = "חיפוש משתמשים";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.UsersSearch;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
-
 
 @Html.Action("SearchForm", new { isExpanding = false, isCollapsed= false })
 
 @if(Model != null)
 {
     <fieldset>
-        <legend>תוצאות החיפוש</legend>
+        <legend>@Loc.Dic.SearchResults</legend>
     @if (Model.Count() != 0)
     { 
+        <span class="bold">@Loc.Dic.Found @Model.Count @Loc.Dic.Results: </span>
         @Html.Action("SimpleList", new { users = Model })
     }
     else
     {
-        <span class="no-properties">לא נמצאו משתמשים.</span> 
+        <span class="no-properties">@(Loc.Dic.NoUsersFound).</span> 
     }
     </fieldset>
 }

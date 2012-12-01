@@ -14,7 +14,18 @@
 @using(Html.BeginForm()) {
 
     <input type="hidden" name="userId" value="@Model.UserId" />
-    @Loc.Dic.PermissionAllocation<text>:</text> @Html.DropDownList("BasketId", Model.PermissionsSelectList, new { id = "PermissionsList"}) <input id="addPermissionBtn" type="button" value="@Loc.Dic.AddPermission" onClick="addItem()" />
+
+    if (Model.PermissionsSelectList.Any())
+    {
+        @Loc.Dic.PermissionAllocation<text>:</text> @Html.DropDownList("BasketId", Model.PermissionsSelectList, new { id = "PermissionsList"}) <input id="addPermissionBtn" type="button" value="@Loc.Dic.AddPermission" onClick="addItem()" />
+    }
+    else
+    {
+        <span class="bold">@Loc.Dic.NoMoreBasketsToAdd</span>
+    }
+    <br />
+    <br />
+    
     <fieldset>
         <legend>@Loc.Dic.Permissions</legend>
 

@@ -1,145 +1,61 @@
 ﻿@model GAppsDev.Models.UserModels.AllUsersModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = Loc.Dic.UsersManagment;
     ViewBag.PageName = "Managment";
     ViewBag.SubPageName = "AllUsers";
 }
 
 @section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/SearchScript.js"></script>
 }
 
 <fieldset id="userLimit">
     <legend>@Loc.Dic.UsersAmount</legend>
 
-    <span>@Loc.Dic.AllUsers@Model.UsersCount</span><br />
-    <span>מכסת משתמשים: @Model.UsersLimit</span><br />
-    <span>משתמשים מבוטלים: @Model.NonActiveUsers.Count</span>
+    <span><span class="bold">@Loc.Dic.AllUsers:</span> @Model.UsersCount</span><br />
+    <span><span class="bold">@Loc.Dic.UsersQuota:</span> @Model.UsersLimit</span><br />
+    <span><span class="bold">@Loc.Dic.CanceledUsers:</span> @Model.NonActiveUsers.Count</span>
 </fieldset>
+<br />
 
 @Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
+<br /><br />
+@Html.ActionLink(Loc.Dic.CreateNew, "Create")
 
-<p>
-    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
-</p>
 
-<h2>משתמשים פעילים (@Model.ActiveUsers.Count)</h2>
+<h2>@Loc.Dic.ActiveUsers (@Model.ActiveUsers.Count)</h2>
 @if (Model.ActiveUsers.Count() != 0)
 { 
     @Html.Action("List", new { users = Model.ActiveUsers, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })
 }
 else
 {
-    <span class="no-properties">לא נמצאו משתמשים פעילים</span> 
+    <span class="no-properties">@Loc.Dic.NoActiveUsersFound</span> 
 }
 
-<h2>משתמשים חדשים (@Model.PendingUsers.Count)</h2>
+<h2>@Loc.Dic.NewUsers (@Model.PendingUsers.Count)</h2>
 @if(Model.PendingUsers.Count > 0)
 {
-    <table>
-        <tr>
-            <th>
-                @Loc.Dic.Email
-            </th>
-        
-            <th>
-                @Loc.Dic.Role
-            </th>
-            <th>
-                @Loc.Dic.CreationDate
-            </th>
-            <th>פעולות</th>
-        </tr>
-
-    @foreach (var user in Model.PendingUsers) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                @{ 
-                    string roles = ((DA.RoleType)user.Roles).ToString();
-                    <text> @roles </text>
-                 }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.CreationDate)
-            </td>
-            <td>
-                @Html.ActionLink("ערוך", "EditPending", new { id=user.Id }) |
-                @Html.ActionLink("מחק", "DeletePending", new { id=user.Id })
-            </td>
-        </tr>
-    }
-
-    </table>
+    @Html.Action("PendingUsersList", new { users = Model.PendingUsers, baseUrl = Url.Action("Index"), isOrdered = false, isPaged = false, sortby = "none", order = "DESC", currPage = 1, NumberOfPages = 1 })
 }
 else
 {
     <div>
-        <span>לא נמצאו משתמשים חדשים.</span>
+        <span>@Loc.Dic.NoNewUsersFound.</span>
     </div>
 }
 
 
-<h2>משתמשים שבוטלו (@Model.NonActiveUsers.Count)</h2>
+<h2>@Loc.Dic.CanceledUsers (@Model.NonActiveUsers.Count)</h2>
 @if (Model.NonActiveUsers.Count > 0)
 {
-    <table>
-        <tr>
-            <th>
-                @Loc.Dic.Email
-            </th>
-            <th>
-                @Loc.Dic.Name
-            </th>
-            <th>
-                @Loc.Dic.Role
-            </th>
-            <th>
-                @Loc.Dic.CreationDate
-            </th>
-            <th>
-                @Loc.Dic.LastLogInTime
-            </th>
-            <th>פעולות</th>
-        </tr>
-
-    @foreach (var user in Model.NonActiveUsers)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.FirstName)
-                @Html.DisplayFor(modelItem => user.LastName)
-            </td>
-            <td>
-                @{ 
-                    string roles = ((DA.RoleType)user.Roles).ToString();
-                    <text> @roles </text>
-                 }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.CreationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.LastLogInTime)
-            </td>
-            <td>
-                @Html.ActionLink("החזר משתמש", "UndoDelete", new { id=user.Id })
-            </td>
-        </tr>
-    }
-
-    </table>
+    @Html.Action("List", new { users = Model.NonActiveUsers, baseUrl = Url.Action("Index"), isOrdered = false, isPaged = false, sortby = "none", order = "DESC", currPage = 1, NumberOfPages = 1 })
 }
 else
 {
     <div>
-        <span>לא נמצאו משתמשים שבוטלו.</span>
+        <span>@Loc.Dic.NoCanceledUsersFound.</span>
     </div>
 }

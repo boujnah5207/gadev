@@ -2,38 +2,18 @@
 
 @{
     ViewBag.Title = "DeletePending";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
 
-<h3>האם אתה בטוח שברצונך למחוק את המשתמש?</h3>
-<fieldset>
-    <legend>משתמש חדש</legend>
-    
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Email)
-    </div>
+<h3>@Loc.Dic.ConfirmDelete</h3>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Roles)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Roles)
-    </div>
+@Html.Action("PendingUserPartialDetails", new { user = Model})
+<br />
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-
-</fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="@Loc.Dic.Delete" /> |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }

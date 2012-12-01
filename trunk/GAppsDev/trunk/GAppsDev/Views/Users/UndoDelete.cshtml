@@ -1,59 +1,19 @@
 ﻿@model DB.User
 
 @{
-    ViewBag.Title = "הסר משתמש";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Loc.Dic.DeleteUser;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllUsers";
 }
 
-<h3>האם אתה בטוח שברצונך להחזיר את המשתמש?</h3>
-<fieldset>
-    <legend>משתמש מוסר</legend>
+<h3>@Loc.Dic.UserUndoDeleteConfirm</h3>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Email)
-    </div>
+@Html.Action("PartialDetails", new { user = Model})
+<br />
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.FirstName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FirstName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Roles)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Roles)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationTime)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastLogInTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastLogInTime)
-    </div>
-</fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="החזר משתמש" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="@Loc.Dic.ReturnUser" /> |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }

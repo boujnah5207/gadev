@@ -14,11 +14,11 @@ function expand(id, i) {
     var expandingBtn = $("#expandingBtn-" + id + "-" + i);
 
     expandingDiv.slideToggle(500, null);
-    if (expandingBtn.val() == "הצג פרטים") {
-        expandingBtn.val("הסתר פרטים");
+    if (expandingBtn.val() == local.ShowDetails) {
+        expandingBtn.val(local.HideDetails);
     }
     else {
-        expandingBtn.val("הצג פרטים");
+        expandingBtn.val(local.ShowDetails);
     }
 }
 
@@ -27,11 +27,11 @@ function expandGroup(id) {
     var expandingBtn = $("#expandingGroupBtn-" + id);
 
     expandingDiv.slideToggle(500, null);
-    if (expandingBtn.val() == "הצג קבוצה") {
-        expandingBtn.val("הסתר קבוצה");
+    if (expandingBtn.val() == local.ShowGroup) {
+        expandingBtn.val(local.HideGroup);
     }
     else {
-        expandingBtn.val("הצג קבוצה");
+        expandingBtn.val(local.ShowGroup);
     }
 }
 
@@ -41,11 +41,11 @@ function expandRemoved() {
 
     expandingDiv.slideToggle(500, null);
 
-    if (expandingBtn.val() == "הצג פריטים שהוסרו") {
-        expandingBtn.val("הסתר פריטים שהוסרו");
+    if (expandingBtn.val() == local.Show) {
+        expandingBtn.val(local.Hide);
     }
     else {
-        expandingBtn.val("הצג פריטים שהוסרו");
+        expandingBtn.val(local.Show);
     }
 }
 
@@ -65,16 +65,16 @@ function split(id, index, quantity) {
                     "<legend>" + oldItemTitle + " " + (i + 1) + "</legend>" +
                     "<div id='expandingDiv-" + id + "-" + i + "' class='expanding-div' style='display:none;'>" +
                         "<input type='hidden' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].ItemId' value='" + id + "' />" +
-                        "<label>מיקום: </label> " +
+                        "<label>" + local.Location + ": </label> " +
                         $('<div>').append(newLocationList.clone()).html()  +
-                        "<label>משוייך ל: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].AssignedTo' />" +
-                        "<label>מספר סידורי: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].SerialNumber' />" +
-                        "<br /> <span>תקופת אחריות: </span> <br />" +
-                        "<label>מ- </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> - <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
-                        "<label>הערות: </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
-                        "<label>מצב: </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Status' />" +
+                        "<label>" + local.AssignedTo + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].AssignedTo' />" +
+                        "<label>" + local.SerialNumber + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].SerialNumber' />" +
+                        "<br /> <span class='bold'>" + local.WarrantyPeriod + ": </span> <br />" +
+                        "<label style='display:inline;'>" + local.From + "- </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> <label style='display:inline;'>" + local.To + "</label>- <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
+                        "<label>" + local.Notes + ": </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
+                        "<label>" + local.State + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Status' />" +
                     "</div>" +
-                    "<input id='expandingBtn-" + id + "-" + i + "' type='button' value='הצג פרטים' onClick='expand(" + id + "," + i + ")' />" +
+                    "<input id='expandingBtn-" + id + "-" + i + "' type='button' value='" + local.ShowDetails + "' onClick='expand(" + id + "," + i + ")' />" +
                 "</fieldset>"
             );
 
@@ -93,8 +93,8 @@ function split(id, index, quantity) {
     }
 
     oldItem.remove();
-    oldExpandBtn.replaceWith($("<input id='expandingGroupBtn-" + id + "' type='button' value='הסתר קבוצה' onClick='expandGroup(" + id + ")' />"));
-    oldSplitBtn.replaceWith($("<input id='unSplitBtn-" + id + "' type='button' value='בטל פיצול' onClick='unSplit(" + id + ")' />"));
+    oldExpandBtn.replaceWith($("<input id='expandingGroupBtn-" + id + "' type='button' value='" + local.HideGroup + "' onClick='expandGroup(" + id + ")' />"));
+    oldSplitBtn.replaceWith($("<input id='unSplitBtn-" + id + "' type='button' value='" + local.CancelSplit + "' onClick='unSplit(" + id + ")' />"));
 }
 
 function unSplit(id) {
@@ -131,7 +131,7 @@ function remove(id) {
     oldItem.toggle(0);
     oldItemHiddenCancel.val("false");
 
-    $("#removedItems").append($("<div id='removedItem-" + id + "'><span>" + oldItemTitle + "</span><input type='button' value='החזר פריט לרשימה' onClick='unRemove(" + id + ")' /></div>"));
+    $("#removedItems").append($("<div id='removedItem-" + id + "'><span>" + oldItemTitle + "</span><input type='button' value='" + local.ReturnItemToList + "' onClick='unRemove(" + id + ")' /></div>"));
 }
 
 function unRemove(id) {

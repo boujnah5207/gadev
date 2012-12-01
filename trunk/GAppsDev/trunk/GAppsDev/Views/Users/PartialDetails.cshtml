@@ -1,0 +1,68 @@
+﻿@model DB.User
+@using DA
+
+<fieldset>
+    <legend>@Loc.Dic.User</legend>
+    
+    <div class="display-label">
+         @Loc.Dic.Name
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName) <br />
+        (@Html.DisplayFor(model => model.Email))
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.Role
+    </div>
+    <div class="display-field">
+        @(((DA.RoleType)Model.Roles).Describe())
+    </div>
+    <br />
+
+    @if(Model.User1 != null)
+    {
+    <div class="display-label">
+         @Loc.Dic.OrderApprover
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User1.FirstName) @Html.DisplayFor(model => model.User1.LastName)
+    </div>
+    <br />
+    }
+
+    @if (Model.Users1 != null && Model.Users1.Count > 0)
+    {
+    <div class="display-label">
+         @Loc.Dic.OrderApproverFor:
+    </div>
+    <div class="display-field">
+        <ul>
+        @foreach (var user in Model.Users1)
+        {
+            <li><span>@user.FirstName @user.LastName</span></li>
+        }
+        </ul>
+        @Html.DisplayFor(model => model.User1.FirstName) @Html.DisplayFor(model => model.User1.LastName)
+    </div>
+    <br />
+    }
+
+    <div class="display-label">
+         @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationTime)
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.LastLogInTime
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastLogInTime)
+    </div>
+    <br />
+
+</fieldset>

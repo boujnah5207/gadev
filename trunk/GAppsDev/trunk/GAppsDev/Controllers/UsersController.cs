@@ -149,14 +149,58 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            User user = db.Users.Single(u => u.Id == id);
-            if (user == null)
+            if (!Authorized(RoleType.UsersManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            User user;
+            using (UsersRepository usersRep = new UsersRepository())
             {
-                return HttpNotFound();
+                user = usersRep.GetEntity(id, "Language", "User1", "Users1");
             }
+
+            if (user == null)
+                return Error(Loc.Dic.error_user_not_found);
+
             return View(user);
         }
 
+        [ChildActionOnly]
+        [OpenIdAuthorize]
+        public ActionResult PartialDetails(User user)
+        {
+            if (!Authorized(RoleType.UsersManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            return PartialView(user);
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult PendingUserDetails(int id = 0)
+        {
+            if (!Authorized(RoleType.UsersManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            PendingUser user;
+            using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
+            {
+                user = pendingUsersRep.GetEntity(id, "Language", "User");
+            }
+
+            if (user == null)
+                return Error(Loc.Dic.error_user_not_found);
+
+            return View(user);
+        }
+
+        [ChildActionOnly]
+        [OpenIdAuthorize]
+        public ActionResult PendingUserPartialDetails(PendingUser user)
+        {
+            if (!Authorized(RoleType.UsersManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            return PartialView(user);
+        }
 
         [OpenIdAuthorize]
         public ActionResult Create()
@@ -283,7 +327,7 @@ namespace GAppsDev.Controllers
         // GET: /Users/Create
 
         [OpenIdAuthorize]
-        public ActionResult EditPermissions(int id = 0)
+        public ActionResult EditBaskets(int id = 0)
         {
             if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
@@ -330,7 +374,7 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult EditPermissions(UserPermissionsModel model)
+        public ActionResult EditBaskets(UserPermissionsModel model)
         {
             if (ModelState.IsValid)
             {
@@ -353,9 +397,9 @@ namespace GAppsDev.Controllers
 
                                 if (existingPermissions != null)
                                 {
-                                    if(model.UserPermissions == null)
+                                    if (model.UserPermissions == null)
                                         return RedirectToAction("Index");
-                                        
+
                                     foreach (var permission in model.UserPermissions)
                                     {
                                         if (permission.IsActive)
@@ -643,7 +687,7 @@ namespace GAppsDev.Controllers
                 User user;
                 using (UserRepository userRep = new UserRepository())
                 {
-                    user = userRep.GetEntity(id);
+                    user = userRep.GetEntity(id, "Language", "User1", "Users1");
                 }
 
                 if (user == null)
@@ -675,7 +719,7 @@ namespace GAppsDev.Controllers
                 PendingUser user;
                 using (PendingUsersRepository userRep = new PendingUsersRepository())
                 {
-                    user = userRep.GetEntity(id);
+                    user = userRep.GetEntity(id, "User");
                 }
 
                 if (user == null)
@@ -775,13 +819,57 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult UndoDelete(int id = 0)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            User user;
+            using (UserRepository userRep = new UserRepository())
             {
-                User user;
-                using (UserRepository userRep = new UserRepository())
+                user = userRep.GetEntity(id, "Company", "Language", "User1", "Users1");
+            }
+
+            if (user == null)
+            {
+                return Error(Loc.Dic.error_user_not_found);
+            }
+            if (user.Id == CurrentUser.UserId)
+            {
+                return Error(Loc.Dic.error_user_cannot_delete_self);
+            }
+            if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
+            {
+                return Error(Loc.Dic.error_no_permission);
+            }
+
+            bool? canAddUsers = CompanyCanAddUsers();
+            if (canAddUsers.HasValue)
+            {
+                if (canAddUsers.Value)
                 {
-                    user = userRep.GetEntity(id);
+                    return View(user);
                 }
+                else
+                {
+                    return Error(Loc.Dic.error_users_limit_reached);
+                }
+            }
+            else
+            {
+                return Error(Loc.Dic.error_database_error);
+            }
+        }
+
+        [HttpPost, ActionName("UndoDelete")]
+        [OpenIdAuthorize]
+        public ActionResult UndoDeleteConfirmed(int id)
+        {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            User user;
+            using (UserRepository userRep = new UserRepository())
+            {
+                user = userRep.GetEntity(id, "Company");
 
                 if (user == null)
                 {
@@ -801,7 +889,9 @@ namespace GAppsDev.Controllers
                 {
                     if (canAddUsers.Value)
                     {
-                        return View(user);
+                        user.IsActive = true;
+                        userRep.Update(user);
+                        return RedirectToAction("Index");
                     }
                     else
                     {
@@ -812,60 +902,6 @@ namespace GAppsDev.Controllers
                 {
                     return Error(Loc.Dic.error_database_error);
                 }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
-
-        [HttpPost, ActionName("UndoDelete")]
-        [OpenIdAuthorize]
-        public ActionResult UndoDeleteConfirmed(int id)
-        {
-            if (Authorized(RoleType.SystemManager))
-            {
-                User user;
-                using (UserRepository userRep = new UserRepository())
-                {
-                    user = userRep.GetEntity(id);
-
-                    if (user == null)
-                    {
-                        return Error(Loc.Dic.error_user_not_found);
-                    }
-                    if (user.Id == CurrentUser.UserId)
-                    {
-                        return Error(Loc.Dic.error_user_cannot_delete_self);
-                    }
-                    if (user.CompanyId != CurrentUser.CompanyId || user.Roles == (int)RoleType.SuperAdmin)
-                    {
-                        return Error(Loc.Dic.error_no_permission);
-                    }
-
-                    bool? canAddUsers = CompanyCanAddUsers();
-                    if (canAddUsers.HasValue)
-                    {
-                        if (canAddUsers.Value)
-                        {
-                            user.IsActive = true;
-                            userRep.Update(user);
-                            return RedirectToAction("Index");
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_users_limit_reached);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_database_error);
-                    }
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
             }
         }
 
@@ -951,6 +987,23 @@ namespace GAppsDev.Controllers
 
         [ChildActionOnly]
         public ActionResult List(IEnumerable<User> users, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            return PartialView(users);
+        }
+
+        [ChildActionOnly]
+        public ActionResult PendingUsersList(IEnumerable<PendingUser> users, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
         {
             ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = isOrdered;

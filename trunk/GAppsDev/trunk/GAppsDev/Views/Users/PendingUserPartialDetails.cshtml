@@ -1,0 +1,42 @@
+﻿@model DB.PendingUser
+@using DA
+
+<fieldset>
+    <legend>@Loc.Dic.NewUser</legend>
+    
+    <div class="display-label">
+         @Loc.Dic.Email
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.Role
+    </div>
+    <div class="display-field">
+        @(((DA.RoleType)Model.Roles).Describe())
+    </div>
+    <br />
+
+    @if(Model.User != null)
+    {
+    <div class="display-label">
+         @Loc.Dic.OrderApprover
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.LastName)
+    </div>
+    <br />
+    }
+
+    <div class="display-label">
+         @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+    <br />
+
+</fieldset>

@@ -354,6 +354,23 @@ namespace GAppsDev.Controllers
             }
         }
 
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<Supplier> orders, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            return PartialView(orders);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

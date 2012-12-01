@@ -349,7 +349,6 @@ function addAllocation() {
     }
 
     var isFutureOrder = $("#isFutureOrder").is(':checked');
-    console.log(isFutureOrder);
 
     var container;
     var existingAllocations;
@@ -376,7 +375,6 @@ function addAllocation() {
     else {
         container = $("#normalAllocationsContainer");
         existingAllocations = $(".existingNormalAllocations");
-        console.log(existingAllocations);
 
         if (wantedAmount > remainingAllocationAmount) {
             alert(local.AmountExceedsAllocation);
@@ -402,12 +400,6 @@ function addAllocation() {
         container.html("");
 
     existingRemovedAllocation = getRemovedAllocation(allocationId, monthId);
-    console.log("removedAllocations: ");
-    console.log(removedAllocations);
-    console.log("allocationId: " + allocationId);
-    console.log("monthId: " + monthId);
-    console.log("existingRemovedAllocation: ");
-    console.log(existingRemovedAllocation);
 
     if (existingRemovedAllocation == null) {
         if (!allocationExists) {
@@ -425,13 +417,11 @@ function addAllocation() {
             container.append(newAllocation);
         }
         else {
-            console.log("editExisting");
             existingAllocation.find(".amountField").val(wantedAmount);
             existingAllocation.find(".amountText").html(wantedAmount);
         }
     }
     else {
-        console.log("unRemove");
         unRemove(allocationId, monthId);
         existingAllocation.find(".amountField").val(wantedAmount);
         existingAllocation.find(".amountText").html(wantedAmount);

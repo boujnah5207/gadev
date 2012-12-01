@@ -1017,4 +1017,97 @@
   <data name="error_allocation_smaller_then_price" xml:space="preserve">
     <value>Allocation amount is less then the total order price</value>
   </data>
+  <data name="CancelSplit" xml:space="preserve">
+    <value>Cancel split</value>
+  </data>
+  <data name="error_no_selected_orders" xml:space="preserve">
+    <value>No orders were selected</value>
+  </data>
+  <data name="HideDetails" xml:space="preserve">
+    <value>Hide details</value>
+  </data>
+  <data name="HideGroup" xml:space="preserve">
+    <value>Hide group</value>
+  </data>
+  <data name="ItemsQuantity" xml:space="preserve">
+    <value>Items quantity</value>
+  </data>
+  <data name="NotInventoryItem" xml:space="preserve">
+    <value>Not an inventory item</value>
+  </data>
+  <data name="RemovedItems" xml:space="preserve">
+    <value>Removed items</value>
+  </data>
+  <data name="ReturnItemToList" xml:space="preserve">
+    <value>Return item to list</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="SelectNone" xml:space="preserve">
+    <value>Select None</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Show details</value>
+  </data>
+  <data name="ShowGroup" xml:space="preserve">
+    <value>Show group</value>
+  </data>
+  <data name="SplitItems" xml:space="preserve">
+    <value>Split items</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="WarrantyPeriod" xml:space="preserve">
+    <value>Warranty period</value>
+  </data>
+  <data name="NoUsersFound" xml:space="preserve">
+    <value>No users found</value>
+  </data>
+  <data name="UsersSearch" xml:space="preserve">
+    <value>Users search</value>
+  </data>
+  <data name="DeleteUser" xml:space="preserve">
+    <value>Cancel user</value>
+  </data>
+  <data name="OrderApproverFor" xml:space="preserve">
+    <value>Order approver for</value>
+  </data>
+  <data name="ActiveUsers" xml:space="preserve">
+    <value>Active users</value>
+  </data>
+  <data name="CanceledUser" xml:space="preserve">
+    <value>Canceled user</value>
+  </data>
+  <data name="CanceledUsers" xml:space="preserve">
+    <value>Canceled users</value>
+  </data>
+  <data name="NewUsers" xml:space="preserve">
+    <value>New users</value>
+  </data>
+  <data name="NoActiveUsersFound" xml:space="preserve">
+    <value>No active users found</value>
+  </data>
+  <data name="NoCanceledUsersFound" xml:space="preserve">
+    <value>No canceled users found</value>
+  </data>
+  <data name="NoNewUsersFound" xml:space="preserve">
+    <value>No new users found</value>
+  </data>
+  <data name="ReturnUser" xml:space="preserve">
+    <value>Return user</value>
+  </data>
+  <data name="UserDeleteConfirm" xml:space="preserve">
+    <value>Are you sure you want to cancel this user?</value>
+  </data>
+  <data name="UsersQuota" xml:space="preserve">
+    <value>Users quota</value>
+  </data>
+  <data name="UserUndoDeleteConfirm" xml:space="preserve">
+    <value>Are you sure you want to return this user?</value>
+  </data>
+  <data name="NoMoreBasketsToAdd" xml:space="preserve">
+    <value>The are no more baskets to add</value>
+  </data>
 </root>
