@@ -97,6 +97,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activity hours.
+        /// </summary>
+        public static string ActivityHours {
+            get {
+                return ResourceManager.GetString("ActivityHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -129,6 +138,15 @@ namespace Loc {
         public static string AddItem {
             get {
                 return ResourceManager.GetString("AddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Additional phone number.
+        /// </summary>
+        public static string AdditionalPhoneNumber {
+            get {
+                return ResourceManager.GetString("AdditionalPhoneNumber", resourceCulture);
             }
         }
         
@@ -394,6 +412,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch line.
+        /// </summary>
+        public static string BranchLine {
+            get {
+                return ResourceManager.GetString("BranchLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Budget.
         /// </summary>
         public static string Budget {
@@ -606,6 +633,24 @@ namespace Loc {
         public static string CreationDate {
             get {
                 return ResourceManager.GetString("CreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crew number.
+        /// </summary>
+        public static string CrewNumber {
+            get {
+                return ResourceManager.GetString("CrewNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client number.
+        /// </summary>
+        public static string CustomerNumber {
+            get {
+                return ResourceManager.GetString("CustomerNumber", resourceCulture);
             }
         }
         
@@ -1393,6 +1438,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A supplier was not found in the database.
+        /// </summary>
+        public static string error_supplier_not_found {
+            get {
+                return ResourceManager.GetString("error_supplier_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_suppliers_create_error.
         /// </summary>
         public static string error_suppliers_create_error {
@@ -1551,6 +1605,15 @@ namespace Loc {
         public static string ExportToFile {
             get {
                 return ResourceManager.GetString("ExportToFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fax.
+        /// </summary>
+        public static string Fax {
+            get {
+                return ResourceManager.GetString("Fax", resourceCulture);
             }
         }
         
@@ -2149,6 +2212,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No suppliers were found.
+        /// </summary>
+        public static string NoSuppliersWereFound {
+            get {
+                return ResourceManager.GetString("NoSuppliersWereFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
@@ -2406,6 +2478,24 @@ namespace Loc {
         public static string PermissionsAllocations {
             get {
                 return ResourceManager.GetString("PermissionsAllocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Presentor name.
+        /// </summary>
+        public static string PresentorName {
+            get {
+                return ResourceManager.GetString("PresentorName", resourceCulture);
             }
         }
         
@@ -2973,6 +3063,15 @@ namespace Loc {
         public static string ValueDate {
             get {
                 return ResourceManager.GetString("ValueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VAT number.
+        /// </summary>
+        public static string vatNumber {
+            get {
+                return ResourceManager.GetString("vatNumber", resourceCulture);
             }
         }
         

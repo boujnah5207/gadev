@@ -2,28 +2,14 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllSuppliers";
 }
 
+@Html.Action("PartialDetails", new { supplier = Model})
+<br />
 
-<fieldset>
-    <legend>Supplier</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-</fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=Model.Id }) |
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

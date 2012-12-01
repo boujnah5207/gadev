@@ -1110,4 +1110,37 @@
   <data name="NoMoreBasketsToAdd" xml:space="preserve">
     <value>The are no more baskets to add</value>
   </data>
+  <data name="error_supplier_not_found" xml:space="preserve">
+    <value>A supplier was not found in the database</value>
+  </data>
+  <data name="NoSuppliersWereFound" xml:space="preserve">
+    <value>No suppliers were found</value>
+  </data>
+  <data name="ActivityHours" xml:space="preserve">
+    <value>Activity hours</value>
+  </data>
+  <data name="AdditionalPhoneNumber" xml:space="preserve">
+    <value>Additional phone number</value>
+  </data>
+  <data name="BranchLine" xml:space="preserve">
+    <value>Branch line</value>
+  </data>
+  <data name="CrewNumber" xml:space="preserve">
+    <value>Crew number</value>
+  </data>
+  <data name="CustomerNumber" xml:space="preserve">
+    <value>Client number</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="PresentorName" xml:space="preserve">
+    <value>Presentor name</value>
+  </data>
+  <data name="vatNumber" xml:space="preserve">
+    <value>VAT number</value>
+  </data>
 </root>

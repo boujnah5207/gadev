@@ -20,6 +20,7 @@ namespace GAppsDev.Controllers
         const int ITEMS_PER_PAGE = 10;
         const int FIRST_PAGE = 1;
         const string NO_SORT_BY = "None";
+        const string DEFAULT_SORT = "name";
         const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
@@ -28,11 +29,21 @@ namespace GAppsDev.Controllers
         // GET: /Suppliers/
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            return View(db.Suppliers.Where(x => x.CompanyId == CurrentUser.CompanyId).ToList());
-        }
+            if(!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
 
+            IEnumerable<Supplier> suppliers;
+            using(SuppliersRepository suppliersRep = new SuppliersRepository())
+            {
+                suppliers = suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                suppliers = Pagination(suppliers, page, sortby, order);
+
+                return View(suppliers.ToList());
+            }
+        }
 
         [OpenIdAuthorize]
         public ActionResult Import()
@@ -65,12 +76,23 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            Supplier supplier = db.Suppliers.Single(s => s.Id == id);
-            if (supplier == null)
+            Supplier supplier;
+            using (SuppliersRepository supplierssRep = new SuppliersRepository())
             {
-                return HttpNotFound();
+                supplier = supplierssRep.GetEntity(id);
             }
+
+            if (supplier == null)
+                return Error(Loc.Dic.error_supplier_not_found);
+
             return View(supplier);
+        }
+
+        [ChildActionOnly]
+        [OpenIdAuthorize]
+        public ActionResult PartialDetails(Supplier supplier)
+        {
+            return PartialView(supplier);
         }
 
         //
@@ -164,6 +186,9 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
             Supplier supplier = db.Suppliers.Single(s => s.Id == id);
             if (supplier == null)
             {
@@ -179,14 +204,48 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(Supplier supplier)
         {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
             if (ModelState.IsValid)
             {
-                db.Suppliers.Attach(supplier);
-                db.ObjectStateManager.ChangeObjectState(supplier, EntityState.Modified);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Supplier supplierFromDB;
+                bool wasUpdated;
+                using (SuppliersRepository supplierRep = new SuppliersRepository())
+                {
+                    supplierFromDB = supplierRep.GetEntity(supplier.Id);
+
+                    if (supplierFromDB == null)
+                        return Error(Loc.Dic.error_supplier_not_found);
+
+                    if (supplierFromDB.CompanyId != CurrentUser.CompanyId)
+                        return Error(Loc.Dic.error_no_permission);
+
+                    supplierFromDB.Name = supplier.Name;
+                    supplierFromDB.ExternalId = supplier.ExternalId;
+                    supplierFromDB.Activity_Hours = supplier.Activity_Hours;
+                    supplierFromDB.Additional_Phone = supplier.Additional_Phone;
+                    supplierFromDB.Address = supplier.Address;
+                    supplierFromDB.Branch_line = supplier.Branch_line;
+                    supplierFromDB.Crew_Number = supplier.Crew_Number;
+                    supplierFromDB.Customer_Number = supplier.Customer_Number;
+                    supplierFromDB.EMail = supplier.EMail;
+                    supplierFromDB.Fax = supplier.Fax;
+                    supplierFromDB.Notes = supplier.Notes;
+                    supplierFromDB.Phone_Number = supplier.Phone_Number;
+                    supplierFromDB.Presentor_name = supplier.Presentor_name;
+                    supplierFromDB.VAT_Number = supplier.VAT_Number;
+
+                    if (supplierRep.Update(supplierFromDB) != null)
+                        return RedirectToAction("Index");
+                    else
+                        return Error(Loc.Dic.error_database_error);
+                }
             }
-            return View(supplier);
+            else
+            {
+                return Error(ModelState);
+            }
         }
 
         //
@@ -195,6 +254,9 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
             Supplier supplier = db.Suppliers.Single(s => s.Id == id);
             if (supplier == null)
             {
@@ -210,6 +272,9 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
             Supplier supplier = db.Suppliers.Single(s => s.Id == id);
             db.Suppliers.DeleteObject(supplier);
             db.SaveChanges();
@@ -355,7 +420,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult List(IEnumerable<Supplier> orders, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        public ActionResult List(IEnumerable<Supplier> suppliers, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
         {
             ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = isOrdered;
@@ -368,7 +433,58 @@ namespace GAppsDev.Controllers
             ViewBag.IsCheckBoxed = isCheckBoxed;
             ViewBag.ShowUserName = showUserName;
 
-            return PartialView(orders);
+            ViewBag.UserRoles = CurrentUser.Roles;
+
+            return PartialView(suppliers);
+        }
+
+        private IEnumerable<Supplier> Pagination(IEnumerable<Supplier> suppliers, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        {
+            int numberOfItems = suppliers.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<Supplier, dynamic>, IEnumerable<Supplier>> orderFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    orderFunction = x => suppliers.OrderByDescending(x);
+                else
+                    orderFunction = x => suppliers.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "number":
+                        suppliers = orderFunction(x => x.ExternalId);
+                        break;
+                    case "date":
+                        suppliers = orderFunction(x => x.CreationDate);
+                        break;
+                    case "name":
+                    default:
+                        suppliers = orderFunction(x => x.Name);
+                        break;
+                }
+            }
+
+            suppliers = suppliers
+                .Skip((page - 1) * ITEMS_PER_PAGE)
+                .Take(ITEMS_PER_PAGE)
+                .ToList();
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return suppliers;
         }
 
         protected override void Dispose(bool disposing)

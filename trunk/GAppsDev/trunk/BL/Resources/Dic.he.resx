@@ -1110,4 +1110,37 @@
   <data name="NoMoreBasketsToAdd" xml:space="preserve">
     <value>אין עוד סלים להוספה</value>
   </data>
+  <data name="error_supplier_not_found" xml:space="preserve">
+    <value>ספק לא נמצא בבסיס הנתונים</value>
+  </data>
+  <data name="NoSuppliersWereFound" xml:space="preserve">
+    <value>לא נמצאו ספקים</value>
+  </data>
+  <data name="ActivityHours" xml:space="preserve">
+    <value>שעות פעולה</value>
+  </data>
+  <data name="AdditionalPhoneNumber" xml:space="preserve">
+    <value>מספר טלפון נוסף</value>
+  </data>
+  <data name="BranchLine" xml:space="preserve">
+    <value>שלוחה</value>
+  </data>
+  <data name="CrewNumber" xml:space="preserve">
+    <value>מספר צוות</value>
+  </data>
+  <data name="CustomerNumber" xml:space="preserve">
+    <value>מספר לקוח</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>פקס</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>מספר טלפון</value>
+  </data>
+  <data name="PresentorName" xml:space="preserve">
+    <value>שם הנציג</value>
+  </data>
+  <data name="vatNumber" xml:space="preserve">
+    <value>מספר תיק מע"מ</value>
+  </data>
 </root>
