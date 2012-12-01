@@ -26,7 +26,7 @@ namespace GAppsDev.Controllers
         const string NO_SORT_BY = "None";
         const string DEFAULT_SORT = "lastChange";
         const string DEFAULT_DESC_ORDER = "DESC";
-
+        const int FIRST_DAY_OF_MONTH = 1;
         private Entities db = new Entities();
 
         [OpenIdAuthorize]
@@ -457,6 +457,7 @@ namespace GAppsDev.Controllers
                 if (file != null && file.ContentLength > 0)
                 {
                     Order order;
+                    using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                     {
                         order = ordersRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
@@ -465,6 +466,19 @@ namespace GAppsDev.Controllers
                         {
                             if (order.CompanyId == CurrentUser.CompanyId)
                             {
+                                if (model.InvoiceDate < order.CreationDate)
+                                    return Error(Loc.Dic.error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate);
+
+                                DateTime minValueDate = new DateTime();
+                                if (order.IsFutureOrder)
+                                    minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
+
+                                else
+                                    minValueDate = order.CreationDate;
+
+                                if (model.ValueDate < minValueDate)
+                                    return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
+
                                 if (order.StatusId == (int)StatusType.ApprovedPendingInvoice)
                                 {
                                     var fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
@@ -1896,33 +1910,40 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult OrdersToExport(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        public ActionResult OrdersToExport(bool isRecovery = false, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                IEnumerable<Order> ordersToExport;
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
 
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            IEnumerable<Order> ordersToExport;
+
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                if (isRecovery)
                 {
                     ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                        .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
-
-                    ordersToExport = Pagination(ordersToExport, page, sortby, order);
-                }
-
-                if (ordersToExport != null)
-                {
-                    return View(ordersToExport.ToList());
+                        .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                    ViewBag.isRecovery = true;
                 }
                 else
                 {
-                    return Error(Loc.Dic.error_order_get_error);
+                    ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                    ViewBag.isRecovery = false;
                 }
+
+                ordersToExport = Pagination(ordersToExport, page, sortby, order);
+            }
+
+            if (ordersToExport != null)
+            {
+                return View(ordersToExport.ToList());
             }
             else
             {
-                return Error(Loc.Dic.error_no_permission);
+                return Error(Loc.Dic.error_order_get_error);
             }
+
         }
 
         [OpenIdAuthorize]
@@ -2044,7 +2065,7 @@ namespace GAppsDev.Controllers
                             )
                             );
                         }
-                        
+
                         builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                             userCompany.ExternalExpenseCode.PadLeft(3),

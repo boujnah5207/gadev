@@ -6,10 +6,21 @@
     ViewBag.SubPageName = "ExportToFile";
 }
 
-@using (Html.BeginForm()) {
-    
-    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("OrdersToExport"), isCheckBoxed = true, isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })
+@using (Html.BeginForm())
+{
+    <p>
+        @if (ViewBag.isRecovery)
+        {
+            @Html.ActionLink(Loc.Dic.ExportToFile, "OrdersToExport")
+        }
+        else
+        {
+            @Html.ActionLink(Loc.Dic.OrdersRecovery, "OrdersToExport", new { isRecovery = true })
+        }
+    </p>
 
+    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("OrdersToExport"), isCheckBoxed = true, isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })
+    
     <p>
         <input type="submit" value="@Loc.Dic.Export" onclick=" setTimeout(function () { window.location.reload(); }, 100);">
     </p>

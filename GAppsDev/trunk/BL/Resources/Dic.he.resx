@@ -1149,4 +1149,13 @@
   <data name="NoBudgetsWereFound" xml:space="preserve">
     <value>לא נמצאו תקציבים</value>
   </data>
+  <data name="error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate" xml:space="preserve">
+    <value>תאריך האסמכתא חייב להיות לאחר תאריך יצירת ההזמנה</value>
+  </data>
+  <data name="error_ValueDateHaveToBeLaterThenLatestAllocationDate" xml:space="preserve">
+    <value>תאריך הערך חייב להיות גדול מתאריך הסעיף התקציבי המאוחר ביותר</value>
+  </data>
+  <data name="OrdersRecovery" xml:space="preserve">
+    <value>שחזור הזמנות</value>
+  </data>
 </root>
