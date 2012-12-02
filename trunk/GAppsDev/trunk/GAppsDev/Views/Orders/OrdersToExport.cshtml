@@ -22,7 +22,7 @@
     @Html.Action("List", new { orders = Model, baseUrl = Url.Action("OrdersToExport"), isCheckBoxed = true, isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })
     
     <p>
-        <input type="submit" value="@Loc.Dic.Export" onclick=" setTimeout(function () { window.location.reload(); }, 100);">
+        <input type="submit" value="@Loc.Dic.Export">
     </p>
 }
 
