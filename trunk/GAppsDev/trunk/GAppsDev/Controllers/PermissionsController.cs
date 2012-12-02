@@ -96,21 +96,6 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-               /* List<SelectListItemDB> budgetsList;
-
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
-                {
-                    budgetsList = budgetRep.GetList()
-                        .Where(budget => budget.CompanyId == CurrentUser.CompanyId && budget.Year >= (DateTime.Now.Year - 1))
-                        .Select(a => new { Id = a.Id, Name = a.Year })
-                        .AsEnumerable()
-                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                        .ToList();
-                }
-
-                ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name");
-                */
-                //ViewBag.BudgetId = budgetId;
                 return View();
             }
             else
@@ -142,11 +127,10 @@ namespace GAppsDev.Controllers
                         return RedirectToAction("Index", new { id = budgetId });
                     else
                         return Error(Loc.Dic.error_permissions_create_error);
-
                 }
                 else
                 {
-                    return Error(ModelState);
+                    return Error(Loc.Dic.error_invalid_form);
                 }
             }
             else
