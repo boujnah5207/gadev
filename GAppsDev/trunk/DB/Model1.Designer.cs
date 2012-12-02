@@ -55,7 +55,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Inventory", "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Inventory), "Inventory1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Orders_Items), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Locations", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Location), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Order), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
@@ -4813,16 +4813,14 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        /// <param name="itemId">Initial value of the ItemId property.</param>
         /// <param name="locationId">Initial value of the LocationId property.</param>
         /// <param name="isOutOfInventory">Initial value of the IsOutOfInventory property.</param>
-        public static Inventory CreateInventory(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 itemId, global::System.Int32 locationId, global::System.Boolean isOutOfInventory)
+        public static Inventory CreateInventory(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 locationId, global::System.Boolean isOutOfInventory)
         {
             Inventory inventory = new Inventory();
             inventory.Id = id;
             inventory.CreationDate = creationDate;
             inventory.CompanyId = companyId;
-            inventory.ItemId = itemId;
             inventory.LocationId = locationId;
             inventory.IsOutOfInventory = isOutOfInventory;
             return inventory;
@@ -4910,9 +4908,9 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 ItemId
+        public Nullable<global::System.Int32> ItemId
         {
             get
             {
@@ -4927,8 +4925,8 @@ namespace DB
                 OnItemIdChanged();
             }
         }
-        private global::System.Int32 _ItemId;
-        partial void OnItemIdChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _ItemId;
+        partial void OnItemIdChanging(Nullable<global::System.Int32> value);
         partial void OnItemIdChanged();
     
         /// <summary>

@@ -1820,7 +1820,7 @@ namespace GAppsDev.Controllers
                                         if (!splitedItem.AddToInventory)
                                             continue;
 
-                                        int itemId = splitedItem.ItemsToAdd[0].ItemId;
+                                        int? itemId = splitedItem.ItemsToAdd[0].ItemId;
                                         Orders_OrderToItem originalItem = order.Orders_OrderToItem.FirstOrDefault(x => x.Id == itemId);
                                         bool isValidList = originalItem != null && splitedItem.ItemsToAdd.All(x => x.ItemId == itemId);
 
