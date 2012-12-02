@@ -67,7 +67,7 @@ namespace GAppsDev.Controllers
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
             ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId");
             ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title");
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name");
+            ViewBag.LocationId = new SelectList(db.Locations.Where(x=>x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
             return View();
         }
 
@@ -80,6 +80,7 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
+                inventory.CompanyId = CurrentUser.CompanyId;
                 db.Inventories.AddObject(inventory);
                 db.SaveChanges();
                 return RedirectToAction("Index");
