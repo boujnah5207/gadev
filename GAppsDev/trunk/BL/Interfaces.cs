@@ -89,7 +89,6 @@ namespace BL
             const int FEBRUARY = 2;
             const int MONTHESINYEAR = 12;
 
-
             List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
             Dictionary<int, decimal> tempAmountList = new Dictionary<int, decimal>();
 
@@ -243,10 +242,21 @@ namespace BL
                         ExpenseId = null
                     };
 
-                    if (!allocationsRep.Create(newAllocation))
-                        return Loc.Dic.error_database_error;
+                    Budgets_Allocations existingAllocation = allocationsRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId);
+                    bool allocationExists = existingAllocation != null;
 
-                    createdAllocations.Add(newAllocation);
+                    if (!allocationExists)
+                    {
+                        if (!allocationsRep.Create(newAllocation))
+                            return Loc.Dic.error_database_error;
+
+                        createdAllocations.Add(newAllocation);
+                    }
+                    else
+                    {
+                        existingAllocation.Name = newAllocation.Name;
+                        allocationsRep.Update(existingAllocation);
+                    }
 
                     for (int month = 1, valueIndex = 3; month <= 12; month++, valueIndex += 2)
                     {
@@ -254,31 +264,51 @@ namespace BL
                         if (String.IsNullOrEmpty(monthAmountString))
                         {
                             monthAmountString = "0";
-                            //noErros = false;
-                            //break;
                         }
 
                         decimal amount;
                         if (!Decimal.TryParse(monthAmountString, out amount))
                         {
                             noErros = false;
+                            errorType = Loc.Dic.Error_FileParseError;
                             break;
                         }
 
-                        Budgets_AllocationToMonth newAllocationMonth = new Budgets_AllocationToMonth()
+                        if (!allocationExists)
                         {
-                            AllocationId = newAllocation.Id,
-                            MonthId = month,
-                            Amount = amount < 0 ? 0 : amount
-                        };
+                            Budgets_AllocationToMonth newAllocationMonth = new Budgets_AllocationToMonth()
+                            {
+                                AllocationId = newAllocation.Id,
+                                MonthId = month,
+                                Amount = amount < 0 ? 0 : amount
+                            };
 
-                        if (!allocationMonthsRep.Create(newAllocationMonth))
-                        {
-                            noErros = false;
-                            break;
+                            if (!allocationMonthsRep.Create(newAllocationMonth))
+                            {
+                                noErros = false;
+                                errorType = Loc.Dic.error_database_error;
+                                break;
+                            }
+
+                            createdAllocationMonths.Add(newAllocationMonth);
                         }
+                        else
+                        {
+                            Budgets_AllocationToMonth UpdaedMonth = new Budgets_AllocationToMonth();
+                            Budgets_AllocationToMonth existingMonth = existingAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
 
-                        createdAllocationMonths.Add(newAllocationMonth);
+                            UpdaedMonth.Id = existingMonth.Id;
+                            UpdaedMonth.AllocationId = existingMonth.AllocationId;
+                            UpdaedMonth.MonthId = existingMonth.MonthId;
+                            UpdaedMonth.Amount = amount;
+
+                            if (allocationMonthsRep.Update(UpdaedMonth) == null)
+                            {
+                                noErros = false;
+                                errorType = Loc.Dic.error_database_error;
+                                break;
+                            }
+                        }
                     }
                 }
             }

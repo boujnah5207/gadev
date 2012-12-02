@@ -98,8 +98,8 @@ namespace BaseLibraries
 
         public virtual TEntity Update(TEntity Entity, bool saveChanges = true)
         {
-            try
-            {
+            //try
+            //{
                 var entitySet = _db.CreateObjectSet<TEntity>().EntitySet;
                 var fqen = string.Format("{0}.{1}", entitySet.EntityContainer, entitySet.Name);
                 if (Entity.EntityState != EntityState.Modified)
@@ -121,11 +121,11 @@ namespace BaseLibraries
                 _db.ApplyCurrentValues(fqen, Entity);
                 _db.SaveChanges();
                 return Entity;
-            }
-            catch
-            {
-                return null;
-            }
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
         }
 
         public virtual bool Delete(int id)
