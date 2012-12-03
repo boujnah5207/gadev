@@ -92,7 +92,10 @@
             {
                 <select id="allocation-@ViewBag.Allocations[i].Id" class="allocationMonthList" @if (i != 0){<text>style="display:none;"</text>}>
 
-                    @for (int month = DateTime.Now.Month; month <= 12; month++)
+                    @{
+                        int startingMonth = ViewBag.BudgetYear == DateTime.Now.Year ? DateTime.Now.Month : 1;
+                    } 
+                    @for (int month = startingMonth; month <= 12; month++)
                     {
                         decimal amount;
                         if (month == DateTime.Now.Month)

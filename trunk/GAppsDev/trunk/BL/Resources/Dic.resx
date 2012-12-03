@@ -1173,6 +1173,9 @@
   <data name="EmptyBasket" xml:space="preserve">
     <value>Empty basket</value>
   </data>
+  <data name="error_user_have_no_allocations" xml:space="preserve">
+    <value>You have no allocations to order from</value>
+  </data>
   <data name="NoBasketsWereFound" xml:space="preserve">
     <value>No baskets were found</value>
   </data>
