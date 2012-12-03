@@ -757,6 +757,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 using (SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
                 {
@@ -765,12 +766,16 @@ namespace GAppsDev.Controllers
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
                     List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+
+                    if (activeBudget == null)
+                        return Error(Loc.Dic.error_no_active_budget);
 
                     foreach (var permission in permissions)
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id)
+                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
                                 .Select(x => x.Budgets_Allocations)
                                 .Where(x => x.CompanyId == CurrentUser.CompanyId)
                                 .ToList()
@@ -778,6 +783,9 @@ namespace GAppsDev.Controllers
                     }
 
                     allocations = allocations.Distinct().ToList();
+
+                    if (allocations.Count == 0)
+                        return Error(Loc.Dic.error_user_have_no_allocations);
 
                     foreach (var allocation in allocations)
                     {
@@ -803,6 +811,7 @@ namespace GAppsDev.Controllers
                         .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                         .ToList();
 
+                    ViewBag.BudgetYear = activeBudget.Year;
                     ViewBag.Allocations = allocations;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
                 }

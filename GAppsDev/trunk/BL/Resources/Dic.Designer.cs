@@ -1528,6 +1528,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have no allocations to order from.
+        /// </summary>
+        public static string error_user_have_no_allocations {
+            get {
+                return ResourceManager.GetString("error_user_have_no_allocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_user_not_found.
         /// </summary>
         public static string error_user_not_found {
