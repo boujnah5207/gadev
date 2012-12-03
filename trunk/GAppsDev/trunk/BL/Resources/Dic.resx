@@ -1164,4 +1164,16 @@
   <data name="error_wrongStatus" xml:space="preserve">
     <value>wrong Status</value>
   </data>
+  <data name="DefineBaskets" xml:space="preserve">
+    <value>Define baskets</value>
+  </data>
+  <data name="EditBasketAllocations" xml:space="preserve">
+    <value>Edit basket allocations</value>
+  </data>
+  <data name="EmptyBasket" xml:space="preserve">
+    <value>Empty basket</value>
+  </data>
+  <data name="NoBasketsWereFound" xml:space="preserve">
+    <value>No baskets were found</value>
+  </data>
 </root>

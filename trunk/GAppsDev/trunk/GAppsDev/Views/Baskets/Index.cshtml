@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DB.Budgets_Baskets>
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllBaskets";
+}
+
+<h2>@Loc.Dic.Permissions</h2>
+
+<p>
+    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
+</p>
+
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { baskets = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoBasketsWereFound).</span> 
+}

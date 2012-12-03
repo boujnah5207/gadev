@@ -254,7 +254,7 @@ body#Managment a#ManagmentLink,
     body.AllProjects a#AllProjectsLink,
     body.AllSubProjects a#AllSubProjectsLink,
     body.AllUsers a#AllUsersLink,
-    body.AllPermissions a#AllPermissionsLink,
+    body.AllBaskets a#AllBasketsLink,
     body.AllSuppliers a#AllSuppliersLink
 
 {

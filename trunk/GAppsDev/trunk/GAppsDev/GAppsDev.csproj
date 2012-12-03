@@ -155,7 +155,7 @@
     <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PermissionsAllocationsController.cs" />
-    <Compile Include="Controllers\PermissionsController.cs" />
+    <Compile Include="Controllers\BasketsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SubProjectsController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
@@ -494,18 +494,18 @@
     <Content Include="Views\SubProjects\Create.cshtml" />
     <Content Include="Views\SubProjects\Edit.cshtml" />
     <Content Include="Views\SubProjects\Delete.cshtml" />
-    <Content Include="Views\Permissions\ExistPermissionsList.cshtml" />
-    <Content Include="Views\Permissions\Details.cshtml" />
-    <Content Include="Views\Permissions\Create.cshtml" />
-    <Content Include="Views\Permissions\Edit.cshtml" />
-    <Content Include="Views\Permissions\Delete.cshtml" />
+    <Content Include="Views\Baskets\BudgetBaskets.cshtml" />
+    <Content Include="Views\Baskets\Details.cshtml" />
+    <Content Include="Views\Baskets\Create.cshtml" />
+    <Content Include="Views\Baskets\Edit.cshtml" />
+    <Content Include="Views\Baskets\Delete.cshtml" />
     <Content Include="Views\PermissionsAllocations\Index.cshtml" />
     <Content Include="Views\PermissionsAllocations\Details.cshtml" />
     <Content Include="Views\PermissionsAllocations\Create.cshtml" />
     <Content Include="Views\PermissionsAllocations\Edit.cshtml" />
     <Content Include="Views\PermissionsAllocations\Delete.cshtml" />
     <Content Include="Views\Localization\Localization.cshtml" />
-    <Content Include="Views\Permissions\EditAllocations.cshtml">
+    <Content Include="Views\Baskets\EditAllocations.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
@@ -536,7 +536,7 @@
     <Content Include="Views\PermissionsAllocations\PermissionAllocationList.cshtml" />
     <Content Include="Views\Orders\PartialDetails.cshtml" />
     <Content Include="Views\Orders\ListOrderItems.cshtml" />
-    <Content Include="Views\Permissions\Index.cshtml" />
+    <Content Include="Views\Baskets\Index.cshtml" />
     <Content Include="Views\BudgetAllocations\AllocationMontheList.cshtml" />
     <Content Include="Views\Orders\AddToInventory.cshtml" />
     <Content Include="Views\Orders\PendingInventory.cshtml" />
@@ -550,6 +550,7 @@
     <Content Include="Views\Budgets\PartialDetails.cshtml" />
     <Content Include="Views\BudgetAllocations\List.cshtml" />
     <Content Include="Views\Orders\ListOrderAllocations.cshtml" />
+    <Content Include="Views\Baskets\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

@@ -9,13 +9,8 @@ namespace GAppsDev.Models.PermissionModels
 {
     public class PermissionAllocationsModel
     {
-        public Budgets_Baskets Permission { get; set; }
-        public List<BudgetAllocations> BudgetAllocationsList { get; set; }
-
-        public PermissionAllocationsModel()
-        {
-            BudgetAllocationsList = new List<BudgetAllocations>();
-        }
+        public Budgets_Baskets Basket { get; set; }
+        public BudgetAllocations BudgetAllocations { get; set; }
     }
 
     public class BudgetAllocations
