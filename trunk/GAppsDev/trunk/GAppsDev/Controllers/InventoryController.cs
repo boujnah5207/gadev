@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using DB;
 using Mvc4.OpenId.Sample.Security;
 using DA;
+using GAppsDev.Models.InventoryItemModel;
 
 namespace GAppsDev.Controllers
 {
@@ -64,9 +65,14 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
+            Inventory inventory = new Inventory();
+            Orders_Items item = new Orders_Items();
+            ManualCreateInventoryItemModel manualCreateInventoryItemModel = new ManualCreateInventoryItemModel();
+            inventory.CompanyId = CurrentUser.CompanyId;
+            manualCreateInventoryItemModel.inventoryItem = inventory;
+            manualCreateInventoryItemModel.item = item;
+
             ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId");
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title");
             ViewBag.LocationId = new SelectList(db.Locations.Where(x=>x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
             return View();
         }

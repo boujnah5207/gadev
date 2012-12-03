@@ -66,7 +66,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Users_HierarchyLevel", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_HierarchyLevel), true)]
@@ -6684,15 +6684,13 @@ namespace DB
         /// Create a new Orders_Items object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="title">Initial value of the Title property.</param>
         /// <param name="subTitle">Initial value of the SubTitle property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.Int32 supplierId, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate)
+        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate)
         {
             Orders_Items orders_Items = new Orders_Items();
             orders_Items.Id = id;
-            orders_Items.SupplierId = supplierId;
             orders_Items.Title = title;
             orders_Items.SubTitle = subTitle;
             orders_Items.CreationDate = creationDate;
@@ -6733,9 +6731,9 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 SupplierId
+        public Nullable<global::System.Int32> SupplierId
         {
             get
             {
@@ -6750,8 +6748,8 @@ namespace DB
                 OnSupplierIdChanged();
             }
         }
-        private global::System.Int32 _SupplierId;
-        partial void OnSupplierIdChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _SupplierId;
+        partial void OnSupplierIdChanging(Nullable<global::System.Int32> value);
         partial void OnSupplierIdChanged();
     
         /// <summary>
