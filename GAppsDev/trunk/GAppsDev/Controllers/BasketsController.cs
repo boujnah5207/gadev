@@ -12,44 +12,56 @@ using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
 {
-    public class PermissionsController : BaseController
+    public class BasketsController : BaseController
     {
+        const int ITEMS_PER_PAGE = 10;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_SORT = "name";
+        const string DEFAULT_DESC_ORDER = "DESC";
+
         private Entities db = new Entities();
 
         //
         // GET: /Permissions/
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
 
-            List<Budgets_Baskets> permissions = new List<Budgets_Baskets>();
+            IEnumerable<Budgets_Baskets> permissions;
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                permissions = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                permissions = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                permissions = Pagination(permissions, page, sortby, order, true);
+
+                return View(permissions.ToList());
             }
-            return View(permissions);
         }
 
         [OpenIdAuthorize]
-        public ActionResult ExistPermissionsList(int id = 0)
+        public ActionResult BudgetBaskets(int id = 0, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
-            
-            List<Budgets_Baskets> model;
+
+            IEnumerable<Budgets_Baskets> baskets;
             Budgets_BasketsToAllocation per = new Budgets_BasketsToAllocation();
+
             using (BudgetsRepository budgetsRep = new BudgetsRepository())
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
-                model = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                baskets = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                baskets = Pagination(baskets, page, sortby, order, true);
+
                 ViewBag.budgetId = id;
                 Budget budget = budgetsRep.GetList().SingleOrDefault(x => x.Id == id);
                 ViewBag.budgetYear = budget.Year;
                 ViewBag.budgetId = budget.Id;
-
+                return View(baskets.ToList());
             }
-            return View(model);
         }
 
         //
@@ -219,72 +231,51 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult EditAllocations(int id = 0, int budgetId = 0)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                PermissionAllocationsModel model = new PermissionAllocationsModel();
-                List<Budget> budgets;
-
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-                using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
-                {
-                    model.Permission = permissionsRep.GetEntity(id);
-
-                    if (model.Permission != null)
-                    {
-                        if (model.Permission.CompanyId == CurrentUser.CompanyId)
-                        {
-                            budgets = budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.Year >= (DateTime.Now.Year - 1)).ToList();
-
-                            if (budgets != null)
-                            {
-                                model.BudgetAllocationsList = new List<BudgetAllocations>();
-
-                                foreach (var budget in budgets)
-                                {
-                                    List<SelectListItemDB> allocationsList = budget.Budgets_Allocations
-                                        .Select(a => new { Id = a.Id, Name = a.Name })
-                                        .AsEnumerable()
-                                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                                        .ToList();
-
-                                    List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_Allocations", "Budgets_Allocations.Budgets_Incomes", "Budgets_Allocations.Budgets_Expenses")
-                                        .Where(x => x.BudgetId == budget.Id && x.BasketId == model.Permission.Id)
-                                        .AsEnumerable()
-                                        .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
-                                        .ToList();
-
-                                    BudgetAllocations newBudgetAllocations = new BudgetAllocations()
-                                    {
-                                        Budget = budget,
-                                        AllocationsList = new SelectList(allocationsList, "Id", "Name"),
-                                        PermissionAllocations = permissionsToAllocations
-                                    };
-
-                                    model.BudgetAllocationsList.Add(newBudgetAllocations);
-                                }
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_database_error);
-                            }
-
-                            return View(model);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_no_permission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_permissions_get_error);
-                    }
-                }
-            }
-            else
-            {
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
+
+            PermissionAllocationsModel model = new PermissionAllocationsModel();
+            Budget budget;
+
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+            using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+            {
+                model.Basket = permissionsRep.GetEntity(id);
+
+                if (model.Basket == null)
+                    return Error(Loc.Dic.error_permissions_get_error);
+
+                if (model.Basket.CompanyId != CurrentUser.CompanyId)
+                    return Error(Loc.Dic.error_no_permission);
+
+                budget = budgetsRep.GetEntity(budgetId);
+
+                if (budget == null)
+                    return Error(Loc.Dic.error_database_error);
+
+                model.BudgetAllocations = new BudgetAllocations();
+
+                List<SelectListItemDB> allocationsList = budget.Budgets_Allocations
+                    .Select(a => new { Id = a.Id, Name = a.DisplayName })
+                    .AsEnumerable()
+                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                    .ToList();
+
+                List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_Allocations", "Budgets_Allocations.Budgets_Incomes", "Budgets_Allocations.Budgets_Expenses")
+                    .Where(x => x.BudgetId == budget.Id && x.BasketId == model.Basket.Id)
+                    .AsEnumerable()
+                    .Select(alloc => new PermissionAllocation() { IsActive = true, Allocation = alloc })
+                    .ToList();
+
+                model.BudgetAllocations = new BudgetAllocations()
+                {
+                    Budget = budget,
+                    AllocationsList = new SelectList(allocationsList, "Id", "Name"),
+                    PermissionAllocations = permissionsToAllocations
+                };
+
+                return View(model);
             }
         }
 
@@ -295,74 +286,58 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult EditAllocations(PermissionAllocationsModel model)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager))
+                return Error(Loc.Dic.error_no_permission);
+
+            Budgets_Baskets permissionFromDB;
+            List<Budgets_Allocations> existingPermissionAllocations;
+            List<Budgets_BasketsToAllocation> existingPermissionToAllocations;
+
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
+            using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                Budgets_Baskets permissionFromDB;
-                List<Budgets_Allocations> existingPermissionAllocations;
-                List<Budgets_BasketsToAllocation> existingPermissionToAllocations;
+                permissionFromDB = permissionsRep.GetEntity(model.Basket.Id);
+                //TODO: Error gets ALL pemissions from DB
+                existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).Select(y => y.Budgets_Allocations).ToList();
+                existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).ToList();
 
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-                using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
-                using (AllocationRepository allocationsRep = new AllocationRepository())
+                if (permissionFromDB == null)
+                    return Error(Loc.Dic.error_database_error);
+
+                if (permissionFromDB.CompanyId != CurrentUser.CompanyId)
+                    return Error(Loc.Dic.error_no_permission);
+
+                Budget budgetFromDB = budgetsRep.GetEntity(model.BudgetAllocations.Budget.Id);
+
+                if (budgetFromDB == null)
+                    return Error(Loc.Dic.error_database_error);
+
+                if (budgetFromDB.CompanyId != CurrentUser.CompanyId)
+                    return Error(Loc.Dic.error_no_permission);
+
+                foreach (var allocation in model.BudgetAllocations.PermissionAllocations)
                 {
-                    permissionFromDB = permissionsRep.GetEntity(model.Permission.Id);
-                    //TODO: Error gets ALL pemissions from DB
-                    existingPermissionAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).Select(y => y.Budgets_Allocations).ToList();
-                    existingPermissionToAllocations = permissionsAllocationsRep.GetList().Where(x => x.BasketId == permissionFromDB.Id).ToList();
-
-                    if (permissionFromDB != null)
+                    if (allocation.IsActive)
                     {
-                        if (permissionFromDB.CompanyId == CurrentUser.CompanyId)
+                        if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
                         {
-                            foreach (var budgetAllocation in model.BudgetAllocationsList)
-                            {
-                                Budget budgetFromDB = budgetsRep.GetEntity(budgetAllocation.Budget.Id);
-
-                                if (budgetFromDB != null && budgetFromDB.CompanyId == CurrentUser.CompanyId)
-                                {
-                                    foreach (var allocation in budgetAllocation.PermissionAllocations)
-                                    {
-                                        if (allocation.IsActive)
-                                        {
-                                            if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
-                                            {
-                                                allocation.Allocation.BudgetId = budgetFromDB.Id;
-                                                allocation.Allocation.BasketId = permissionFromDB.Id;
-                                                permissionsAllocationsRep.Create(allocation.Allocation);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
-                                            {
-                                                permissionsAllocationsRep.Delete(allocation.Allocation.Id);
-                                            }
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    return Error("");
-                                }
-                            }
-
-                            return RedirectToAction("Index");
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_no_permission);
+                            allocation.Allocation.BudgetId = budgetFromDB.Id;
+                            allocation.Allocation.BasketId = permissionFromDB.Id;
+                            permissionsAllocationsRep.Create(allocation.Allocation);
                         }
                     }
                     else
                     {
-                        return Error(Loc.Dic.error_permissions_get_error);
+                        if (existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                        {
+                            permissionsAllocationsRep.Delete(allocation.Allocation.Id);
+                        }
                     }
                 }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+
+                return RedirectToAction("BudgetBaskets", new { id = budgetFromDB.Id });
             }
         }
 
@@ -465,6 +440,73 @@ namespace GAppsDev.Controllers
             {
                 return Error(Loc.Dic.error_no_permission);
             }
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<Budgets_Baskets> baskets, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showAllocations = false, int? budgetId = null)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+
+            ViewBag.UserRoles = CurrentUser.Roles;
+
+            ViewBag.ShowAllocations = showAllocations;
+            ViewBag.budgetId = budgetId;
+            return PartialView(baskets);
+        }
+
+        private IEnumerable<Budgets_Baskets> Pagination(IEnumerable<Budgets_Baskets> baskets, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER, bool showAllResults = false)
+        {
+            int numberOfItems = baskets.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<Budgets_Baskets, dynamic>, IEnumerable<Budgets_Baskets>> orderFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    orderFunction = x => baskets.OrderByDescending(x);
+                else
+                    orderFunction = x => baskets.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "name":
+                    default:
+                        baskets = orderFunction(x => x.Name);
+                        break;
+                }
+            }
+
+            if (!showAllResults)
+            {
+                baskets = baskets
+                    .Skip((page - 1) * ITEMS_PER_PAGE)
+                    .Take(ITEMS_PER_PAGE)
+                    .ToList();
+            }
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return baskets;
         }
 
         protected override void Dispose(bool disposing)

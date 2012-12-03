@@ -1,0 +1,87 @@
+﻿@model List<DB.Budgets_Baskets>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+@if (ViewBag.IsCheckBoxed)
+{
+    <button type="button" id="selectAllBaskets" onclick="$('.basketCheckbox').attr('checked', true)">@Loc.Dic.SelectAll</button> 
+    <button type="button" id="deselectAllBaskets" onclick="$('.basketCheckbox').attr('checked', false)">@Loc.Dic.SelectNone</button>
+}
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>
+                @Loc.Dic.Name
+            </th>
+        }
+
+        <th>@Loc.Dic.Actions</th>
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Budgets_Baskets item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" class="basketCheckbox" value="@item.Id" name="selectedBasket" />
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @if (ViewBag.ShowAllocations)
+                {
+                    if (!(item.Budgets_BasketsToAllocation.Where(x => x.BudgetId == ViewBag.budgetId).Count() == 0))
+                    {
+                        @Html.ActionLink(Loc.Dic.Details, "PermissionAllocationList", "PermissionsAllocations", new { permissionId = item.Id, budgetId = ViewBag.budgetId }, null)
+                    }
+                    else
+                    {
+                        <b>
+                            @Loc.Dic.EmptyBasket
+                        </b>
+                    }
+                    <text>|</text> @Html.ActionLink(Loc.Dic.EditBasketAllocations, "EditAllocations", "Baskets", new { id = item.Id, budgetId = ViewBag.budgetId }, null)
+                }
+                else
+                {
+                    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) <text>|</text>
+                    @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
+                }
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}

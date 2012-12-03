@@ -1164,4 +1164,16 @@
   <data name="error_wrongStatus" xml:space="preserve">
     <value>סטטוס הזמנה שגוי</value>
   </data>
+  <data name="DefineBaskets" xml:space="preserve">
+    <value>הגדר סלי תקציבים</value>
+  </data>
+  <data name="EditBasketAllocations" xml:space="preserve">
+    <value>הגדר סעיפים תקציביים</value>
+  </data>
+  <data name="EmptyBasket" xml:space="preserve">
+    <value>סל ריק</value>
+  </data>
+  <data name="NoBasketsWereFound" xml:space="preserve">
+    <value>לא נמצאו סלי תקציב</value>
+  </data>
 </root>

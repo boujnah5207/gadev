@@ -66,7 +66,7 @@
             <td>
                 @Html.ActionLink(Loc.Dic.View, "AllocationMontheList", "BudgetAllocations",  new { id = item.Id }, null) |
                 @Html.ActionLink(Loc.Dic.UpdateBudget, "Import", new { id = item.Id }) |
-                @Html.ActionLink(Loc.Dic.Permissions, "ExistPermissionsList", "Permissions", new { id = item.Id }, null) |
+                @Html.ActionLink(Loc.Dic.DefineBaskets, "BudgetBaskets", "Baskets", new { id = item.Id }, null) |
                 @if(!item.IsActive)
                 {
                 @Html.ActionLink(Loc.Dic.Activate, "Activate", new { id = item.Id }) <text>|</text>

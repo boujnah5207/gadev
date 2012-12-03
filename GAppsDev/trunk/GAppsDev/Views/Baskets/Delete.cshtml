@@ -12,21 +12,26 @@
 <fieldset>
     <legend>@Loc.Dic.BudgetBasket</legend>
 
-    <div class="display-label">
-         @Loc.Dic.CreationDate
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-
+    <input type ="hidden", value ="@ViewBag.BudgetId", name="budgetId" />
+    
     <div class="display-label">
          @Loc.Dic.Name
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
-        <input type ="hidden", value ="@ViewBag.BudgetId", name="budgetId" />
+    <br />
+
+    <div class="display-label">
+         @Loc.Dic.CreationDate
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+    <br />
+
 </fieldset>
+
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="@Loc.Dic.Delete" /> |

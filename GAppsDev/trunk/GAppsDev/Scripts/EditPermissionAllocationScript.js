@@ -4,24 +4,12 @@ $(function () {
 
 });
 
-function expandDiv(button, elementId) {
-    $("#" + elementId).slideToggle(500, null);
-    button = $(button);
-
-    if (button.val() == local.Show) {
-        button.val(local.Hide);
-    }
-    else {
-        button.val(local.Show);
-    }
-}
-
-function addItem(budgetIndex) {
-    if ($("#budgetAllocations-" + budgetIndex + " option:selected").length > 0) {
-        var allocationId = $("#budgetAllocations-" + budgetIndex).val();
-        var allocationText = $("#budgetAllocations-" + budgetIndex + " option:selected").text();
-        var container = $("#budgetContainer-" + budgetIndex);
-        var nextNumber = $(".budget-" + budgetIndex).length;
+function addItem() {
+    if ($("#budgetAllocations option:selected").length > 0) {
+        var allocationId = $("#budgetAllocations").val();
+        var allocationText = $("#budgetAllocations option:selected").text();
+        var container = $("#budgetContainer");
+        var nextNumber = $(".budget").length;
 
         var existingItems = $(".existingAllocations");
         var itemExists = false;
@@ -36,11 +24,11 @@ function addItem(budgetIndex) {
         if (existingRemovedItem == null) {
             if (!itemExists) {
                 var newItem = $(
-                    "<div class='budget-" + budgetIndex + "' id='permissionAllocation-" + budgetIndex + "-" + nextNumber + "'>" +
-                                "<input type='hidden' class='isActiveField' id='isActiveField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
-                                "<input type='hidden' class='existingAllocations' id='allocationField-" + budgetIndex + "-" + nextNumber + "' name='BudgetAllocationsList[" + budgetIndex + "].PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
+                    "<div class='budget' id='permissionAllocation-" + nextNumber + "'>" +
+                                "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
+                                "<input type='hidden' class='existingAllocations' id='allocationField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
                                 "<span>" + allocationText + "<\span>" +
-                                "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + budgetIndex + "," + nextNumber + ") '/>" +
+                                "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + nextNumber + ") '/>" +
                             "</div>"
                     );
 
@@ -53,13 +41,13 @@ function addItem(budgetIndex) {
     }
 }
 
-function removeItem(budgetIndex, allocationIndex) {
-    var container = $("#permissionAllocation-" + budgetIndex + "-" + allocationIndex);
-    var isActiveField = $("#isActiveField-" + budgetIndex + "-" + allocationIndex);
-    var isActive = $("#isActiveField-" + budgetIndex + "-" + allocationIndex).val();
-    var BudgetId = $("#BudgetField-" + budgetIndex + "-" + allocationIndex).val();
-    var BasketId = $("#PermissionField-" + budgetIndex + "-" + allocationIndex).val();
-    var allocationId = $("#allocationField-" + budgetIndex + "-" + allocationIndex).val();
+function removeItem(allocationIndex) {
+    var container = $("#permissionAllocation-" + allocationIndex);
+    var isActiveField = $("#isActiveField-" + allocationIndex);
+    var isActive = $("#isActiveField-" + allocationIndex).val();
+    var BudgetId = $("#BudgetField-" + allocationIndex).val();
+    var BasketId = $("#PermissionField-" + allocationIndex).val();
+    var allocationId = $("#allocationField-" + allocationIndex).val();
 
     isActiveField.val("false");
 

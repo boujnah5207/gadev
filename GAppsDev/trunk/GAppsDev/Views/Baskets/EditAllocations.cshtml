@@ -1,0 +1,48 @@
+﻿@model GAppsDev.Models.PermissionModels.PermissionAllocationsModel
+
+@{
+    ViewBag.Title = Loc.Dic.EditAllocations ;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllBudgets";
+}
+
+@section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide,Delete" })'></script>
+    <script src="~/Scripts/EditPermissionAllocationScript.js"></script>
+}
+
+<h2>@Model.BudgetAllocations.Budget.Year > @Loc.Dic.Permissions > @Model.Basket.Name</h2>
+<br />
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <input type="hidden" name="Basket.Id" value="@Model.Basket.Id" />
+    
+    <input type="hidden" name="BudgetAllocations.Budget.Id" value="@Model.BudgetAllocations.Budget.Id" />
+
+    <div id="expandingDiv">
+        @Html.DropDownList("budgetAllocationsList", (SelectList)Model.BudgetAllocations.AllocationsList, new { id = "budgetAllocations" }) <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addItem()"/>
+        <fieldset>
+            <legend>>@Loc.Dic.BudgetAllocations</legend>
+
+            <div id="budgetContainer">
+                @for (int i2 = 0; i2 < Model.BudgetAllocations.PermissionAllocations.Count; i2++)
+                {
+                    <div class="budget" id="permissionAllocation-@i2">
+                        <input type="hidden" class='isActiveField' id="isActiveField-@i2" name="BudgetAllocations.PermissionAllocations[@i2].IsActive" value="@Model.BudgetAllocations.PermissionAllocations[i2].IsActive.ToString()" />
+                        <input type="hidden" class="existingAllocations" id="allocationField-@i2" name="BudgetAllocations.PermissionAllocations[@i2].Allocation.BudgetsExpensesToIncomesId" value="@Model.BudgetAllocations.PermissionAllocations[i2].Allocation.BudgetsExpensesToIncomesId" />
+                        <input type="hidden" name="BudgetAllocations.PermissionAllocations[@i2].Allocation.Id" value="@Model.BudgetAllocations.PermissionAllocations[i2].Allocation.Id" />
+
+                        <span>@Model.BudgetAllocations.PermissionAllocations[i2].Allocation.Budgets_Allocations.DisplayName</span>
+                
+                        <input type="button" value="@Loc.Dic.Delete" onClick="removeItem(@i2) "/>
+                    </div>
+                }
+            </div>
+        </fieldset>
+    </div>
+    
+    <p>
+        <input type="submit" value="@Loc.Dic.Submit" /> | @Html.ActionLink(Loc.Dic.BackToList, "BudgetBaskets", new { id = Model.BudgetAllocations.Budget.Id })
+    </p>
+}
