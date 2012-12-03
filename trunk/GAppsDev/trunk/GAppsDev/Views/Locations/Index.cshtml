@@ -12,36 +12,12 @@
 <p>
     @Html.ActionLink(Loc.Dic.CreateNew, "Create")
 </p>
-<table>
-    <tr>
-        <th>
-            @Loc.Dic.City
-        </th>
-        <th>
-            @Loc.Dic.Address
-        </th>
-        <th>
-            @Loc.Dic.Name
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { locations = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })    
 }
-
-</table>
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoBudgetsWereFound).</span> 
+}

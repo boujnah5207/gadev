@@ -11,7 +11,7 @@
 
 @if (Model.Any())
 { 
-    @Html.Action("List", new { budgets = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = false, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = 1, NumberOfPages = 1 })    
+    @Html.Action("List", new { budgets = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
 }
 else
 {
