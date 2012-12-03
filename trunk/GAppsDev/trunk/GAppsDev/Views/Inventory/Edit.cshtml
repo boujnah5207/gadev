@@ -7,112 +7,91 @@
     ViewBag.SubPageName = "AllInventory";
 }
 
-<h2>@Loc.Dic.Edit</h2>
-
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Inventory</legend>
+        <legend>@Loc.Dic.Inventory</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ItemId, "Orders_Items")
+            @Loc.Dic.ItemName
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ItemId", String.Empty)
-            @Html.ValidationMessageFor(model => model.ItemId)
+            @Html.DisplayFor( model => model.Orders_Items.Title)
         </div>
+        <br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LocationId, "Location")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("LocationId", String.Empty)
-            @Html.ValidationMessageFor(model => model.LocationId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OrderId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.OrderId)
-            @Html.ValidationMessageFor(model => model.OrderId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AssignedTo)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.AssignedTo)
-            @Html.ValidationMessageFor(model => model.AssignedTo)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SerialNumber)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SerialNumber)
-            @Html.ValidationMessageFor(model => model.SerialNumber)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.WarrentyPeriodStart)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodStart)
-            @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.WarrentyPeriodEnd)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodEnd)
-            @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Notes)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Notes)
-            @Html.ValidationMessageFor(model => model.Notes)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.RelatedInventoryItem, "Inventory2")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("RelatedInventoryItem", String.Empty)
-            @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsOutOfInventory)
+            @Loc.Dic.IsOutOfInventory
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.IsOutOfInventory)
             @Html.ValidationMessageFor(model => model.IsOutOfInventory)
         </div>
 
+        <div class="editor-label">
+            @Loc.Dic.Location
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LocationId", String.Empty)
+            @Html.ValidationMessageFor(model => model.LocationId)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.AssignedTo
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AssignedTo)
+            @Html.ValidationMessageFor(model => model.AssignedTo)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.SerialNumber
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SerialNumber)
+            @Html.ValidationMessageFor(model => model.SerialNumber)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.WarrantyPeriod
+        </div>
+        <div class="editor-field">
+            @Loc.Dic.From- @Html.EditorFor(model => model.WarrentyPeriodStart) @Loc.Dic.To- @Html.EditorFor(model => model.WarrentyPeriodEnd)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.Notes
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.Status
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+        <br />
+
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="@Loc.Dic.Save" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
 
 @section Scripts {

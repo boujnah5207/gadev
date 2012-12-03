@@ -1,0 +1,92 @@
+﻿@model List<DB.Inventory>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+@if (ViewBag.IsCheckBoxed)
+{
+    <button type="button" id="selectAllInventoryItems" onclick="$('.inventoryItemCheckbox').attr('checked', true)">@Loc.Dic.SelectAll</button> 
+    <button type="button" id="deselectAllInventoryItems" onclick="$('.inventoryItemCheckbox').attr('checked', false)">@Loc.Dic.SelectNone</button>
+}
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderItemTitle, "title", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderItemSubTitle, "subtitle", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Location, "location", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.CreationDate, "creation", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        { 
+            <th>
+                @Loc.Dic.OrderItemTitle
+            </th>
+            <th>
+                @Loc.Dic.OrderItemSubTitle
+            </th>
+            <th>
+                @Loc.Dic.Location
+            </th>
+            <th>
+                @Loc.Dic.CreationDate
+            </th>
+        }
+
+        <th>@Loc.Dic.Actions</th>
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Inventory item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" class="inventoryItemCheckbox" value="@item.Id" name="selectedInventoryItem" />
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Orders_Items.Title)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Orders_Items.SubTitle)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Location.Name)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.CreationDate)
+            </td>
+
+            <td>
+                @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id }) |
+                @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id }) |
+                @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />  
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}
