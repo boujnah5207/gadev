@@ -551,6 +551,7 @@
     <Content Include="Views\BudgetAllocations\List.cshtml" />
     <Content Include="Views\Orders\ListOrderAllocations.cshtml" />
     <Content Include="Views\Baskets\List.cshtml" />
+    <Content Include="Views\Inventory\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

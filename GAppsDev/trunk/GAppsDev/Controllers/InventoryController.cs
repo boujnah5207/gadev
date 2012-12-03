@@ -14,33 +14,35 @@ namespace GAppsDev.Controllers
 {
     public class InventoryController : BaseController
     {
-
+        const int ITEMS_PER_PAGE = 10;
+        const int FIRST_PAGE = 1;
+        const string NO_SORT_BY = "None";
+        const string DEFAULT_SORT = "name";
+        const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
+
         [OpenIdAuthorize]
         public ActionResult Home()
         {
             return View();
         }
 
-        [ChildActionOnly]
-        public ActionResult SubMenu()
-        {
-            return PartialView();
-        }
-
         //
         // GET: /Inventory/
 
         [OpenIdAuthorize]
-        public ActionResult Index()
+        public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            
+            IEnumerable<Inventory> inventories;
             using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
-                List<Inventory> inventories = inventoryRepository.GetList("Orders_Items","Location").Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                inventories = inventoryRepository.GetList("Orders_Items","Location").Where(x => x.CompanyId == CurrentUser.CompanyId);
+
+                inventories = Pagination(inventories, page, sortby, order);
+
                 ViewBag.CurrentUser = CurrentUser;
-                return View(inventories);
+                return View(inventories.ToList());
             }
         }
 
@@ -163,6 +165,72 @@ namespace GAppsDev.Controllers
             db.Inventories.DeleteObject(inventory);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult List(IEnumerable<Inventory> inventoryItems, string baseUrl, bool isOrdered, bool isPaged, string sortby, string order, int currPage, int numberOfPages, bool isCheckBoxed = false, bool showUserName = true)
+        {
+            ViewBag.BaseUrl = baseUrl;
+            ViewBag.IsOrdered = isOrdered;
+            ViewBag.IsPaged = isPaged;
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = currPage;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            ViewBag.IsCheckBoxed = isCheckBoxed;
+            ViewBag.ShowUserName = showUserName;
+
+            ViewBag.UserRoles = CurrentUser.Roles;
+
+            return PartialView(inventoryItems);
+        }
+
+        private IEnumerable<Inventory> Pagination(IEnumerable<Inventory> inventoryItems, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        {
+            int numberOfItems = inventoryItems.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<Inventory, dynamic>, IEnumerable<Inventory>> orderFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    orderFunction = x => inventoryItems.OrderByDescending(x);
+                else
+                    orderFunction = x => inventoryItems.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "subtitle":
+                        inventoryItems = orderFunction(x => x.Orders_Items == null ? String.Empty : x.Orders_Items.Title);
+                        break;
+                    case "title":
+                    default:
+                        inventoryItems = orderFunction(x => x.Orders_Items == null ? String.Empty : x.Orders_Items.SubTitle);
+                        break;
+                }
+            }
+
+            inventoryItems = inventoryItems
+                .Skip((page - 1) * ITEMS_PER_PAGE)
+                .Take(ITEMS_PER_PAGE)
+                .ToList();
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return inventoryItems;
         }
 
         protected override void Dispose(bool disposing)

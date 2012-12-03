@@ -13,55 +13,12 @@
         @Html.ActionLink(Loc.Dic.CreateNew, "Create")
     }
 </p>
-<table>
-    <tr>
-        <th>
-            @Loc.Dic.CreationDate
-        </th>
-        <th>
-            @Loc.Dic.ItemName
-        </th>
-        <th>
-            @Loc.Dic.ItemDescription
-        </th>
-        <th>
-            @Loc.Dic.Location
-        </th>
-        <th>
-            @Loc.Dic.AssignedTo
-        </th>
-        <th>
-            @Loc.Dic.Status
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Orders_Items.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Orders_Items.SubTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssignedTo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id }) |
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { inventoryItems = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoBudgetsWereFound).</span> 
+}
