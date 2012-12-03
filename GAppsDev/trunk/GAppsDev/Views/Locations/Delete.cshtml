@@ -14,11 +14,20 @@
     <legend>@Loc.Dic.Location</legend>
 
     <div class="display-label">
+        @Loc.Dic.Name
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <br />
+
+    <div class="display-label">
         @Loc.Dic.City
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.City)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.Address
@@ -26,13 +35,8 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Address)
     </div>
+    <br />
 
-    <div class="display-label">
-        @Loc.Dic.Name
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
 </fieldset>
 @using (Html.BeginForm())
 {

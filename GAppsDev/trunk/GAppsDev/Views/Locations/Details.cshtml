@@ -18,6 +18,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.City)
     </div>
+    <br />
 
     <div class="display-label">
          @Loc.Dic.Address
@@ -25,6 +26,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Address)
     </div>
+    <br />
 
     <div class="display-label">
          @Loc.Dic.Name
@@ -32,6 +34,8 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
+    <br />
+
 </fieldset>
 <p>
     @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id=Model.Id }) |
