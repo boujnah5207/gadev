@@ -1,4 +1,4 @@
-﻿@model DB.Inventory
+﻿@model GAppsDev.Models.InventoryItemModel.ManualCreateInventoryItemModel
 
 @{
     ViewBag.Title = Loc.Dic.CreateNew;
@@ -9,74 +9,91 @@
 
 <h2>@Loc.Dic.CreateNew</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>@Loc.Dic.Inventory</legend>
 
         <div class="editor-label">
+            @Loc.Dic.ItemName
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.item.Title)
+            @Html.ValidationMessageFor(model => model.item.Title)
+        </div>
+
+        <div class="editor-label">
+            @Loc.Dic.ItemDescription
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.item.SubTitle)
+            @Html.ValidationMessageFor(model => model.item.SubTitle)
+        </div>
+
+        <div class="editor-label">
             @Loc.Dic.Location
         </div>
         <div class="editor-field">
             @Html.DropDownList("LocationId", String.Empty)
-            @Html.ValidationMessageFor(model => model.LocationId)
+            @Html.ValidationMessageFor(model => model.inventoryItem.LocationId)
         </div>
         <div class="editor-label">
             @Loc.Dic.AssignedTo
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.AssignedTo)
-            @Html.ValidationMessageFor(model => model.AssignedTo)
+            @Html.EditorFor(model => model.inventoryItem.AssignedTo)
+            @Html.ValidationMessageFor(model => model.inventoryItem.AssignedTo)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.SerialNumber
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SerialNumber)
-            @Html.ValidationMessageFor(model => model.SerialNumber)
+            @Html.EditorFor(model => model.inventoryItem.SerialNumber)
+            @Html.ValidationMessageFor(model => model.inventoryItem.SerialNumber)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodStart
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodStart)
-            @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
+            @Html.EditorFor(model => model.inventoryItem.WarrentyPeriodStart)
+            @Html.ValidationMessageFor(model => model.inventoryItem.WarrentyPeriodStart)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodEnd
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodEnd)
-            @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
+            @Html.EditorFor(model => model.inventoryItem.WarrentyPeriodEnd)
+            @Html.ValidationMessageFor(model => model.inventoryItem.WarrentyPeriodEnd)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.Notes
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Notes)
-            @Html.ValidationMessageFor(model => model.Notes)
+            @Html.EditorFor(model => model.inventoryItem.Notes)
+            @Html.ValidationMessageFor(model => model.inventoryItem.Notes)
         </div>
 
-        
+
         <div class="editor-label">
             @Loc.Dic.Status
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
+            @Html.EditorFor(model => model.inventoryItem.Status)
+            @Html.ValidationMessageFor(model => model.inventoryItem.Status)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.IsOutOfInventory
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.IsOutOfInventory)
-            @Html.ValidationMessageFor(model => model.IsOutOfInventory)
+            @Html.EditorFor(model => model.inventoryItem.IsOutOfInventory)
+            @Html.ValidationMessageFor(model => model.inventoryItem.IsOutOfInventory)
         </div>
 
         <p>
