@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
         <div class="editor-field">
-            @Html.DropDownList("BudgetsExpensesToIncomesId", (SelectList)ViewBag.AllocationList)
+            @Html.DropDownList("BudgetsAllocationId", (SelectList)ViewBag.AllocationList)
         </div>
                 @Html.HiddenFor(model => model.BudgetId)
                 @Html.HiddenFor(model => model.BasketId)
