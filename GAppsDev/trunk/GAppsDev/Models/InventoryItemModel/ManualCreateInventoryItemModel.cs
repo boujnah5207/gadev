@@ -10,11 +10,6 @@ namespace GAppsDev.Models.InventoryItemModel
     {
         public Inventory inventoryItem { get; set; }
         public Orders_Items item { get; set; }
-        public ManualCreateInventoryItemModel()
-        {
-            inventoryItem = new Inventory();
-            item = new Orders_Items();
-        }
     }
 
 }

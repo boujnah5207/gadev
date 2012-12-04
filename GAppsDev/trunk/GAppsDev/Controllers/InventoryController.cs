@@ -76,7 +76,7 @@ namespace GAppsDev.Controllers
 
             ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId");
             ViewBag.LocationId = new SelectList(db.Locations.Where(x=>x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
-            return View();
+            return View(manualCreateInventoryItemModel);
         }
 
         //
@@ -84,21 +84,20 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(Inventory inventory)
+        public ActionResult Create(ManualCreateInventoryItemModel inventoryItemModel)
         {
             if (ModelState.IsValid)
             {
-                inventory.CompanyId = CurrentUser.CompanyId;
-                db.Inventories.AddObject(inventory);
+                inventoryItemModel.inventoryItem.CompanyId = CurrentUser.CompanyId;
+                InventoryRepository inventoryRepository = new InventoryRepository();
+                //db.Inventories.AddObject(inventoryItemModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", inventory.CompanyId);
-            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId", inventory.RelatedInventoryItem);
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", inventory.ItemId);
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventory.LocationId);
-            return View(inventory);
+            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId", inventoryItemModel.inventoryItem.RelatedInventoryItem);
+            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventoryItemModel.inventoryItem.LocationId);
+            return View(inventoryItemModel);
         }
 
         //
