@@ -31,7 +31,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_ExpensesToIncomes_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Allocations), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Budgets_ExpensesToIncomes", "Budgets_Allocations", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Allocations), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_AllocationToMonth_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Budgets_AllocationToMonth", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_AllocationToMonth), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_AllocationToMonth_Monthes", "Month", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Month), "Budgets_AllocationToMonth", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_AllocationToMonth), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Permissions_Budgets_Permissions", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_Baskets1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Budgets_Baskets), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_Permissions_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_Baskets), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Budgets_PermissionsToAllocation_Budgets_Permissions", "Budgets_Baskets", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Budgets_Baskets), "Budgets_BasketsToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Budgets_BasketsToAllocation), true)]
@@ -60,7 +60,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Order), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Languages", "Language", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Language), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Monthe", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Monthe), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Month", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Month), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToAllocation_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToAllocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToAllocation), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders", "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Order), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
@@ -366,18 +366,18 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Monthe> Monthes
+        public ObjectSet<Month> Months
         {
             get
             {
-                if ((_Monthes == null))
+                if ((_Months == null))
                 {
-                    _Monthes = base.CreateObjectSet<Monthe>("Monthes");
+                    _Months = base.CreateObjectSet<Month>("Months");
                 }
-                return _Monthes;
+                return _Months;
             }
         }
-        private ObjectSet<Monthe> _Monthes;
+        private ObjectSet<Month> _Months;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -696,11 +696,11 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Monthes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Months EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToMonthes(Monthe monthe)
+        public void AddToMonths(Month month)
         {
-            base.AddObject("Monthes", monthe);
+            base.AddObject("Months", month);
         }
     
         /// <summary>
@@ -825,7 +825,8 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="year">Initial value of the Year property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Budget CreateBudget(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 year, global::System.Boolean isActive, global::System.Boolean isCanceled)
         {
             Budget budget = new Budget();
             budget.Id = id;
@@ -833,6 +834,7 @@ namespace DB
             budget.CompanyId = companyId;
             budget.Year = year;
             budget.IsActive = isActive;
+            budget.IsCanceled = isCanceled;
             return budget;
         }
 
@@ -986,6 +988,30 @@ namespace DB
         private Nullable<global::System.Boolean> _ExternalBudget;
         partial void OnExternalBudgetChanging(Nullable<global::System.Boolean> value);
         partial void OnExternalBudgetChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 
@@ -1162,7 +1188,8 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="budgetId">Initial value of the BudgetId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.String name, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.String name, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate, global::System.Boolean isCanceled)
         {
             Budgets_Allocations budgets_Allocations = new Budgets_Allocations();
             budgets_Allocations.Id = id;
@@ -1170,6 +1197,7 @@ namespace DB
             budgets_Allocations.CompanyId = companyId;
             budgets_Allocations.BudgetId = budgetId;
             budgets_Allocations.CreationDate = creationDate;
+            budgets_Allocations.IsCanceled = isCanceled;
             return budgets_Allocations;
         }
 
@@ -1371,6 +1399,30 @@ namespace DB
         private Nullable<global::System.Int32> _ExpenseId;
         partial void OnExpenseIdChanging(Nullable<global::System.Int32> value);
         partial void OnExpenseIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 
@@ -1778,16 +1830,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_AllocationToMonth_Monthes", "Monthe")]
-        public Monthe Monthe
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Budgets_AllocationToMonth_Monthes", "Month")]
+        public Month Month
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Monthe").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Month").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Monthe").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Month").Value = value;
             }
         }
         /// <summary>
@@ -1795,17 +1847,17 @@ namespace DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Monthe> MontheReference
+        public EntityReference<Month> MonthReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Monthe");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Month");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Monthe>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Monthe", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Month>("designModel.FK_Budgets_AllocationToMonth_Monthes", "Month", value);
                 }
             }
         }
@@ -1831,13 +1883,15 @@ namespace DB
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Budgets_Baskets CreateBudgets_Baskets(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String name)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Budgets_Baskets CreateBudgets_Baskets(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.String name, global::System.Boolean isCanceled)
         {
             Budgets_Baskets budgets_Baskets = new Budgets_Baskets();
             budgets_Baskets.Id = id;
             budgets_Baskets.CreationDate = creationDate;
             budgets_Baskets.CompanyId = companyId;
             budgets_Baskets.Name = name;
+            budgets_Baskets.IsCanceled = isCanceled;
             return budgets_Baskets;
         }
 
@@ -1943,6 +1997,30 @@ namespace DB
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 
@@ -2127,14 +2205,14 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="budgetId">Initial value of the BudgetId property.</param>
         /// <param name="basketId">Initial value of the BasketId property.</param>
-        /// <param name="budgetsExpensesToIncomesId">Initial value of the BudgetsExpensesToIncomesId property.</param>
-        public static Budgets_BasketsToAllocation CreateBudgets_BasketsToAllocation(global::System.Int32 id, global::System.Int32 budgetId, global::System.Int32 basketId, global::System.Int32 budgetsExpensesToIncomesId)
+        /// <param name="budgetsAllocationId">Initial value of the BudgetsAllocationId property.</param>
+        public static Budgets_BasketsToAllocation CreateBudgets_BasketsToAllocation(global::System.Int32 id, global::System.Int32 budgetId, global::System.Int32 basketId, global::System.Int32 budgetsAllocationId)
         {
             Budgets_BasketsToAllocation budgets_BasketsToAllocation = new Budgets_BasketsToAllocation();
             budgets_BasketsToAllocation.Id = id;
             budgets_BasketsToAllocation.BudgetId = budgetId;
             budgets_BasketsToAllocation.BasketId = basketId;
-            budgets_BasketsToAllocation.BudgetsExpensesToIncomesId = budgetsExpensesToIncomesId;
+            budgets_BasketsToAllocation.BudgetsAllocationId = budgetsAllocationId;
             return budgets_BasketsToAllocation;
         }
 
@@ -2222,24 +2300,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 BudgetsExpensesToIncomesId
+        public global::System.Int32 BudgetsAllocationId
         {
             get
             {
-                return _BudgetsExpensesToIncomesId;
+                return _BudgetsAllocationId;
             }
             set
             {
-                OnBudgetsExpensesToIncomesIdChanging(value);
-                ReportPropertyChanging("BudgetsExpensesToIncomesId");
-                _BudgetsExpensesToIncomesId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("BudgetsExpensesToIncomesId");
-                OnBudgetsExpensesToIncomesIdChanged();
+                OnBudgetsAllocationIdChanging(value);
+                ReportPropertyChanging("BudgetsAllocationId");
+                _BudgetsAllocationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BudgetsAllocationId");
+                OnBudgetsAllocationIdChanged();
             }
         }
-        private global::System.Int32 _BudgetsExpensesToIncomesId;
-        partial void OnBudgetsExpensesToIncomesIdChanging(global::System.Int32 value);
-        partial void OnBudgetsExpensesToIncomesIdChanged();
+        private global::System.Int32 _BudgetsAllocationId;
+        partial void OnBudgetsAllocationIdChanging(global::System.Int32 value);
+        partial void OnBudgetsAllocationIdChanged();
 
         #endregion
 
@@ -3896,7 +3974,8 @@ namespace DB
         /// <param name="telephoneNumber">Initial value of the TelephoneNumber property.</param>
         /// <param name="companyNumber">Initial value of the CompanyNumber property.</param>
         /// <param name="isUsingExternalAccountManagment">Initial value of the IsUsingExternalAccountManagment property.</param>
-        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber, global::System.Boolean isUsingExternalAccountManagment)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber, global::System.Boolean isUsingExternalAccountManagment, global::System.Boolean isCanceled)
         {
             Company company = new Company();
             company.Id = id;
@@ -3913,6 +3992,7 @@ namespace DB
             company.TelephoneNumber = telephoneNumber;
             company.CompanyNumber = companyNumber;
             company.IsUsingExternalAccountManagment = isUsingExternalAccountManagment;
+            company.IsCanceled = isCanceled;
             return company;
         }
 
@@ -4306,6 +4386,30 @@ namespace DB
         private global::System.Boolean _IsUsingExternalAccountManagment;
         partial void OnIsUsingExternalAccountManagmentChanging(global::System.Boolean value);
         partial void OnIsUsingExternalAccountManagmentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 
@@ -5801,24 +5905,24 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Monthe")]
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Month")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Monthe : EntityObject
+    public partial class Month : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Monthe object.
+        /// Create a new Month object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Monthe CreateMonthe(global::System.Int32 id, global::System.String name)
+        public static Month CreateMonth(global::System.Int32 id, global::System.String name)
         {
-            Monthe monthe = new Monthe();
-            monthe.Id = id;
-            monthe.Name = name;
-            return monthe;
+            Month month = new Month();
+            month.Id = id;
+            month.Name = name;
+            return month;
         }
 
         #endregion
@@ -6687,13 +6791,15 @@ namespace DB
         /// <param name="title">Initial value of the Title property.</param>
         /// <param name="subTitle">Initial value of the SubTitle property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate, global::System.Boolean isCanceled)
         {
             Orders_Items orders_Items = new Orders_Items();
             orders_Items.Id = id;
             orders_Items.Title = title;
             orders_Items.SubTitle = subTitle;
             orders_Items.CreationDate = creationDate;
+            orders_Items.IsCanceled = isCanceled;
             return orders_Items;
         }
 
@@ -6823,6 +6929,30 @@ namespace DB
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 
@@ -7120,16 +7250,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Monthe")]
-        public Monthe Monthe
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_OrderToAllocation_Monthes", "Month")]
+        public Month Month
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Orders_OrderToAllocation_Monthes", "Month").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Orders_OrderToAllocation_Monthes", "Month").Value = value;
             }
         }
         /// <summary>
@@ -7137,17 +7267,17 @@ namespace DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Monthe> MontheReference
+        public EntityReference<Month> MonthReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Month>("designModel.FK_Orders_OrderToAllocation_Monthes", "Month");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Monthe>("designModel.FK_Orders_OrderToAllocation_Monthes", "Monthe", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Month>("designModel.FK_Orders_OrderToAllocation_Monthes", "Month", value);
                 }
             }
         }
@@ -8302,13 +8432,15 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Supplier CreateSupplier(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.String name)
+        /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
+        public static Supplier CreateSupplier(global::System.Int32 id, global::System.Int32 companyId, global::System.DateTime creationDate, global::System.String name, global::System.Boolean isCanceled)
         {
             Supplier supplier = new Supplier();
             supplier.Id = id;
             supplier.CompanyId = companyId;
             supplier.CreationDate = creationDate;
             supplier.Name = name;
+            supplier.IsCanceled = isCanceled;
             return supplier;
         }
 
@@ -8750,6 +8882,30 @@ namespace DB
         private global::System.String _Notes;
         partial void OnNotesChanging(global::System.String value);
         partial void OnNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCanceled
+        {
+            get
+            {
+                return _IsCanceled;
+            }
+            set
+            {
+                OnIsCanceledChanging(value);
+                ReportPropertyChanging("IsCanceled");
+                _IsCanceled = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCanceled");
+                OnIsCanceledChanged();
+            }
+        }
+        private global::System.Boolean _IsCanceled;
+        partial void OnIsCanceledChanging(global::System.Boolean value);
+        partial void OnIsCanceledChanged();
 
         #endregion
 

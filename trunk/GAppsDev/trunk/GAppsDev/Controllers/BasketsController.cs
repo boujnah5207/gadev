@@ -321,7 +321,7 @@ namespace GAppsDev.Controllers
                 {
                     if (allocation.IsActive)
                     {
-                        if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                        if (!existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsAllocationId))
                         {
                             allocation.Allocation.BudgetId = budgetFromDB.Id;
                             allocation.Allocation.BasketId = permissionFromDB.Id;
@@ -330,7 +330,7 @@ namespace GAppsDev.Controllers
                     }
                     else
                     {
-                        if (existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsExpensesToIncomesId))
+                        if (existingPermissionAllocations.Any(x => x.Id == allocation.Allocation.BudgetsAllocationId))
                         {
                             permissionsAllocationsRep.Delete(allocation.Allocation.Id);
                         }

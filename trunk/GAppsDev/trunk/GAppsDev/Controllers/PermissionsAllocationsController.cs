@@ -109,7 +109,7 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
             ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }
@@ -127,7 +127,7 @@ namespace GAppsDev.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsExpensesToIncomesId);
+            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
             ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }
