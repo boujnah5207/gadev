@@ -961,6 +961,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error while trying to delete a budget.
+        /// </summary>
+        public static string error_budget_delete_error {
+            get {
+                return ResourceManager.GetString("error_budget_delete_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_budgets_already_active.
         /// </summary>
         public static string error_budgets_already_active {
