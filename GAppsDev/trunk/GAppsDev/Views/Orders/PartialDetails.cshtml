@@ -111,7 +111,7 @@
     <br />
 
     <div class="display-label"> @Loc.Dic.OrderAllocations </div>
-    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.Order.Orders_OrderToAllocation.ToList(), isFutureOrder = ViewBag.IsFutureOrder, baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.Order.Orders_OrderToAllocation.ToList(), budgetYear = ViewBag.BudgetYear, isFutureOrder = ViewBag.IsFutureOrder, baseUrl = Url.Action("Index") })    
     <br />
 
     @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)

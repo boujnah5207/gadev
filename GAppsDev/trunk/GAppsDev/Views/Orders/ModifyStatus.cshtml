@@ -15,7 +15,7 @@
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.Order.OrderApproverNotes)
+        @Html.TextAreaFor(model => model.Order.OrderApproverNotes)
     </div>
     @Html.HiddenFor(model => model.Order.Id)
     <p>

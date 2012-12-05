@@ -26,7 +26,7 @@ namespace GAppsDev.Models.Search
         public int? BudgetId { get; set; }
         public int? SupplierId { get; set; }
         public int? StatusId { get; set; }
-        public int? AllocationId { get; set; }
+        public string AllocationId { get; set; }
 
         public int? PriceMin { get; set; }
         public int? PriceMax { get; set; }

@@ -168,7 +168,7 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Import(HttpPostedFileBase file, int? id, int? year, string budgetType)
+        public ActionResult Import(HttpPostedFileBase file, int? id, string name, int? year, string budgetType)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
@@ -192,9 +192,13 @@ namespace GAppsDev.Controllers
             }
             else if (year.HasValue)
             {
+                if (year.Value > DateTime.Now.Year + 10 || year.Value < DateTime.Now.Year - 10)
+                    return Error(Loc.Dic.error_invalid_budget_year);
+
                 using (BudgetsRepository budgetsRepository = new BudgetsRepository())
                 {
                     Budget newBudget = new Budget();
+                    newBudget.Name = name;
                     newBudget.Year = year.Value;
                     newBudget.CompanyId = CurrentUser.CompanyId;
                     newBudget.IsActive = false;
