@@ -1182,4 +1182,13 @@
   <data name="error_budget_delete_error" xml:space="preserve">
     <value>There was an error while trying to delete a budget</value>
   </data>
+  <data name="error_imported_allocations_amount_is_used" xml:space="preserve">
+    <value>Some imported allocations has an amount that is smaller then the amount already used</value>
+  </data>
+  <data name="TheNewAmount" xml:space="preserve">
+    <value>New amount</value>
+  </data>
+  <data name="TheTotalUsed" xml:space="preserve">
+    <value>Total used</value>
+  </data>
 </root>

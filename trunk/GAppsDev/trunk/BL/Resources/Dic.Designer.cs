@@ -1096,6 +1096,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some imported allocations has an amount that is smaller then the amount already used.
+        /// </summary>
+        public static string error_imported_allocations_amount_is_used {
+            get {
+                return ResourceManager.GetString("error_imported_allocations_amount_is_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_income_allocations_exeeds_amount.
         /// </summary>
         public static string error_income_allocations_exeeds_amount {
@@ -3000,6 +3009,24 @@ namespace Loc {
         public static string TelephoneNumber {
             get {
                 return ResourceManager.GetString("TelephoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New amount.
+        /// </summary>
+        public static string TheNewAmount {
+            get {
+                return ResourceManager.GetString("TheNewAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total used.
+        /// </summary>
+        public static string TheTotalUsed {
+            get {
+                return ResourceManager.GetString("TheTotalUsed", resourceCulture);
             }
         }
         
