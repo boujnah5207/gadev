@@ -1209,4 +1209,7 @@
   <data name="AllUsersOption" xml:space="preserve">
     <value>All users</value>
   </data>
+  <data name="AddDate" xml:space="preserve">
+    <value>Date Added</value>
+  </data>
 </root>

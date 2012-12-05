@@ -59,7 +59,7 @@ namespace GAppsDev.Controllers
 
     /*    public ActionResult Create()
         {
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
+            ViewBag.BudgetsAllocationId = new SelectList(db.Budgets_Allocations, "Id", "Id");
             ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name");
             return View();
         }*/
@@ -73,7 +73,7 @@ namespace GAppsDev.Controllers
             using (AllocationRepository allocationRepository = new AllocationRepository())
             {
                 ViewBag.AllocationList = new SelectList(allocationRepository.GetList().Where(x => x.BudgetId == budgetId).OrderBy(x => x.ExternalId).ToList(), "Id", "DisplayName");
-                //ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id");
+                //ViewBag.BudgetsAllocationId = new SelectList(db.Budgets_Allocations, "Id", "Id");
                 perAlloc.BudgetId = budgetId;
                 perAlloc.BasketId = permissionId;
                 Budget budget = budgetsRepository.GetEntity(budgetId);
@@ -109,7 +109,7 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
+            ViewBag.BudgetsAllocationId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
             ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }
@@ -127,7 +127,7 @@ namespace GAppsDev.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BudgetsExpensesToIncomesId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
+            ViewBag.BudgetsAllocationId = new SelectList(db.Budgets_Allocations, "Id", "Id", budgets_permissionstoallocation.BudgetsAllocationId);
             ViewBag.BasketId = new SelectList(db.Budgets_Baskets, "Id", "Name", budgets_permissionstoallocation.BasketId);
             return View(budgets_permissionstoallocation);
         }

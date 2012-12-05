@@ -108,6 +108,7 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
+                location.CompanyId = CurrentUser.CompanyId;
                 db.Locations.Attach(location);
                 db.ObjectStateManager.ChangeObjectState(location, EntityState.Modified);
                 db.SaveChanges();

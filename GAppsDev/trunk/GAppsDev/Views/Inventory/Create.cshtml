@@ -36,7 +36,7 @@
             @Loc.Dic.Location
         </div>
         <div class="editor-field">
-            @Html.DropDownList("LocationId", String.Empty)
+            @Html.DropDownListFor(model => model.inventoryItem.LocationId, (SelectList)ViewBag.LocationId, Loc.Dic.SelectNone)
             @Html.ValidationMessageFor(model => model.inventoryItem.LocationId)
         </div>
 
@@ -44,7 +44,7 @@
             @Loc.Dic.RelatedInventoryItem
         </div>
         <div class="editor-field">
-            @Html.DropDownList("RelatedInventoryItem", String.Empty)
+            @Html.DropDownListFor(model => model.inventoryItem.RelatedInventoryItem, (SelectList)ViewBag.RelatedInventoryItem, Loc.Dic.SelectNone)
             @Html.ValidationMessageFor(model => model.inventoryItem.RelatedInventoryItem)
         </div>
 

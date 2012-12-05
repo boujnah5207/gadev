@@ -1209,4 +1209,7 @@
   <data name="AllUsersOption" xml:space="preserve">
     <value>כל המזמינים</value>
   </data>
+  <data name="AddDate" xml:space="preserve">
+    <value>תאריך הוספה</value>
+  </data>
 </root>
