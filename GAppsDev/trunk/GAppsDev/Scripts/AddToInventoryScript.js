@@ -7,6 +7,8 @@ $(function () {
     splitedItems = new Array();
     removedItems = new Array();
     locationList = $($(".locationList")[0]).clone();
+
+    setAllDatePickers();
 });
 
 function expand(id, i) {
@@ -70,7 +72,7 @@ function split(id, index, quantity) {
                         "<label>" + local.AssignedTo + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].AssignedTo' />" +
                         "<label>" + local.SerialNumber + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].SerialNumber' />" +
                         "<br /> <span class='bold'>" + local.WarrantyPeriod + ": </span> <br />" +
-                        "<label style='display:inline;'>" + local.From + "- </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> <label style='display:inline;'>" + local.To + "</label>- <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
+                        "<label style='display:inline;'>" + local.From + "- </label> <input class='dateField' type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> <label style='display:inline;'>" + local.To + "</label>- <input class='dateField' type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
                         "<label>" + local.Notes + ": </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
                         "<label>" + local.State + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Status' />" +
                     "</div>" +
@@ -95,6 +97,8 @@ function split(id, index, quantity) {
     oldItem.remove();
     oldExpandBtn.replaceWith($("<input id='expandingGroupBtn-" + id + "' type='button' value='" + local.HideGroup + "' onClick='expandGroup(" + id + ")' />"));
     oldSplitBtn.replaceWith($("<input id='unSplitBtn-" + id + "' type='button' value='" + local.CancelSplit + "' onClick='unSplit(" + id + ")' />"));
+
+    setAllDatePickers();
 }
 
 function unSplit(id) {
@@ -112,6 +116,8 @@ function unSplit(id) {
         newExpandBtn.replaceWith(existingSplittedItem.oldExpandBtn);
         newSplitBtn.replaceWith(existingSplittedItem.oldSplitBtn);
     }
+
+    setAllDatePickers();
 }
 
 function remove(id) {
@@ -145,6 +151,8 @@ function unRemove(id) {
         ItemHiddenCancel.val("true");
         existingRemovedItem.oldItem.toggle(0);
     }
+
+    setAllDatePickers();
 }
 
 function getRemovedItem(id) {
@@ -165,4 +173,15 @@ function getSplittedItem(id) {
     }
 
     return null;
+}
+
+function setAllDatePickers() {
+    var dateFields = $(".dateField");
+    console.log(dateFields);
+    for (var i = 0; i < dateFields.length; i++) {
+        if (!$(dateFields[i]).hasClass("hasDatepicker")) {
+            $(dateFields[i]).datepicker($.datepicker.regional["he"]);
+            $(dateFields[i]).datepicker("option", "dateFormat", "dd/mm/yy");
+        }
+    }
 }
