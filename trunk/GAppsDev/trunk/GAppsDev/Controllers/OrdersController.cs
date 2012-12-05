@@ -1933,7 +1933,7 @@ namespace GAppsDev.Controllers
 
                                         ordersRep.Update(order);
 
-                                        return RedirectToAction("Index");
+                                        return RedirectToAction("PendingInventory");
                                     }
                                     else
                                     {
@@ -2226,8 +2226,8 @@ namespace GAppsDev.Controllers
                     if (model.StatusId.HasValue && model.StatusId.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
 
-                    if (model.AllocationId.HasValue && model.AllocationId.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any( oa => oa.AllocationId == model.AllocationId.Value));
+                    if (model.AllocationId != null && model.AllocationId != "-1")
+                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any( oa => oa.Budgets_Allocations.ExternalId == model.AllocationId));
 
                     if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
                         model.PriceMax = null;
@@ -2370,7 +2370,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ListOrderAllocations(IEnumerable<Orders_OrderToAllocation> orderAllocations, bool isFutureOrder, string baseUrl)
+        public ActionResult ListOrderAllocations(IEnumerable<Orders_OrderToAllocation> orderAllocations, int budgetYear, bool isFutureOrder, string baseUrl)
         {
             ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = false;
@@ -2383,6 +2383,7 @@ namespace GAppsDev.Controllers
             ViewBag.IsCheckBoxed = false;
             ViewBag.ShowUserName = true;
             ViewBag.IsFutureOrder = isFutureOrder;
+            ViewBag.BudgetYear = budgetYear;
 
             return PartialView(orderAllocations);
         }
@@ -2394,6 +2395,7 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
+                ViewBag.BudgetYear = order.Budget.Year;
 
                 if (order != null)
                 {
@@ -2448,7 +2450,7 @@ namespace GAppsDev.Controllers
                 model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
 
                 List<SelectListItemDB> budgetsAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllBudgetsOption } };
-                budgetsAsSelectItems.AddRange(budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new { Id = x.Id, Name = x.Year }).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() }));
+                budgetsAsSelectItems.AddRange(budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = "(" + x.Year + ") " + x.Name }));
                 model.BudgetsList = new SelectList(budgetsAsSelectItems, "Id", "Name");
 
                 List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = Loc.Dic.AllSuppliersOption } };
@@ -2459,8 +2461,8 @@ namespace GAppsDev.Controllers
                 statusesSelectList.AddRange(statusesRep.GetList().ToList());
                 model.StatusesList = new SelectList(statusesSelectList, "Id", "Name");
 
-                List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllAllocationsOption } };
-                allocationsSelectList.AddRange(allocationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsCanceled).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.DisplayName }).ToList());
+                List<SelectListStringItem> allocationsSelectList = new List<SelectListStringItem>() { new SelectListStringItem() { Id = "-1", Name = Loc.Dic.AllAllocationsOption } };
+                allocationsSelectList.AddRange(allocationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsCanceled).GroupBy(x => x.ExternalId).AsEnumerable().Select(x => new SelectListStringItem() { Id = x.First().ExternalId, Name = x.First().DisplayName }).ToList());
                 model.AllocationsList = new SelectList(allocationsSelectList, "Id", "Name");
             }
 

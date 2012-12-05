@@ -9,6 +9,8 @@
 {
     @Html.ValidationSummary(true)
     <text>
+
+    
     @if (Model.HasValue)
     {
         <h2>@Loc.Dic.UpdateBudget @ViewBag.Year</h2>
@@ -17,11 +19,25 @@
     else
     {
         <h2>@Loc.Dic.ImportBudget</h2>
-        @Loc.Dic.Year
-        <input type="text" name="year" />
         <br />
+        
+        <div class="editor-label">
+            @Loc.Dic.Name
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("name")
+        </div>
+        <br />
+        
+        <div class="editor-label">
+            @Loc.Dic.Year
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("year")
+        </div>
     }
     <br />
+
     @Loc.Dic.FileFormat
     <br />
     <input type="radio" name="budgetType" value="Year">

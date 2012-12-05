@@ -10,4 +10,10 @@ namespace DA
         public int? Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class SelectListStringItem
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
 }

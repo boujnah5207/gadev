@@ -62,6 +62,9 @@
             <th>
                 @Loc.Dic.Month
             </th>
+            <th>
+                @Loc.Dic.Year
+            </th>
             }
             <th>
                 @Loc.Dic.Amount
@@ -89,6 +92,9 @@
             {
             <td>
             @Html.GetMonthName(item.MonthId)
+            </td>
+            <td>
+            @ViewBag.BudgetYear
             </td>
             }
             <td>

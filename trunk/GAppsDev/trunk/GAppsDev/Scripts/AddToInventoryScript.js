@@ -177,7 +177,6 @@ function getSplittedItem(id) {
 
 function setAllDatePickers() {
     var dateFields = $(".dateField");
-    console.log(dateFields);
     for (var i = 0; i < dateFields.length; i++) {
         if (!$(dateFields[i]).hasClass("hasDatepicker")) {
             $(dateFields[i]).datepicker($.datepicker.regional["he"]);

@@ -1209,6 +1209,9 @@
   <data name="AllUsersOption" xml:space="preserve">
     <value>All users</value>
   </data>
+  <data name="error_invalid_budget_year" xml:space="preserve">
+    <value>The budget year must be in 10 years range from current time</value>
+  </data>
   <data name="AddDate" xml:space="preserve">
     <value>Date Added</value>
   </data>

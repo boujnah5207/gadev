@@ -1003,7 +1003,7 @@
     <value>שמור</value>
   </data>
   <data name="Allocation" xml:space="preserve">
-    <value>הקצאה</value>
+    <value>סעיף תקציבי</value>
   </data>
   <data name="Error_chooseMonthelyOrYearlyBudget" xml:space="preserve">
     <value>יש לבחור תקציב שנתי או חודשי</value>
@@ -1208,6 +1208,9 @@
   </data>
   <data name="AllUsersOption" xml:space="preserve">
     <value>כל המזמינים</value>
+  </data>
+  <data name="error_invalid_budget_year" xml:space="preserve">
+    <value>שנת התקציב חייבת להיות בטווח של 10 שנים מהזמן הנוכחי</value>
   </data>
   <data name="AddDate" xml:space="preserve">
     <value>תאריך הוספה</value>
