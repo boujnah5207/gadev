@@ -146,7 +146,7 @@
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.InvoiceApproval, "InvoiceApproval", new { id = item.Id })
                 }
-                @if (!item.WasAddedToInventory && DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.InventoryManager) && item.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+                @if (!item.WasAddedToInventory && DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.InventoryManager) && item.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.AddToInventory, "AddToInventory", new { id = item.Id })
                 }

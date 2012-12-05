@@ -38,6 +38,33 @@
     </div>
     <br />
 
+    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+    {
+        <div class="display-label"> 
+            @Loc.Dic.InvoiceNumber
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Order.InvoiceNumber)
+        </div>
+        <br />
+        
+        <div class="display-label"> 
+            @Loc.Dic.InvoiceDate 
+        </div>
+        <div class="display-field">
+            @Model.Order.InvoiceDate.Value.ToShortDateString()
+        </div>
+        <br />
+        
+        <div class="display-label"> 
+            @Loc.Dic.ValueDate 
+        </div>
+        <div class="display-field">
+            @Model.Order.ValueDate.Value.ToShortDateString()
+        </div>
+        <br />
+    }
+
     @if (Model.Order.IsFutureOrder)
     {
     <div class="display-label">

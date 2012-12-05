@@ -26,7 +26,7 @@ function addItem() {
                 var newItem = $(
                     "<div class='budget' id='permissionAllocation-" + nextNumber + "'>" +
                                 "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
-                                "<input type='hidden' class='existingAllocations' id='allocationField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].Allocation.BudgetsExpensesToIncomesId' value='" + allocationId + "' />" +
+                                "<input type='hidden' class='existingAllocations' id='allocationField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].Allocation.BudgetsAllocationId' value='" + allocationId + "' />" +
                                 "<span>" + allocationText + "<\span>" +
                                 "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + nextNumber + ") '/>" +
                             "</div>"

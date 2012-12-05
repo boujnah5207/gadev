@@ -26,9 +26,17 @@
 <fieldset>
     <legend>@Loc.Dic.ProcurementOrder</legend>
 
+    @if (ViewBag.LogoExists)
+    {
     <div id="logoContainer">
         <img src=@(Url.Content("~/Content/LogoImages/" + Model.Order.Company.Id + ".png")) style="max-width:500px;max-height:200px;"/>
     </div>
+    }
+    else
+    {
+        <h1> @Model.Order.Company.Name </h1>
+    }
+    <br />
     <br />
 
     <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => model.Order.Company.CompanyNumber)</span>

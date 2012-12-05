@@ -711,6 +711,7 @@ namespace GAppsDev.Controllers
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
 
+            
             PrintOrderModel model = new PrintOrderModel();
 
             using (OrdersRepository ordersRep = new OrdersRepository(companyId))
@@ -724,6 +725,11 @@ namespace GAppsDev.Controllers
             {
                 return HttpNotFound();
             }
+
+            string fileName = model.Order.Company.Id + ".png";
+            string path = Path.Combine(Server.MapPath("~/Content/LogoImages/"), fileName);
+
+            ViewBag.LogoExists = System.IO.File.Exists(path);
 
             ViewBag.LanguageCode = languageCode;
             return View(model);
@@ -1750,6 +1756,9 @@ namespace GAppsDev.Controllers
                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+
+                    if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                        return Error(Loc.Dic.error_order_not_approved);
                 }
 
                 if (order != null)
@@ -2041,7 +2050,6 @@ namespace GAppsDev.Controllers
 
                     foreach (var order in ordersToExport)
                     {
-                        DateTime paymentDate = DateTime.Now;
                         decimal orderPrice;
 
                         if (order.Price.HasValue)
@@ -2084,15 +2092,6 @@ namespace GAppsDev.Controllers
                             if (String.IsNullOrEmpty(allocation.ExternalId))
                                 return Error("Insufficient allocation data for export");
 
-                            if (order.Orders_OrderToAllocation.Count > 0)
-                            {
-                                paymentDate = new DateTime(allocation.Budget.Year, paymentMonthId, 1);
-                            }
-                            else
-                            {
-                                paymentDate = new DateTime(allocation.Budget.Year, order.CreationDate.Month, 1);
-                            }
-
                             decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
 
                             builder.AppendLine(
@@ -2101,7 +2100,7 @@ namespace GAppsDev.Controllers
                             order.InvoiceNumber.PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),
-                            paymentDate.ToString("ddMMyy"),
+                            order.ValueDate.Value.ToString("ddMMyy"),
                             userCompany.ExternalCoinCode.PadLeft(3),
                             String.Empty.PadLeft(22),
                             allocation.ExternalId.ToString().PadLeft(8),
@@ -2126,7 +2125,7 @@ namespace GAppsDev.Controllers
                             order.InvoiceNumber.PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),
-                            paymentDate.ToString("ddMMyy"),
+                            order.ValueDate.Value.ToString("ddMMyy"),
                             userCompany.ExternalCoinCode.PadLeft(3),
                             String.Empty.PadLeft(22),
                             String.Empty.PadLeft(8),
