@@ -37,7 +37,7 @@ namespace GAppsDev.Controllers
             IEnumerable<Inventory> inventories;
             using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
-                inventories = inventoryRepository.GetList("Orders_Items","Location").Where(x => x.CompanyId == CurrentUser.CompanyId);
+                inventories = inventoryRepository.GetList("Orders_Items", "Location").Where(x => x.CompanyId == CurrentUser.CompanyId);
 
                 inventories = Pagination(inventories, page, sortby, order);
 
@@ -52,7 +52,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            
+
             Inventory inventory = db.Inventories.Single(i => i.Id == id);
             if (inventory == null)
             {
@@ -67,16 +67,14 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            Inventory inventory = new Inventory();
-            Orders_Items item = new Orders_Items();
-            ManualCreateInventoryItemModel manualCreateInventoryItemModel = new ManualCreateInventoryItemModel();
-            inventory.CompanyId = CurrentUser.CompanyId;
-            manualCreateInventoryItemModel.inventoryItem = inventory;
-            manualCreateInventoryItemModel.item = item;
-
-            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId");
-            ViewBag.LocationId = new SelectList(db.Locations.Where(x=>x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
-            return View(manualCreateInventoryItemModel);
+            using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+            using (LocationsRepository locationsRepository = new LocationsRepository())
+            using (InventoryRepository inventoryRepository = new InventoryRepository())
+            {
+                ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title"+"SubTitle");
+                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
+            }
+            return View(new ManualCreateInventoryItemModel());
         }
 
         //
@@ -89,14 +87,24 @@ namespace GAppsDev.Controllers
             if (ModelState.IsValid)
             {
                 inventoryItemModel.inventoryItem.CompanyId = CurrentUser.CompanyId;
-                InventoryRepository inventoryRepository = new InventoryRepository();
-                //db.Inventories.AddObject(inventoryItemModel);
-                db.SaveChanges();
+                //inventoryItemModel.inventoryItem.AddedBy = CurrentUser.CompanyId;
+                using (InventoryRepository inventoryRepository = new InventoryRepository())
+                using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+                {
+                    orderItemsRepository.Create(inventoryItemModel.item);
+                    inventoryItemModel.inventoryItem.ItemId = inventoryItemModel.item.Id;
+                    inventoryRepository.Create(inventoryItemModel.inventoryItem);
+                }
                 return RedirectToAction("Index");
             }
 
-            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId", inventoryItemModel.inventoryItem.RelatedInventoryItem);
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventoryItemModel.inventoryItem.LocationId);
+            using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+            using (LocationsRepository locationsRepository = new LocationsRepository())
+            using (InventoryRepository inventoryRepository = new InventoryRepository())
+            {
+                ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
+                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
+            }
             return View(inventoryItemModel);
         }
 
