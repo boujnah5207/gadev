@@ -1179,4 +1179,7 @@
   <data name="NoBasketsWereFound" xml:space="preserve">
     <value>No baskets were found</value>
   </data>
+  <data name="error_budget_delete_error" xml:space="preserve">
+    <value>There was an error while trying to delete a budget</value>
+  </data>
 </root>

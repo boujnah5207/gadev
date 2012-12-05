@@ -321,10 +321,54 @@ namespace GAppsDev.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Budget budget = db.Budgets.Single(b => b.Id == id);
-            db.Budgets.DeleteObject(budget);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+
+            Budget budget;
+            List<Budgets_Allocations> budgetAllocations;
+
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository())
+            {
+                budget = budgetsRep.GetEntity(id);
+
+                if (budget == null)  return Error(Loc.Dic.error_database_error);
+                if (budget.CompanyId != CurrentUser.CompanyId) return Error(Loc.Dic.error_no_permission);
+
+                budgetAllocations = budget.Budgets_Allocations.ToList();
+
+                bool isTrueDelete = true;
+
+                if (budgetAllocations.Any())
+                {
+                    foreach (var allocation in budgetAllocations)
+                    {
+                        if (
+                            allocation.Budgets_BasketsToAllocation.Any() ||
+                            allocation.Orders_OrderToAllocation.Any()
+                            )
+                        {
+                            isTrueDelete = false;
+                            break;
+                        }
+                    }
+                }
+
+                bool wasDeleted;
+                if (isTrueDelete)
+                {
+                    wasDeleted = budgetsRep.Delete(id);
+                }
+                else
+                {
+                    budget.IsCanceled = false;
+                    wasDeleted = budgetsRep.Update(budget) != null;
+                }
+
+                if(wasDeleted)
+                    return RedirectToAction("Index");
+                else
+                    return Error(Loc.Dic.error_budget_delete_error);
+            }
         }
 
         [OpenIdAuthorize]

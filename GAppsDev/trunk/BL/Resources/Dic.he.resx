@@ -1179,4 +1179,7 @@
   <data name="NoBasketsWereFound" xml:space="preserve">
     <value>לא נמצאו סלי תקציב</value>
   </data>
+  <data name="error_budget_delete_error" xml:space="preserve">
+    <value>הייתה שגיאה בזמן מחיקת התקציב</value>
+  </data>
 </root>
