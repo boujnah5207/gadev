@@ -1194,4 +1194,19 @@
   <data name="error_no_location_exist" xml:space="preserve">
     <value>אין מיקום קיים, יש ליצור מיקום לפני הוספה למלאי</value>
   </data>
+  <data name="AllAllocationsOption" xml:space="preserve">
+    <value>כל ההקצאות</value>
+  </data>
+  <data name="AllBudgetsOption" xml:space="preserve">
+    <value>כל התקציבים</value>
+  </data>
+  <data name="AllStatusesOption" xml:space="preserve">
+    <value>כל הסטאטוסים</value>
+  </data>
+  <data name="AllSuppliersOption" xml:space="preserve">
+    <value>כל הספקים</value>
+  </data>
+  <data name="AllUsersOption" xml:space="preserve">
+    <value>כל המזמינים</value>
+  </data>
 </root>

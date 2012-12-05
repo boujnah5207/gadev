@@ -2226,6 +2226,9 @@ namespace GAppsDev.Controllers
                     if (model.StatusId.HasValue && model.StatusId.Value != -1)
                         ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
 
+                    if (model.AllocationId.HasValue && model.AllocationId.Value != -1)
+                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any( oa => oa.AllocationId == model.AllocationId.Value));
+
                     if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
                         model.PriceMax = null;
 
@@ -2438,22 +2441,27 @@ namespace GAppsDev.Controllers
             using (BudgetsRepository budgetsRep = new BudgetsRepository())
             using (SuppliersRepository suppliersRep = new SuppliersRepository())
             using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "כל המזמינים" } };
+                List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllUsersOption } };
                 usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                 model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
 
-                List<SelectListItemDB> budgetsAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "כל התקציבים" } };
+                List<SelectListItemDB> budgetsAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllBudgetsOption } };
                 budgetsAsSelectItems.AddRange(budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new { Id = x.Id, Name = x.Year }).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() }));
                 model.BudgetsList = new SelectList(budgetsAsSelectItems, "Id", "Name");
 
-                List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = "כל הספקים" } };
+                List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = Loc.Dic.AllSuppliersOption } };
                 suppliersSelectList.AddRange(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).OrderByDescending(x => x.Name).ToList());
                 model.SuppliersList = new SelectList(suppliersSelectList, "Id", "Name");
 
-                List<Orders_Statuses> statusesSelectList = new List<Orders_Statuses>() { new Orders_Statuses() { Id = -1, Name = "כל הסטאטוסים" } };
+                List<Orders_Statuses> statusesSelectList = new List<Orders_Statuses>() { new Orders_Statuses() { Id = -1, Name = Loc.Dic.AllStatusesOption } };
                 statusesSelectList.AddRange(statusesRep.GetList().ToList());
                 model.StatusesList = new SelectList(statusesSelectList, "Id", "Name");
+
+                List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllAllocationsOption } };
+                allocationsSelectList.AddRange(allocationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsCanceled).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.DisplayName }).ToList());
+                model.AllocationsList = new SelectList(allocationsSelectList, "Id", "Name");
             }
 
             ViewBag.IsExpanding = isExpanding;

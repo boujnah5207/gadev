@@ -196,6 +196,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All allocations.
+        /// </summary>
+        public static string AllAllocationsOption {
+            get {
+                return ResourceManager.GetString("AllAllocationsOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Budget Allocations.
         /// </summary>
         public static string AllBudgetAllocations {
@@ -210,6 +219,15 @@ namespace Loc {
         public static string AllBudgets {
             get {
                 return ResourceManager.GetString("AllBudgets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All budgets.
+        /// </summary>
+        public static string AllBudgetsOption {
+            get {
+                return ResourceManager.GetString("AllBudgetsOption", resourceCulture);
             }
         }
         
@@ -286,6 +304,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All statuses.
+        /// </summary>
+        public static string AllStatusesOption {
+            get {
+                return ResourceManager.GetString("AllStatusesOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Sub-Projects.
         /// </summary>
         public static string AllSubProjects {
@@ -295,11 +322,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All suppliers.
+        /// </summary>
+        public static string AllSuppliersOption {
+            get {
+                return ResourceManager.GetString("AllSuppliersOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Users.
         /// </summary>
         public static string AllUsers {
             get {
                 return ResourceManager.GetString("AllUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All users.
+        /// </summary>
+        public static string AllUsersOption {
+            get {
+                return ResourceManager.GetString("AllUsersOption", resourceCulture);
             }
         }
         
