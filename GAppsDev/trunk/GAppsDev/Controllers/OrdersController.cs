@@ -2147,7 +2147,7 @@ namespace GAppsDev.Controllers
                     }
 
                     Response.AppendHeader("Refresh", "1");
-                    Response.AppendHeader("URL", Url.Action("OrdersToExport", "Orders", null, "http"));
+                    Response.AppendHeader("Location", Url.Action("OrdersToExport", "Orders", null, "http"));
 
                     return File(Encoding.UTF8.GetBytes(builder.ToString()),
                          "text/plain",
