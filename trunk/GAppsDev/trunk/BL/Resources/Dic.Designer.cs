@@ -1213,6 +1213,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No location exist, you must create location before.
+        /// </summary>
+        public static string error_no_location_exist {
+            get {
+                return ResourceManager.GetString("error_no_location_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_no_permission.
         /// </summary>
         public static string error_no_permission {

@@ -1191,4 +1191,7 @@
   <data name="TheTotalUsed" xml:space="preserve">
     <value>Total used</value>
   </data>
+  <data name="error_no_location_exist" xml:space="preserve">
+    <value>No location exist, you must create location before</value>
+  </data>
 </root>

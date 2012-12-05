@@ -2977,7 +2977,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <edmx:Diagram Name="Model1" ZoomLevel="59">
+      <edmx:Diagram Name="Model1" ZoomLevel="116">
         <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="2.7403214940523362" PointY="27.500099925091536" />
         <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="7.2592117913343062" PointY="15.600963361375483" />
         <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="11.21502168067499" PointY="10.805503656531453" />
