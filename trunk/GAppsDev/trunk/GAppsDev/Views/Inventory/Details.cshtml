@@ -2,108 +2,113 @@
 
 @{
     ViewBag.Title = "Details";
-    ViewBag.PageName = "Orders";
-    ViewBag.SubPageName = "";
+    ViewBag.PageName = "Inventory";
+    ViewBag.SubPageName = "AllInventory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>@Loc.Dic.Details</h2>
 
 <fieldset>
-    <legend>Inventory</legend>
+    <legend>@Loc.Dic.Inventory</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
+        @Loc.Dic.AddDate
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.CreationDate)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Company.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Company.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Orders_Items.Title)
+        @Loc.Dic.ItemName
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Orders_Items.Title)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Location.City)
+        @Loc.Dic.ItemDescription
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Location.City)
+        @Html.DisplayFor(model => model.Orders_Items.SubTitle)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.OrderId)
+        @Loc.Dic.Location
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.OrderId)
+        @Html.DisplayFor(model => model.Location.Name)
     </div>
-
+    @if (Model.OrderId != null)
+    {
+        <div class="display-label">
+            @Loc.Dic.OrderNumber
+        </div>
+        <div class="display-field">
+            @Model.Order.OrderNumber
+            @Html.ActionLink(Loc.Dic.View + " " + Loc.Dic.Order, "Details", "Orders", new { id = Model.OrderId }, null)
+        </div>
+    }
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.AssignedTo)
+        @Loc.Dic.AssignedTo
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.AssignedTo)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SerialNumber)
+        @Loc.Dic.SerialNumber
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SerialNumber)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.WarrentyPeriodStart)
+        @Loc.Dic.WarrentyPeriodStart
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.WarrentyPeriodStart)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.WarrentyPeriodEnd)
+        @Loc.Dic.WarrentyPeriodEnd
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.WarrentyPeriodEnd)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Notes)
+        @Loc.Dic.Notes
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Notes)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Inventory2.OrderId)
+        @Loc.Dic.RelatedInventoryItem
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Inventory2.OrderId)
+        @Html.DisplayFor(model => model.Inventory2.Orders_Items.Title)
+        @Html.DisplayFor(model => model.Inventory2.Orders_Items.SubTitle)
+
     </div>
 
+
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
+        @Loc.Dic.Status
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Status)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.IsOutOfInventory)
+        @Loc.Dic.IsOutOfInventory
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.IsOutOfInventory)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

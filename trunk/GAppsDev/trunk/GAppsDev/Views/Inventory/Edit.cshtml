@@ -7,7 +7,8 @@
     ViewBag.SubPageName = "AllInventory";
 }
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
@@ -19,7 +20,7 @@
             @Loc.Dic.ItemName
         </div>
         <div class="editor-field">
-            @Html.DisplayFor( model => model.Orders_Items.Title)
+            @Html.DisplayFor(model => model.Orders_Items.Title)
         </div>
         <br />
 
@@ -46,6 +47,15 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.AssignedTo)
             @Html.ValidationMessageFor(model => model.AssignedTo)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.RelatedInventoryItem
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RelatedInventoryItem)
+            @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
         </div>
         <br />
 

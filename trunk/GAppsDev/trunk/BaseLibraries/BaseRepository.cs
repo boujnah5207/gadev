@@ -48,15 +48,15 @@ namespace BaseLibraries
 
         public virtual bool Create(TEntity entity)
         {
-            try
-            {
+            //try
+            //{
                 _db.CreateObjectSet<TEntity>().AddObject(entity);
                 _db.SaveChanges();
-            }
-            catch
-            {
-                return false;
-            }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
             return true;
         }
 

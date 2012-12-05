@@ -69,12 +69,16 @@ namespace GAppsDev.Controllers
         {
             using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
             using (LocationsRepository locationsRepository = new LocationsRepository())
-            //using (InventoryRepository inventoryRepository = new InventoryRepository())
+            using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
-                ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList().Where(x => x.Supplier.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Title");
+
+                ViewBag.RelatedInventoryItem = new SelectList(inventoryRepository.GetList("Orders_Items")
+                    .Where(x => x.CompanyId == CurrentUser.CompanyId)
+                    .Select( x => new SelectListItemDB() { Id = x.Id, Name = x.Orders_Items.Title + " " + x.Orders_Items.SubTitle })
+                    .ToList(), "Id", "Name");
                 if (locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count() == 0)
                     return Error(Loc.Dic.error_no_location_exist);
-
+                
                 ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
             }
             return View(new ManualCreateInventoryItemModel());
