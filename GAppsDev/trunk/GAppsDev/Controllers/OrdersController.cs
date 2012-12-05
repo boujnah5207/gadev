@@ -491,9 +491,18 @@ namespace GAppsDev.Controllers
                                     order.InvoiceDate = model.InvoiceDate;
                                     order.ValueDate = model.ValueDate;
 
-                                    ordersRep.Update(order);
+                                    if (ordersRep.Update(order) != null)
+                                    {
+                                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                                        emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.StatusId + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+                                        
+                                        return RedirectToAction("Index");
+                                    }
+                                    else
+                                    {
+                                        return Error(Loc.Dic.error_database_error);
+                                    }
 
-                                    return RedirectToAction("Index");
                                 }
                                 else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
                                 {
@@ -1665,7 +1674,7 @@ namespace GAppsDev.Controllers
                 IEnumerable<Order> orders;
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => !x.WasAddedToInventory && x.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator);
+                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => !x.WasAddedToInventory && x.StatusId > (int)StatusType.InvoiceScannedPendingOrderCreator);
 
                     if (orders != null)
                     {

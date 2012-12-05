@@ -8,25 +8,18 @@
 
 <h2>@ViewBag.budgetYear > @Loc.Dic.Permissions > @ViewBag.PermissionName</h2>
 
-<p>
-    @Html.ActionLink(Loc.Dic.Add, "Create", new { permissionId = ViewBag.BasketId, budgetId = ViewBag.BudgetId})
-</p>
 
 <table>
     <tr>
         <th>
             @Loc.Dic.Allocations
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Budgets_Allocations.DisplayName)
-        </td>
-        <td>
-            @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id=item.Id })
         </td>
     </tr>
 }
