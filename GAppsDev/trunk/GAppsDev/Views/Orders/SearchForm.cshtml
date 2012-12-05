@@ -47,6 +47,14 @@
                     @Html.DropDownList("BudgetId", Model.BudgetsList)
             </div>
             <br />
+            
+            <div class="editor-label">
+                <span class="bold">@Loc.Dic.Allocation:</span>
+            </div>
+            <div class="editor-field">
+                    @Html.DropDownList("AllocationId", Model.AllocationsList)
+            </div>
+            <br />
         
             if (ViewBag.HideStatusField)
             {

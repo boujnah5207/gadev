@@ -1194,4 +1194,19 @@
   <data name="error_no_location_exist" xml:space="preserve">
     <value>No location exist, you must create location before</value>
   </data>
+  <data name="AllAllocationsOption" xml:space="preserve">
+    <value>All allocations</value>
+  </data>
+  <data name="AllBudgetsOption" xml:space="preserve">
+    <value>All budgets</value>
+  </data>
+  <data name="AllStatusesOption" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="AllSuppliersOption" xml:space="preserve">
+    <value>All suppliers</value>
+  </data>
+  <data name="AllUsersOption" xml:space="preserve">
+    <value>All users</value>
+  </data>
 </root>

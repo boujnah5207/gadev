@@ -142,7 +142,7 @@
                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadReceipt, "UploadReceiptFile", new { id = item.Id })
                     }
                 }
-                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceScannedPendingOrderCreator && item.UserId == ViewBag.CurrentUserId)
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.InvoiceApproval, "InvoiceApproval", new { id = item.Id })
                 }

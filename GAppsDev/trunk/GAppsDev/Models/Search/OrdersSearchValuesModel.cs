@@ -15,6 +15,7 @@ namespace GAppsDev.Models.Search
         public SelectList BudgetsList { get; set; }
         public SelectList SuppliersList { get; set; }
         public SelectList StatusesList { get; set; }
+        public SelectList AllocationsList { get; set; }
 
         public bool HideUserField { get; set; }
         public bool HideStatusField { get; set; }
@@ -25,6 +26,7 @@ namespace GAppsDev.Models.Search
         public int? BudgetId { get; set; }
         public int? SupplierId { get; set; }
         public int? StatusId { get; set; }
+        public int? AllocationId { get; set; }
 
         public int? PriceMin { get; set; }
         public int? PriceMax { get; set; }
