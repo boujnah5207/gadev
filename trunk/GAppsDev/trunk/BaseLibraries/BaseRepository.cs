@@ -144,6 +144,24 @@ namespace BaseLibraries
             return true;
         }
 
+        public virtual bool DeleteMany(List<TEntity> entities)
+        {
+            try
+            {
+                foreach (var entity in entities)
+                {
+                    _db.DeleteObject(entity);
+                }
+                _db.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private Expression<Func<TEntity, bool>> GetEntityQuery(int id)
         {
             ParameterExpression e = Expression.Parameter(typeof(TEntity), "e");

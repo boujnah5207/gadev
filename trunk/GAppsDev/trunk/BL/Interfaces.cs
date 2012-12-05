@@ -280,6 +280,7 @@ namespace BL
 
             using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
             using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository())
             {
                 foreach (var item in importedAllocations)
                 {
@@ -321,6 +322,40 @@ namespace BL
 
                 if (amountIsInvalid)
                     return builder.ToString();
+
+                List<Budgets_Allocations> existingAllocations;
+                List<Budgets_Allocations> allocationsToDelete = new List<Budgets_Allocations>();
+
+                budget = budgetsRep.GetList().SingleOrDefault(x => x.Id == budgetId);
+                existingAllocations = budget.Budgets_Allocations.ToList();
+
+                if (existingAllocations.Any())
+                {
+                    foreach (var existingAllocation in existingAllocations)
+                    {
+                        if (!importedAllocations.Any(x => x.Allocation.ExternalId == existingAllocation.ExternalId))
+                        {
+                            if (
+                                existingAllocation.Budgets_BasketsToAllocation.Any() ||
+                                existingAllocation.Orders_OrderToAllocation.Any()
+                                )
+                            {
+                                existingAllocation.IsCanceled = true;
+                            }
+                            else
+                            {
+                                allocationsToDelete.Add(existingAllocation);
+                            }
+                        }
+                    }
+
+                    budgetsRep.Update(budget);
+
+                    foreach (var item in allocationsToDelete)
+	                {
+                        allocationsRep.Delete(item.Id);
+	                }
+                }
 
                 foreach (var item in importedAllocations)
                 {
@@ -373,6 +408,7 @@ namespace BL
                     }
                 }
             }
+
 
             if (!noErros)
                 return errorType;

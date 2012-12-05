@@ -6,7 +6,11 @@
     ViewBag.SubPageName = "ExportToFile";
 }
 
-@using (Html.BeginForm())
+@section ExtraScripts{
+    <script src="~/Scripts/OrdersToExportScript.js"></script>
+}
+
+@using (Html.BeginForm("OrdersToExport", "Orders", FormMethod.Post, new { id = "mainForm" }))
 {
     <p>
         @if (ViewBag.isRecovery)
