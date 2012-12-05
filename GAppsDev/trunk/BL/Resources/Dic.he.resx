@@ -1191,4 +1191,7 @@
   <data name="TheTotalUsed" xml:space="preserve">
     <value>הסכום שנוצל</value>
   </data>
+  <data name="error_no_location_exist" xml:space="preserve">
+    <value>אין מיקום קיים, יש ליצור מיקום לפני הוספה למלאי</value>
+  </data>
 </root>

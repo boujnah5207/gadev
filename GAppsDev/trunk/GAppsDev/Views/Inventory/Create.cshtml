@@ -39,6 +39,15 @@
             @Html.DropDownList("LocationId", String.Empty)
             @Html.ValidationMessageFor(model => model.inventoryItem.LocationId)
         </div>
+
+        <div class="editor-label">
+            @Loc.Dic.RelatedInventoryItem
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("RelatedInventoryItem", String.Empty)
+            @Html.ValidationMessageFor(model => model.inventoryItem.RelatedInventoryItem)
+        </div>
+
         <div class="editor-label">
             @Loc.Dic.AssignedTo
         </div>
