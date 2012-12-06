@@ -29,6 +29,7 @@
         {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Active, "active", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Year, "year", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
@@ -37,6 +38,9 @@
             </th>
             <th>
                 @Loc.Dic.Year
+            </th>
+            <th>
+                @Loc.Dic.Name
             </th>
         }
 
@@ -61,6 +65,9 @@
             </td>
             <td>
                 @Html.DisplayTextFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
 
             <td>

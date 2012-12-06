@@ -1211,6 +1211,7 @@ namespace GAppsDev.Controllers
                     ViewBag.Allocations = allocations;
                     ViewBag.UserRoles = CurrentUser.Roles;
                     ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                    ViewBag.BudgetYear = activeBudget.Year;
                 }
 
                 if (model.Order.UserId == CurrentUser.UserId)
