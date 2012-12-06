@@ -1,45 +1,70 @@
-﻿@model DB.Budgets_Allocations
+﻿@model GAppsDev.Models.AllocationModels.AllocationDetailsModel
 
 @{
-    ViewBag.Title = "Details";
-    ViewBag.PageName = "Budgets";
-    ViewBag.SubPageName = "Budgets";
+    ViewBag.Title = Loc.Dic.Details;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllBudgets";
 }
 
-<h2>Details</h2>
-
 <fieldset>
-    <legend>Budgets_Allocations</legend>
+    <legend>@Loc.Dic.Allocation</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreationDate)
+         @Loc.Dic.Name
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
+        @Html.DisplayFor(model => model.OriginalAllocation.Name)
     </div>
+    <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Budgets_Incomes.CustomName)
+         @Loc.Dic.TheTotalUsed:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Budgets_Incomes.CustomName)
+        <table class="listTable">
+            <tr class="headingRow">
+                <th></th>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <th>@Html.GetMonthName(i)</th>
+                }
+                <th>@Loc.Dic.Total</th>
+            </tr>
+            <tr class="evenRow">
+                <td class="bold">@Loc.Dic.Amount</td>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <td>@Model.OriginalAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount</td>
+                }
+                <th>@Model.OriginalAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount)</th>
+            </tr>
+            <tr class="oddRow">
+                <td class="bold">@Loc.Dic.TheTotalUsed</td>
+                @{
+                    decimal totalUsed = 0;
+                }
+                @for (int i = 1; i <= 12; i++)
+                {
+                    decimal usedAmount = Model.OriginalAllocation.Budgets_AllocationToMonth.Single(x => x.MonthId == i).Amount - Model.RemainingAllocation.Budgets_AllocationToMonth.Single(x => x.MonthId == i).Amount;
+                    totalUsed += usedAmount;
+                    
+                    <td>@usedAmount</td>
+                }
+                <th>@totalUsed</th>
+            </tr>
+            <tr class="evenRow">
+                <td class="bold">@Loc.Dic.RemainingAllocationAmount</td>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <td>@Model.RemainingAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount</td>
+                }
+                <th>@Model.RemainingAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount)</th>
+            </tr>
+        </table>
     </div>
+    <br />
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Budgets_Expenses.CustomName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Budgets_Expenses.CustomName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Amount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Amount)
-    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </p>

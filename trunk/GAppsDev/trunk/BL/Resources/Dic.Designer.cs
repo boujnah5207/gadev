@@ -2779,6 +2779,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remaining amount.
+        /// </summary>
+        public static string RemainingAllocationAmount {
+            get {
+                return ResourceManager.GetString("RemainingAllocationAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removed items.
         /// </summary>
         public static string RemovedItems {

@@ -1139,14 +1139,21 @@ namespace GAppsDev.Controllers
                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
                 using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository())
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
 
                     model.IsFutureOrder = model.Order.IsFutureOrder;
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                    List<Budgets_UsersToBaskets> permissions = 
+                        budgetsUsersToPermissionsRepository
+                        .GetList()
+                        .Where(x => x.UserId == CurrentUser.UserId)
+                        .ToList();
+
                     List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
 
                     foreach (var allocation in existingOrderAllocations)
@@ -1169,7 +1176,7 @@ namespace GAppsDev.Controllers
                     {
                         allocations.AddRange(
                             budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id)
+                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
                                 .Select(x => x.Budgets_Allocations)
                                 .ToList()
                                 );
@@ -1187,6 +1194,8 @@ namespace GAppsDev.Controllers
                             var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
                             decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
                             decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
                             if (monthNumber <= DateTime.Now.Month)
                                 totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
