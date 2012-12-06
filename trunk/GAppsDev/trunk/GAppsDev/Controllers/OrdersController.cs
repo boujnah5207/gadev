@@ -466,8 +466,8 @@ namespace GAppsDev.Controllers
                         {
                             if (order.CompanyId == CurrentUser.CompanyId)
                             {
-                                if (model.InvoiceDate < order.CreationDate)
-                                    return Error(Loc.Dic.error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate);
+                                //if (model.InvoiceDate < order.CreationDate)
+                                //    return Error(Loc.Dic.error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate);
 
                                 DateTime minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
 

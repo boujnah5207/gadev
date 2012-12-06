@@ -11,7 +11,7 @@
         ReverseOrder = "ASC";
     }
     List<DB.Orders_OrderToAllocation> displayAllocations;
-    
+
     if (!ViewBag.IsFutureOrder)
     {
         List<int> distinctAllocationsIds = Model.Select(x => x.AllocationId).Distinct().ToList();
@@ -24,7 +24,7 @@
                 {
                     Budgets_Allocations = Model.First(x => x.AllocationId == allocationId).Budgets_Allocations,
                     MonthId = 0,
-                    Amount = Model.Where(x => x.AllocationId == allocationId).Sum( a => a.Amount)
+                    Amount = Model.Where(x => x.AllocationId == allocationId).Sum(a => a.Amount)
                 }
                 );
         }
@@ -48,12 +48,15 @@
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
             if (ViewBag.IsFutureOrder)
             {
-                <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Month, "month", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Month, "month", ReverseOrder, (string)ViewBag.Sortby)</th>
             }
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Amount, "amount", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
+            <th>
+                @Loc.Dic.Allocation
+            </th>
             <th>
                 @Loc.Dic.Name
             </th>
@@ -86,19 +89,22 @@
                 </td>
             }
             <td>
+                @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.ExternalId)
+            </td>
+            <td>
                 @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.Name)
             </td>
             @if (ViewBag.IsFutureOrder)
             {
-            <td>
-            @Html.GetMonthName(item.MonthId)
-            </td>
-            <td>
-            @ViewBag.BudgetYear
-            </td>
+                <td>
+                    @Html.GetMonthName(item.MonthId)
+                </td>
+                <td>
+                    @ViewBag.BudgetYear
+                </td>
             }
             <td>
-            @Html.DisplayTextFor(modelItem => item.Amount)
+                @Html.DisplayTextFor(modelItem => item.Amount)
             </td>
         </tr>
     }
