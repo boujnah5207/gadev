@@ -92,7 +92,7 @@ namespace GAppsDev.Controllers
                     model.OriginalAllocation = allocationsRep.GetEntity(id, "Budgets_AllocationToMonth");
                     model.RemainingAllocation = new Budgets_Allocations();
 
-                    List<Orders_OrderToAllocation> approvedAllocations = model.OriginalAllocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                    List<Orders_OrderToAllocation> approvedAllocations = model.OriginalAllocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport).ToList();
 
                     foreach (var month in model.OriginalAllocation.Budgets_AllocationToMonth)
                     {
