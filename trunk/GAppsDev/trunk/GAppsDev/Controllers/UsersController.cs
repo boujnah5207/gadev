@@ -344,7 +344,7 @@ namespace GAppsDev.Controllers
                 if (user == null)
                     return Error(Loc.Dic.error_users_get_error);
 
-                model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).ToList();
+                model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).Where(x=>x.Permission.CompanyId == CurrentUser.CompanyId).ToList();
 
                 if (model.UserPermissions == null)
                     return Error(Loc.Dic.error_permissions_get_error);

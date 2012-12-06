@@ -289,7 +289,7 @@ namespace GAppsDev.Controllers
             {
                 OrderModel orderModel = new OrderModel();
                 orderModel.Order = ordersRep.GetEntity(id, "User", "Supplier", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
-                
+
                 if (orderModel.Order == null)
                     return Error(Loc.Dic.error_order_get_error);
 
@@ -469,12 +469,8 @@ namespace GAppsDev.Controllers
                                 if (model.InvoiceDate < order.CreationDate)
                                     return Error(Loc.Dic.error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate);
 
-                                DateTime minValueDate = new DateTime();
-                                if (order.IsFutureOrder)
-                                    minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
+                                DateTime minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
 
-                                else
-                                    minValueDate = order.CreationDate;
 
                                 if (model.ValueDate < minValueDate)
                                     return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
@@ -495,7 +491,7 @@ namespace GAppsDev.Controllers
                                     {
                                         EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
                                         emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.StatusId + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-                                        
+
                                         return RedirectToAction("Index");
                                     }
                                     else
@@ -720,7 +716,7 @@ namespace GAppsDev.Controllers
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
 
-            
+
             PrintOrderModel model = new PrintOrderModel();
 
             using (OrdersRepository ordersRep = new OrdersRepository(companyId))
@@ -2236,7 +2232,7 @@ namespace GAppsDev.Controllers
                         ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
 
                     if (model.AllocationId != null && model.AllocationId != "-1")
-                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any( oa => oa.Budgets_Allocations.ExternalId == model.AllocationId));
+                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any(oa => oa.Budgets_Allocations.ExternalId == model.AllocationId));
 
                     if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
                         model.PriceMax = null;
