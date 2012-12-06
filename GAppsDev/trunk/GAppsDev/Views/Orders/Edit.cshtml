@@ -152,14 +152,29 @@
                 <div id="normalAllocationsContainer">
                     @if (!Model.IsFutureOrder && Model.Allocations.Count > 0)
                     {
-                        for (int i = 0; i < Model.Allocations.Count; i++)
+                        List<int> distinctAllocations = Model.Allocations.Select(x => x.AllocationId).Distinct().ToList(); 
+                        List<GAppsDev.Models.OrderAllocation> combinedAllocations = new List<GAppsDev.Models.OrderAllocation>();
+
+                        foreach (int allocationId in distinctAllocations)
+                        {
+                            combinedAllocations.Add(new GAppsDev.Models.OrderAllocation()
+                            {
+                                AllocationId = allocationId,
+                                Amount = Model.Allocations.Sum( x => x.Amount),
+                                IsActive = true,
+                                MonthId = null,
+                                Name = Model.Allocations.First( x => x.AllocationId == allocationId).Name
+                            });
+                        }
+
+                        for (int i = 0; i < combinedAllocations.Count; i++)
                         {
                         <div id='normalAllocation-@i' class='existingNormalAllocations'>
                         <input type='hidden' class='isActiveField' id='normalAllocation-isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
-                        <input type='hidden' class='allocationIdField' id='normalAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
-                        <input type='hidden' class='monthIdField' id='normalAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
-                        <input type='hidden' class='amountField' id='normalAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
-                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <input type='hidden' class='allocationIdField' id='normalAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@combinedAllocations[i].AllocationId' />
+                        <input type='hidden' class='monthIdField' id='normalAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@combinedAllocations[i].MonthId' />
+                        <input type='hidden' class='amountField' id='normalAllocation-amountField-@i' name='Allocations[@i].Amount' value='@combinedAllocations[i].Amount' />
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @combinedAllocations[i].Name <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @combinedAllocations[i].Amount </span></span>
                         <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("normalAllocation", @i)' />
                         </div>
                         }

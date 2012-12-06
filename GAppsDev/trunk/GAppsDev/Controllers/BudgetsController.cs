@@ -476,6 +476,9 @@ namespace GAppsDev.Controllers
                     case "active":
                         budgets = orderFunction(x => x.IsActive);
                         break;
+                    case "name":
+                        budgets = orderFunction(x => x.Name);
+                        break;
                     case "year":
                     default:
                         budgets = orderFunction(x => x.Year);
