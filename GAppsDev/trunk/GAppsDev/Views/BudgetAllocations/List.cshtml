@@ -41,6 +41,7 @@
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.October, "october", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.November, "november", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.December, "december", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Total, "total", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
@@ -58,6 +59,7 @@
             <th>@Loc.Dic.October</th>
             <th>@Loc.Dic.November</th>
             <th>@Loc.Dic.December</th>
+            <th>@Loc.Dic.Total</th>
         }
 
     </tr>
@@ -76,7 +78,7 @@
                 </td>
             }
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.ActionLink(item.Name, "Details", new { id = item.Id })
             </td>
             <td>
                 @Html.DisplayTextFor(modelItem => item.ExternalId)
@@ -87,6 +89,9 @@
                     @Html.DisplayFor(modelItem => item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount)
                 </td> 
 	        }
+            <td>
+                @item.Budgets_AllocationToMonth.Sum(x => x.Amount)
+            </td>
         </tr>
     }
 </table>

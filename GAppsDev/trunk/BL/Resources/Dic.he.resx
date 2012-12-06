@@ -133,7 +133,7 @@
     <value>תקציב</value>
   </data>
   <data name="BudgetAllocations" xml:space="preserve">
-    <value>הקצאות תקציביות</value>
+    <value>סעיפים תקציביים</value>
   </data>
   <data name="CommaSepareted" xml:space="preserve">
     <value>הפרד בפסיקים</value>
@@ -1214,5 +1214,8 @@
   </data>
   <data name="AddDate" xml:space="preserve">
     <value>תאריך הוספה</value>
+  </data>
+  <data name="RemainingAllocationAmount" xml:space="preserve">
+    <value>יתרה</value>
   </data>
 </root>

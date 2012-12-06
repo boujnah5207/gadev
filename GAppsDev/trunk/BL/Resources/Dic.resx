@@ -1215,4 +1215,7 @@
   <data name="AddDate" xml:space="preserve">
     <value>Date Added</value>
   </data>
+  <data name="RemainingAllocationAmount" xml:space="preserve">
+    <value>Remaining amount</value>
+  </data>
 </root>

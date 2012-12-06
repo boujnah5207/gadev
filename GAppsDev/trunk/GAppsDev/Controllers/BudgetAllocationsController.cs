@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
+using GAppsDev.Models.AllocationModels;
 using Mvc4.OpenId.Sample.Security;
 
 namespace GAppsDev.Controllers
@@ -59,7 +60,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult AllocationMontheList(int id = 0, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (!Authorized(RoleType.SystemManager)) 
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Budgets_Allocations> allocationsList;
@@ -84,18 +85,31 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                Budgets_Allocations allocation;
+                AllocationDetailsModel model = new AllocationDetailsModel();
 
                 using (AllocationRepository allocationsRep = new AllocationRepository())
                 {
-                    allocation = allocationsRep.GetEntity(id, "Budgets_Incomes", "Budgets_Expenses");
+                    model.OriginalAllocation = allocationsRep.GetEntity(id, "Budgets_AllocationToMonth");
+                    model.RemainingAllocation = new Budgets_Allocations();
+
+                    List<Orders_OrderToAllocation> approvedAllocations = model.OriginalAllocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+
+                    foreach (var month in model.OriginalAllocation.Budgets_AllocationToMonth)
+                    {
+                        decimal? remainingAmount = month.Amount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+
+                        model.RemainingAllocation.Budgets_AllocationToMonth.Add(new Budgets_AllocationToMonth() {
+                            MonthId = month.MonthId,
+                            Amount = remainingAmount.HasValue ? remainingAmount.Value : 0
+                        });
+                    }
                 }
 
-                if (allocation != null)
+                if (model.OriginalAllocation != null)
                 {
-                    if (allocation.CompanyId == CurrentUser.CompanyId)
+                    if (model.OriginalAllocation.CompanyId == CurrentUser.CompanyId)
                     {
-                        return View(allocation);
+                        return View(model);
                     }
                     else
                     {
@@ -593,7 +607,7 @@ namespace GAppsDev.Controllers
                         allocations = orderFunction(x => x.ExternalId);
                         break;
                     case "january":
-                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single( a => a.MonthId == 1).Amount);
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 1).Amount);
                         break;
                     case "february":
                         allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 2).Amount);
@@ -627,6 +641,9 @@ namespace GAppsDev.Controllers
                         break;
                     case "december":
                         allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 12).Amount);
+                        break;
+                    case "total":
+                        allocations = orderFunction(x => x.Budgets_AllocationToMonth.Sum(a => a.Amount));
                         break;
                     case "name":
                     default:
