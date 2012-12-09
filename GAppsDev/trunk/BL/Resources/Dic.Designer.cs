@@ -1276,6 +1276,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to no budget Type.
+        /// </summary>
+        public static string Error_no_budgetType {
+            get {
+                return ResourceManager.GetString("Error_no_budgetType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No location exist, you must create location before.
         /// </summary>
         public static string error_no_location_exist {

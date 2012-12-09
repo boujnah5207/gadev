@@ -1218,4 +1218,7 @@
   <data name="RemainingAllocationAmount" xml:space="preserve">
     <value>יתרה</value>
   </data>
+  <data name="Error_no_budgetType" xml:space="preserve">
+    <value>אין סוג תקציב</value>
+  </data>
 </root>
