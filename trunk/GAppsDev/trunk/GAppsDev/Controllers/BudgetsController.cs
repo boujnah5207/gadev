@@ -174,25 +174,19 @@ namespace GAppsDev.Controllers
             if (file != null && file.ContentLength <= 0) return Error(Loc.Dic.error_invalid_form);
             if (string.IsNullOrEmpty(budgetType))
                 return Error(Loc.Dic.Error_chooseMonthelyOrYearlyBudget);
+            if (!(budgetType == "Month" || budgetType == "Year"))
+                return Error(Loc.Dic.Error_no_budgetType);
+
 
             if (id.HasValue)
             {
-                if (budgetType == "Year")
-                {
-                    string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, id.Value);
-                    if (moved == "OK") return RedirectToAction("index");
-                    else return Error(moved);
-                }
-                if (budgetType == "Month")
-                {
-                    string moved = Interfaces.ImportMonthBudget(file.InputStream, CurrentUser.CompanyId, id.Value);
-                    if (moved == "OK") return RedirectToAction("index");
-                    else return Error(moved);
-                }
+                string moved = Interfaces.ImportBudget(file.InputStream, CurrentUser.CompanyId, id.Value, budgetType);
+                if (moved == "OK") return RedirectToAction("index");
+                else return Error(moved);
             }
             else if (year.HasValue)
             {
-                if (year.Value > DateTime.Now.Year + 10 || year.Value < DateTime.Now.Year - 10)
+                if (year.Value > DateTime.Now.Year + 10 || year.Value < DateTime.Now.Year - 1)
                     return Error(Loc.Dic.error_invalid_budget_year);
 
                 using (BudgetsRepository budgetsRepository = new BudgetsRepository())
@@ -203,18 +197,9 @@ namespace GAppsDev.Controllers
                     newBudget.CompanyId = CurrentUser.CompanyId;
                     newBudget.IsActive = false;
                     budgetsRepository.Create(newBudget);
-                    if (budgetType == "Year")
-                    {
-                        string moved = Interfaces.ImportYearBudget(file.InputStream, CurrentUser.CompanyId, newBudget.Id);
-                        if (moved == "OK") return RedirectToAction("index");
-                        else return Error(moved);
-                    }
-                    if (budgetType == "Month")
-                    {
-                        string moved = Interfaces.ImportMonthBudget(file.InputStream, CurrentUser.CompanyId, newBudget.Id);
-                        if (moved == "OK") return RedirectToAction("index");
-                        else return Error(moved);
-                    }
+                    string moved = Interfaces.ImportBudget(file.InputStream, CurrentUser.CompanyId, newBudget.Id, budgetType);
+                    if (moved == "OK") return RedirectToAction("index");
+                    else return Error(moved);
                 }
 
             }
@@ -335,7 +320,7 @@ namespace GAppsDev.Controllers
             {
                 budget = budgetsRep.GetEntity(id);
 
-                if (budget == null)  return Error(Loc.Dic.error_database_error);
+                if (budget == null) return Error(Loc.Dic.error_database_error);
                 if (budget.CompanyId != CurrentUser.CompanyId) return Error(Loc.Dic.error_no_permission);
 
                 budgetAllocations = budget.Budgets_Allocations.ToList();
@@ -368,7 +353,7 @@ namespace GAppsDev.Controllers
                     wasDeleted = budgetsRep.Update(budget) != null;
                 }
 
-                if(wasDeleted)
+                if (wasDeleted)
                     return RedirectToAction("Index");
                 else
                     return Error(Loc.Dic.error_budget_delete_error);

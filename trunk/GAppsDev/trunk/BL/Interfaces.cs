@@ -79,120 +79,119 @@ namespace BL
             if (!noErros) return errorType;
             return "OK";
         }
+        //public static string ImportYearBudget(Stream stream, int companyId, int budgetId)
+        //{
+        //    const int EXTERNALID = 0;
+        //    const int NAME = 1;
+        //    const int AMOUNT = 2;
+        //    const int JANUARY = 1;
+        //    const int FEBRUARY = 2;
+        //    const int MONTHESINYEAR = 12;
 
-        public static string ImportYearBudget(Stream stream, int companyId, int budgetId)
+        //    List<Budgets_Allocations> newAllocations = new List<Budgets_Allocations>();
+        //    Dictionary<int, decimal> tempAmountList = new Dictionary<int, decimal>();
+
+        //    byte[] fileBytes = new byte[stream.Length];
+        //    stream.Read(fileBytes, 0, Convert.ToInt32(stream.Length));
+        //    string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
+        //    string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+        //    int firstValuesLine = 0;
+        //    bool noErros = true;
+        //    string errorType = String.Empty;
+
+        //    using (AllocationMonthsRepository allocationMonthRepository = new AllocationMonthsRepository())
+        //    using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+        //    using (AllocationRepository allocationRep = new AllocationRepository())
+        //    {
+        //        for (int i = firstValuesLine; i < fileLines.Length; i++)
+        //        {
+        //            string[] lineValues = fileLines[i].Split('\t');
+        //            for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
+        //            {
+        //                lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
+        //            }
+        //            if (!(int.Parse(lineValues[EXTERNALID]) > 0))
+        //            {
+        //                errorType = Loc.Dic.error_invalid_form;
+        //                break;
+        //            }
+        //            if (lineValues[NAME] == null)
+        //            {
+        //                errorType = Loc.Dic.error_invalid_form;
+        //                break;
+        //            }
+        //            if (!(decimal.Parse(lineValues[AMOUNT]) >= 0))
+        //            {
+        //                errorType = Loc.Dic.error_invalid_form;
+        //                break;
+        //            }
+
+        //            Budget budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
+
+        //            Budgets_Allocations newAllocation;
+
+        //            if (lineValues[EXTERNALID].Length != 8 || lineValues[NAME].Length > 100)
+        //                return Loc.Dic.Error_FileParseError;
+
+        //            newAllocation = new Budgets_Allocations()
+        //            {
+        //                CompanyId = companyId,
+        //                BudgetId = budget.Id,
+        //                ExternalId = lineValues[EXTERNALID],
+        //                Name = lineValues[NAME],
+        //                CreationDate = DateTime.Now
+        //            };
+
+        //            if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId) == null)
+        //            {
+        //                allocationRep.Create(newAllocation);
+        //                tempAmountList.Add(newAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
+        //            }
+        //            else
+        //            {
+        //                Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId);
+
+        //                existingAllocation.Name = newAllocation.Name;
+        //                allocationRep.Update(existingAllocation);
+        //                tempAmountList.Add(existingAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
+        //            }
+        //        }
+
+        //        List<Budgets_AllocationToMonth> toAddAllocationMonthList = new List<Budgets_AllocationToMonth>();
+        //        foreach (var item in tempAmountList)
+        //        {
+
+        //            if (allocationMonthRepository.GetList().Where(x => x.AllocationId == item.Key).SingleOrDefault(x => x.MonthId == JANUARY) == null)
+        //            {
+        //                Budgets_AllocationToMonth toAddallocationMonth = new Budgets_AllocationToMonth();
+        //                toAddallocationMonth.AllocationId = item.Key;
+        //                toAddallocationMonth.MonthId = JANUARY;
+        //                toAddallocationMonth.Amount = item.Value;
+        //                toAddAllocationMonthList.Add(toAddallocationMonth);
+        //            }
+        //            else
+        //            {
+        //                Budgets_AllocationToMonth existingAllocationMonth = allocationMonthRepository.GetList().Where(x => x.AllocationId == item.Key).SingleOrDefault(x => x.MonthId == JANUARY);
+        //                existingAllocationMonth.Amount = item.Value;
+        //                allocationMonthRepository.Update(existingAllocationMonth);
+        //            }
+        //            for (int i = FEBRUARY; i <= MONTHESINYEAR; i++)
+        //            {
+        //                Budgets_AllocationToMonth toAddZeroallocationMonth = new Budgets_AllocationToMonth();
+        //                toAddZeroallocationMonth.AllocationId = item.Key;
+        //                toAddZeroallocationMonth.MonthId = i;
+        //                toAddZeroallocationMonth.Amount = 0;
+        //                toAddAllocationMonthList.Add(toAddZeroallocationMonth);
+        //            }
+        //        }
+        //        allocationMonthRepository.AddList(toAddAllocationMonthList);
+        //    }
+        //    if (!noErros) return errorType;
+        //    return "OK";
+        //}
+        public static string ImportBudget(Stream stream, int companyId, int budgetId, string budgetType)
         {
-            const int EXTERNALID = 0;
-            const int NAME = 1;
-            const int AMOUNT = 2;
-            const int JANUARY = 1;
-            const int FEBRUARY = 2;
-            const int MONTHESINYEAR = 12;
-
-            List<Budgets_Allocations> toAddAllocations = new List<Budgets_Allocations>();
-            Dictionary<int, decimal> tempAmountList = new Dictionary<int, decimal>();
-
-            byte[] fileBytes = new byte[stream.Length];
-            stream.Read(fileBytes, 0, Convert.ToInt32(stream.Length));
-            string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
-            string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            int firstValuesLine = 0;
             bool noErros = true;
-            string errorType = String.Empty;
-
-            using (AllocationMonthsRepository allocationMonthRepository = new AllocationMonthsRepository())
-            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
-            using (AllocationRepository allocationRep = new AllocationRepository())
-            {
-                for (int i = firstValuesLine; i < fileLines.Length; i++)
-                {
-                    string[] lineValues = fileLines[i].Split('\t');
-                    for (int vIndex = 0; vIndex < lineValues.Length; vIndex++)
-                    {
-                        lineValues[vIndex] = lineValues[vIndex].Replace("\"", "");
-                    }
-                    if (!(int.Parse(lineValues[EXTERNALID]) > 0))
-                    {
-                        errorType = Loc.Dic.error_invalid_form;
-                        break;
-                    }
-                    if (lineValues[NAME] == null)
-                    {
-                        errorType = Loc.Dic.error_invalid_form;
-                        break;
-                    }
-                    if (!(decimal.Parse(lineValues[AMOUNT]) >= 0))
-                    {
-                        errorType = Loc.Dic.error_invalid_form;
-                        break;
-                    }
-
-                    Budget budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
-
-                    Budgets_Allocations newAllocation;
-
-                    if (lineValues[EXTERNALID].Length != 8 || lineValues[NAME].Length > 100)
-                        return Loc.Dic.Error_FileParseError;
-
-                    newAllocation = new Budgets_Allocations()
-                    {
-                        CompanyId = companyId,
-                        BudgetId = budget.Id,
-                        ExternalId = lineValues[EXTERNALID],
-                        Name = lineValues[NAME],
-                        CreationDate = DateTime.Now
-                    };
-
-                    if (allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId) == null)
-                    {
-                        allocationRep.Create(newAllocation);
-                        tempAmountList.Add(newAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
-                    }
-                    else
-                    {
-                        Budgets_Allocations existingAllocation = allocationRep.GetList().SingleOrDefault(x => x.CompanyId == companyId && x.ExternalId == newAllocation.ExternalId && x.BudgetId == budgetId);
-
-                        existingAllocation.Name = newAllocation.Name;
-                        allocationRep.Update(existingAllocation);
-                        tempAmountList.Add(existingAllocation.Id, decimal.Parse(lineValues[AMOUNT]));
-                    }
-                }
-
-                List<Budgets_AllocationToMonth> toAddAllocationMonthList = new List<Budgets_AllocationToMonth>();
-                foreach (var item in tempAmountList)
-                {
-
-                    if (allocationMonthRepository.GetList().Where(x => x.AllocationId == item.Key).SingleOrDefault(x => x.MonthId == JANUARY) == null)
-                    {
-                        Budgets_AllocationToMonth toAddallocationMonth = new Budgets_AllocationToMonth();
-                        toAddallocationMonth.AllocationId = item.Key;
-                        toAddallocationMonth.MonthId = JANUARY;
-                        toAddallocationMonth.Amount = item.Value;
-                        toAddAllocationMonthList.Add(toAddallocationMonth);
-                    }
-                    else
-                    {
-                        Budgets_AllocationToMonth existingAllocationMonth = allocationMonthRepository.GetList().Where(x => x.AllocationId == item.Key).SingleOrDefault(x => x.MonthId == JANUARY);
-                        existingAllocationMonth.Amount = item.Value;
-                        allocationMonthRepository.Update(existingAllocationMonth);
-                    }
-                    for (int i = FEBRUARY; i <= MONTHESINYEAR; i++)
-                    {
-                        Budgets_AllocationToMonth toAddZeroallocationMonth = new Budgets_AllocationToMonth();
-                        toAddZeroallocationMonth.AllocationId = item.Key;
-                        toAddZeroallocationMonth.MonthId = i;
-                        toAddZeroallocationMonth.Amount = 0;
-                        toAddAllocationMonthList.Add(toAddZeroallocationMonth);
-                    }
-                }
-                allocationMonthRepository.AddList(toAddAllocationMonthList);
-            }
-            if (!noErros) return errorType;
-            return "OK";
-        }
-
-        public static string ImportMonthBudget(Stream stream, int companyId, int budgetId)
-        {
             string errorType = String.Empty;
             Budget budget;
             using (BudgetsRepository budgetsRepository = new BudgetsRepository())
@@ -200,11 +199,7 @@ namespace BL
                 budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
             }
 
-            if (budget.Year < DateTime.Now.Year - 1)
-                return Loc.Dic.error_budgets_year_passed;
-
             List<ImportedAllocation> importedAllocations = new List<ImportedAllocation>();
-
             List<Budgets_Allocations> newAllocations = new List<Budgets_Allocations>();
             List<Budgets_AllocationToMonth> newAllocationMonths = new List<Budgets_AllocationToMonth>();
 
@@ -213,9 +208,16 @@ namespace BL
             string fileContent = System.Text.Encoding.Default.GetString(fileBytes);
 
             string[] fileLines = fileContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            int firstValuesLine = 3;
+            int firstValuesLine = new int();
 
-            bool noErros = true;
+            if (!(budgetType == "Month" || budgetType == "Year"))
+                return Loc.Dic.Error_no_budgetType;
+
+            if (budgetType == "Month")
+                firstValuesLine = 3;
+            else if (budgetType == "Year")
+                firstValuesLine = 0;
+
 
             for (int i = firstValuesLine; i < fileLines.Length; i++)
             {
@@ -352,14 +354,14 @@ namespace BL
                     budgetsRep.Update(budget);
 
                     foreach (var item in allocationsToDelete)
-	                {
+                    {
                         allocationsRep.Delete(item.Id);
-	                }
+                    }
                 }
 
                 foreach (var item in importedAllocations)
                 {
-                    if (!noErros) 
+                    if (!noErros)
                         break;
 
                     if (item.isExistingAllocation)
@@ -368,7 +370,7 @@ namespace BL
                         {
                             //Budgets_AllocationToMonth UpdatedMonth = new Budgets_AllocationToMonth();
                             Budgets_AllocationToMonth existingMonth = item.Allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
-                            Budgets_AllocationToMonth importedMonth = item.AllocationMonthes.Single( x => x.MonthId == month);
+                            Budgets_AllocationToMonth importedMonth = item.AllocationMonthes.Single(x => x.MonthId == month);
 
                             existingMonth.Amount = importedMonth.Amount;
 
@@ -395,9 +397,9 @@ namespace BL
                     else
                     {
                         foreach (var allocationMonth in item.AllocationMonthes)
-	                    {
+                        {
                             item.Allocation.Budgets_AllocationToMonth.Add(allocationMonth);
-	                    }
+                        }
 
                         if (!allocationsRep.Create(item.Allocation))
                         {

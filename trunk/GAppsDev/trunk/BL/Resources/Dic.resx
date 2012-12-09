@@ -1218,4 +1218,7 @@
   <data name="RemainingAllocationAmount" xml:space="preserve">
     <value>Remaining amount</value>
   </data>
+  <data name="Error_no_budgetType" xml:space="preserve">
+    <value>no budget Type</value>
+  </data>
 </root>
