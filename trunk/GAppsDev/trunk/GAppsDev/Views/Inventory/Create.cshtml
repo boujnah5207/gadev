@@ -24,13 +24,19 @@
             @Loc.Dic.Supplier
         </div>
         <button type="button" id="addSupplierButton">@Loc.Dic.AddSupplier</button>
-        <div>
-
-        </div>
         <div class="editor-field">
             @Html.DropDownList("sid", (SelectList)ViewBag.Suppliers, Loc.Dic.SelectNone, new { id = "suppliersDropDownList" })
-            <select name="ItemId" id="supplierItems"></select>
         </div>
+
+
+        <div class="editor-label">
+            @Loc.Dic.Item
+        </div>
+        <button type="button" id="addItemButton">@Loc.Dic.AddItem</button>
+        <div class="editor-field">
+            <select name="ItemId" id="ItemDropDownList"></select>
+        </div>
+
 
         <div class="editor-label">
             @Loc.Dic.Location

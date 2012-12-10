@@ -16,6 +16,12 @@ namespace DA
             _companyId = companyId;
         }
 
+        public override IQueryable<Order> GetList(params string[] includes)
+        {
+            return base.GetList(includes)
+                .Where(x => x.CompanyId == _companyId);
+        }
+
         public override bool Create(Order entity)
         {
             entity.CreationDate = DateTime.Now;
@@ -23,11 +29,7 @@ namespace DA
             return base.Create(entity);
         }
 
-        public override IQueryable<Order> GetList(params string[] includes)
-        {
-            return base.GetList(includes)
-                .Where(x => x.CompanyId == _companyId);
-        }
+
 
         public override Order GetEntity(int id, params string[] includes)
         {

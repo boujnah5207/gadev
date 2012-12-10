@@ -1,8 +1,10 @@
 ﻿var isSupplierDialogOpen = false;
-
+var isAddItemDialogOpen = false;
 $(function () {
     $("#suppliersDropDownList").change(getSupplierItems);
     $("#addSupplierButton").click(addSupplier);
+    $("#addItemButton").click(addOrderItem);
+    getSupplierItems();
 })
 
 function getSupplierItems() {
@@ -20,16 +22,16 @@ function getSupplierItems() {
 
 function UpdateItemsList(newItemList) {
     selectText = "";
-    selectText += "<select id='supplierItems' name='ItemId'>";
+    selectText += "<select id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option value=" + newItemList[i].Id + ">" + newItemList[i].Title + "</option>";
+        selectText += "<option value=" + newItemList[i].Id + ">" + newItemList[i].Title +" "+ newItemList[i].SubTitle + "</option>";
     }
 
     selectText += "</select>";
 
     var dropDownList = $(selectText);
-    $("#supplierItems").replaceWith(dropDownList);
+    $("#ItemDropDownList").replaceWith(dropDownList);
 }
 
 function addSupplier() {
@@ -121,4 +123,64 @@ function UpdateSupplierList(newSupplierList) {
 
     var dropDownList = $(selectText);
     $("#suppliersDropDownList").replaceWith(dropDownList);
+}
+
+function addOrderItem() {
+    if (!isAddItemDialogOpen) {
+        var supplierId = $("#suppliersDropDownList option:selected").val();
+        var newItemId = 0;
+        $.ajax({
+            type: "POST",
+            url: "/OrderItems/PopOutCreate/",
+        }).done(function (response) {
+            createItemDialogContainer = $(response);
+            createItemDialogContainer.find("#submitOrderItem").click(function () {
+                var newOrderItem = {};
+                newOrderItem.Title = $("#Title").val();
+                newOrderItem.SubTitle = $("#SubTitle").val();
+                newOrderItem.SupplierId = supplierId;
+
+                $.ajax({
+                    type: "POST",
+                    url: "/OrderItems/AjaxCreate/",
+                    data: newOrderItem
+                }).done(function (response) {
+                    if (response.success) {
+                        newItemId = response.newItemId;
+                        alert(local.ItemWasCreated);
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                });
+
+                createItemDialogContainer.dialog("close");
+                createItemDialogContainer.dialog("destroy");
+                createItemDialogContainer.remove();
+                isAddItemDialogOpen = false;
+            });
+
+            createItemDialog = createItemDialogContainer.dialog({
+                title: local.AddItem,
+                width: 400,
+                height: 400,
+                close: function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "/OrderItems/GetBySupplier/" + supplierId,
+                    }).done(function (response) {
+                        if (response.gotData) {
+                            UpdateItemsList(response.data);
+                            $('#ItemDropDownList option[value="' + newItemId + '"]').attr('selected', 'selected');
+                            createItemDialogContainer.dialog("destroy");
+                            createItemDialogContainer.remove();
+                            isAddItemDialogOpen = false;
+                        }
+                    });
+                }
+            });
+
+            isAddItemDialogOpen = true;
+        });
+    }
 }
