@@ -10,6 +10,24 @@ namespace DA
 {
     public class InventoryRepository : BaseRepository<Inventory, Entities>, IDisposable
     {
+        private int _companyId;
+        public InventoryRepository(int companyId)
+        {
+            _companyId = companyId;
+        }
+
+        public override IQueryable<Inventory> GetList(params string[] includes)
+        {
+            return base.GetList(includes)
+                .Where(x => x.CompanyId == _companyId);
+        }
+
+        public override Inventory GetEntity(int id, params string[] includes)
+        {
+            Inventory inventory = base.GetEntity(id, includes);
+            return inventory.CompanyId == _companyId ? inventory : null;
+        }
+
         public override bool Create(Inventory entity)
         {
             entity.CreationDate = DateTime.Now;

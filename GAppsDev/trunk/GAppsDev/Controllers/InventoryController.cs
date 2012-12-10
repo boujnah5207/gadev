@@ -34,7 +34,7 @@ namespace GAppsDev.Controllers
         public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
             IEnumerable<Inventory> inventories;
-            using (InventoryRepository inventoryRepository = new InventoryRepository())
+            using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
             {
                 inventories = inventoryRepository.GetList("Orders_Items", "Location").Where(x => x.CompanyId == CurrentUser.CompanyId);
 
@@ -66,10 +66,10 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+            using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository(CurrentUser.CompanyId))
             using (SuppliersRepository suppliersRepository = new SuppliersRepository())
             using (LocationsRepository locationsRepository = new LocationsRepository())
-            using (InventoryRepository inventoryRepository = new InventoryRepository())
+            using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
             {
 
                 ViewBag.RelatedInventoryItem = new SelectList(inventoryRepository.GetList("Orders_Items")
@@ -100,7 +100,7 @@ namespace GAppsDev.Controllers
             {
                 inventory.CompanyId = CurrentUser.CompanyId;
                 inventory.AddedBy = CurrentUser.UserId;
-                using (InventoryRepository inventoryRepository = new InventoryRepository())
+                using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
                 {
                     if(inventoryRepository.Create(inventory))
                         return RedirectToAction("Index");
