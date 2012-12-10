@@ -548,7 +548,7 @@ namespace GAppsDev.Controllers
                 if (order.CompanyId != CurrentUser.CompanyId)
                     return Error(Loc.Dic.Error_NoPermission);
 
-                if (order.StatusId >= (int)StatusType.InvoiceExportedToFilePendingReceipt)
+                if (order.StatusId >= (int)StatusType.InvoiceExportedToFile)
                 {
                     ViewBag.OrderId = id;
                     return View(order);
@@ -2157,7 +2157,7 @@ namespace GAppsDev.Controllers
                             String.Empty.PadLeft(12)
                             )
                             );
-                        order.StatusId = (int)StatusType.InvoiceExportedToFilePendingReceipt;
+                        order.StatusId = (int)StatusType.InvoiceExportedToFile;
                         ordersRep.Update(order);
                     }
 
