@@ -22,19 +22,17 @@ namespace DA
                 .Where(x => x.CompanyId == _companyId);
         }
 
+        public override Order GetEntity(int id, params string[] includes)
+        {
+            Order order = base.GetEntity(id, includes);
+            return order.CompanyId == _companyId ? order : null;
+        }
+
         public override bool Create(Order entity)
         {
             entity.CreationDate = DateTime.Now;
             entity.WasAddedToInventory = false;
             return base.Create(entity);
-        }
-
-
-
-        public override Order GetEntity(int id, params string[] includes)
-        {
-            Order order = base.GetEntity(id, includes);
-            return order.CompanyId == _companyId ? order : null;
         }
     }
 }

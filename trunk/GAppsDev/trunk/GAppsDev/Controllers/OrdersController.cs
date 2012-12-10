@@ -1552,7 +1552,7 @@ namespace GAppsDev.Controllers
                 List<Location> locations;
                 bool noCreationErrors = true;
 
-                using (InventoryRepository inventoryRep = new InventoryRepository())
+                using (InventoryRepository inventoryRep = new InventoryRepository(CurrentUser.CompanyId))
                 using (LocationsRepository locationsRep = new LocationsRepository())
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
