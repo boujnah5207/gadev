@@ -6879,7 +6879,8 @@ namespace DB
         /// <param name="subTitle">Initial value of the SubTitle property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
-        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate, global::System.Boolean isCanceled)
+        /// <param name="companyId">Initial value of the CompanyId property.</param>
+        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate, global::System.Boolean isCanceled, global::System.Int32 companyId)
         {
             Orders_Items orders_Items = new Orders_Items();
             orders_Items.Id = id;
@@ -6887,6 +6888,7 @@ namespace DB
             orders_Items.SubTitle = subTitle;
             orders_Items.CreationDate = creationDate;
             orders_Items.IsCanceled = isCanceled;
+            orders_Items.CompanyId = companyId;
             return orders_Items;
         }
 
@@ -7040,6 +7042,30 @@ namespace DB
         private global::System.Boolean _IsCanceled;
         partial void OnIsCanceledChanging(global::System.Boolean value);
         partial void OnIsCanceledChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CompanyId
+        {
+            get
+            {
+                return _CompanyId;
+            }
+            set
+            {
+                OnCompanyIdChanging(value);
+                ReportPropertyChanging("CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompanyId");
+                OnCompanyIdChanged();
+            }
+        }
+        private global::System.Int32 _CompanyId;
+        partial void OnCompanyIdChanging(global::System.Int32 value);
+        partial void OnCompanyIdChanged();
 
         #endregion
 

@@ -182,14 +182,18 @@ namespace GAppsDev.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult GetBySupplier(int id)
+        public JsonResult GetBySupplier(int? id = null)
         {
             if (Authorized(RoleType.OrdersWriter))
             {
                 List<AjaxOrderItem> allItems;
                 using (OrderItemsRepository itemRep = new OrderItemsRepository())
                 {
-                    allItems = itemRep.GetList().Where(item => item.SupplierId == id).Select(x => new AjaxOrderItem(){ Id = x.Id, Title = x.Title, SubTitle = x.SubTitle}).ToList();
+                    if(id.HasValue)
+                        allItems = itemRep.GetList().Where(item => item.SupplierId == id && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).ToList();
+                    else
+                        allItems = itemRep.GetList().Where(item => item.SupplierId == null && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).ToList();
+
                 }
 
                 if (allItems != null)
