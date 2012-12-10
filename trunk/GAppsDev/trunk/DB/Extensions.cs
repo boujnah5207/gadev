@@ -19,6 +19,9 @@ namespace DB
         public decimal Price { get; set; }
 
         [StringLength(250)]
+        public string Notes { get; set; }
+
+        [StringLength(250)]
         public string OrderApproverNotes { get; set; }
     }
 

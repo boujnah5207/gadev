@@ -1221,6 +1221,51 @@
   <data name="Error_no_budgetType" xml:space="preserve">
     <value>אין סוג תקציב</value>
   </data>
+  <data name="error_order_notes_too_long" xml:space="preserve">
+    <value>אורך ההערות חייב להיות קטן מ-250 אותיות</value>
+  </data>
+  <data name="OrdersSystem" xml:space="preserve">
+    <value>מערכת הזמנות</value>
+  </data>
+  <data name="OrderStatusChangedTo" xml:space="preserve">
+    <value>שונה ל</value>
+  </data>
+  <data name="OrderStatusOf" xml:space="preserve">
+    <value>סטטוס הזמנה מספר</value>
+  </data>
+  <data name="OrderStatusUpdateEvent" xml:space="preserve">
+    <value>עדכון סטטוס הזמנה</value>
+  </data>
+  <data name="Status_Declined" xml:space="preserve">
+    <value>נדחתה</value>
+  </data>
+  <data name="Status_ExportedToFile" xml:space="preserve">
+    <value>יוצאה לקובץ</value>
+  </data>
+  <data name="Status_OrderCancelled" xml:space="preserve">
+    <value>מבוטלת</value>
+  </data>
+  <data name="Status_PartiallyApproved" xml:space="preserve">
+    <value>מאושרת חלקית</value>
+  </data>
+  <data name="Status_PendingExport" xml:space="preserve">
+    <value>ממתינה לייצוא</value>
+  </data>
+  <data name="Status_PendingInvoice" xml:space="preserve">
+    <value>ממתינה לחשבונית</value>
+  </data>
+  <data name="Status_PendingInvoiceApproval" xml:space="preserve">
+    <value>ממתינה לאישור חשבונית</value>
+  </data>
+  <data name="Status_PendingOrderCreator" xml:space="preserve">
+    <value>ממתינה ליוצר ההזמנה</value>
+  </data>
+  <data name="Status_PendingReceipt" xml:space="preserve">
+    <value>ממתינה לקבלה</value>
+  </data>
+  <data name="Status_ReceiptScanned" xml:space="preserve">
+    <value>קבלה נסרקה</value>
+  </data>
   <data name="error_no_suppliers" xml:space="preserve">
     <value>אין ספקים</value>
   </data>

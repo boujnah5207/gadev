@@ -77,7 +77,7 @@ namespace BaseLibraries
             return true;
         }
 
-        public TEntity GetEntity(int id, params string[] includes)
+        public virtual TEntity GetEntity(int id, params string[] includes)
         {
             try
             {

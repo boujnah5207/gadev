@@ -123,218 +123,137 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
 
-            if (!ModelState.IsValid) return View(model);
+            if (model.OrderApproverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
-            return Error("Stop");
-
+            Order orderFromDB;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                Order orderFromDB = ordersRep.GetEntity(model.Id);
+                orderFromDB = ordersRep.GetEntity(model.Id);
 
-                if (orderFromDB != null)
+                if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
+                if (orderFromDB.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+
+                orderFromDB.OrderApproverNotes = model.OrderApproverNotes;
+
+                if (selectedStatus == Loc.Dic.ApproveOrder)
                 {
-                    if (orderFromDB.CompanyId == CurrentUser.CompanyId && orderFromDB.NextOrderApproverId == CurrentUser.UserId)
+                    List<Orders_OrderToAllocation> orderToAllocationList = orderFromDB.Orders_OrderToAllocation.ToList();
+                    List<Budgets_Allocations> distinctOrderAllocations = orderToAllocationList.Select(x => x.Budgets_Allocations).Distinct().ToList();
+
+                    foreach (var allocation in distinctOrderAllocations)
                     {
-                        if (selectedStatus == Loc.Dic.ApproveOrder)
+                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
+
+                        List<Orders_OrderToAllocation> allocationMonths = orderToAllocationList.Where(x => x.AllocationId == allocation.Id).ToList();
+
+                        foreach (var month in allocationMonths)
                         {
-                            List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
-                            List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
+                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                            decimal? usedAmount = approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                            decimal remainingAmount = monthAmount - (usedAmount.HasValue ? usedAmount.Value : 0);
 
-                            foreach (var allocation in orderAllocations)
-                            {
-                                List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
-
-                                List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
-
-                                foreach (var month in allocationMonths)
-                                {
-                                    var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                    decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                    decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                    allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                                    if (month.Amount > allocationMonth.Amount)
-                                        return Error(Loc.Dic.error_order_insufficient_allocation);
-                                }
-                            }
-
-                            if (CurrentUser.OrdersApproverId.HasValue)
-                            {
-                                orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                                orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
-                                orderFromDB.LastStatusChangeDate = DateTime.Now;
-                            }
-                            else
-                            {
-                                orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                                orderFromDB.LastStatusChangeDate = DateTime.Now;
-                                orderFromDB.NextOrderApproverId = null;
-                            }
+                            if (month.Amount > remainingAmount)
+                                return Error(Loc.Dic.error_order_insufficient_allocation);
                         }
-                        else if (selectedStatus == Loc.Dic.DeclineOrder)
-                        {
-                            orderFromDB.StatusId = (int)StatusType.Declined;
-                            orderFromDB.LastStatusChangeDate = DateTime.Now;
+                    }
 
-                        }
-                        else if (selectedStatus == Loc.Dic.SendBackToUser)
-                        {
-                            orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
-                            orderFromDB.LastStatusChangeDate = DateTime.Now;
-
-                        }
-
-                        orderFromDB.OrderApproverNotes = model.OrderApproverNotes;
-                        if (ordersRep.Update(orderFromDB) != null)
-                        {
-                            EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                            emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-
-                            return RedirectToAction("PendingOrders");
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_database_error);
-                        }
+                    if (CurrentUser.OrdersApproverId.HasValue)
+                    {
+                        orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                        orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                        orderFromDB.LastStatusChangeDate = DateTime.Now;
                     }
                     else
                     {
-                        return Error(Loc.Dic.error_no_permission);
+                        orderFromDB.NextOrderApproverId = null;
+                        orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                        orderFromDB.LastStatusChangeDate = DateTime.Now;
                     }
                 }
-                else
+                else if (selectedStatus == Loc.Dic.DeclineOrder)
                 {
-                    return Error(Loc.Dic.error_order_get_error);
+                    orderFromDB.StatusId = (int)StatusType.Declined;
+                    orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
+                else if (selectedStatus == Loc.Dic.SendBackToUser)
+                {
+                    orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                    orderFromDB.LastStatusChangeDate = DateTime.Now;
+                }
+
+                if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
+
+                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + orderFromDB.OrderNumber + Loc.Dic.OrderStatusChangedTo + selectedStatus + Url.Action("MyOrders", "Orders", null, "http"));
+
+                return RedirectToAction("PendingOrders");
             }
         }
 
         [OpenIdAuthorize]
         public ActionResult UploadInvoiceFile(int id = 0)
         {
-            if (Authorized(RoleType.SystemManager))
-            {
-                Order order;
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    order = ordersRep.GetEntity(id);
-                }
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
 
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        if (order.StatusId == (int)StatusType.ApprovedPendingInvoice)
-                        {
-                            ViewBag.OrderID = id;
-                            return View();
-                        }
-                        else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
-                        {
-                            return Error(Loc.Dic.error_order_not_approved);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_order_already_has_invoice);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_order_get_error);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_order_not_found);
-                }
-            }
-            else
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                return Error(Loc.Dic.error_no_permission);
+                order = ordersRep.GetEntity(id);
             }
+
+            if (order == null) return Error(Loc.Dic.error_order_not_found);
+            if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
+            if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
+
+            ViewBag.OrderID = id;
+            return View();
         }
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadInvoiceFile(int id, HttpPostedFileBase file, UploadInvoiceModel model)
+        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, UploadInvoiceModel model, int id = 0)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+
+            if (file == null || file.ContentLength == 0) return Error(Loc.Dic.error_invalid_form);
+
+            if (!ModelState.IsValid)
             {
-                if (file != null && file.ContentLength > 0)
-                {
-                    Order order;
-                    using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
-                    using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                    {
-                        order = ordersRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
-
-                        if (order != null)
-                        {
-                            if (order.CompanyId == CurrentUser.CompanyId)
-                            {
-                                //if (model.InvoiceDate < order.CreationDate)
-                                //    return Error(Loc.Dic.error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate);
-
-                                DateTime minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
-
-
-                                if (model.ValueDate < minValueDate)
-                                    return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
-
-                                if (order.StatusId == (int)StatusType.ApprovedPendingInvoice)
-                                {
-                                    var fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-                                    var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
-                                    file.SaveAs(path);
-
-                                    order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
-                                    order.LastStatusChangeDate = DateTime.Now;
-                                    order.InvoiceNumber = model.InvoiceNumber;
-                                    order.InvoiceDate = model.InvoiceDate;
-                                    order.ValueDate = model.ValueDate;
-
-                                    if (ordersRep.Update(order) != null)
-                                    {
-                                        EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                                        emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + order.Id + " שונה ל " + order.StatusId + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-
-                                        return RedirectToAction("Index");
-                                    }
-                                    else
-                                    {
-                                        return Error(Loc.Dic.error_database_error);
-                                    }
-
-                                }
-                                else if (order.StatusId < (int)StatusType.ApprovedPendingInvoice)
-                                {
-                                    return Error(Loc.Dic.error_order_not_approved);
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.error_order_already_has_invoice);
-                                }
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_no_permission);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_order_get_error);
-                        }
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_invalid_form);
-                }
+                ViewBag.OrderID = id;
+                return View(model);
             }
-            else
+
+            Order order;
+            using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                return Error(Loc.Dic.error_no_permission);
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                
+                if (order == null) return Error(Loc.Dic.error_order_get_error);
+                if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
+                if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
+
+                DateTime minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
+                if (model.ValueDate < minValueDate) return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
+
+                var fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
+                var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
+                file.SaveAs(path);
+
+                order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
+                order.LastStatusChangeDate = DateTime.Now;
+                order.InvoiceNumber = model.InvoiceNumber;
+                order.InvoiceDate = model.InvoiceDate;
+                order.ValueDate = model.ValueDate;
+
+                if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+
+                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + order.Orders_Statuses.Name + Url.Action("MyOrders", "Orders", null, "http"));
+
+                return RedirectToAction("Index");
             }
         }
 

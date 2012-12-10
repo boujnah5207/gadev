@@ -15,7 +15,7 @@
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(model => model.OrderApproverNotes)
+        @Html.TextAreaFor(model => model.OrderApproverNotes, new { maxlength = "250" })
     </div>
     @Html.HiddenFor(model => model.Id)
     <p>

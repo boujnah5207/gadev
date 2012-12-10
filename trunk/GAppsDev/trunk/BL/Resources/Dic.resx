@@ -1221,6 +1221,54 @@
   <data name="Error_no_budgetType" xml:space="preserve">
     <value>no budget Type</value>
   </data>
+  <data name="error_order_notes_too_long" xml:space="preserve">
+    <value>Notes cannot be longer then 250 characters</value>
+  </data>
+  <data name="OrdersSystem" xml:space="preserve">
+    <value>Orders System</value>
+  </data>
+  <data name="OrderStatusChangedTo" xml:space="preserve">
+    <value>Order status changed to</value>
+  </data>
+  <data name="OrderStatusOf" xml:space="preserve">
+    <value>Order status of</value>
+  </data>
+  <data name="OrderStatusUpdateEvent" xml:space="preserve">
+    <value>Order status update</value>
+  </data>
+  <data name="Status_Declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="Status_ExportedToFile" xml:space="preserve">
+    <value>Exported to file</value>
+  </data>
+  <data name="Status_OrderCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Status_PartiallyApproved" xml:space="preserve">
+    <value>Partially approved</value>
+  </data>
+  <data name="Status_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Status_PendingExport" xml:space="preserve">
+    <value>Pending export</value>
+  </data>
+  <data name="Status_PendingInvoice" xml:space="preserve">
+    <value>Pending invoice</value>
+  </data>
+  <data name="Status_PendingInvoiceApproval" xml:space="preserve">
+    <value>Pending invoice approval</value>
+  </data>
+  <data name="Status_PendingOrderCreator" xml:space="preserve">
+    <value>Pending order creator</value>
+  </data>
+  <data name="Status_PendingReceipt" xml:space="preserve">
+    <value>Pending receipt</value>
+  </data>
+  <data name="Status_ReceiptScanned" xml:space="preserve">
+    <value>Receipt scanned</value>
+  </data>
   <data name="error_no_suppliers" xml:space="preserve">
     <value>No suppliers</value>
   </data>
