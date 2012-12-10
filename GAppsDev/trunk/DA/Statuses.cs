@@ -21,4 +21,6 @@ namespace DA
         InvoiceExportedToFilePendingReceipt = 9,
         ReceiptScanned = 10
     }
+
+    
 }
