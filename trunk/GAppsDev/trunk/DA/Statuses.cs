@@ -7,7 +7,7 @@ using DB;
 
 namespace DA
 {
-    public enum StatusType : int
+    public enum StatusType
     {
         OrderCancelled = 0,
         Pending = 1,

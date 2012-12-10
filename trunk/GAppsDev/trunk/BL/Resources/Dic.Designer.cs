@@ -3166,6 +3166,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown status.
+        /// </summary>
+        public static string Status_Unknown {
+            get {
+                return ResourceManager.GetString("Status_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Street.
         /// </summary>
         public static string Street {
