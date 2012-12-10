@@ -41,78 +41,18 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (!Authorized(RoleType.OrdersViewer))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.OrdersViewer)) return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
 
-                if (orders != null)
-                {
-                    int numberOfItems = orders.Count();
-                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                    if (numberOfItems % ITEMS_PER_PAGE != 0)
-                        numberOfPages++;
+                if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
-                    if (page <= 0)
-                        page = FIRST_PAGE;
-                    if (page > numberOfPages)
-                        page = numberOfPages;
+                orders = Pagination(orders, page, sortby, order);
 
-                    if (sortby != NO_SORT_BY)
-                    {
-                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                        if (order == DEFAULT_DESC_ORDER)
-                            orderFunction = x => orders.OrderByDescending(x);
-                        else
-                            orderFunction = x => orders.OrderBy(x);
-
-                        switch (sortby)
-                        {
-                            case "number":
-                                orders = orderFunction(x => x.OrderNumber);
-                                break;
-                            case "creation":
-                                orders = orderFunction(x => x.CreationDate);
-                                break;
-                            case "supplier":
-                                orders = orderFunction(x => x.Supplier.Name);
-                                break;
-                            case "status":
-                                orders = orderFunction(x => x.StatusId);
-                                break;
-                            case "price":
-                                orders = orderFunction(x => x.Price);
-                                break;
-                            case "lastChange":
-                                orders = orderFunction(x => x.LastStatusChangeDate);
-                                break;
-                            case "username":
-                            default:
-                                orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
-                                break;
-                        }
-                    }
-
-                    orders = orders
-                        .Skip((page - 1) * ITEMS_PER_PAGE)
-                        .Take(ITEMS_PER_PAGE)
-                        .ToList();
-
-                    ViewBag.Sortby = sortby;
-                    ViewBag.Order = order;
-                    ViewBag.CurrPage = page;
-                    ViewBag.NumberOfPages = numberOfPages;
-
-                    return View(orders.ToList());
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_orders_get_error);
-                }
+                return View(orders.ToList());
             }
         }
 
@@ -122,284 +62,151 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+
+            IEnumerable<Order> orders;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => x.UserId == CurrentUser.UserId);
+                orders = ordersRep.GetList("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId);
 
-                    if (orders != null)
-                    {
-                        int numberOfItems = orders.Count();
-                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                        if (numberOfItems % ITEMS_PER_PAGE != 0)
-                            numberOfPages++;
+                if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
-                        if (page <= 0)
-                            page = FIRST_PAGE;
-                        if (page > numberOfPages)
-                            page = numberOfPages;
+                orders = Pagination(orders, page, sortby, order);
 
-                        if (sortby != NO_SORT_BY)
-                        {
-                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                            if (order == DEFAULT_DESC_ORDER)
-                                orderFunction = x => orders.OrderByDescending(x);
-                            else
-                                orderFunction = x => orders.OrderBy(x);
-
-                            switch (sortby)
-                            {
-                                case "number":
-                                    orders = orderFunction(x => x.OrderNumber);
-                                    break;
-                                case "creation":
-                                    orders = orderFunction(x => x.CreationDate);
-                                    break;
-                                case "supplier":
-                                    orders = orderFunction(x => x.Supplier.Name);
-                                    break;
-                                case "status":
-                                    orders = orderFunction(x => x.StatusId);
-                                    break;
-                                case "price":
-                                    orders = orderFunction(x => x.Price);
-                                    break;
-                                case "lastChange":
-                                    orders = orderFunction(x => x.LastStatusChangeDate);
-                                    break;
-                            }
-                        }
-
-                        orders = orders
-                            .Skip((page - 1) * ITEMS_PER_PAGE)
-                            .Take(ITEMS_PER_PAGE)
-                            .ToList();
-
-                        ViewBag.Sortby = sortby;
-                        ViewBag.Order = order;
-                        ViewBag.CurrPage = page;
-                        ViewBag.NumberOfPages = numberOfPages;
-
-                        ViewBag.UserId = CurrentUser.UserId;
-                        return View(orders.ToList());
-
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_orders_get_error);
-                    }
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+                return View(orders.ToList());
             }
         }
 
         [OpenIdAuthorize]
         public ActionResult PendingOrders(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.OrdersApprover))
+            if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
+
+            IEnumerable<Order> orders;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                        .Where(x =>
-                            x.CompanyId == CurrentUser.CompanyId &&
-                            x.NextOrderApproverId == CurrentUser.UserId &&
-                            x.StatusId == (int)StatusType.Pending
-                            );
+                orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x =>
+                        x.NextOrderApproverId == CurrentUser.UserId &&
+                        x.StatusId == (int)StatusType.Pending
+                        );
 
-                    int numberOfItems = orders.Count();
-                    int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                    if (numberOfItems % ITEMS_PER_PAGE != 0)
-                        numberOfPages++;
+                if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
-                    if (page <= 0)
-                        page = FIRST_PAGE;
-                    if (page > numberOfPages)
-                        page = numberOfPages;
+                orders = Pagination(orders, page, sortby, order);
 
-                    if (sortby != NO_SORT_BY)
-                    {
-                        Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                        if (order == DEFAULT_DESC_ORDER)
-                            orderFunction = x => orders.OrderByDescending(x);
-                        else
-                            orderFunction = x => orders.OrderBy(x);
-                        switch (sortby)
-                        {
-                            case "username":
-                            default:
-                                orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
-                                break;
-                            case "number":
-                                orders = orderFunction(x => x.OrderNumber);
-                                break;
-                            case "creation":
-                                orders = orderFunction(x => x.CreationDate);
-                                break;
-                            case "supplier":
-                                orders = orderFunction(x => x.Supplier.Name);
-                                break;
-                            case "status":
-                                orders = orderFunction(x => x.StatusId);
-                                break;
-                            case "price":
-                                orders = orderFunction(x => x.Price);
-                                break;
-                            case "lastChange":
-                                orders = orderFunction(x => x.LastStatusChangeDate);
-                                break;
-                        }
-                    }
-
-                    orders = orders
-                        .Skip((page - 1) * ITEMS_PER_PAGE)
-                        .Take(ITEMS_PER_PAGE)
-                        .ToList();
-
-                    ViewBag.Sortby = sortby;
-                    ViewBag.Order = order;
-                    ViewBag.CurrPage = page;
-                    ViewBag.NumberOfPages = numberOfPages;
-
-                    return View(orders.ToList());
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+                return View(orders.ToList());
             }
         }
 
         [OpenIdAuthorize]
         public ActionResult ModifyStatus(int id = 0)
         {
-            if (!Authorized(RoleType.OrdersApprover))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
 
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                OrderModel orderModel = new OrderModel();
-                orderModel.Order = ordersRep.GetEntity(id, "User", "Supplier", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
+                Order order;
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
-                if (orderModel.Order == null)
-                    return Error(Loc.Dic.error_order_get_error);
+                if (order == null) return Error(Loc.Dic.error_order_get_error);
+                if (order.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
-                if (orderModel.Order.CompanyId != CurrentUser.CompanyId || orderModel.Order.NextOrderApproverId != CurrentUser.UserId)
-                    return Error(Loc.Dic.error_no_permission);
-
-                ViewBag.OrderId = id;
-                orderModel.OrderToItem = orderItemsRep.GetList("Orders_Items").Where(x => x.OrderId == id).ToList();
-
-                if (orderModel.OrderToItem == null)
-                    return Error(Loc.Dic.error_database_error);
-
-                return View(orderModel);
+                return View(order);
             }
         }
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult ModifyStatus(OrderModel modifiedOrder, string selectedStatus)
+        public ActionResult ModifyStatus(Order model, string selectedStatus)
         {
-            if (Authorized(RoleType.OrdersApprover))
+            if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
+
+            if (!ModelState.IsValid) return View(model);
+
+            return Error("Stop");
+
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (AllocationRepository allocationsRep = new AllocationRepository())
             {
-                Budgets_Allocations budgetAllocation;
-                //decimal? totalUsedAllocation;
+                Order orderFromDB = ordersRep.GetEntity(model.Id);
 
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (AllocationRepository allocationsRep = new AllocationRepository())
+                if (orderFromDB != null)
                 {
-                    Order orderFromDB = ordersRep.GetEntity(modifiedOrder.Order.Id);
-
-                    if (orderFromDB != null)
+                    if (orderFromDB.CompanyId == CurrentUser.CompanyId && orderFromDB.NextOrderApproverId == CurrentUser.UserId)
                     {
-                        if (orderFromDB.CompanyId == CurrentUser.CompanyId && orderFromDB.NextOrderApproverId == CurrentUser.UserId)
+                        if (selectedStatus == Loc.Dic.ApproveOrder)
                         {
-                            if (selectedStatus == Loc.Dic.ApproveOrder)
+                            List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
+                            List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
+
+                            foreach (var allocation in orderAllocations)
                             {
-                                List<Orders_OrderToAllocation> orderMonthes = orderFromDB.Orders_OrderToAllocation.ToList();
-                                List<Budgets_Allocations> orderAllocations = orderMonthes.Select(x => x.Budgets_Allocations).Distinct().ToList();
+                                List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
 
-                                foreach (var allocation in orderAllocations)
+                                List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
+
+                                foreach (var month in allocationMonths)
                                 {
-                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId >= (int)StatusType.ApprovedPendingInvoice).ToList();
+                                    var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                    decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                                    decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
+                                    allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
 
-                                    List<Orders_OrderToAllocation> allocationMonths = orderMonthes.Where(x => x.AllocationId == allocation.Id).ToList();
-
-                                    foreach (var month in allocationMonths)
-                                    {
-                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                                        if (month.Amount > allocationMonth.Amount)
-                                            return Error(Loc.Dic.error_order_insufficient_allocation);
-                                    }
-                                }
-
-                                if (CurrentUser.OrdersApproverId.HasValue)
-                                {
-                                    orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                                    orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
-                                    orderFromDB.LastStatusChangeDate = DateTime.Now;
-                                }
-                                else
-                                {
-                                    orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                                    orderFromDB.LastStatusChangeDate = DateTime.Now;
-                                    orderFromDB.NextOrderApproverId = null;
+                                    if (month.Amount > allocationMonth.Amount)
+                                        return Error(Loc.Dic.error_order_insufficient_allocation);
                                 }
                             }
-                            else if (selectedStatus == Loc.Dic.DeclineOrder)
+
+                            if (CurrentUser.OrdersApproverId.HasValue)
                             {
-                                orderFromDB.StatusId = (int)StatusType.Declined;
+                                orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                                orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
                                 orderFromDB.LastStatusChangeDate = DateTime.Now;
-
-                            }
-                            else if (selectedStatus == Loc.Dic.SendBackToUser)
-                            {
-                                orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
-                                orderFromDB.LastStatusChangeDate = DateTime.Now;
-
-                            }
-
-                            orderFromDB.OrderApproverNotes = modifiedOrder.Order.OrderApproverNotes;
-                            if (ordersRep.Update(orderFromDB) != null)
-                            {
-                                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
-                                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
-
-                                return RedirectToAction("PendingOrders");
                             }
                             else
                             {
-                                return Error(Loc.Dic.error_database_error);
+                                orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                                orderFromDB.LastStatusChangeDate = DateTime.Now;
+                                orderFromDB.NextOrderApproverId = null;
                             }
+                        }
+                        else if (selectedStatus == Loc.Dic.DeclineOrder)
+                        {
+                            orderFromDB.StatusId = (int)StatusType.Declined;
+                            orderFromDB.LastStatusChangeDate = DateTime.Now;
+
+                        }
+                        else if (selectedStatus == Loc.Dic.SendBackToUser)
+                        {
+                            orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                            orderFromDB.LastStatusChangeDate = DateTime.Now;
+
+                        }
+
+                        orderFromDB.OrderApproverNotes = model.OrderApproverNotes;
+                        if (ordersRep.Update(orderFromDB) != null)
+                        {
+                            EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", "מערכת הזמנות", "noreply50100200");
+                            emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, "עדכון סטטוס הזמנה", "סטטוס הזמנה מספר " + orderFromDB.Id + " שונה ל " + selectedStatus + "Http://gappsdev.pqdev.com/Orders/MyOrders");
+
+                            return RedirectToAction("PendingOrders");
                         }
                         else
                         {
-                            return Error(Loc.Dic.error_no_permission);
+                            return Error(Loc.Dic.error_database_error);
                         }
                     }
                     else
                     {
-                        return Error(Loc.Dic.error_order_get_error);
+                        return Error(Loc.Dic.error_no_permission);
                     }
                 }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+                else
+                {
+                    return Error(Loc.Dic.error_order_get_error);
+                }
             }
         }
 
@@ -1148,7 +955,7 @@ namespace GAppsDev.Controllers
 
                     List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                     List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToBaskets> permissions = 
+                    List<Budgets_UsersToBaskets> permissions =
                         budgetsUsersToPermissionsRepository
                         .GetList()
                         .Where(x => x.UserId == CurrentUser.UserId)
@@ -2404,48 +2211,9 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult PartialDetails(int id = 0)
+        public ActionResult PartialDetails(Order order)
         {
-            Order order;
-            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-            {
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations");
-                ViewBag.BudgetYear = order.Budget.Year;
-
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
-                        {
-                            if (order.IsFutureOrder)
-                                ViewBag.FutureMonth = order.Orders_OrderToAllocation.Max(x => x.MonthId);
-
-                            OrderModel orderModel = new OrderModel()
-                            {
-                                Order = order,
-                                OrderToItem = order.Orders_OrderToItem.ToList()
-                            };
-
-                            ViewBag.IsFutureOrder = order.IsFutureOrder;
-                            ViewBag.CurrentUserId = CurrentUser.UserId;
-                            return PartialView(orderModel);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_NoPermission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.Error_OrderNotFound);
-                }
-            }
+            return PartialView(order);
         }
 
         [ChildActionOnly]

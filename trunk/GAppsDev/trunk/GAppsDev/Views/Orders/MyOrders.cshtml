@@ -7,18 +7,17 @@
 }
 
 @section ExtraScripts{
-    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "Show,Hide" })'></script>
     <script src="~/Scripts/SearchScript.js"></script>
 }
 
-@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.UserId, hideUserField = true })
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true, userId = ViewBag.CurrentUser.UserId, hideUserField = true })
 
 <p>
     @Html.ActionLink(Loc.Dic.CreateNewOrder, "Create")
 </p>
 
 @if (Model.Count() != 0)
-{ 
+{
     @Html.Action("List", "Orders", new { orders = Model, baseUrl = Url.Action("MyOrders"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages, showUserName = false })    
 }
 else

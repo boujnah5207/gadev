@@ -17,6 +17,9 @@ namespace DB
     {
         [DisplayFormat(DataFormatString = "{0:0}")]
         public decimal Price { get; set; }
+
+        [StringLength(250)]
+        public string OrderApproverNotes { get; set; }
     }
 
     [MetadataType(typeof(AllocationToMonthMetaData))]

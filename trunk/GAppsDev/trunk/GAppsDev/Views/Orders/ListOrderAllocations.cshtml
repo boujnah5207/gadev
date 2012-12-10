@@ -45,7 +45,7 @@
         }
         @if ((bool)ViewBag.IsOrdered)
         {
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Allocation, "externalId", ReverseOrder, (string)ViewBag.Sortby)</th>
             if (ViewBag.IsFutureOrder)
             {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Month, "month", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -57,16 +57,13 @@
             <th>
                 @Loc.Dic.Allocation
             </th>
-            <th>
-                @Loc.Dic.Name
-            </th>
             if (ViewBag.IsFutureOrder)
             {
             <th>
-                @Loc.Dic.Month
+                @Loc.Dic.Year
             </th>
             <th>
-                @Loc.Dic.Year
+                @Loc.Dic.Month
             </th>
             }
             <th>
@@ -89,18 +86,15 @@
                 </td>
             }
             <td>
-                @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.ExternalId)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.Name)
+                @Html.DisplayTextFor(modelItem => item.Budgets_Allocations.DisplayName)
             </td>
             @if (ViewBag.IsFutureOrder)
             {
                 <td>
-                    @Html.GetMonthName(item.MonthId)
+                    @ViewBag.BudgetYear
                 </td>
                 <td>
-                    @ViewBag.BudgetYear
+                    @Html.GetMonthName(item.MonthId)
                 </td>
             }
             <td>

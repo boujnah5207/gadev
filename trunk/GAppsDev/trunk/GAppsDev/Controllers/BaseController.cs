@@ -71,5 +71,11 @@ namespace GAppsDev.Controllers
 
             return builder.ToString();
         }
+
+        protected override void OnResultExecuting(ResultExecutingContext filterContext)
+        {
+             ViewBag.CurrentUser = CurrentUser;
+ 	         base.OnResultExecuting(filterContext);
+        }
     }
 }
