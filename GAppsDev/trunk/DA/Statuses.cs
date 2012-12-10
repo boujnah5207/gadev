@@ -17,7 +17,8 @@ namespace DA
         ApprovedPendingInvoice = 5,
         InvoiceScannedPendingOrderCreator = 6,
         InvoiceApprovedByOrderCreatorPendingFileExport = 7,
-        InvoiceExportedToFilePendingReceipt = 8,
-        ReceiptScanned = 9
+        InvoiceExportedToFile = 8,
+        InvoiceExportedToFilePendingReceipt = 9,
+        ReceiptScanned = 10
     }
 }

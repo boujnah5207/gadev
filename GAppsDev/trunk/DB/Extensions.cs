@@ -15,6 +15,21 @@ namespace DB
 
     public class OrderMetaData
     {
+        [DisplayFormat(DataFormatString = "{0:0}")]
+        public decimal Price { get; set; }
+    }
+
+    [MetadataType(typeof(AllocationToMonthMetaData))]
+    public partial class AllocationToMonth
+    {
+        public Type Metadata { get { return typeof(AllocationToMonthMetaData); } }
+    }
+
+    public class AllocationToMonthMetaData
+    {
+        [DisplayFormat(DataFormatString = "{0:0}")]
+        public decimal Amount { get; set; }
+        
     }
 
     public partial class Budgets_Allocations
