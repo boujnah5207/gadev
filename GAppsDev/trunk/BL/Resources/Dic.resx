@@ -1272,4 +1272,7 @@
   <data name="error_no_suppliers" xml:space="preserve">
     <value>No suppliers</value>
   </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>Unknown status</value>
+  </data>
 </root>

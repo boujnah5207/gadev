@@ -22,6 +22,7 @@ namespace DA
         InventoryManager = 256,
         SuperAdmin = int.MaxValue
     }
+
     public static class Roles
     {
         public static bool HasRole(int userRoles, RoleType role)

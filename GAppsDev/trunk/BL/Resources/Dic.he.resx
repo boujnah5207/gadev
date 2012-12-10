@@ -1269,4 +1269,7 @@
   <data name="error_no_suppliers" xml:space="preserve">
     <value>אין ספקים</value>
   </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>סטאטוס לא ידוע</value>
+  </data>
 </root>

@@ -186,7 +186,7 @@ namespace GAppsDev.Controllers
                 if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
-                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + orderFromDB.OrderNumber + Loc.Dic.OrderStatusChangedTo + selectedStatus + Url.Action("MyOrders", "Orders", null, "http"));
+                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + orderFromDB.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)orderFromDB.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
 
                 return RedirectToAction("PendingOrders");
             }
@@ -251,7 +251,7 @@ namespace GAppsDev.Controllers
                 if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
-                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + order.Orders_Statuses.Name + Url.Action("MyOrders", "Orders", null, "http"));
+                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
 
                 return RedirectToAction("Index");
             }
