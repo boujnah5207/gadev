@@ -1,10 +1,14 @@
-﻿@model GAppsDev.Models.InventoryItemModel.ManualCreateInventoryItemModel
+﻿@model DB.Inventory
 
 @{
     ViewBag.Title = Loc.Dic.CreateNew;
     ViewBag.PageName = "Inventory";
     ViewBag.SubPageName = "AllInventory";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
+    <script src="~/Scripts/CreateInventoryScript.js"></script>
 }
 
 <h2>@Loc.Dic.CreateNew</h2>
@@ -17,75 +21,71 @@
         <legend>@Loc.Dic.Inventory</legend>
 
         <div class="editor-label">
-            @Loc.Dic.ItemName
+            @Loc.Dic.Supplier
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.item.Title)
-            @Html.ValidationMessageFor(model => model.item.Title)
-        </div>
+        <button type="button" id="addSupplierButton">@Loc.Dic.AddSupplier</button>
+        <div>
 
-        <div class="editor-label">
-            @Loc.Dic.ItemDescription
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.item.SubTitle)
-            @Html.ValidationMessageFor(model => model.item.SubTitle)
+            @Html.DropDownList("sid", (SelectList)ViewBag.Suppliers, Loc.Dic.SelectNone, new { id = "suppliersDropDownList" })
+            <select name="ItemId" id="supplierItems"></select>
         </div>
 
         <div class="editor-label">
             @Loc.Dic.Location
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.inventoryItem.LocationId, (SelectList)ViewBag.LocationId, Loc.Dic.SelectNone)
-            @Html.ValidationMessageFor(model => model.inventoryItem.LocationId)
+            @Html.DropDownListFor(model => model.LocationId, (SelectList)ViewBag.LocationId, Loc.Dic.SelectNone)
+            @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.RelatedInventoryItem
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.inventoryItem.RelatedInventoryItem, (SelectList)ViewBag.RelatedInventoryItem, Loc.Dic.SelectNone)
-            @Html.ValidationMessageFor(model => model.inventoryItem.RelatedInventoryItem)
+            @Html.DropDownListFor(model => model.RelatedInventoryItem, (SelectList)ViewBag.RelatedInventoryItem, Loc.Dic.SelectNone)
+            @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.AssignedTo
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.AssignedTo)
-            @Html.ValidationMessageFor(model => model.inventoryItem.AssignedTo)
+            @Html.EditorFor(model => model.AssignedTo)
+            @Html.ValidationMessageFor(model => model.AssignedTo)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.SerialNumber
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.SerialNumber)
-            @Html.ValidationMessageFor(model => model.inventoryItem.SerialNumber)
+            @Html.EditorFor(model => model.SerialNumber)
+            @Html.ValidationMessageFor(model => model.SerialNumber)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodStart
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.WarrentyPeriodStart)
-            @Html.ValidationMessageFor(model => model.inventoryItem.WarrentyPeriodStart)
+            @Html.EditorFor(model => model.WarrentyPeriodStart)
+            @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodEnd
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.WarrentyPeriodEnd)
-            @Html.ValidationMessageFor(model => model.inventoryItem.WarrentyPeriodEnd)
+            @Html.EditorFor(model => model.WarrentyPeriodEnd)
+            @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.Notes
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.Notes)
-            @Html.ValidationMessageFor(model => model.inventoryItem.Notes)
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
         </div>
 
 
@@ -93,16 +93,16 @@
             @Loc.Dic.Status
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.Status)
-            @Html.ValidationMessageFor(model => model.inventoryItem.Status)
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
         </div>
 
         <div class="editor-label">
             @Loc.Dic.IsOutOfInventory
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.inventoryItem.IsOutOfInventory)
-            @Html.ValidationMessageFor(model => model.inventoryItem.IsOutOfInventory)
+            @Html.EditorFor(model => model.IsOutOfInventory)
+            @Html.ValidationMessageFor(model => model.IsOutOfInventory)
         </div>
 
         <p>

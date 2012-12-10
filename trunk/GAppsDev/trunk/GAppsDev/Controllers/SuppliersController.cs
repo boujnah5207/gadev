@@ -281,7 +281,8 @@ namespace GAppsDev.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult GetAll()
+        [OpenIdAuthorize]
+        public JsonResult GetAll(bool firstNull = false)
         {
             if (Authorized(RoleType.OrdersWriter))
             {
@@ -312,6 +313,9 @@ namespace GAppsDev.Controllers
                             })
                         .ToList();
                 }
+
+                if (firstNull)
+                    allSuppliers.Insert(0, new AjaxSupplier() { Id = null, Name = Loc.Dic.SelectNone });
 
                 if (allSuppliers != null)
                 {

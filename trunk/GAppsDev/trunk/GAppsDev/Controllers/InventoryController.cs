@@ -67,6 +67,7 @@ namespace GAppsDev.Controllers
         public ActionResult Create()
         {
             using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+            using (SuppliersRepository suppliersRepository = new SuppliersRepository())
             using (LocationsRepository locationsRepository = new LocationsRepository())
             using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
@@ -79,8 +80,12 @@ namespace GAppsDev.Controllers
                 if (locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count() == 0)
                     return Error(Loc.Dic.error_no_location_exist);
                 ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+
+                ViewBag.Suppliers = new SelectList(suppliersRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+
+                
             }
-            return View(new Inventory());
+            return View();
 
         }
 
@@ -89,39 +94,32 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        //public ActionResult Create(Inventory inventory)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        inventory.CompanyId = CurrentUser.CompanyId;
-        //        inventory.AddedBy = CurrentUser.UserId;
+        public ActionResult Create(Inventory inventory)
+        {
+            if (ModelState.IsValid)
+            {
+                inventory.CompanyId = CurrentUser.CompanyId;
+                inventory.AddedBy = CurrentUser.UserId;
+                using (InventoryRepository inventoryRepository = new InventoryRepository())
+                {
+                    if(inventoryRepository.Create(inventory))
+                        return RedirectToAction("Index");
+                    return Error(Loc.Dic.Error_DatabaseError);
+                }
 
+            }
 
-        //        using (InventoryRepository inventoryRepository = new InventoryRepository())
-        //        using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
-        //        {
-        //            orderItemsRepository.Create(inventory);
-        //            inventory.inventoryItem.ItemId = inventory.item.Id;
-        //            if(inventoryRepository.Create(inventory.inventoryItem))
-        //                return RedirectToAction("Index");
-        //            return Error(Loc.Dic.Error_DatabaseError);
-        //        }
+            //using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+            using (LocationsRepository locationsRepository = new LocationsRepository())
+            //using (InventoryRepository inventoryRepository = new InventoryRepository())
+            {
+                //ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
+                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
+            }
+            return View(inventory);
+        }
 
-        //    }
-
-        //    //using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
-        //    using (LocationsRepository locationsRepository = new LocationsRepository())
-        //    //using (InventoryRepository inventoryRepository = new InventoryRepository())
-        //    {
-        //        //ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
-        //        ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
-        //    }
-        //    return View(inventory);
-        //}
-
-        //
-        // GET: /Inventory/Edit/5
-
+        
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
