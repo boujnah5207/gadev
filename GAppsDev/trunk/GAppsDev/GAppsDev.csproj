@@ -166,7 +166,6 @@
     </Compile>
     <Compile Include="Models\AllocationModels\AllocationDetailsModel.cs" />
     <Compile Include="Models\BudgetModels\CreateBudgetModel.cs" />
-    <Compile Include="Models\InventoryItemModel\ManualCreateInventoryItemModel.cs" />
     <Compile Include="Models\OrderItem\AjaxOrderItem.cs" />
     <Compile Include="Models\Order\AddToInventoryModel.cs" />
     <Compile Include="Models\Order\CreateOrderModel.cs" />
