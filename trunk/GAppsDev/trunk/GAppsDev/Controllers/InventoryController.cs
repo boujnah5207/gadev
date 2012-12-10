@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using DB;
 using Mvc4.OpenId.Sample.Security;
 using DA;
-using GAppsDev.Models.InventoryItemModel;
 
 namespace GAppsDev.Controllers
 {
@@ -76,12 +75,12 @@ namespace GAppsDev.Controllers
                     .Where(x => x.CompanyId == CurrentUser.CompanyId)
                     .Select( x => new SelectListItemDB() { Id = x.Id, Name = x.Orders_Items.Title + " " + x.Orders_Items.SubTitle })
                     .ToList(), "Id", "Name");
+
                 if (locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count() == 0)
                     return Error(Loc.Dic.error_no_location_exist);
-                
                 ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
             }
-            return View(new ManualCreateInventoryItemModel());
+            return View(new Inventory());
 
         }
 
@@ -90,35 +89,35 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult Create(ManualCreateInventoryItemModel inventoryItemModel)
-        {
-            if (ModelState.IsValid)
-            {
-                inventoryItemModel.inventoryItem.CompanyId = CurrentUser.CompanyId;
-                inventoryItemModel.inventoryItem.AddedBy = CurrentUser.UserId;
+        //public ActionResult Create(Inventory inventory)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        inventory.CompanyId = CurrentUser.CompanyId;
+        //        inventory.AddedBy = CurrentUser.UserId;
 
 
-                using (InventoryRepository inventoryRepository = new InventoryRepository())
-                using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
-                {
-                    orderItemsRepository.Create(inventoryItemModel.item);
-                    inventoryItemModel.inventoryItem.ItemId = inventoryItemModel.item.Id;
-                    if(inventoryRepository.Create(inventoryItemModel.inventoryItem))
-                        return RedirectToAction("Index");
-                    return Error(Loc.Dic.Error_DatabaseError);
-                }
+        //        using (InventoryRepository inventoryRepository = new InventoryRepository())
+        //        using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+        //        {
+        //            orderItemsRepository.Create(inventory);
+        //            inventory.inventoryItem.ItemId = inventory.item.Id;
+        //            if(inventoryRepository.Create(inventory.inventoryItem))
+        //                return RedirectToAction("Index");
+        //            return Error(Loc.Dic.Error_DatabaseError);
+        //        }
 
-            }
+        //    }
 
-            //using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
-            using (LocationsRepository locationsRepository = new LocationsRepository())
-            //using (InventoryRepository inventoryRepository = new InventoryRepository())
-            {
-                //ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
-                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
-            }
-            return View(inventoryItemModel);
-        }
+        //    //using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
+        //    using (LocationsRepository locationsRepository = new LocationsRepository())
+        //    //using (InventoryRepository inventoryRepository = new InventoryRepository())
+        //    {
+        //        //ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
+        //        ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId), "Id", "Name");
+        //    }
+        //    return View(inventory);
+        //}
 
         //
         // GET: /Inventory/Edit/5
