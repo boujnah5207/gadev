@@ -1221,4 +1221,7 @@
   <data name="Error_no_budgetType" xml:space="preserve">
     <value>no budget Type</value>
   </data>
+  <data name="error_no_suppliers" xml:space="preserve">
+    <value>No suppliers</value>
+  </data>
 </root>

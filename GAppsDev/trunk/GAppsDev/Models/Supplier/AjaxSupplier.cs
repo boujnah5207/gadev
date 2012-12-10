@@ -7,7 +7,7 @@ namespace GAppsDev.Models.SupplierModels
 {
     public class AjaxSupplier
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public int VAT_Number { get; set; }
         public string Phone_Number { get; set; }

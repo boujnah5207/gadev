@@ -373,6 +373,7 @@
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\EditPermissionAllocationScript.js" />
     <Content Include="Scripts\EditUserPermissions.js" />
+    <Content Include="Scripts\CreateInventoryScript.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
