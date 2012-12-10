@@ -9,7 +9,7 @@ using DA;
 
 namespace GAppsDev.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         [OpenIdAuthorize]
         public ActionResult Index()

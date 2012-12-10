@@ -7,13 +7,7 @@ $(function () {
     SearchFormContainer = $("#SearchFormContainer");
 
     expandSearchButton.click(function () {
-        if (expandSearchButton.val() == local.Show) {
-            expandSearchButton.val(local.Hide)
-        }
-        else {
-            expandSearchButton.val(local.Show)
-        }
-
+        
         if (ExpandingSearchBox.css('display') == "none") {
             ExpandingSearchBox.toggle();
             SearchFormContainer.slideToggle(300);
@@ -24,10 +18,10 @@ $(function () {
             });;
         }
 
-        //ExpandingSearchBox.slideToggle(300).promise().done(function () {
-        //    SearchFormContainer.toggleClass("hidden");
-        //});;
-        
     });
 
+    $("#CreationMax").datepicker($.datepicker.regional["he"]);
+    $("#CreationMax").datepicker("option", "dateFormat", "dd/mm/yy");
+    $("#CreationMin").datepicker($.datepicker.regional["he"]);
+    $("#CreationMin").datepicker("option", "dateFormat", "dd/mm/yy");
 });

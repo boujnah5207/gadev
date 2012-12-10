@@ -1,12 +1,12 @@
-﻿@model GAppsDev.Models.OrderModel
+﻿@model DB.Order
 
 @{
-    ViewBag.Title = @Loc.Dic.ModifyStatus;
+    ViewBag.Title = Loc.Dic.ModifyStatus;
     ViewBag.PageName = "Orders";
-    ViewBag.SubPageName = "";
+    ViewBag.SubPageName = "PendingOrders";
 }
 
-@Html.Action("PartialDetails", new { id = ViewBag.OrderId})
+@Html.Action("PartialDetails", new { order = Model})
 <br />
 
 @using (Html.BeginForm()) {
@@ -15,17 +15,13 @@
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(model => model.Order.OrderApproverNotes)
+        @Html.TextAreaFor(model => model.OrderApproverNotes)
     </div>
-    @Html.HiddenFor(model => model.Order.Id)
+    @Html.HiddenFor(model => model.Id)
     <p>
         <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
         <input type="submit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />
         <input type="submit" name="selectedStatus" value="@Loc.Dic.SendBackToUser" />
-
+        | @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }
-
-<p>
-    @Html.ActionLink(Loc.Dic.BackToList, "Index")
-</p>

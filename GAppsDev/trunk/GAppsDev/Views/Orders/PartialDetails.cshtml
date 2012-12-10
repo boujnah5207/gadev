@@ -1,4 +1,4 @@
-﻿@model GAppsDev.Models.OrderModel
+﻿@model DB.Order
 
 <fieldset>
     <legend>@Loc.Dic.OrderDetails</legend>
@@ -7,10 +7,10 @@
         @Loc.Dic.OrderCreatorName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.User.FirstName)
-        @Html.DisplayFor(model => model.Order.User.LastName)
+        @Html.DisplayFor(model => model.User.FirstName)
+        @Html.DisplayFor(model => model.User.LastName)
         <br />
-        (@Html.DisplayFor(model => model.Order.User.Email))
+        (@Html.DisplayFor(model => model.User.Email))
     </div>
     <br />
 
@@ -18,7 +18,7 @@
         @Loc.Dic.SupplierName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Supplier.Name)
+        @Html.DisplayFor(model => model.Supplier.Name)
     </div>
     <br />
     
@@ -26,7 +26,7 @@
         @Loc.Dic.OrderStatusName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Orders_Statuses.Name)
+        @Html.DisplayFor(model => model.Orders_Statuses.Name)
     </div>
     <br />
     
@@ -34,17 +34,17 @@
         @Loc.Dic.CreationDate
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.CreationDate)
+        @Html.DisplayFor(model => model.CreationDate)
     </div>
     <br />
 
-    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+    @if (Model.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         <div class="display-label"> 
             @Loc.Dic.InvoiceNumber
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.Order.InvoiceNumber)
+            @Html.DisplayFor(model => model.InvoiceNumber)
         </div>
         <br />
         
@@ -52,7 +52,7 @@
             @Loc.Dic.InvoiceDate 
         </div>
         <div class="display-field">
-            @Model.Order.InvoiceDate.Value.ToShortDateString()
+            @Model.InvoiceDate.Value.ToShortDateString()
         </div>
         <br />
         
@@ -60,40 +60,41 @@
             @Loc.Dic.ValueDate 
         </div>
         <div class="display-field">
-            @Model.Order.ValueDate.Value.ToShortDateString()
+            @Model.ValueDate.Value.ToShortDateString()
         </div>
         <br />
     }
 
-    @if (Model.Order.IsFutureOrder)
+    @if (Model.IsFutureOrder)
     {
     <div class="display-label">
         @Loc.Dic.FutureOrder
     </div>
     <div class="display-field">
-        @Loc.Dic.Month: @Html.GetMonthName((int)ViewBag.FutureMonth)
+        @{ int futureMonth = Model.Orders_OrderToAllocation.Max(x => x.MonthId); }
+        @Html.GetMonthName(futureMonth) @Model.Budget.Year
     </div>
     <br />
     }
 
-    @if (!String.IsNullOrEmpty(Model.Order.Notes))
+    @if (!String.IsNullOrEmpty(Model.Notes))
     {
     <div class="display-label">
         @Loc.Dic.Notes
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.Notes)
+        @Html.DisplayFor(model => model.Notes)
     </div>
     <br />
     }
 
-    @if (!String.IsNullOrEmpty(Model.Order.OrderApproverNotes))
+    @if (!String.IsNullOrEmpty(Model.OrderApproverNotes))
     {
     <div class="display-label">
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Order.OrderApproverNotes)
+        @Html.DisplayFor(model => model.OrderApproverNotes)
     </div>
     <br />
     }
@@ -102,36 +103,35 @@
         @Loc.Dic.Price
     </div>
     <div class="display-field">
-        
-        @Html.DisplayFor(model => model.Order.Price)
+        @Html.DisplayFor(model => model.Price)
     </div>
     <br />
 
     <div class="display-label"> @Loc.Dic.OrderItems </div>
-    @Html.Action("ListOrderItems", new { orderItems = Model.OrderToItem, baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
     <br />
 
     <div class="display-label"> @Loc.Dic.OrderAllocations </div>
-    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.Order.Orders_OrderToAllocation.ToList(), budgetYear = ViewBag.BudgetYear, isFutureOrder = ViewBag.IsFutureOrder, baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.Orders_OrderToAllocation.ToList(), budgetYear = Model.Budget.Year, isFutureOrder = Model.IsFutureOrder, baseUrl = Url.Action("Index") })    
     <br />
 
-    @if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+    @if (Model.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         <div class="display-label"> @Loc.Dic.Actions </div>
-        @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Order.Id });
+        @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Id });
         <br />
-        if (Model.Order.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
+        if (Model.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
         {
-            @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Order.Id });
+            @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Id });
             <br />
         }
         <br />
     }
 
     <p>
-        @if (Model.Order.UserId == ViewBag.CurrentUserId && (Model.Order.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Order.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
+        @if (Model.UserId == ViewBag.CurrentUser.UserId && (Model.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
         {
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Order.Id })
+            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id })
         }
     </p>
 </fieldset>
