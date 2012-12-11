@@ -30,6 +30,14 @@ namespace DA
 
         public override bool Create(Inventory entity)
         {
+            using (InventoryRepository inventoryRepository = new InventoryRepository(_companyId))
+            {
+                int? latestInventarNumber = inventoryRepository.GetList().Select(x => x.InventarNumber).Max();
+                if (latestInventarNumber.HasValue)
+                    latestInventarNumber++;
+                else
+                    latestInventarNumber = 1;
+            }
             entity.CreationDate = DateTime.Now;
             return base.Create(entity);
         }
