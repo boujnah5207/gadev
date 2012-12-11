@@ -1275,4 +1275,7 @@
   <data name="Status_Unknown" xml:space="preserve">
     <value>Unknown status</value>
   </data>
+  <data name="InventarNumber" xml:space="preserve">
+    <value>Inventar Number</value>
+  </data>
 </root>

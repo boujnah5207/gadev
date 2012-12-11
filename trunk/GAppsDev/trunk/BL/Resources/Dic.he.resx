@@ -1272,4 +1272,7 @@
   <data name="Status_Unknown" xml:space="preserve">
     <value>סטאטוס לא ידוע</value>
   </data>
+  <data name="InventarNumber" xml:space="preserve">
+    <value>מספר אינוונטר</value>
+  </data>
 </root>
