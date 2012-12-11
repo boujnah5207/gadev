@@ -1987,6 +1987,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventar Number.
+        /// </summary>
+        public static string InventarNumber {
+            get {
+                return ResourceManager.GetString("InventarNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
         public static string Inventory {

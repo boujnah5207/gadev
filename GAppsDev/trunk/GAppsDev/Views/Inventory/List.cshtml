@@ -27,6 +27,7 @@
         }
         @if ((bool)ViewBag.IsOrdered)
         {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.InventarNumber, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderItemTitle, "title", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderItemSubTitle, "subtitle", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Location, "location", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -34,6 +35,10 @@
         }
         else
         { 
+            <th>
+                @Loc.Dic.InventarNumber
+                ff
+            </th>            
             <th>
                 @Loc.Dic.OrderItemTitle
             </th>
@@ -64,6 +69,9 @@
                     <input type="checkbox" id="checkbox-@item.Id" class="inventoryItemCheckbox" value="@item.Id" name="selectedInventoryItem" />
                 </td>
             }
+            <td>
+                @Html.DisplayFor(modelItem => item.InventarNumber)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Orders_Items.Title)
             </td>
