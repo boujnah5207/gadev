@@ -4944,7 +4944,8 @@ namespace DB
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="locationId">Initial value of the LocationId property.</param>
         /// <param name="isOutOfInventory">Initial value of the IsOutOfInventory property.</param>
-        public static Inventory CreateInventory(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 locationId, global::System.Boolean isOutOfInventory)
+        /// <param name="inventarNumber">Initial value of the InventarNumber property.</param>
+        public static Inventory CreateInventory(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 locationId, global::System.Boolean isOutOfInventory, global::System.Int32 inventarNumber)
         {
             Inventory inventory = new Inventory();
             inventory.Id = id;
@@ -4952,6 +4953,7 @@ namespace DB
             inventory.CompanyId = companyId;
             inventory.LocationId = locationId;
             inventory.IsOutOfInventory = isOutOfInventory;
+            inventory.InventarNumber = inventarNumber;
             return inventory;
         }
 
@@ -5321,6 +5323,30 @@ namespace DB
         private Nullable<global::System.Int32> _AddedBy;
         partial void OnAddedByChanging(Nullable<global::System.Int32> value);
         partial void OnAddedByChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 InventarNumber
+        {
+            get
+            {
+                return _InventarNumber;
+            }
+            set
+            {
+                OnInventarNumberChanging(value);
+                ReportPropertyChanging("InventarNumber");
+                _InventarNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("InventarNumber");
+                OnInventarNumberChanged();
+            }
+        }
+        private global::System.Int32 _InventarNumber;
+        partial void OnInventarNumberChanging(global::System.Int32 value);
+        partial void OnInventarNumberChanged();
 
         #endregion
 
