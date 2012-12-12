@@ -213,11 +213,9 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadInvoiceFile(HttpPostedFileBase file, UploadInvoiceModel model, int id = 0)
+        public ActionResult UploadInvoiceFile(UploadInvoiceModel model, int id = 0)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
-
-            if (file == null || file.ContentLength == 0) return Error(Loc.Dic.error_invalid_form);
 
             if (!ModelState.IsValid)
             {
@@ -229,18 +227,18 @@ namespace GAppsDev.Controllers
             using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                order = ordersRep.GetEntity(id, "Budget", "Orders_OrderToAllocation");
                 
                 if (order == null) return Error(Loc.Dic.error_order_get_error);
                 if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
                 if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
 
-                DateTime minValueDate = new DateTime(order.Budget.Year, orderAlloRep.GetList().Where(x => x.OrderId == id).Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
+                DateTime minValueDate = new DateTime(order.Budget.Year, order.Orders_OrderToAllocation.Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
                 if (model.ValueDate < minValueDate) return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
 
                 var fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
                 var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
-                file.SaveAs(path);
+                model.File.SaveAs(path);
 
                 order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
                 order.LastStatusChangeDate = DateTime.Now;

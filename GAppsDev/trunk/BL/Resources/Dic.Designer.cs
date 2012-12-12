@@ -556,6 +556,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to characters.
+        /// </summary>
+        public static string Characters {
+            get {
+                return ResourceManager.GetString("Characters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose And Continue.
         /// </summary>
         public static string ChooseAndContinue {
@@ -3459,6 +3468,60 @@ namespace Loc {
         public static string UserUndoDeleteConfirm {
             get {
                 return ResourceManager.GetString("UserUndoDeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is not a date.
+        /// </summary>
+        public static string validation_IsNotDate {
+            get {
+                return ResourceManager.GetString("validation_IsNotDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a file.
+        /// </summary>
+        public static string validation_IsNotFile {
+            get {
+                return ResourceManager.GetString("validation_IsNotFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is not a number.
+        /// </summary>
+        public static string validation_IsNotInt {
+            get {
+                return ResourceManager.GetString("validation_IsNotInt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is required.
+        /// </summary>
+        public static string validation_IsRequired {
+            get {
+                return ResourceManager.GetString("validation_IsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to must be smaller then.
+        /// </summary>
+        public static string validation_LengthMustBeSmallerThen {
+            get {
+                return ResourceManager.GetString("validation_LengthMustBeSmallerThen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field.
+        /// </summary>
+        public static string validation_TheField {
+            get {
+                return ResourceManager.GetString("validation_TheField", resourceCulture);
             }
         }
         

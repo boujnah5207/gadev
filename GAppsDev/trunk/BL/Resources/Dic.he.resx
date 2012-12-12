@@ -1275,4 +1275,25 @@
   <data name="InventarNumber" xml:space="preserve">
     <value>מספר אינוונטר</value>
   </data>
+  <data name="validation_IsNotDate" xml:space="preserve">
+    <value>אינו תאריך</value>
+  </data>
+  <data name="validation_IsNotInt" xml:space="preserve">
+    <value>אינו מספר</value>
+  </data>
+  <data name="validation_IsRequired" xml:space="preserve">
+    <value>הוא שדה חובה</value>
+  </data>
+  <data name="validation_TheField" xml:space="preserve">
+    <value>השדה</value>
+  </data>
+  <data name="validation_IsNotFile" xml:space="preserve">
+    <value>אנא בחר קובץ</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>אותיות</value>
+  </data>
+  <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
+    <value>חייב להיות קצר מ</value>
+  </data>
 </root>

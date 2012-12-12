@@ -5,16 +5,10 @@
     ViewBag.PageName = "Orders";
     ViewBag.noSubMenu = true;
 }
+
 @section ExtraScripts{
-    <script>
-    $(function() {
-        $("#InvoiceDate").datepicker($.datepicker.regional["he"]);
-        $("#InvoiceDate").datepicker("option", "dateFormat", "dd/mm/yy");
-        $("#ValueDate").datepicker($.datepicker.regional["he"]);
-        $("#ValueDate").datepicker("option", "dateFormat", "dd/mm/yy");
-    });
-    </script>   
-    }
+    <script src="~/Scripts/DatePickerScript.js"></script>
+}
 
 <h2>@Loc.Dic.UploadInvoice</h2>
 <br />
@@ -27,7 +21,7 @@
         @Loc.Dic.InvoiceNumber
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.InvoiceNumber)
+        @Html.TextBoxFor(model => model.InvoiceNumber, new { maxlength = "20" })
         @Html.ValidationMessageFor(model => model.InvoiceNumber)
     </div>
     <br />
@@ -36,7 +30,7 @@
         @Loc.Dic.InvoiceDate (DD/MM/YYYY)
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.InvoiceDate, new { id = "InvoiceDate" })
+        @Html.TextBoxFor(model => model.InvoiceDate, new { id = "InvoiceDate", @class = "dateField" })
         @Html.ValidationMessageFor(model => model.InvoiceDate)
     </div>
     <br />
@@ -45,7 +39,7 @@
         <span>@Loc.Dic.ValueDate (DD/MM/YYYY)</span>
     </div>
     <div class="editor-field">
-        @Html.EditorFor(model => model.ValueDate, new { id = "ValueDate" })
+        @Html.TextBoxFor(model => model.ValueDate, new { id = "ValueDate", @class = "dateField" })
         @Html.ValidationMessageFor(model => model.ValueDate)
     </div>
     <br />
@@ -54,7 +48,8 @@
         @Loc.Dic.InvoiceFile
     </div>
     <div class="editor-field">
-        <input type="file" name="file" />
+        <input id="File" @if(!ViewContext.ViewData.ModelState.IsValidField("File")){<text>class="input-validation-error"</text>} type="file" name="File" /> 
+        @Html.ValidationMessageFor(model => model.File)
     </div>
     <br />
     
