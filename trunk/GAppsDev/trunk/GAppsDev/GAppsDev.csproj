@@ -136,6 +136,26 @@
     <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\DataAnnotations.ar.designer.cs">
+      <DependentUpon>DataAnnotations.ar.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\DataAnnotations.ru.designer.cs">
+      <DependentUpon>DataAnnotations.ru.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\DataAnnotations.he.designer.cs">
+      <DependentUpon>DataAnnotations.he.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\DataAnnotations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataAnnotations.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -184,6 +204,7 @@
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\LocalizedDataAnnotations.cs" />
     <Compile Include="Resources\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +392,7 @@
     <Content Include="Scripts\AddToInventoryScript.js" />
     <Content Include="Scripts\CreateBudgetScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
+    <Content Include="Scripts\DatePickerScript.js" />
     <Content Include="Scripts\EditOrderScript.js" />
     <Content Include="Scripts\EditPermissionAllocationScript.js" />
     <Content Include="Scripts\EditUserPermissions.js" />
@@ -606,6 +628,22 @@
     <EmbeddedResource Include="..\BL\Resources\Dic.ru.resx">
       <Link>Resources\Dic.ru.resx</Link>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="App_GlobalResources\DataAnnotations.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DataAnnotations.ru.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DataAnnotations.ar.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DataAnnotations.ar.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="App_GlobalResources\DataAnnotations.he.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DataAnnotations.he.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\DataAnnotations.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DataAnnotations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

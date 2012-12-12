@@ -1278,4 +1278,25 @@
   <data name="InventarNumber" xml:space="preserve">
     <value>Inventar Number</value>
   </data>
+  <data name="validation_IsNotDate" xml:space="preserve">
+    <value>is not a date</value>
+  </data>
+  <data name="validation_IsNotInt" xml:space="preserve">
+    <value>is not a number</value>
+  </data>
+  <data name="validation_IsRequired" xml:space="preserve">
+    <value>is required</value>
+  </data>
+  <data name="validation_TheField" xml:space="preserve">
+    <value>The field</value>
+  </data>
+  <data name="validation_IsNotFile" xml:space="preserve">
+    <value>Please select a file</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>characters</value>
+  </data>
+  <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
+    <value>must be smaller then</value>
+  </data>
 </root>
