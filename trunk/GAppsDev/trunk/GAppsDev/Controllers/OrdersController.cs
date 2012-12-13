@@ -30,6 +30,10 @@ namespace GAppsDev.Controllers
         const string DEFAULT_SORT = "lastChange";
         const string DEFAULT_DESC_ORDER = "DESC";
         const int FIRST_DAY_OF_MONTH = 1;
+
+        const string INVOICE_FOLDER_NAME = "Invoices";
+        const string RECEIPT_FOLDER_NAME = "Receipts";
+
         private Entities db = new Entities();
 
         [OpenIdAuthorize]
@@ -208,10 +212,22 @@ namespace GAppsDev.Controllers
 
             if (order == null) return Error(Loc.Dic.error_order_not_found);
             if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
-            if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
 
             ViewBag.OrderID = id;
-            return View();
+            if (order.StatusId > (int)StatusType.ApprovedPendingInvoice)
+            {
+                UploadInvoiceModel model = new UploadInvoiceModel();
+                model.InvoiceNumber = order.InvoiceNumber;
+                model.InvoiceDate = order.InvoiceDate.Value;
+                model.ValueDate = order.ValueDate.Value;
+                model.isUpdate = true;
+
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [OpenIdAuthorize]
@@ -225,23 +241,28 @@ namespace GAppsDev.Controllers
                 ViewBag.OrderID = id;
                 return View(model);
             }
-            
+
             Order order;
+            bool isModelValid = true;
             using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id, "Budget", "Orders_OrderToAllocation");
 
                 if (order == null) return Error(Loc.Dic.error_order_get_error);
+
                 if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
-                if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
-
                 DateTime minValueDate = new DateTime(order.Budget.Year, order.Orders_OrderToAllocation.Max(x => x.MonthId), FIRST_DAY_OF_MONTH);
-                if (model.ValueDate < minValueDate) return Error(Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
-
-                var fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-                var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
-                model.File.SaveAs(path);
+                if (model.ValueDate < minValueDate)
+                {
+                    isModelValid = false;
+                    ModelState.AddModelError("ValueDate", Loc.Dic.error_ValueDateHaveToBeLaterThenLatestAllocationDate);
+                }
+                if (!model.File.FileName.Contains('.'))
+                {
+                    isModelValid = false;
+                    ModelState.AddModelError("File", Loc.Dic.validation_FileNameIsInvalid);
+                }
 
                 order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
                 order.LastStatusChangeDate = DateTime.Now;
@@ -250,6 +271,14 @@ namespace GAppsDev.Controllers
                 order.ValueDate = model.ValueDate;
 
                 if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+
+                if (!isModelValid)
+                {
+                    ViewBag.OrderID = id;
+                    return View(model);
+                }
+
+                SaveUniqueFile(model.File, INVOICE_FOLDER_NAME, id);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
                 emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
@@ -293,7 +322,14 @@ namespace GAppsDev.Controllers
 
                 if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
 
-                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                //var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                //var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
+                //file.SaveAs(path);
+
+                string[] parts = file.FileName.Split('.');
+                if (!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
+
+                var fileName = String.Format("{0}_{1}.{2}", CurrentUser.CompanyId, orderId, parts.Last());
                 var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
                 file.SaveAs(path);
 
@@ -303,6 +339,24 @@ namespace GAppsDev.Controllers
                 if (ordersRep.Update(order) == null) return Error(Loc.Dic.Error_DatabaseError);
                 
                 return RedirectToAction("Index");
+            }
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult UpdateReceipt(int id = 0)
+        {
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.Error_NoPermission);
+
+            Order order;
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = orderRep.GetEntity(id);
+
+                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
+                if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
+
+                ViewBag.OrderId = id;
+                return View();
             }
         }
 
@@ -322,24 +376,26 @@ namespace GAppsDev.Controllers
                         {
                             if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
                             {
-                                string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-                                string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Invoices"), fileName);
+                                string directoryPath = Server.MapPath("~/App_Data/Uploads/Invoices");
+                                string PrefixPattern = String.Format("{0}_{1}*", CurrentUser.CompanyId, id);
 
-                                if (System.IO.File.Exists(path))
-                                {
-                                    FileStream stream = System.IO.File.OpenRead(path);
+                                DirectoryInfo myDir = new DirectoryInfo(directoryPath);
+                                var files = myDir.GetFiles(PrefixPattern);
 
-                                    byte[] contents = new byte[stream.Length];
-                                    stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-                                    stream.Close();
+                                if (files.Length == 0) return Error(Loc.Dic.Error_InvoiceFileNotFound);
 
-                                    Response.AddHeader("Content-Disposition", "inline; filename=Invoice_" + order.OrderNumber + ".pdf");
-                                    return File(contents, "application/pdf");
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.Error_InvoiceFileNotFound);
-                                }
+                                string filePath = files[0].FullName;
+                                string[] parts = filePath.Split('.');
+
+                                if(!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
+
+                                FileStream stream = System.IO.File.OpenRead(filePath);
+
+                                byte[] contents = new byte[stream.Length];
+                                stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+                                stream.Close();
+                                
+                                return File(contents, System.Net.Mime.MediaTypeNames.Application.Octet, String.Format("Invoice_{0}.{1}", order.OrderNumber, parts.Last()));
                             }
                             else
                             {
@@ -379,23 +435,26 @@ namespace GAppsDev.Controllers
                         {
                             if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
                             {
-                                string fileName = CurrentUser.CompanyId.ToString() + "_" + id.ToString() + ".pdf";
-                                string path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
+                                string directoryPath = Server.MapPath("~/App_Data/Uploads/Receipts");
+                                string PrefixPattern = String.Format("{0}_{1}*", CurrentUser.CompanyId, id);
 
-                                if (System.IO.File.Exists(path))
-                                {
-                                    FileStream stream = System.IO.File.OpenRead(path);
-                                    byte[] contents = new byte[stream.Length];
-                                    stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-                                    stream.Close();
+                                DirectoryInfo myDir = new DirectoryInfo(directoryPath);
+                                var files = myDir.GetFiles(PrefixPattern);
 
-                                    Response.AddHeader("Content-Disposition", "inline; filename=test.pdf");
-                                    return File(contents, "application/pdf");
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.Error_ReceiptFileNotFound);
-                                }
+                                if (files.Length == 0) return Error(Loc.Dic.Error_InvoiceFileNotFound);
+
+                                string filePath = files[0].FullName;
+                                string[] parts = filePath.Split('.');
+
+                                if (!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
+
+                                FileStream stream = System.IO.File.OpenRead(filePath);
+
+                                byte[] contents = new byte[stream.Length];
+                                stream.Read(contents, 0, Convert.ToInt32(stream.Length));
+                                stream.Close();
+
+                                return File(contents, System.Net.Mime.MediaTypeNames.Application.Octet, String.Format("Receipt_{0}.{1}", order.OrderNumber, parts.Last()));
                             }
                             else
                             {
@@ -2335,6 +2394,26 @@ namespace GAppsDev.Controllers
             }
 
             return items;
+        }
+
+        public void SaveUniqueFile(HttpPostedFileBase file, string folderName, int uniqueId)
+        {
+            string directoryPath = Server.MapPath("~/App_Data/Uploads/" + folderName);
+            string PrefixPattern = String.Format("{0}_{1}.*", CurrentUser.CompanyId, uniqueId);
+
+            DirectoryInfo myDir = new DirectoryInfo(directoryPath);
+            var existingFiles = myDir.GetFiles(PrefixPattern);
+            foreach (var existingFile in existingFiles)
+            {
+                existingFile.Delete();
+            }
+
+            string[] parts = file.FileName.Split('.');
+
+            var fileName = String.Format("{0}_{1}.{2}", CurrentUser.CompanyId, uniqueId, parts.Last());
+            var fullFilePath = Path.Combine(directoryPath, fileName);
+            file.SaveAs(fullFilePath);
+            file.InputStream.Close();
         }
 
         protected override void Dispose(bool disposing)

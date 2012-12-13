@@ -588,6 +588,8 @@
     <Content Include="Views\Baskets\List.cshtml" />
     <Content Include="Views\Inventory\List.cshtml" />
     <Content Include="Views\Locations\List.cshtml" />
+    <Content Include="Views\Orders\UpdateInvoiceFile.cshtml" />
+    <Content Include="Views\Orders\UpdateReceipt.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

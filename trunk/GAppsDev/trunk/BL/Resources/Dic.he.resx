@@ -1308,7 +1308,22 @@
   <data name="validation_InvalidFileType" xml:space="preserve">
     <value>סוג הקובץ אינו חוקי</value>
   </data>
+  <data name="UpdateInvoice" xml:space="preserve">
+    <value>עדכן חשבונית</value>
+  </data>
+  <data name="validation_FileNameIsInvalid" xml:space="preserve">
+    <value>שם הקובץ אינו חוקי</value>
+  </data>
   <data name="validation_IsNotNumber" xml:space="preserve">
     <value>אינו מספר</value>
+  </data>
+  <data name="Receipt" xml:space="preserve">
+    <value>קבלה</value>
+  </data>
+  <data name="UpdateReceipt" xml:space="preserve">
+    <value>עדכן קבלה</value>
+  </data>
+  <data name="MaxFileSize" xml:space="preserve">
+    <value>גודל מקסימלי</value>
   </data>
 </root>

@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = Loc.Dic.UpdateReceipt;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "AllOrders";
+}
+
+
+
+@using (Html.BeginForm("UploadReceiptFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Loc.Dic.UpdateReceipt<text>:</text>
+    <input type="hidden" name="orderId" value="@ViewBag.OrderId" /> 
+    <input type="file" name="file"  />
+    <input type="submit" value="OK" />
+}
