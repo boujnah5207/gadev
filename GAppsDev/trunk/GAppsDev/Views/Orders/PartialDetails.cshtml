@@ -1,5 +1,9 @@
 ﻿@model DB.Order
 
+@{
+    bool isSystemManager = DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager);
+}
+
 <fieldset>
     <legend>@Loc.Dic.OrderDetails</legend>
 
@@ -118,11 +122,20 @@
     @if (Model.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         <div class="display-label"> @Loc.Dic.Actions </div>
-        @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Id });
+        <br />
+        <span class="bold">@Loc.Dic.Invoice: </span> @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Id });
+        if (isSystemManager)
+        {
+        <text>|</text> @Html.ActionLink(Loc.Dic.UpdateInvoice, "UpdateInvoiceFile", new { id = Model.Id })
+        }
         <br />
         if (Model.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
         {
-            @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Id });
+            <span class="bold">@Loc.Dic.Receipt: </span> @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Id });
+            if (isSystemManager)
+            {
+            <text>|</text> @Html.ActionLink(Loc.Dic.UpdateReceipt, "UpdateReceipt", new { id = Model.Id })
+            }
             <br />
         }
         <br />

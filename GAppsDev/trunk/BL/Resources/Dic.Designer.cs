@@ -2257,6 +2257,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max file size.
+        /// </summary>
+        public static string MaxFileSize {
+            get {
+                return ResourceManager.GetString("MaxFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to May.
         /// </summary>
         public static string May {
@@ -2869,6 +2878,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receipt.
+        /// </summary>
+        public static string Receipt {
+            get {
+                return ResourceManager.GetString("Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Related Inventory Item.
         /// </summary>
         public static string RelatedInventoryItem {
@@ -3364,11 +3382,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Invoice.
+        /// </summary>
+        public static string UpdateInvoice {
+            get {
+                return ResourceManager.GetString("UpdateInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update order.
         /// </summary>
         public static string UpdateOrder {
             get {
                 return ResourceManager.GetString("UpdateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Receipt.
+        /// </summary>
+        public static string UpdateReceipt {
+            get {
+                return ResourceManager.GetString("UpdateReceipt", resourceCulture);
             }
         }
         
@@ -3495,6 +3531,15 @@ namespace Loc {
         public static string validation_FileEmpty {
             get {
                 return ResourceManager.GetString("validation_FileEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file name is invalid.
+        /// </summary>
+        public static string validation_FileNameIsInvalid {
+            get {
+                return ResourceManager.GetString("validation_FileNameIsInvalid", resourceCulture);
             }
         }
         

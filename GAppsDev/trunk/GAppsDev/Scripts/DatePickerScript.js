@@ -12,7 +12,7 @@ function setAllDatePickers() {
             console.log(datepicker_default_val);
             currentItem.datepicker($.datepicker.regional["he"]);
             currentItem.datepicker("option", "dateFormat", "dd/mm/yy");
-            currentItem.datepicker("setDate", datepicker_default_val);
+            currentItem.val(datepicker_default_val.substring(0, 10));
         }
     }
 }

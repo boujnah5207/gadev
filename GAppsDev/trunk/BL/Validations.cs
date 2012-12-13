@@ -22,6 +22,7 @@ namespace BL
                 "image/jpeg",
                 "image/png",
                 "image/bmp",
+                "image/tiff",
                 "application/msword",
                 "application/x-compressed",
                 "application/x-rar-compressed",

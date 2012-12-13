@@ -9,6 +9,8 @@ namespace GAppsDev.Models
 {
     public class UploadInvoiceModel
     {
+        public bool isUpdate = false;
+
         [LocalizedNumberStringAttribute]
         [LocalizedRequired]
         [LocalizedName("InvoiceNumber")]

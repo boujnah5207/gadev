@@ -1,7 +1,7 @@
 ﻿@model GAppsDev.Models.UploadInvoiceModel
 
 @{
-    ViewBag.Title = Model != null && Model.isUpdate ? Loc.Dic.UpdateInvoice : Loc.Dic.UploadInvoice;
+    ViewBag.Title = "UploadInvoiceFile";
     ViewBag.PageName = "Orders";
     ViewBag.noSubMenu = true;
 }
@@ -10,21 +10,16 @@
     <script src="~/Scripts/DatePickerScript.js"></script>
 }
 
-<h2>@(Model != null && Model.isUpdate ? Loc.Dic.UpdateInvoice : Loc.Dic.UploadInvoice)</h2>
+<h2>@Loc.Dic.UpdateInvoice</h2>
 <br />
 
-@if (Model != null && Model.isUpdate)
-{
-    @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = ViewBag.OrderId })
-    <br /><br />
-}
+@Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = ViewBag.OrderId })
+<br /><br />
 
-@using(Html.BeginForm("UploadInvoiceFile", "Orders", new { id = ViewBag.OrderID }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UpdateInvoiceFile", "Orders", new { id = ViewBag.OrderID }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
     
-    @Html.HiddenFor( model => model.isUpdate)
-
     <div class="editor-label">
         @Loc.Dic.InvoiceNumber
     </div>
@@ -53,10 +48,10 @@
     <br />
     
     <div class="editor-label">
-        @Loc.Dic.InvoiceFile <span class="bold">(@Loc.Dic.MaxFileSize 250Kb)</span>
+        @Loc.Dic.InvoiceFile
     </div>
     <div class="editor-field">
-        <input id="File" @if(!ViewContext.ViewData.ModelState.IsValidField("File")){<text>class="input-validation-error"</text>} type="file" name="File" />
+        <input id="File" @if(!ViewContext.ViewData.ModelState.IsValidField("File")){<text>class="input-validation-error"</text>} type="file" name="File" /> 
         @Html.ValidationMessageFor(model => model.File)
     </div>
     <br />

@@ -128,6 +128,13 @@
                     <text>|</text> @Html.ActionLink(Loc.Dic.UploadInvoice, "UploadInvoiceFile", new { id = item.Id })
                         }
                     }
+                    else if (item.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+                    {
+                        if (DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.SystemManager))
+                        {
+                    <text>|</text> @Html.ActionLink(Loc.Dic.UpdateInvoice, "UpdateInvoiceFile", new { id = item.Id })
+                        }
+                    }
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                 {
