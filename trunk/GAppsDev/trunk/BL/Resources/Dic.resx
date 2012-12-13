@@ -1296,6 +1296,12 @@
   <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
     <value>must be smaller then</value>
   </data>
+  <data name="PendingFirstName" xml:space="preserve">
+    <value>Pending first name</value>
+  </data>
+  <data name="PendingLastName" xml:space="preserve">
+    <value>Pending last name</value>
+  </data>
   <data name="validation_FileEmpty" xml:space="preserve">
     <value>The file is empty</value>
   </data>

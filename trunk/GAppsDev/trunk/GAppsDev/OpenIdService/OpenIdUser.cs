@@ -45,8 +45,8 @@ namespace GAppsDev.OpenIdService
         private void addClaimInfo(FetchResponse claim, string identifier)
         {
             Email = claim.GetAttributeValue(WellKnownAttributes.Contact.Email);
-            FirstName = claim.GetAttributeValue(WellKnownAttributes.Name.First);
-            LastName = claim.GetAttributeValue(WellKnownAttributes.Name.Last);
+            FirstName = claim.GetAttributeValue(WellKnownAttributes.Name.First) ?? Loc.Dic.PendingFirstName;
+            LastName = claim.GetAttributeValue(WellKnownAttributes.Name.Last) ?? String.Empty;
 
             IsSignedByProvider = false;
             ClaimedIdentifier = identifier;

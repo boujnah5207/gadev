@@ -1293,6 +1293,12 @@
   <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
     <value>חייב להיות קצר מ</value>
   </data>
+  <data name="PendingFirstName" xml:space="preserve">
+    <value>ממתין לשם פרטי</value>
+  </data>
+  <data name="PendingLastName" xml:space="preserve">
+    <value>ממתין לשם משפחה</value>
+  </data>
   <data name="validation_FileEmpty" xml:space="preserve">
     <value>הקובץ ריק</value>
   </data>

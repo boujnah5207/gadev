@@ -2698,11 +2698,29 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending first name.
+        /// </summary>
+        public static string PendingFirstName {
+            get {
+                return ResourceManager.GetString("PendingFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending inventory insertion.
         /// </summary>
         public static string PendingInventory {
             get {
                 return ResourceManager.GetString("PendingInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending last name.
+        /// </summary>
+        public static string PendingLastName {
+            get {
+                return ResourceManager.GetString("PendingLastName", resourceCulture);
             }
         }
         
