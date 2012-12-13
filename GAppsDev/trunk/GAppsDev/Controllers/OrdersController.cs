@@ -466,8 +466,17 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            ViewBag.OrderId = id;
-            return View();
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
+            {
+                Order order;
+                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+
+                if (order == null) return Error(Loc.Dic.error_order_get_error);
+                if (!Authorized(RoleType.OrdersViewer) && order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+
+                return View(order);
+            }
         }
 
         //
@@ -1815,7 +1824,7 @@ namespace GAppsDev.Controllers
 
                             builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                            userCompany.ExternalExpenseCode.PadLeft(3),
+                            String.Empty.PadLeft(3), //userCompany.ExternalExpenseCode.PadLeft(3),
                             order.InvoiceNumber.Substring(Math.Max(0, order.InvoiceNumber.Length - 5)).PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),
@@ -1824,7 +1833,7 @@ namespace GAppsDev.Controllers
                             String.Empty.PadLeft(22),
                             allocation.ExternalId.ToString().PadLeft(8),
                             String.Empty.PadLeft(8),
-                            order.Supplier.ExternalId.ToString().PadLeft(8),
+                            String.Empty.PadLeft(8), //order.Supplier.ExternalId.ToString().PadLeft(8),
                             String.Empty.PadLeft(8),
                             allocationSum.ToString("0.00").PadLeft(12),
                             String.Empty.PadLeft(12),
@@ -1840,7 +1849,7 @@ namespace GAppsDev.Controllers
 
                         builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                            userCompany.ExternalExpenseCode.PadLeft(3),
+                            String.Empty.PadLeft(3), //userCompany.ExternalExpenseCode.PadLeft(3),
                             order.InvoiceNumber.PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),

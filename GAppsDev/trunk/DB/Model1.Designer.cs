@@ -1214,7 +1214,8 @@ namespace DB
         /// <param name="budgetId">Initial value of the BudgetId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
-        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.String name, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate, global::System.Boolean isCanceled)
+        /// <param name="sortingCode">Initial value of the SortingCode property.</param>
+        public static Budgets_Allocations CreateBudgets_Allocations(global::System.Int32 id, global::System.String name, global::System.Int32 companyId, global::System.Int32 budgetId, global::System.DateTime creationDate, global::System.Boolean isCanceled, global::System.Int32 sortingCode)
         {
             Budgets_Allocations budgets_Allocations = new Budgets_Allocations();
             budgets_Allocations.Id = id;
@@ -1223,6 +1224,7 @@ namespace DB
             budgets_Allocations.BudgetId = budgetId;
             budgets_Allocations.CreationDate = creationDate;
             budgets_Allocations.IsCanceled = isCanceled;
+            budgets_Allocations.SortingCode = sortingCode;
             return budgets_Allocations;
         }
 
@@ -1448,6 +1450,30 @@ namespace DB
         private global::System.Boolean _IsCanceled;
         partial void OnIsCanceledChanging(global::System.Boolean value);
         partial void OnIsCanceledChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SortingCode
+        {
+            get
+            {
+                return _SortingCode;
+            }
+            set
+            {
+                OnSortingCodeChanging(value);
+                ReportPropertyChanging("SortingCode");
+                _SortingCode = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SortingCode");
+                OnSortingCodeChanged();
+            }
+        }
+        private global::System.Int32 _SortingCode;
+        partial void OnSortingCodeChanging(global::System.Int32 value);
+        partial void OnSortingCodeChanged();
 
         #endregion
 
