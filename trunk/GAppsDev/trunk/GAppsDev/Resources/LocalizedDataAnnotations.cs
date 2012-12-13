@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using BL;
 
 namespace GAppsDev
 {
@@ -63,18 +64,26 @@ namespace GAppsDev
 
     public class LocalizedFileAttribute : ValidationAttribute
     {
+        public long? MaxBytes { get; set; }
+        public string FileValidationError { get; set; }
+
+        public LocalizedFileAttribute(long maxBytes = Validations.MAX_FILE_SIZE) : base()
+        {
+            MaxBytes = maxBytes;
+            FileValidationError = null;
+        }
+
         public override string FormatErrorMessage(string name)
         {
-            return Loc.Dic.validation_IsNotFile;
+            return FileValidationError ?? Loc.Dic.validation_IsNotFile;
         }
         
         public override bool IsValid(object value)
         {
-            if (value == null) return false;
+            if(value == null) return false;
+            FileValidationError = Validations.UploadedFile((HttpPostedFileBase)value, MaxBytes);
 
-            HttpPostedFileBase file = (HttpPostedFileBase)value;
-
-            return file.ContentLength > 0;
+            return FileValidationError == null;
         }
     }
 

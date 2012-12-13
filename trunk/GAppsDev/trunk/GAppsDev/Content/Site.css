@@ -44,6 +44,11 @@ img
     background:url("images/DESC.png") no-repeat;
 }
 
+.supplierItemsSelectList
+{
+    max-width:150px;
+}
+
 .selectedSupplier {
     font-size:20px;
     font-weight:bold;
