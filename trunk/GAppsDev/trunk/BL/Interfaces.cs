@@ -218,7 +218,6 @@ namespace BL
             else if (budgetType == "Year")
                 firstValuesLine = 0;
 
-
             for (int i = firstValuesLine; i < fileLines.Length; i++)
             {
                 string[] lineValues = fileLines[i].Split('\t');
@@ -228,12 +227,14 @@ namespace BL
                 }
 
                 Budgets_Allocations newAllocation;
+                int sortingCode;
 
-                if (lineValues[1].Length != 8 || lineValues[2].Length > 100)
-                    return Loc.Dic.Error_FileParseError;
+                if (lineValues[1].Length != 8 || lineValues[2].Length > 100) return Loc.Dic.Error_FileParseError;
+                if (!int.TryParse(lineValues[0], out sortingCode)) return Loc.Dic.Error_FileParseError;
 
                 newAllocation = new Budgets_Allocations()
                 {
+                    SortingCode = sortingCode,
                     ExternalId = lineValues[1],
                     Name = lineValues[2],
                     BudgetId = budget.Id,

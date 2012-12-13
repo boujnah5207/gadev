@@ -1,7 +1,9 @@
-﻿@{
+﻿@model DB.Order
+
+@{
     ViewBag.Title = Loc.Dic.OrderDetails;
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "MyOrders";
 }
 
-@Html.Action("PartialDetails", new { id = ViewBag.OrderId})
+@Html.Action("PartialDetails", new { order = Model})
