@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Text;
 using System.Web.Security;
 using System.DirectoryServices.AccountManagement;
+using BL;
 
 namespace GAppsDev.Controllers
 {
@@ -224,13 +225,13 @@ namespace GAppsDev.Controllers
                 ViewBag.OrderID = id;
                 return View(model);
             }
-
+            
             Order order;
             using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id, "Budget", "Orders_OrderToAllocation");
-                
+
                 if (order == null) return Error(Loc.Dic.error_order_get_error);
                 if (order.StatusId < (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_not_approved);
                 if (order.StatusId > (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_has_invoice);
@@ -269,7 +270,7 @@ namespace GAppsDev.Controllers
 
                 if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
                 if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
-                
+
                 ViewBag.OrderId = id;
                 return View();
             }
@@ -279,36 +280,29 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult UploadReceiptFile(HttpPostedFileBase file, int orderId = 0)
         {
-            if (!Authorized(RoleType.SystemManager))
-                return Error(Loc.Dic.Error_NoPermission);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.Error_NoPermission);
+
+            string fileError = Validations.UploadedFile(file);
 
             Order order;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(orderId);
 
-                if (order == null)
-                    return Error(Loc.Dic.Error_OrderNotFound);
+                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
 
-                if (order.CompanyId != CurrentUser.CompanyId)
-                    return Error(Loc.Dic.Error_NoPermission);
+                if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
 
-                if (order.StatusId >= (int)StatusType.InvoiceExportedToFilePendingReceipt)
-                {
-                    var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
-                    var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
-                    file.SaveAs(path);
-                    order.StatusId = (int)StatusType.ReceiptScanned;
-                    order.LastStatusChangeDate = DateTime.Now;
+                var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
+                var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
+                file.SaveAs(path);
 
+                order.StatusId = (int)StatusType.ReceiptScanned;
+                order.LastStatusChangeDate = DateTime.Now;
 
-                    if (ordersRep.Update(order) != null)
-                        return RedirectToAction("Index");
-                    else
-                        return Error(Loc.Dic.Error_DatabaseError);
-                }
-                else
-                    return Error(Loc.Dic.error_wrongStatus);
+                if (ordersRep.Update(order) == null) return Error(Loc.Dic.Error_DatabaseError);
+                
+                return RedirectToAction("Index");
             }
         }
 
@@ -731,13 +725,6 @@ namespace GAppsDev.Controllers
                                         return Error(Loc.Dic.error_order_insufficient_allocation);
                                 }
                             }
-
-                            int? lastOrderNumber = ordersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => (int?)x.OrderNumber).Max();
-
-                            if (lastOrderNumber.HasValue)
-                                model.Order.OrderNumber = lastOrderNumber.Value + 1;
-                            else
-                                model.Order.OrderNumber = 1;
 
                             if (!CurrentUser.OrdersApproverId.HasValue)
                             {

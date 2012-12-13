@@ -290,10 +290,10 @@ function UpdateSupplierList(newSupplierList) {
 
 function InitializeItemsList(newItemList) {
     selectText = "";
-    selectText += "<select id='ItemDropDownList' name='ItemId'>";
+    selectText += "<select class='supplierItemsSelectList' id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option value=" + newItemList[i].Id + ">" + newItemList[i].Title + "</option>";
+        selectText += "<option title='" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "</option>";
     }
 
     selectText += "</select>";
@@ -304,10 +304,10 @@ function InitializeItemsList(newItemList) {
 
 function UpdateItemsList(newItemList) {
     selectText = "";
-    selectText += "<select id='ItemDropDownList' name='ItemId'>";
+    selectText += "<select class='supplierItemsSelectList' id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option value=" + newItemList[i].Id + ">" + newItemList[i].Title + "</option>";
+        selectText += "<option title='" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "</option>";
     }
 
     selectText += "</select>";

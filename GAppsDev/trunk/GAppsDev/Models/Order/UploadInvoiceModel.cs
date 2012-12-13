@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using BL;
 
 namespace GAppsDev.Models
 {
@@ -22,7 +23,7 @@ namespace GAppsDev.Models
         [LocalizedName("ValueDate")]
         public DateTime ValueDate { get; set; }
 
-        [LocalizedFile]
+        [LocalizedFile(Validations.MAX_FILE_SIZE)]
         public HttpPostedFileBase File { get; set; }
     }
 }

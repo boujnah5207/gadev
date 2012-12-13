@@ -1296,4 +1296,13 @@
   <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
     <value>חייב להיות קצר מ</value>
   </data>
+  <data name="validation_FileEmpty" xml:space="preserve">
+    <value>הקובץ ריק</value>
+  </data>
+  <data name="validation_FileTooBig" xml:space="preserve">
+    <value>גודל הקובץ עולה על המותר</value>
+  </data>
+  <data name="validation_InvalidFileType" xml:space="preserve">
+    <value>סוג הקובץ אינו חוקי</value>
+  </data>
 </root>

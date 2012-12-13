@@ -3472,6 +3472,33 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file is empty.
+        /// </summary>
+        public static string validation_FileEmpty {
+            get {
+                return ResourceManager.GetString("validation_FileEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file size is higher then allowed.
+        /// </summary>
+        public static string validation_FileTooBig {
+            get {
+                return ResourceManager.GetString("validation_FileTooBig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file type is not supported.
+        /// </summary>
+        public static string validation_InvalidFileType {
+            get {
+                return ResourceManager.GetString("validation_InvalidFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is not a date.
         /// </summary>
         public static string validation_IsNotDate {

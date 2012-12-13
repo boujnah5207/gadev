@@ -1299,4 +1299,13 @@
   <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
     <value>must be smaller then</value>
   </data>
+  <data name="validation_FileEmpty" xml:space="preserve">
+    <value>The file is empty</value>
+  </data>
+  <data name="validation_FileTooBig" xml:space="preserve">
+    <value>The file size is higher then allowed</value>
+  </data>
+  <data name="validation_InvalidFileType" xml:space="preserve">
+    <value>The file type is not supported</value>
+  </data>
 </root>
