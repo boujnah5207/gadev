@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using BL;
 
@@ -35,30 +36,6 @@ namespace GAppsDev
         public override string FormatErrorMessage(string name)
         {
             return String.Format("{0} {1} {2}", Loc.Dic.validation_TheField, name, Loc.Dic.validation_IsRequired);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class LocalizedIntegerAttribute : DataTypeAttribute
-    {
-        public LocalizedIntegerAttribute()
-            : base("integer")
-        {
-        }
-
-        public override string FormatErrorMessage(string name)
-        {
-            return String.Format("{0} {1} {2}", Loc.Dic.validation_TheField, name, Loc.Dic.validation_IsNotInt);
-        }
-
-        public override bool IsValid(object value)
-        {
-            string stringValue = Convert.ToString(value);
-            int intValue;
-
-            if (String.IsNullOrEmpty(stringValue)) return true;
-
-            return int.TryParse(stringValue, out intValue);
         }
     }
 
@@ -107,6 +84,23 @@ namespace GAppsDev
             if (String.IsNullOrEmpty((string)value)) return true;
 
             return ((string)value).Length <= MaxLength;
+        }
+    }
+
+    public class LocalizedNumberStringAttribute : ValidationAttribute
+    {
+        public override string FormatErrorMessage(string name)
+        {
+            return String.Format("{0} {1} {2}", Loc.Dic.validation_TheField, name, Loc.Dic.validation_IsNotNumber);
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (value == null) return true;
+
+            string stringValue = Convert.ToString(value);
+
+            return Regex.IsMatch(stringValue, "^[0-9]+$");
         }
     }
 }

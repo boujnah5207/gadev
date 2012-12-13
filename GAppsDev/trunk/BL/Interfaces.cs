@@ -267,15 +267,12 @@ namespace BL
                     allocationMonthes.Add(newAllocationMonth);
                 }
 
-                if (allocationMonthes.Sum(x => x.Amount) > 0)
+                importedAllocations.Add(new ImportedAllocation()
                 {
-                    importedAllocations.Add(new ImportedAllocation()
-                    {
-                        isExistingAllocation = false,
-                        Allocation = newAllocation,
-                        AllocationMonthes = allocationMonthes
-                    });
-                }
+                    isExistingAllocation = false,
+                    Allocation = newAllocation,
+                    AllocationMonthes = allocationMonthes
+                });
             }
 
             bool amountIsInvalid = false;

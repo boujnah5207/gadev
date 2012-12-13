@@ -1281,9 +1281,6 @@
   <data name="validation_IsNotDate" xml:space="preserve">
     <value>is not a date</value>
   </data>
-  <data name="validation_IsNotInt" xml:space="preserve">
-    <value>is not a number</value>
-  </data>
   <data name="validation_IsRequired" xml:space="preserve">
     <value>is required</value>
   </data>
@@ -1307,5 +1304,8 @@
   </data>
   <data name="validation_InvalidFileType" xml:space="preserve">
     <value>The file type is not supported</value>
+  </data>
+  <data name="validation_IsNotNumber" xml:space="preserve">
+    <value>is not a number</value>
   </data>
 </root>

@@ -3519,9 +3519,9 @@ namespace Loc {
         /// <summary>
         ///   Looks up a localized string similar to is not a number.
         /// </summary>
-        public static string validation_IsNotInt {
+        public static string validation_IsNotNumber {
             get {
-                return ResourceManager.GetString("validation_IsNotInt", resourceCulture);
+                return ResourceManager.GetString("validation_IsNotNumber", resourceCulture);
             }
         }
         

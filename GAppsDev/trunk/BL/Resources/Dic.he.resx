@@ -1278,9 +1278,6 @@
   <data name="validation_IsNotDate" xml:space="preserve">
     <value>אינו תאריך</value>
   </data>
-  <data name="validation_IsNotInt" xml:space="preserve">
-    <value>אינו מספר</value>
-  </data>
   <data name="validation_IsRequired" xml:space="preserve">
     <value>הוא שדה חובה</value>
   </data>
@@ -1304,5 +1301,8 @@
   </data>
   <data name="validation_InvalidFileType" xml:space="preserve">
     <value>סוג הקובץ אינו חוקי</value>
+  </data>
+  <data name="validation_IsNotNumber" xml:space="preserve">
+    <value>אינו מספר</value>
   </data>
 </root>
