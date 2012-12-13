@@ -47,6 +47,18 @@ namespace GAppsDev.Controllers
                 }
             }
 
+
+            //bool sucsess = Membership.ValidateUser("netivot@org", "123456");
+
+            //string s = HttpContext.User.Identity.AuthenticationType;
+            //string h = User.Identity.AuthenticationType;
+
+            //using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, @"https://matnasim.co.il"))
+            //{
+            //    // validate the credentials
+            //    bool isValid = pc.ValidateCredentials("netivot@org", "123456");
+            //}
+
             return View();
         }
 

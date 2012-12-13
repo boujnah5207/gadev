@@ -16,6 +16,8 @@ using System.IO;
 using GAppsDev.Models.Search;
 using System.Globalization;
 using System.Text;
+using System.Web.Security;
+using System.DirectoryServices.AccountManagement;
 
 namespace GAppsDev.Controllers
 {
@@ -258,27 +260,18 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult UploadReceiptFile(int id = 0)
         {
-            if (!Authorized(RoleType.SystemManager))
-                return Error(Loc.Dic.Error_NoPermission);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.Error_NoPermission);
 
             Order order;
             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = orderRep.GetEntity(id);
 
-                if (order == null)
-                    return Error(Loc.Dic.Error_OrderNotFound);
-
-                if (order.CompanyId != CurrentUser.CompanyId)
-                    return Error(Loc.Dic.Error_NoPermission);
-
-                if (order.StatusId >= (int)StatusType.InvoiceExportedToFile)
-                {
-                    ViewBag.OrderId = id;
-                    return View(order);
-                }
-                else
-                    return Error(Loc.Dic.error_wrongStatus);
+                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
+                if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
+                
+                ViewBag.OrderId = id;
+                return View();
             }
         }
 
@@ -592,7 +585,7 @@ namespace GAppsDev.Controllers
 
                     if (model.IsFutureOrder)
                     {
-                        if (!Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
+                        if (!DA.Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
                             return Error(Loc.Dic.Error_NoPermission);
 
                         model.Order.IsFutureOrder = true;
@@ -1836,7 +1829,7 @@ namespace GAppsDev.Controllers
                             builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
                             userCompany.ExternalExpenseCode.PadLeft(3),
-                            order.InvoiceNumber.PadLeft(5),
+                            order.InvoiceNumber.Substring(Math.Max(0, order.InvoiceNumber.Length - 5)).PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),
                             order.ValueDate.Value.ToString("ddMMyy"),
