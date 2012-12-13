@@ -9,7 +9,7 @@ namespace GAppsDev.Models
 {
     public class UploadInvoiceModel
     {
-        [LocalizedInteger]
+        [LocalizedNumberStringAttribute]
         [LocalizedRequired]
         [LocalizedName("InvoiceNumber")]
         [LocalizedMaxLength(20)]
