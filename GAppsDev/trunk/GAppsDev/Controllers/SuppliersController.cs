@@ -35,7 +35,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Supplier> suppliers;
-            using(SuppliersRepository suppliersRep = new SuppliersRepository())
+            using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
             {
                 suppliers = suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
 
@@ -77,7 +77,7 @@ namespace GAppsDev.Controllers
         public ActionResult Details(int id = 0)
         {
             Supplier supplier;
-            using (SuppliersRepository supplierssRep = new SuppliersRepository())
+            using (SuppliersRepository supplierssRep = new SuppliersRepository(CurrentUser.CompanyId))
             {
                 supplier = supplierssRep.GetEntity(id);
             }
@@ -123,7 +123,7 @@ namespace GAppsDev.Controllers
                 if (ModelState.IsValid)
                 {
                     bool wasCreated;
-                    using (SuppliersRepository supplierRep = new SuppliersRepository())
+                    using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId))
                     {
                         supplier.CompanyId = CurrentUser.CompanyId;
                         wasCreated = supplierRep.Create(supplier);
@@ -164,7 +164,7 @@ namespace GAppsDev.Controllers
             {
                 supplier.CompanyId = CurrentUser.CompanyId;
                 bool wasCreated;
-                using (SuppliersRepository supplierRep = new SuppliersRepository())
+                using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId))
                 {
                     wasCreated = supplierRep.Create(supplier);
                 }
@@ -211,7 +211,7 @@ namespace GAppsDev.Controllers
             {
                 Supplier supplierFromDB;
                 bool wasUpdated;
-                using (SuppliersRepository supplierRep = new SuppliersRepository())
+                using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId))
                 {
                     supplierFromDB = supplierRep.GetEntity(supplier.Id);
 
@@ -287,7 +287,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 List<AjaxSupplier> allSuppliers;
-                using (SuppliersRepository suppRep = new SuppliersRepository())
+                using (SuppliersRepository suppRep = new SuppliersRepository(CurrentUser.CompanyId))
                 {
                     allSuppliers = suppRep.GetList()
                         .Where(x => x.CompanyId == CurrentUser.CompanyId)
@@ -350,7 +350,7 @@ namespace GAppsDev.Controllers
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
 
-            using (SuppliersRepository supRep = new SuppliersRepository())
+            using (SuppliersRepository supRep = new SuppliersRepository(CurrentUser.CompanyId))
             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 Supplier supplier = supRep.GetList().SingleOrDefault(x => x.VAT_Number == VAT_Number);

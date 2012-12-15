@@ -72,7 +72,7 @@ namespace GAppsDev.Controllers
             return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                 using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                 using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
                 using (InstitutionsRepository institutionsRep = new InstitutionsRepository())
@@ -123,7 +123,7 @@ namespace GAppsDev.Controllers
                     Budgets_Incomes_Institutions institution;
 
                     using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
-                    using (BudgetsRepository budgetRep = new BudgetsRepository())
+                    using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                     using (InstitutionsRepository InstitutionsRep = new InstitutionsRepository())
                     {
                         budget = budgetRep.GetEntity(budgets_incomes.BudgetId);
@@ -185,7 +185,7 @@ namespace GAppsDev.Controllers
                 Budgets_Incomes income;
 
                 using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                 using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
                 using (InstitutionsRepository institutionsRep = new InstitutionsRepository())
                 {
@@ -262,7 +262,7 @@ namespace GAppsDev.Controllers
 
                     using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                     using (IncomeTypesRepository incomeTypesRep = new IncomeTypesRepository())
-                    using (BudgetsRepository budgetRep = new BudgetsRepository())
+                    using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                     using (InstitutionsRepository InstitutionsRep = new InstitutionsRepository())
                     {
                         incomeFromDB = incomesRep.GetEntity(budgets_incomes.Id);
@@ -397,8 +397,8 @@ namespace GAppsDev.Controllers
                 Budgets_Incomes income;
                 using (BudgetsIncomesRepository incomesRep = new BudgetsIncomesRepository())
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (AllocationRepository allocationsRep = new AllocationRepository())
-                using (BudgetsPermissionsToAllocationRepository permissionAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
+                using (BasketsToAllocationsRepository permissionAllocationsRep = new BasketsToAllocationsRepository())
                 {
                     income = incomesRep.GetEntity(id, "Budget", "Budgets_Incomes_types", "Budgets_Incomes_Institutions");
 

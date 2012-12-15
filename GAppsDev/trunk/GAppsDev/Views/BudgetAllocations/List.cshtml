@@ -86,11 +86,11 @@
             @for(int i = 1; i<=12 ;i++)
 	        {
                 <td>
-                    @Html.DisplayFor(modelItem => item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount)
+                    @item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount.ToString("0.##")
                 </td> 
 	        }
             <td>
-                @item.Budgets_AllocationToMonth.Sum(x => x.Amount)
+                @item.Budgets_AllocationToMonth.Sum(x => x.Amount).ToString("0.##")
             </td>
         </tr>
     }

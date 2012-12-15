@@ -19,6 +19,8 @@ using System.Text;
 using System.Web.Security;
 using System.DirectoryServices.AccountManagement;
 using BL;
+using GAppsDev.Models.FileModels;
+using Roles = DA.Roles;
 
 namespace GAppsDev.Controllers
 {
@@ -33,6 +35,8 @@ namespace GAppsDev.Controllers
 
         const string INVOICE_FOLDER_NAME = "Invoices";
         const string RECEIPT_FOLDER_NAME = "Receipts";
+
+        const string PRINT_PASSWORD = "S#At7e5eqes2Tres$aph6C5apRu=aZ!BrE_u-a-!suwRU4R9D3EzaTRU&pe=&Ehe";
 
         private Entities db = new Entities();
 
@@ -62,9 +66,6 @@ namespace GAppsDev.Controllers
                 return View(orders.ToList());
             }
         }
-
-        //
-        // GET: /Orders/Details/5
 
         [OpenIdAuthorize]
         public ActionResult MyOrders(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
@@ -134,7 +135,7 @@ namespace GAppsDev.Controllers
 
             Order orderFromDB;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-            using (AllocationRepository allocationsRep = new AllocationRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
                 orderFromDB = ordersRep.GetEntity(model.Id);
 
@@ -264,19 +265,21 @@ namespace GAppsDev.Controllers
                     ModelState.AddModelError("File", Loc.Dic.validation_FileNameIsInvalid);
                 }
 
-                order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
-                order.LastStatusChangeDate = DateTime.Now;
-                order.InvoiceNumber = model.InvoiceNumber;
-                order.InvoiceDate = model.InvoiceDate;
-                order.ValueDate = model.ValueDate;
-
-                if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
-
                 if (!isModelValid)
                 {
                     ViewBag.OrderID = id;
                     return View(model);
                 }
+
+                if (!model.isUpdate)
+                {
+                    order.StatusId = (int)StatusType.InvoiceScannedPendingOrderCreator;
+                    order.LastStatusChangeDate = DateTime.Now;
+                }
+                order.InvoiceNumber = model.InvoiceNumber;
+                order.InvoiceDate = model.InvoiceDate;
+                order.ValueDate = model.ValueDate;
+                if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
 
                 SaveUniqueFile(model.File, INVOICE_FOLDER_NAME, id);
 
@@ -301,62 +304,66 @@ namespace GAppsDev.Controllers
                 if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
 
                 ViewBag.OrderId = id;
-                return View();
+                if (order.StatusId >= (int)StatusType.ReceiptScanned)
+                {
+                    UploadReceiptModel model = new UploadReceiptModel();
+                    model.isUpdate = true;
+
+                    return View(model);
+                }
+                else
+                {
+                    return View();
+                }
             }
         }
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult UploadReceiptFile(HttpPostedFileBase file, int orderId = 0)
+        public ActionResult UploadReceiptFile(UploadReceiptModel model, int id = 0)
         {
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.Error_NoPermission);
 
-            string fileError = Validations.UploadedFile(file);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.OrderID = id;
+                return View(model);
+            }
 
             Order order;
+            bool isModelValid = true;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                order = ordersRep.GetEntity(orderId);
+                order = ordersRep.GetEntity(id);
 
                 if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
-
                 if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
 
-                //var fileName = CurrentUser.CompanyId.ToString() + "_" + orderId.ToString() + ".pdf";
-                //var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
-                //file.SaveAs(path);
+                if (!model.File.FileName.Contains('.'))
+                {
+                    isModelValid = false;
+                    ModelState.AddModelError("File", Loc.Dic.validation_FileNameIsInvalid);
+                }
 
-                string[] parts = file.FileName.Split('.');
-                if (!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
+                if (!isModelValid)
+                {
+                    ViewBag.OrderID = id;
+                    return View(model);
+                }
 
-                var fileName = String.Format("{0}_{1}.{2}", CurrentUser.CompanyId, orderId, parts.Last());
-                var path = Path.Combine(Server.MapPath("~/App_Data/Uploads/Receipts"), fileName);
-                file.SaveAs(path);
+                if (!model.isUpdate)
+                {
+                    order.StatusId = (int)StatusType.ReceiptScanned;
+                    order.LastStatusChangeDate = DateTime.Now;
+                    if (ordersRep.Update(order) == null) return Error(Loc.Dic.Error_DatabaseError);
+                }
 
-                order.StatusId = (int)StatusType.ReceiptScanned;
-                order.LastStatusChangeDate = DateTime.Now;
+                SaveUniqueFile(model.File, RECEIPT_FOLDER_NAME, id);
 
-                if (ordersRep.Update(order) == null) return Error(Loc.Dic.Error_DatabaseError);
-                
+                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
+
                 return RedirectToAction("Index");
-            }
-        }
-
-        [OpenIdAuthorize]
-        public ActionResult UpdateReceipt(int id = 0)
-        {
-            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.Error_NoPermission);
-
-            Order order;
-            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-            {
-                order = orderRep.GetEntity(id);
-
-                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
-                if (order.StatusId < (int)StatusType.InvoiceExportedToFile) return Error(Loc.Dic.error_wrongStatus);
-
-                ViewBag.OrderId = id;
-                return View();
             }
         }
 
@@ -368,54 +375,14 @@ namespace GAppsDev.Controllers
             {
                 order = ordersRep.GetEntity(id);
 
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
-                        {
-                            if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
-                            {
-                                string directoryPath = Server.MapPath("~/App_Data/Uploads/Invoices");
-                                string PrefixPattern = String.Format("{0}_{1}*", CurrentUser.CompanyId, id);
+                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
+                if (!Authorized(RoleType.OrdersViewer) && order.UserId != CurrentUser.UserId) return Error(Loc.Dic.Error_NoPermission);
+                if (order.StatusId < (int)StatusType.InvoiceScannedPendingOrderCreator) return Error(Loc.Dic.Error_InvoiceNotScanned);
 
-                                DirectoryInfo myDir = new DirectoryInfo(directoryPath);
-                                var files = myDir.GetFiles(PrefixPattern);
+                UploadedFile file = GetUniqueFile(INVOICE_FOLDER_NAME, id);
+                if (file == null) return Error(Loc.Dic.Error_InvoiceFileNotFound);
 
-                                if (files.Length == 0) return Error(Loc.Dic.Error_InvoiceFileNotFound);
-
-                                string filePath = files[0].FullName;
-                                string[] parts = filePath.Split('.');
-
-                                if(!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
-
-                                FileStream stream = System.IO.File.OpenRead(filePath);
-
-                                byte[] contents = new byte[stream.Length];
-                                stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-                                stream.Close();
-                                
-                                return File(contents, System.Net.Mime.MediaTypeNames.Application.Octet, String.Format("Invoice_{0}.{1}", order.OrderNumber, parts.Last()));
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.Error_InvoiceNotScanned);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_NoPermission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.Error_OrderNotFound);
-                }
+                return File(file.Content, file.MimeType, String.Format("Order_{0}-Invoice_{1}.{2}", order.OrderNumber, order.InvoiceNumber, file.Extension));
             }
         }
 
@@ -427,87 +394,43 @@ namespace GAppsDev.Controllers
             {
                 order = ordersRep.GetEntity(id);
 
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        if (Authorized(RoleType.OrdersViewer) || order.UserId == CurrentUser.UserId)
-                        {
-                            if (order.StatusId >= (int)StatusType.InvoiceScannedPendingOrderCreator)
-                            {
-                                string directoryPath = Server.MapPath("~/App_Data/Uploads/Receipts");
-                                string PrefixPattern = String.Format("{0}_{1}*", CurrentUser.CompanyId, id);
+                if (order == null) return Error(Loc.Dic.Error_OrderNotFound);
+                if (!Authorized(RoleType.OrdersViewer) && order.UserId != CurrentUser.UserId) return Error(Loc.Dic.Error_NoPermission);
+                if (order.StatusId < (int)StatusType.ReceiptScanned) return Error(Loc.Dic.Error_ReceiptNotScanned);
 
-                                DirectoryInfo myDir = new DirectoryInfo(directoryPath);
-                                var files = myDir.GetFiles(PrefixPattern);
+                UploadedFile file = GetUniqueFile(RECEIPT_FOLDER_NAME, id);
+                if (file == null) return Error(Loc.Dic.Error_ReceiptFileNotFound);
 
-                                if (files.Length == 0) return Error(Loc.Dic.Error_InvoiceFileNotFound);
-
-                                string filePath = files[0].FullName;
-                                string[] parts = filePath.Split('.');
-
-                                if (!parts.Any()) return Error(Loc.Dic.validation_FileNameIsInvalid);
-
-                                FileStream stream = System.IO.File.OpenRead(filePath);
-
-                                byte[] contents = new byte[stream.Length];
-                                stream.Read(contents, 0, Convert.ToInt32(stream.Length));
-                                stream.Close();
-
-                                return File(contents, System.Net.Mime.MediaTypeNames.Application.Octet, String.Format("Receipt_{0}.{1}", order.OrderNumber, parts.Last()));
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.Error_InvoiceNotScanned);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.Error_NoPermission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.Error_NoPermission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.Error_OrderNotFound);
-                }
+                return File(file.Content, file.MimeType, String.Format("Order_{0}-Receipt.{1}", order.OrderNumber, file.Extension));
             }
         }
 
         //[OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(int id = 0, int companyId = 0, string languageCode = "he")
+        public ActionResult PrintOrderToScreen(string password, int userId, int userRoles, int id = 0, int companyId = 0, string languageCode = "he")
         {
+            if (password != PRINT_PASSWORD) return Error(Loc.Dic.Error_NoPermission);
+
             CultureInfo ci = new CultureInfo(languageCode);
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
             System.Threading.Thread.CurrentThread.CurrentCulture =
             CultureInfo.CreateSpecificCulture(ci.Name);
 
-
-            PrintOrderModel model = new PrintOrderModel();
-
+            Order order;
             using (OrdersRepository ordersRep = new OrdersRepository(companyId))
-            using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                model.Order = ordersRep.GetEntity(id, "User", "Company", "Supplier");
-                model.Items = orderItemsRep.GetList("Orders_Items").Where(x => x.OrderId == id).ToList();
+                order = ordersRep.GetEntity(id, "User", "Company", "Supplier", "Orders_OrderToItem.Orders_Items");
             }
 
-            if (model.Order == null)
-            {
-                return HttpNotFound();
-            }
+            if (!Roles.HasRole(userRoles, RoleType.OrdersViewer) && order.UserId != userId) return Error(Loc.Dic.Error_NoPermission);
+            if (order == null) return Error(Loc.Dic.error_order_not_found);
 
-            string fileName = model.Order.Company.Id + ".png";
+            string fileName = order.Company.Id + ".png";
             string path = Path.Combine(Server.MapPath("~/Content/LogoImages/"), fileName);
 
             ViewBag.LogoExists = System.IO.File.Exists(path);
 
             ViewBag.LanguageCode = languageCode;
-            return View(model);
+            return View(order);
         }
 
         [OpenIdAuthorize]
@@ -518,387 +441,235 @@ namespace GAppsDev.Controllers
             Dictionary<string, string> cookies = new Dictionary<string, string>();
             cookies.Add(cookieName, cookie.Value);
 
-            Order order = db.Orders.Single(o => o.Id == id);
-            return new ActionAsPdf("PrintOrderToScreen", new { id = id, companyId = CurrentUser.CompanyId, currentUser = CurrentUser, languageCode = CurrentUser.LanguageCode }) { FileName = "Invoice.pdf" };
+            Order order;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = ordersRep.GetEntity(id);
+            }
+
+            return new ActionAsPdf("PrintOrderToScreen", new { password = PRINT_PASSWORD, id = id, companyId = CurrentUser.CompanyId, userId = CurrentUser.UserId, userRoles = CurrentUser.Roles, languageCode = CurrentUser.LanguageCode }) { FileName = String.Format("Order_{0}.pdf", order.OrderNumber) };
         }
 
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
+            DA.OrdersRepository.ExeedingOrderData model = new DA.OrdersRepository.ExeedingOrderData();
+
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                Order order;
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
-                if (order == null) return Error(Loc.Dic.error_order_get_error);
-                if (!Authorized(RoleType.OrdersViewer) && order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+                if (model == null) return Error(Loc.Dic.error_order_get_error);
+                if (!Authorized(RoleType.OrdersViewer) && model.OriginalOrder.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
-                return View(order);
+                return View(model);
             }
         }
-
-        //
-        // GET: /Orders/Create
 
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+
+            List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
+            List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
+
+            using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
+            using (UsersToBasketsRepository usersToBasketsRep = new UsersToBasketsRepository())
+            using (BasketsToAllocationsRepository basketsToAllocationRep = new BasketsToAllocationsRepository())
             {
-                using (SuppliersRepository suppliersRep = new SuppliersRepository())
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
-                using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
-                using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
+                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().OrderBy(s => s.Name).ToList(), "Id", "Name");
+
+                List<Budgets_UsersToBaskets> baskets = usersToBasketsRep.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
+                Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
+
+                if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
+
+                foreach (var basket in baskets)
                 {
-                    ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).OrderBy(s => s.Name).ToList(), "Id", "Name");
-
-                    List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
-                    List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToBaskets> permissions = budgetsUsersToPermissionsRepository.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
-                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
-
-                    if (activeBudget == null)
-                        return Error(Loc.Dic.error_no_active_budget);
-
-                    foreach (var permission in permissions)
-                    {
-                        allocations.AddRange(
-                            budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
-                                .Select(x => x.Budgets_Allocations)
-                                .Where(x => x.CompanyId == CurrentUser.CompanyId)
-                                .ToList()
-                                );
-                    }
-
-                    allocations = allocations.Distinct().ToList();
-
-                    if (allocations.Count == 0)
-                        return Error(Loc.Dic.error_user_have_no_allocations);
-
-                    foreach (var allocation in allocations)
-                    {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
-
-                        decimal totalRemaining = 0;
-                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
-                        {
-                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                            if (monthNumber <= DateTime.Now.Month)
-                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-                        }
-                    }
-
-                    allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.DisplayName, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
-                        .AsEnumerable()
-                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
-                        .ToList();
-
-                    ViewBag.BudgetYear = activeBudget.Year;
-                    ViewBag.Allocations = allocations;
-                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                    allocations.AddRange(
+                        basketsToAllocationRep.GetList()
+                            .Where(x => x.BasketId == basket.BasketId && x.BudgetId == activeBudget.Id)
+                            .Select(x => x.Budgets_Allocations)
+                            .ToList()
+                            );
                 }
 
-                ViewBag.UserRoles = CurrentUser.Roles;
-                return View();
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
+                allocations = allocations.Distinct().ToList();
 
-        //
-        // POST: /Orders/Create
+                if (allocations.Count == 0) return Error(Loc.Dic.error_user_have_no_allocations);
+
+                foreach (var allocation in allocations)
+                {
+                    List<Orders_OrderToAllocation> approvedAllocations =
+                        allocation.Orders_OrderToAllocation
+                        .Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled)
+                        .ToList();
+
+                    decimal totalRemaining = 0;
+                    for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
+                    {
+                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                        allocationMonth.Amount = remainingAmount.HasValue ? remainingAmount.Value : 0;
+
+                        if (monthNumber <= DateTime.Now.Month)
+                            totalRemaining += remainingAmount.HasValue ? remainingAmount.Value : 0;
+                    }
+                }
+
+                allocationsSelectList = allocations
+                    .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.DisplayName, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
+                    .AsEnumerable()
+                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
+                    .ToList();
+
+                ViewBag.BudgetYear = activeBudget.Year;
+                ViewBag.Allocations = allocations;
+                ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+            }
+
+            return View();
+        }
 
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Create(CreateOrderModel model)
         {
-            if (ModelState.IsValid)
+            /// Validating user input
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+            if (!ModelState.IsValid) return Error(Loc.Dic.error_invalid_form);
+            if (String.IsNullOrEmpty(model.ItemsString)) return Error(Loc.Dic.error_invalid_form);
+            List<Orders_OrderToItem> ItemsList = ItemsFromString(model.ItemsString, 0);
+            if (ItemsList == null || ItemsList.Count == 0) return Error(Loc.Dic.error_invalid_form);
+            if (model.IsFutureOrder && !Authorized(RoleType.FutureOrderWriter)) return Error(Loc.Dic.Error_NoPermission);
+            if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
+            model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
+            decimal totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
+            decimal totalAllocation = model.Allocations.Sum(x => x.Amount);
+            if (totalOrderPrice != totalAllocation) return Error(Loc.Dic.error_order_insufficient_allocation);
+
+            // Initializing needed temporary variables
+            bool allowExeeding = true;
+            List<Orders_OrderToAllocation> AllocationsToCreate = new List<Orders_OrderToAllocation>();
+
+            // Setting order properties
+            model.Order.UserId = CurrentUser.UserId;
+            model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
+            model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
+            model.Order.IsFutureOrder = model.IsFutureOrder;
+
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
-                if (Authorized(RoleType.OrdersWriter))
+                Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
+                if (currentBudget == null) return Error(Loc.Dic.error_database_error);
+                model.Order.BudgetId = currentBudget.Id;
+
+                int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
+                var allocationsData = allocationsRep.GetAllocationsData(orderAllocationsIds, StatusType.Pending);
+                bool IsValidAllocations =
+                    (allocationsData.Count == orderAllocationsIds.Length) &&
+                    model.Allocations.All(x => (x.MonthId == null || (x.MonthId >= 1 && x.MonthId <= 12)) && x.Amount > 0);
+                if (!IsValidAllocations) return Error(Loc.Dic.error_invalid_form);
+
+                if (model.IsFutureOrder)
                 {
-                    if (String.IsNullOrEmpty(model.ItemsString))
-                        return Error(Loc.Dic.error_invalid_form);
-
-                    List<Orders_OrderToItem> ItemsList = ItemsFromString(model.ItemsString, 0);
-                    List<Budgets_Allocations> orderAllocations;
-
-                    decimal totalOrderPrice;
-                    decimal totalAllocation;
-
-                    model.Order.UserId = CurrentUser.UserId;
-                    model.Order.CompanyId = CurrentUser.CompanyId;
-                    model.Order.CreationDate = DateTime.Now;
-                    model.Order.StatusId = (int)StatusType.Pending;
-                    model.Order.LastStatusChangeDate = DateTime.Now;
-
-                    model.Order.OrderApproverNotes = String.Empty;
-                    model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
-                    model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
-
-                    if (model.IsFutureOrder)
+                    foreach (var allocationData in allocationsData)
                     {
-                        if (!DA.Roles.HasRole(CurrentUser.Roles, RoleType.FutureOrderWriter))
-                            return Error(Loc.Dic.Error_NoPermission);
+                        List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocationData.AllocationId).ToList();
 
-                        model.Order.IsFutureOrder = true;
-                    }
-
-                    if (ItemsList != null)
-                    {
-                        if (ItemsList.Count > 0)
-                            totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
-                        else
-                            return Error(Loc.Dic.error_order_has_no_items);
-
-                        if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0)
-                            return Error(Loc.Dic.error_invalid_form);
-
-                        model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-                        totalAllocation = model.Allocations.Sum(x => x.Amount);
-
-                        if (totalOrderPrice != totalAllocation)
-                            return Error(Loc.Dic.error_order_insufficient_allocation);
-
-                        bool wasOrderCreated;
-                        using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                        using (AllocationRepository allocationsRep = new AllocationRepository())
-                        using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                        foreach (var month in allocationMonths)
                         {
-                            Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
-
-                            if (currentBudget == null)
-                                return Error(Loc.Dic.error_database_error);
-
-                            model.Order.BudgetId = currentBudget.Id;
-
-                            int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
-                            orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
-                            bool IsValidAllocations =
-                                (orderAllocations.Count == orderAllocationsIds.Length) &&
-                                orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
-                                model.Allocations.All(x => (x.MonthId == null || (x.MonthId >= 1 && x.MonthId <= 12)) && x.Amount > 0);
-
-                            if (!IsValidAllocations)
-                                return Error(Loc.Dic.error_invalid_form);
-
-                            if (model.IsFutureOrder)
+                            if (month.MonthId == DateTime.Now.Month)
                             {
-                                List<OrderAllocation> allocationsToRemove = new List<OrderAllocation>();
+                                OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocationData.AllocationId);
 
-                                foreach (var allocation in orderAllocations)
-                                {
-                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                                var newAllocations = allocationsRep.GenerateOrderAllocations(allocationData, currentAllocation.Amount, allowExeeding, DateTime.Now.Month);
+                                if (newAllocations == null) return Error(Loc.Dic.error_order_insufficient_allocation);
 
-                                    List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
-
-                                    foreach (var month in allocationMonths)
-                                    {
-                                        if (month.MonthId == DateTime.Now.Month)
-                                        {
-                                            OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
-
-                                            allocationsToRemove.Add(currentAllocation);
-
-                                            decimal remainingOrderPrice = currentAllocation.Amount;
-
-                                            for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
-                                            {
-                                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                                                if (remainingAmount.HasValue && remainingAmount.Value > 0)
-                                                {
-                                                    OrderAllocation newOrderAllocation = new OrderAllocation()
-                                                    {
-                                                        AllocationId = allocation.Id,
-                                                        Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
-                                                        MonthId = monthNumber,
-                                                        IsActive = true
-                                                    };
-
-                                                    model.Allocations.Add(newOrderAllocation);
-                                                    remainingOrderPrice -= newOrderAllocation.Amount;
-                                                }
-                                            }
-
-                                            if (remainingOrderPrice > 0)
-                                                return Error(Loc.Dic.error_order_insufficient_allocation);
-                                        }
-                                        else
-                                        {
-                                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                                            if (month.Amount > allocationMonth.Amount)
-                                                return Error(Loc.Dic.error_order_insufficient_allocation);
-                                        }
-                                    }
-                                }
-
-                                foreach (var item in allocationsToRemove)
-                                {
-                                    model.Allocations.Remove(item);
-                                }
+                                AllocationsToCreate.AddRange(newAllocations);
                             }
                             else
                             {
-                                List<OrderAllocation> originalAllocations = new List<OrderAllocation>(model.Allocations);
-                                model.Allocations = new List<OrderAllocation>();
+                                var monthData = allocationData.Months.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                if (!allowExeeding && month.Amount > monthData.RemainingAmount) return Error(Loc.Dic.error_order_insufficient_allocation);
 
-                                foreach (var allocation in orderAllocations)
+                                Orders_OrderToAllocation newAllocation = new Orders_OrderToAllocation()
                                 {
-                                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                                    AllocationId = allocationData.AllocationId,
+                                    MonthId = month.MonthId.Value,
+                                    Amount = month.Amount,
+                                    OrderId = 0
+                                };
 
-                                    OrderAllocation currentAllocation = originalAllocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
-                                    if (currentAllocation == null)
-                                        return Error(Loc.Dic.error_invalid_form);
-
-                                    decimal remainingOrderPrice = currentAllocation.Amount;
-
-                                    for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
-                                    {
-                                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                                        if (remainingAmount.HasValue && remainingAmount.Value > 0)
-                                        {
-                                            OrderAllocation newOrderAllocation = new OrderAllocation()
-                                            {
-                                                AllocationId = allocation.Id,
-                                                Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
-                                                MonthId = monthNumber,
-                                                IsActive = true
-                                            };
-
-                                            model.Allocations.Add(newOrderAllocation);
-                                            remainingOrderPrice -= newOrderAllocation.Amount;
-                                        }
-                                    }
-
-                                    if (remainingOrderPrice > 0)
-                                        return Error(Loc.Dic.error_order_insufficient_allocation);
-                                }
-                            }
-
-                            if (!CurrentUser.OrdersApproverId.HasValue)
-                            {
-                                model.Order.NextOrderApproverId = null;
-                                model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                            }
-                            wasOrderCreated = ordersRep.Create(model.Order);
-                        }
-
-                        if (wasOrderCreated)
-                        {
-                            foreach (var item in ItemsList)
-                            {
-                                item.OrderId = model.Order.Id;
-                            }
-
-                            bool noItemErrors = true;
-                            List<Orders_OrderToItem> createdItems = new List<Orders_OrderToItem>();
-                            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                            {
-                                foreach (Orders_OrderToItem item in ItemsList)
-                                {
-                                    if (orderToItemRep.Create(item))
-                                        createdItems.Add(item);
-                                    else
-                                    {
-                                        noItemErrors = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            bool noAllocationErros = true;
-                            List<Orders_OrderToAllocation> createdAllocations = new List<Orders_OrderToAllocation>();
-
-                            foreach (var allocation in model.Allocations)
-                            {
-                                using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
-                                {
-                                    Orders_OrderToAllocation newOrderAllocation = new Orders_OrderToAllocation()
-                                    {
-                                        OrderId = model.Order.Id,
-                                        AllocationId = allocation.AllocationId,
-                                        MonthId = allocation.MonthId.Value,
-                                        Amount = allocation.Amount
-                                    };
-
-                                    if (orderAllocationsRep.Create(newOrderAllocation))
-                                        createdAllocations.Add(newOrderAllocation);
-                                    else
-                                    {
-                                        noAllocationErros = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (noItemErrors && noAllocationErros)
-                            {
-                                return RedirectToAction("MyOrders");
-                            }
-                            else
-                            {
-                                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                                using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                                using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
-                                {
-                                    foreach (Orders_OrderToItem item in createdItems)
-                                    {
-                                        orderToItemRep.Delete(item.Id);
-                                    }
-
-                                    foreach (Orders_OrderToAllocation item in createdAllocations)
-                                    {
-                                        orderAllocationsRep.Delete(item.Id);
-                                    }
-
-                                    orderRep.Delete(model.Order.Id);
-                                }
-
-                                return Error(Loc.Dic.error_orders_create_error);
+                                AllocationsToCreate.Add(newAllocation);
                             }
                         }
-                        else
-                        {
-                            return Error(Loc.Dic.error_orders_create_error);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_invalid_form);
                     }
                 }
                 else
                 {
-                    return Error(Loc.Dic.error_no_permission);
+                    foreach (var allocationData in allocationsData)
+                    {
+                        OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocationData.AllocationId);
+
+                        var newAllocations = allocationsRep.GenerateOrderAllocations(allocationData, currentAllocation.Amount, allowExeeding, DateTime.Now.Month);
+                        if (newAllocations == null) return Error(Loc.Dic.error_order_insufficient_allocation);
+
+                        AllocationsToCreate.AddRange(newAllocations);
+                    }
+                }
+
+                if (!CurrentUser.OrdersApproverId.HasValue)
+                {
+                    model.Order.NextOrderApproverId = null;
+                    model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
                 }
             }
-            else
-            {
-                return Error(ModelState);
-            }
-        }
 
-        //
-        // GET: /Orders/Edit/5
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+            using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
+            {
+                bool creationError = false;
+                if (!ordersRep.Create(model.Order)) return Error(Loc.Dic.error_orders_create_error);
+
+                foreach (Orders_OrderToItem item in ItemsList)
+                {
+                    item.OrderId = model.Order.Id;
+
+                    if (!orderToItemRep.Create(item))
+                    {
+                        creationError = true;
+                        break;
+                    }
+                }
+
+                foreach (var allocation in AllocationsToCreate)
+                {
+                    allocation.OrderId = model.Order.Id;
+
+                    if (!orderAllocationsRep.Create(allocation))
+                    {
+                        creationError = true;
+                        break;
+                    }
+                }
+
+                if (creationError)
+                {
+                    ordersRep.Delete(model.Order.Id);
+                    return Error(Loc.Dic.error_orders_create_error);
+                }
+            }
+
+            return RedirectToAction("MyOrders");
+        }
 
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
@@ -909,9 +680,9 @@ namespace GAppsDev.Controllers
                 model.Allocations = new List<OrderAllocation>();
 
                 using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (BudgetsUsersToPermissionsRepository budgetsUsersToPermissionsRepository = new BudgetsUsersToPermissionsRepository())
-                using (BudgetsPermissionsToAllocationRepository budgetsPermissionsToAllocationRepository = new BudgetsPermissionsToAllocationRepository())
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                using (UsersToBasketsRepository budgetsUsersToPermissionsRepository = new UsersToBasketsRepository())
+                using (BasketsToAllocationsRepository budgetsPermissionsToAllocationRepository = new BasketsToAllocationsRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
                 {
                     model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
                     Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
@@ -1019,9 +790,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // POST: /Orders/Edit/5
-
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Edit(CreateOrderModel model, string itemsString)
@@ -1072,8 +840,8 @@ namespace GAppsDev.Controllers
                                         return Error(Loc.Dic.error_order_insufficient_allocation);
 
                                     using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                                    using (AllocationRepository allocationsRep = new AllocationRepository())
-                                    using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                                    using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
+                                    using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
                                     {
                                         Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
 
@@ -1341,9 +1109,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // GET: /Orders/Delete/5
-
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
@@ -1351,9 +1116,9 @@ namespace GAppsDev.Controllers
             {
                 Order order = new Order();
 
-                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
+                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    order = orderRep.GetEntity(id);
+                    order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
                 }
 
                 if (order != null)
@@ -1363,7 +1128,7 @@ namespace GAppsDev.Controllers
                         if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
                         {
                             ViewBag.OrderId = order.Id;
-                            return View();
+                            return View(order);
                         }
                         else
                         {
@@ -1983,7 +1748,7 @@ namespace GAppsDev.Controllers
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (UsersRepository usersRep = new UsersRepository())
-                using (SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
                     IQueryable<Order> ordersQuery;
@@ -2157,7 +1922,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ListOrderAllocations(IEnumerable<Orders_OrderToAllocation> orderAllocations, int budgetYear, bool isFutureOrder, string baseUrl)
+        public ActionResult ListOrderAllocations(IEnumerable<Orders_OrderToAllocation> orderAllocations, int budgetYear, bool isFutureOrder, string baseUrl, OrdersRepository.ExeedingOrderData exeedingData = null)
         {
             ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = false;
@@ -2172,13 +1937,15 @@ namespace GAppsDev.Controllers
             ViewBag.IsFutureOrder = isFutureOrder;
             ViewBag.BudgetYear = budgetYear;
 
+            ViewBag.ExeedingData = exeedingData;
+
             return PartialView(orderAllocations);
         }
 
         [ChildActionOnly]
-        public ActionResult PartialDetails(Order order)
+        public ActionResult PartialDetails(OrdersRepository.ExeedingOrderData model)
         {
-            return PartialView(order);
+            return PartialView(model);
         }
 
         [ChildActionOnly]
@@ -2188,10 +1955,10 @@ namespace GAppsDev.Controllers
                 model = new OrdersSearchValuesModel();
 
             using (UsersRepository usersRep = new UsersRepository())
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
-            using (SuppliersRepository suppliersRep = new SuppliersRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
+            using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
             using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
-            using (AllocationRepository allocationsRep = new AllocationRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
                 List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllUsersOption } };
                 usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
@@ -2394,6 +2161,31 @@ namespace GAppsDev.Controllers
             }
 
             return items;
+        }
+
+        public UploadedFile GetUniqueFile(string folderName, int uniqueId)
+        {
+            UploadedFile file = new UploadedFile();
+
+            string directoryPath = Server.MapPath("~/App_Data/Uploads/" + folderName);
+            string PrefixPattern = String.Format("{0}_{1}*", CurrentUser.CompanyId, uniqueId);
+
+            DirectoryInfo myDir = new DirectoryInfo(directoryPath);
+            var files = myDir.GetFiles(PrefixPattern);
+
+            if (files.Length == 0) return null;
+            file.FullPath = files[0].FullName;
+
+            string[] parts = file.FullPath.Split('.');
+            if (!parts.Any()) return null;
+            file.Extension = parts.Last();
+
+            FileStream stream = System.IO.File.OpenRead(file.FullPath);
+            file.Content = new byte[stream.Length];
+            stream.Read(file.Content, 0, Convert.ToInt32(stream.Length));
+            stream.Close();
+
+            return file;
         }
 
         public void SaveUniqueFile(HttpPostedFileBase file, string folderName, int uniqueId)

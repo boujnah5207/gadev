@@ -36,7 +36,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Budget> budgets;
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
                 budgets = budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
 
@@ -55,7 +55,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budget budget;
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
                 {
                     budget = budgetsRep.GetEntity(id, "Company");
                 }
@@ -122,7 +122,7 @@ namespace GAppsDev.Controllers
                         budget.IsActive = false;
 
                         bool wasCreated;
-                        using (BudgetsRepository budgetRep = new BudgetsRepository())
+                        using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                         {
                             bool yearExists = budgetRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Year == budget.Year);
 
@@ -160,7 +160,7 @@ namespace GAppsDev.Controllers
             if (!id.HasValue)
                 return View();
 
-            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+            using (BudgetsRepository budgetsRepository = new BudgetsRepository(CurrentUser.CompanyId))
                 ViewBag.Year = budgetsRepository.GetEntity(id.Value).Year;
 
             return View(id);
@@ -189,7 +189,7 @@ namespace GAppsDev.Controllers
                 if (year.Value > DateTime.Now.Year + 10 || year.Value < DateTime.Now.Year - 1)
                     return Error(Loc.Dic.error_invalid_budget_year);
 
-                using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+                using (BudgetsRepository budgetsRepository = new BudgetsRepository(CurrentUser.CompanyId))
                 {
                     Budget newBudget = new Budget();
                     newBudget.Name = name;
@@ -214,7 +214,7 @@ namespace GAppsDev.Controllers
                 Budget budgetFromDb;
                 List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
 
-                using (BudgetsRepository budgetsRep = new BudgetsRepository())
+                using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
                 {
                     budgetFromDb = budgetsRep.GetEntity(id, "Budgets_Allocations.Budgets_AllocationToMonth");
 
@@ -315,8 +315,8 @@ namespace GAppsDev.Controllers
             Budget budget;
             List<Budgets_Allocations> budgetAllocations;
 
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
-            using (AllocationRepository allocationsRep = new AllocationRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
                 budget = budgetsRep.GetEntity(id);
 
@@ -378,7 +378,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 Budget budget;
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                 {
                     budget = budgetRep.GetEntity(id);
 

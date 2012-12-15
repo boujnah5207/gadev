@@ -39,7 +39,26 @@
                         <ul>
                             <li id="OrdersPage">
                                 <img src="~/Content/images/GoldCoins.png" />
-                                @Html.ActionLink(Loc.Dic.Procurement, "Home", "Orders", null, new { id = "OrdersLink" })
+                                @{ 
+                                    string actionName; 
+                                    if(DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
+                                    {
+                                        actionName = "MyOrders";
+                                    }
+                                    else if (DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
+                                    {
+                                        actionName = "PendingOrders";
+                                    }
+                                    else if (DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
+                                    {
+                                        actionName = "Index";
+                                    }
+                                    else
+                                    {
+                                        actionName = "Home";
+                                    }
+                                }
+                                @Html.ActionLink(Loc.Dic.Procurement, actionName, "Orders", null, new { id = "OrdersLink" })
                             </li>
                             <li>|</li>
                             <li id="InventoryPage">

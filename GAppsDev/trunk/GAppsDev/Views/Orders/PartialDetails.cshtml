@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model DA.OrdersRepository.ExeedingOrderData
 
 @{
     bool isSystemManager = DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager);
@@ -8,13 +8,21 @@
     <legend>@Loc.Dic.OrderDetails</legend>
 
     <div class="display-label">
+        @Loc.Dic.OrderNumber
+    </div>
+    <div class="display-field" style="font-size:x-large;">
+        @Html.DisplayFor(model => model.OriginalOrder.OrderNumber)
+    </div>
+    <br />
+
+    <div class="display-label">
         @Loc.Dic.OrderCreatorName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.User.FirstName)
-        @Html.DisplayFor(model => model.User.LastName)
+        @Html.DisplayFor(model => model.OriginalOrder.User.FirstName)
+        @Html.DisplayFor(model => model.OriginalOrder.User.LastName)
         <br />
-        (@Html.DisplayFor(model => model.User.Email))
+        (@Html.DisplayFor(model => model.OriginalOrder.User.Email))
     </div>
     <br />
 
@@ -22,7 +30,7 @@
         @Loc.Dic.SupplierName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Supplier.Name)
+        @Html.DisplayFor(model => model.OriginalOrder.Supplier.Name)
     </div>
     <br />
     
@@ -30,7 +38,7 @@
         @Loc.Dic.OrderStatusName
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Orders_Statuses.Name)
+        @Html.DisplayFor(model => model.OriginalOrder.Orders_Statuses.Name)
     </div>
     <br />
     
@@ -38,17 +46,17 @@
         @Loc.Dic.CreationDate
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
+        @Html.DisplayFor(model => model.OriginalOrder.CreationDate)
     </div>
     <br />
 
-    @if (Model.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+    @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         <div class="display-label"> 
             @Loc.Dic.InvoiceNumber
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.InvoiceNumber)
+            @Html.DisplayFor(model => model.OriginalOrder.InvoiceNumber)
         </div>
         <br />
         
@@ -56,7 +64,7 @@
             @Loc.Dic.InvoiceDate 
         </div>
         <div class="display-field">
-            @Model.InvoiceDate.Value.ToShortDateString()
+            @Model.OriginalOrder.InvoiceDate.Value.ToShortDateString()
         </div>
         <br />
         
@@ -64,41 +72,41 @@
             @Loc.Dic.ValueDate 
         </div>
         <div class="display-field">
-            @Model.ValueDate.Value.ToShortDateString()
+            @Model.OriginalOrder.ValueDate.Value.ToShortDateString()
         </div>
         <br />
     }
 
-    @if (Model.IsFutureOrder)
+    @if (Model.OriginalOrder.IsFutureOrder)
     {
     <div class="display-label">
         @Loc.Dic.FutureOrder
     </div>
     <div class="display-field">
-        @{ int futureMonth = Model.Orders_OrderToAllocation.Max(x => x.MonthId); }
-        @Html.GetMonthName(futureMonth) @Model.Budget.Year
+        @{ int futureMonth = Model.OriginalOrder.Orders_OrderToAllocation.Max(x => x.MonthId); }
+        @Html.GetMonthName(futureMonth) @Model.OriginalOrder.Budget.Year
     </div>
     <br />
     }
 
-    @if (!String.IsNullOrEmpty(Model.Notes))
+    @if (!String.IsNullOrEmpty(Model.OriginalOrder.Notes))
     {
     <div class="display-label">
         @Loc.Dic.Notes
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Notes)
+        @Html.DisplayFor(model => model.OriginalOrder.Notes)
     </div>
     <br />
     }
 
-    @if (!String.IsNullOrEmpty(Model.OrderApproverNotes))
+    @if (!String.IsNullOrEmpty(Model.OriginalOrder.OrderApproverNotes))
     {
     <div class="display-label">
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.OrderApproverNotes)
+        @Html.DisplayFor(model => model.OriginalOrder.OrderApproverNotes)
     </div>
     <br />
     }
@@ -107,44 +115,44 @@
         @Loc.Dic.Price
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Price)
+        @Html.DisplayFor(model => model.OriginalOrder.Price)
     </div>
     <br />
 
     <div class="display-label"> @Loc.Dic.OrderItems </div>
-    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderItems", new { orderItems = Model.OriginalOrder.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
     <br />
 
     <div class="display-label"> @Loc.Dic.OrderAllocations </div>
-    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.Orders_OrderToAllocation.ToList(), budgetYear = Model.Budget.Year, isFutureOrder = Model.IsFutureOrder, baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.OriginalOrder.Orders_OrderToAllocation.ToList(), budgetYear = Model.OriginalOrder.Budget.Year, isFutureOrder = Model.OriginalOrder.IsFutureOrder, baseUrl = Url.Action("Index"), exeedingData = Model })    
     <br />
 
-    @if (Model.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
+    @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
         <div class="display-label"> @Loc.Dic.Actions </div>
         <br />
-        <span class="bold">@Loc.Dic.Invoice: </span> @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.Id });
+        <span class="bold">@Loc.Dic.Invoice: </span> @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.OriginalOrder.Id });
         if (isSystemManager)
         {
-        <text>|</text> @Html.ActionLink(Loc.Dic.UpdateInvoice, "UpdateInvoiceFile", new { id = Model.Id })
+        <text>|</text> @Html.ActionLink(Loc.Dic.UpdateInvoice, "UploadInvoiceFile", new { id = Model.OriginalOrder.Id })
         }
         <br />
-        if (Model.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
+        if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
         {
-            <span class="bold">@Loc.Dic.Receipt: </span> @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.Id });
+            <span class="bold">@Loc.Dic.Receipt: </span> @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.OriginalOrder.Id });
             if (isSystemManager)
             {
-            <text>|</text> @Html.ActionLink(Loc.Dic.UpdateReceipt, "UpdateReceipt", new { id = Model.Id })
+            <text>|</text> @Html.ActionLink(Loc.Dic.UpdateReceipt, "UploadReceiptFile", new { id = Model.OriginalOrder.Id })
             }
             <br />
         }
+        <span class="bold">@Loc.Dic.Order: </span>
+        if (Model.OriginalOrder.UserId == ViewBag.CurrentUser.UserId && (Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
+        {
+            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.OriginalOrder.Id }) <text>|</text>
+        }
+        @Html.ActionLink(Loc.Dic.Print, "DownloadOrderAsPdf", new { id = Model.OriginalOrder.Id }) 
         <br />
     }
 
-    <p>
-        @if (Model.UserId == ViewBag.CurrentUser.UserId && (Model.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
-        {
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id })
-        }
-    </p>
 </fieldset>

@@ -34,9 +34,9 @@
                 <td class="bold">@Loc.Dic.Amount</td>
                 @for (int i = 1; i <= 12; i++)
                 {
-                    <td>@Model.OriginalAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount</td>
+                    <td>@Model.OriginalAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount.ToString("0.##")</td>
                 }
-                <th>@Model.OriginalAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount)</th>
+                <th>@Model.OriginalAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount).ToString("0.##")</th>
             </tr>
             <tr class="oddRow">
                 <td class="bold">@Loc.Dic.TheTotalUsed</td>
@@ -48,17 +48,17 @@
                     decimal usedAmount = Model.OriginalAllocation.Budgets_AllocationToMonth.Single(x => x.MonthId == i).Amount - Model.RemainingAllocation.Budgets_AllocationToMonth.Single(x => x.MonthId == i).Amount;
                     totalUsed += usedAmount;
                     
-                    <td>@usedAmount</td>
+                    <td>@usedAmount.ToString("0.##")</td>
                 }
-                <th>@totalUsed</th>
+                <th>@totalUsed.ToString("0.##")</th>
             </tr>
             <tr class="evenRow">
                 <td class="bold">@Loc.Dic.RemainingAllocationAmount</td>
                 @for (int i = 1; i <= 12; i++)
                 {
-                    <td>@Model.RemainingAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount</td>
+                    <td>@Model.RemainingAllocation.Budgets_AllocationToMonth.Single( x => x.MonthId == i).Amount.ToString("0.##")</td>
                 }
-                <th>@Model.RemainingAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount)</th>
+                <th>@Model.RemainingAllocation.Budgets_AllocationToMonth.Sum( x => x.Amount).ToString("0.##")</th>
             </tr>
         </table>
     </div>

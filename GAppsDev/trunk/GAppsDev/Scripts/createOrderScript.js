@@ -75,7 +75,6 @@ $(function () {
             $("#FutureOrderContainer").remove();
         }
     });
-
 });
 
 function beginForm() {
@@ -422,6 +421,9 @@ function addAllocation() {
     var divClass;
     var monthText;
 
+    var isExeedingAllocation = false;
+    var exeedingMark = "";
+
     if (!isInt(wantedAmount) || wantedAmount <= 0) {
         alert(local.InvalidAmount);
         return;
@@ -436,8 +438,9 @@ function addAllocation() {
         existingAllocations = $(".existingFutureAllocations");
 
         if (wantedAmount > remainingMonthAmount) {
-            alert(local.AmountExceedsAllocation);
-            return;
+            isExeedingAllocation = true;
+            //alert(local.AmountExceedsAllocation);
+            //return;
         }
 
         for (var i = 0; i < existingAllocations.length; i++) {
@@ -456,8 +459,9 @@ function addAllocation() {
         existingAllocations = $(".existingNormalAllocations");
 
         if (wantedAmount > remainingAllocationAmount) {
-            alert(local.AmountExceedsAllocation);
-            return;
+            isExeedingAllocation = true;
+            //alert(local.AmountExceedsAllocation);
+            //return;
         }
 
         for (var i = 0; i < existingAllocations.length; i++) {
@@ -473,6 +477,11 @@ function addAllocation() {
         monthText = "";
     }
     
+    if (isExeedingAllocation) {
+        divClass += " exeedingAllocation";
+        exeedingMark += " <span class='exeedingMark' style='color:red;'> (" + local.ExeedingAllocation + ") </span> ";
+    }
+
     var nextNumber = existingAllocations.length;
 
     if (nextNumber == 0)
@@ -489,7 +498,8 @@ function addAllocation() {
                     "<input type='hidden' class='monthIdField' id='" + divId + "-monthIdField-" + nextNumber + "' name='Allocations[" + nextNumber + "].MonthId' value='" + monthId + "' />" +
                     "<input type='hidden' class='amountField' id='" + divId + "-amountField-" + nextNumber + "' name='Allocations[" + nextNumber + "].Amount' value='" + wantedAmount + "' />" +
                     "<span class='allocationText'> <span class='bold'>" + local.Allocation + ": </span>" + allocationText + " " + monthText + "<span class='bold'>" + local.Amount + ":</span> <span class='amountText'>" + wantedAmount + "</span></span>" +
-                    "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(\"" + divId + "\", " + nextNumber + ") '/>" +
+                    "<span class='markContainer'>" + exeedingMark + "</span>" +
+                    "<input type='button'  value='" + local.Delete + "' onClick='removeAllocation(\"" + divId + "\", " + nextNumber + ") '/>" + 
                 "</div>"
                 );
 
@@ -498,12 +508,33 @@ function addAllocation() {
         else {
             existingAllocation.find(".amountField").val(wantedAmount);
             existingAllocation.find(".amountText").html(wantedAmount);
+            if (!isExeedingAllocation) {
+                existingAllocation.find(".exeedingMark").remove();
+                existingAllocation.removeClass("exeedingAllocation");
+            }
         }
     }
     else {
         unRemove(allocationId, monthId);
         existingAllocation.find(".amountField").val(wantedAmount);
         existingAllocation.find(".amountText").html(wantedAmount);
+        if (!isExeedingAllocation) {
+            existingAllocation.find(".exeedingMark").remove();
+            existingAllocation.removeClass("exeedingAllocation");
+        }
+    }
+
+    if (allocationExists) {
+        if (isExeedingAllocation) {
+            var markContainer = existingAllocation.find(".markContainer");
+            markContainer.html("");
+            markContainer.append(exeedingMark);
+            existingAllocation.addClass("exeedingAllocation");
+        }
+        else {
+            existingAllocation.find(".exeedingMark").remove();
+            existingAllocation.removeClass("exeedingAllocation");
+        }
     }
 
     updateTotalAllocation();

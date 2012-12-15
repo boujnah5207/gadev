@@ -72,7 +72,7 @@ namespace GAppsDev.Controllers
             return Error(Loc.Dic.Error_NoPermission);
             if (Authorized(RoleType.SystemManager))
             {
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
@@ -123,7 +123,7 @@ namespace GAppsDev.Controllers
                     Projects_ParentProject project;
                     Projects_SubProject subProject;
 
-                    using (BudgetsRepository budgetRep = new BudgetsRepository())
+                    using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                     using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                     using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                     {
@@ -189,7 +189,7 @@ namespace GAppsDev.Controllers
                 Budgets_Expenses expense;
 
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
-                using (BudgetsRepository budgetRep = new BudgetsRepository())
+                using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                 using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                 using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                 {
@@ -268,7 +268,7 @@ namespace GAppsDev.Controllers
                     Projects_SubProject subProject;
 
                     using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
-                    using (BudgetsRepository budgetRep = new BudgetsRepository())
+                    using (BudgetsRepository budgetRep = new BudgetsRepository(CurrentUser.CompanyId))
                     using (ParentProjectsRepository projectsRep = new ParentProjectsRepository())
                     using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                     {
@@ -408,8 +408,8 @@ namespace GAppsDev.Controllers
                 Budgets_Expenses expense;
                 using (BudgetsExpensesRepository expensesRep = new BudgetsExpensesRepository())
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (AllocationRepository allocationsRep = new AllocationRepository())
-                using (BudgetsPermissionsToAllocationRepository permissionAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+                using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
+                using (BasketsToAllocationsRepository permissionAllocationsRep = new BasketsToAllocationsRepository())
                 {
                     expense = expensesRep.GetEntity(id, "Budget", "Budgets_Incomes_types", "Budgets_Incomes_Institutions");
 
