@@ -127,6 +127,46 @@ namespace DA
             return generatedAllocations;
         }
 
+        public List<Budgets_Allocations> GetUserAllocations(int userId, int budgetId)
+        {
+            List<int> userAllocationIds = new List<int>();
+            List<Budgets_Allocations> userAllocations = new List<Budgets_Allocations>();
+
+            using (UsersToBasketsRepository usersToBasketsRep = new UsersToBasketsRepository())
+            using (BasketsToAllocationsRepository basketsToAllocationRep = new BasketsToAllocationsRepository())
+            {
+                List<Budgets_UsersToBaskets> permissions =
+                    usersToBasketsRep
+                    .GetList()
+                    .Where(x => x.UserId == userId)
+                    .ToList();
+
+                foreach (var permission in permissions)
+                {
+                    userAllocationIds.AddRange(
+                        basketsToAllocationRep.GetList()
+                            .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == budgetId)
+                            .Select(x => x.Budgets_Allocations.Id)
+                            .ToList()
+                            );
+                }
+
+                userAllocationIds = userAllocationIds.Distinct().ToList();
+            }
+
+            var data = this.GetAllocationsData(userAllocationIds.ToArray(), StatusType.Pending);
+
+            foreach (var allocationData in data)
+            {
+                foreach (var monthData in allocationData.Months)
+                {
+                    monthData.OriginalAllocationMonth.Amount = monthData.RemainingAmount;
+                }
+            }
+
+            return data.Select( x => x.OriginalAllocation).ToList();
+        }
+
         public class AllocationAmountData
         {
             public Budgets_Allocations OriginalAllocation { get; set; }

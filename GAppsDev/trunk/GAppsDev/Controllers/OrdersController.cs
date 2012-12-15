@@ -680,20 +680,23 @@ namespace GAppsDev.Controllers
             model.Allocations = new List<OrderAllocation>();
 
             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-            using (UsersToBasketsRepository budgetsUsersToPermissionsRepository = new UsersToBasketsRepository())
-            using (BasketsToAllocationsRepository budgetsPermissionsToAllocationRepository = new BasketsToAllocationsRepository())
+            using (UsersToBasketsRepository usersToBasketsRep = new UsersToBasketsRepository())
+            using (BasketsToAllocationsRepository basketsToAllocationRep = new BasketsToAllocationsRepository())
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
                 model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
                 if (model.Order == null) return Error(Loc.Dic.error_order_not_found);
                 
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+                if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
+
                 model.IsFutureOrder = model.Order.IsFutureOrder;
 
                 List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
                 List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
+
                 List<Budgets_UsersToBaskets> permissions =
-                    budgetsUsersToPermissionsRepository
+                    usersToBasketsRep
                     .GetList()
                     .Where(x => x.UserId == CurrentUser.UserId)
                     .ToList();
@@ -719,7 +722,7 @@ namespace GAppsDev.Controllers
                 foreach (var permission in permissions)
                 {
                     allocations.AddRange(
-                        budgetsPermissionsToAllocationRepository.GetList()
+                        basketsToAllocationRep.GetList()
                             .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
                             .Select(x => x.Budgets_Allocations)
                             .ToList()
