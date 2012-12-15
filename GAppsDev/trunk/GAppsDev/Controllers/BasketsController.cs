@@ -254,14 +254,6 @@ namespace GAppsDev.Controllers
                 if (budget == null)
                     return Error(Loc.Dic.error_database_error);
 
-                model.BudgetAllocations = new BudgetAllocations();
-
-                List<SelectListItemDB> allocationsList = budget.Budgets_Allocations
-                    .Select(a => new { Id = a.Id, Name = a.DisplayName })
-                    .AsEnumerable()
-                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                    .ToList();
-
                 List<PermissionAllocation> permissionsToAllocations = permissionsAllocationsRep.GetList("Budgets_Allocations", "Budgets_Allocations.Budgets_Incomes", "Budgets_Allocations.Budgets_Expenses")
                     .Where(x => x.BudgetId == budget.Id && x.BasketId == model.Basket.Id)
                     .AsEnumerable()
@@ -271,7 +263,7 @@ namespace GAppsDev.Controllers
                 model.BudgetAllocations = new BudgetAllocations()
                 {
                     Budget = budget,
-                    AllocationsList = new SelectList(allocationsList, "Id", "Name"),
+                    AllocationsList = budget.Budgets_Allocations.ToList(),
                     PermissionAllocations = permissionsToAllocations
                 };
 

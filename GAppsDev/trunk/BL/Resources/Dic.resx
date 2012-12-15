@@ -1341,4 +1341,10 @@
   <data name="Warning_OrderExceedsAllocations" xml:space="preserve">
     <value>This order exeeds the remaining amount of it's allocations</value>
   </data>
+  <data name="AllocationName" xml:space="preserve">
+    <value>Allocation Name</value>
+  </data>
+  <data name="SortingCode" xml:space="preserve">
+    <value>Sortiong Code</value>
+  </data>
 </root>

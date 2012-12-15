@@ -572,6 +572,7 @@ namespace GAppsDev.Controllers
             ViewBag.CurrPage = currPage;
             ViewBag.NumberOfPages = numberOfPages;
 
+
             ViewBag.IsCheckBoxed = isCheckBoxed;
             ViewBag.ShowUserName = showUserName;
 
@@ -605,6 +606,9 @@ namespace GAppsDev.Controllers
                 {
                     case "number":
                         allocations = orderFunction(x => x.ExternalId);
+                        break;
+                    case "sortiongcode":
+                        allocations = orderFunction(x => x.SortingCode);
                         break;
                     case "january":
                         allocations = orderFunction(x => x.Budgets_AllocationToMonth.Single(a => a.MonthId == 1).Amount);

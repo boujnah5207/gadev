@@ -16,7 +16,7 @@ namespace GAppsDev.Models.PermissionModels
     public class BudgetAllocations
     {
         public Budget Budget{ get; set; }
-        public SelectList AllocationsList { get; set; }
+        public List<Budgets_Allocations> AllocationsList { get; set; }
         public List<PermissionAllocation> PermissionAllocations { get; set; }
 
         public BudgetAllocations()

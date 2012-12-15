@@ -28,6 +28,7 @@
         @if ((bool)ViewBag.IsOrdered)
         {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Name, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.SortingCode, "sortiongcode", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Number, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.January, "january", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.February, "february", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -46,6 +47,7 @@
         else
         { 
             <th>@Loc.Dic.Name</th>
+            <th>@Loc.Dic.SortingCode</th>
             <th>@Loc.Dic.Number</th>
             <th>@Loc.Dic.January</th>
             <th>@Loc.Dic.February</th>
@@ -81,14 +83,17 @@
                 @Html.ActionLink(item.Name, "Details", new { id = item.Id })
             </td>
             <td>
+                @item.SortingCode
+            </td>
+            <td>
                 @Html.DisplayTextFor(modelItem => item.ExternalId)
             </td>
-            @for(int i = 1; i<=12 ;i++)
-	        {
+            @for (int i = 1; i <= 12; i++)
+            {
                 <td>
-                    @item.Budgets_AllocationToMonth.Where(x=>x.AllocationId == item.Id).SingleOrDefault(x=>x.MonthId == i).Amount.ToString("0.##")
+                    @item.Budgets_AllocationToMonth.Where(x => x.AllocationId == item.Id).SingleOrDefault(x => x.MonthId == i).Amount.ToString("0.##")
                 </td> 
-	        }
+            }
             <td>
                 @item.Budgets_AllocationToMonth.Sum(x => x.Amount).ToString("0.##")
             </td>

@@ -277,6 +277,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allocation Name.
+        /// </summary>
+        public static string AllocationName {
+            get {
+                return ResourceManager.GetString("AllocationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allocations.
         /// </summary>
         public static string Allocations {
@@ -3117,6 +3126,15 @@ namespace Loc {
         public static string SingleItemPrice {
             get {
                 return ResourceManager.GetString("SingleItemPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sortiong Code.
+        /// </summary>
+        public static string SortingCode {
+            get {
+                return ResourceManager.GetString("SortingCode", resourceCulture);
             }
         }
         

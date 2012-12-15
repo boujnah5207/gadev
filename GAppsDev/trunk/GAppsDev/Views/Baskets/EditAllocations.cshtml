@@ -21,7 +21,36 @@
     <input type="hidden" name="BudgetAllocations.Budget.Id" value="@Model.BudgetAllocations.Budget.Id" />
 
     <div id="expandingDiv">
-        @Html.DropDownList("budgetAllocationsList", (SelectList)Model.BudgetAllocations.AllocationsList, new { id = "budgetAllocations" }) <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addItem()"/>
+        <span class="pattern">@Loc.Dic.SortingCode - @Loc.Dic.Allocation - @Loc.Dic.AllocationName</span>
+        <br />
+
+        <select id="budgetAllocations">
+        @foreach (var item in Model.BudgetAllocations.AllocationsList)
+        {
+            <option data-sort="@item.SortingCode" value="@item.Id" >@item.SortingCode - @item.DisplayName</option>
+        }
+        </select>
+
+        <input id="addAllocationBtn" type="button" value="@Loc.Dic.Add" onClick="addSelectedItem()"/>
+        <br />
+        @Loc.Dic.Add @Loc.Dic.SortingCode
+        @Loc.Dic.From 
+        <select id="budgetAllocationsFrom">
+        @foreach (var item in Model.BudgetAllocations.AllocationsList)
+        {
+            <option data-sort="@item.SortingCode" value="@item.Id" >@item.SortingCode - @item.DisplayName</option>
+        }
+        </select>
+        @Loc.Dic.To 
+        <select id="budgetAllocationsTo">
+        @foreach (var item in Model.BudgetAllocations.AllocationsList)
+        {
+            <option data-sort="@item.SortingCode" value="@item.Id" >@item.SortingCode - @item.DisplayName</option>
+        }
+        </select>
+
+        <input id="addAllocationListBtn" type="button" value="@Loc.Dic.Add" onClick="addRange()"/>
+
         <fieldset>
             <legend>>@Loc.Dic.BudgetAllocations</legend>
 
