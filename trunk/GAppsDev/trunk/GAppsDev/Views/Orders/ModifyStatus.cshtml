@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model DA.OrdersRepository.ExeedingOrderData
 
 @{
     ViewBag.Title = Loc.Dic.ModifyStatus;
@@ -6,7 +6,7 @@
     ViewBag.SubPageName = "PendingOrders";
 }
 
-@Html.Action("PartialDetails", new { order = Model})
+@Html.Action("PartialDetails", new { model = Model})
 <br />
 
 @using (Html.BeginForm()) {
@@ -15,9 +15,9 @@
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(model => model.OrderApproverNotes, new { maxlength = "250" })
+        @Html.TextAreaFor(model => model.OriginalOrder.OrderApproverNotes, new { maxlength = "250" })
     </div>
-    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.OriginalOrder.Id)
     <p>
         <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
         <input type="submit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />

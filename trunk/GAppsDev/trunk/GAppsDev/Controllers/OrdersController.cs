@@ -112,16 +112,16 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
 
+            OrdersRepository.ExeedingOrderData model;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                Order order;
-                order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
-                if (order == null) return Error(Loc.Dic.error_order_get_error);
-                if (order.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+                if (model == null) return Error(Loc.Dic.error_order_get_error);
+                if (model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
-                return View(order);
+                return View(model);
             }
         }
 
