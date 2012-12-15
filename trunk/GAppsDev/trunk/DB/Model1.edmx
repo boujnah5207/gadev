@@ -23,6 +23,9 @@
           <EntitySet Name="Locations" EntityType="designModel.Store.Locations" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Months" EntityType="designModel.Store.Months" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Orders" EntityType="designModel.Store.Orders" store:Type="Tables" Schema="uddi" />
+          <EntitySet Name="Orders_ApproverNotes" EntityType="designModel.Store.Orders_ApproverNotes" store:Type="Tables" Schema="uddi" Table="Orders.ApproverNotes" />
+          <EntitySet Name="Orders_History" EntityType="designModel.Store.Orders_History" store:Type="Tables" Schema="uddi" Table="Orders.History" />
+          <EntitySet Name="Orders_History_Actions" EntityType="designModel.Store.Orders_History_Actions" store:Type="Tables" Schema="uddi" Table="Orders.History.Actions" />
           <EntitySet Name="Orders_Items" EntityType="designModel.Store.Orders_Items" store:Type="Tables" Schema="uddi" Table="Orders.Items" />
           <EntitySet Name="Orders_OrderToAllocation" EntityType="designModel.Store.Orders_OrderToAllocation" store:Type="Tables" Schema="uddi" Table="Orders.OrderToAllocation" />
           <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Store.Orders_OrderToItem" store:Type="Tables" Schema="uddi" Table="Orders.OrderToItem" />
@@ -165,6 +168,26 @@
           <AssociationSet Name="FK_Locations_Companies" Association="designModel.Store.FK_Locations_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Approver_Notes_Orders" Association="designModel.Store.FK_Orders_Approver_Notes_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Approver_Notes_Users" Association="designModel.Store.FK_Orders_Approver_Notes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Orders" Association="designModel.Store.FK_Orders_History_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Orders_History_Actions" Association="designModel.Store.FK_Orders_History_Orders_History_Actions">
+            <End Role="Orders_History_Actions" EntitySet="Orders_History_Actions" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Users" Association="designModel.Store.FK_Orders_History_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.Store.FK_Orders_Items_Suppliers">
             <End Role="Suppliers" EntitySet="Suppliers" />
@@ -461,6 +484,32 @@
           <Property Name="BudgetId" Type="int" />
           <Property Name="WasAddedToInventory" Type="bit" Nullable="false" />
           <Property Name="IsExeeding" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders_ApproverNotes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Orders_History">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OrderHistoryActionId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders_History_Actions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Orders_Items">
           <Key>
@@ -990,6 +1039,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Approver_Notes_Orders">
+          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="1" />
+          <End Role="Orders_ApproverNotes" Type="designModel.Store.Orders_ApproverNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_ApproverNotes">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Approver_Notes_Users">
+          <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
+          <End Role="Orders_ApproverNotes" Type="designModel.Store.Orders_ApproverNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_ApproverNotes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Orders">
+          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="1" />
+          <End Role="Orders_History" Type="designModel.Store.Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Orders_History_Actions">
+          <End Role="Orders_History_Actions" Type="designModel.Store.Orders_History_Actions" Multiplicity="1" />
+          <End Role="Orders_History" Type="designModel.Store.Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders_History_Actions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="OrderHistoryActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Users">
+          <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
+          <End Role="Orders_History" Type="designModel.Store.Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Items_Suppliers">
           <End Role="Suppliers" Type="designModel.Store.Suppliers" Multiplicity="0..1" />
           <End Role="Orders_Items" Type="designModel.Store.Orders_Items" Multiplicity="*" />
@@ -1268,6 +1377,9 @@
           <EntitySet Name="Locations" EntityType="designModel.Location" />
           <EntitySet Name="Months" EntityType="designModel.Month" />
           <EntitySet Name="Orders" EntityType="designModel.Order" />
+          <EntitySet Name="Orders_ApproverNotes" EntityType="designModel.Orders_ApproverNotes" />
+          <EntitySet Name="Orders_History" EntityType="designModel.Orders_History" />
+          <EntitySet Name="Orders_History_Actions" EntityType="designModel.Orders_History_Actions" />
           <EntitySet Name="Orders_Items" EntityType="designModel.Orders_Items" />
           <EntitySet Name="Orders_OrderToAllocation" EntityType="designModel.Orders_OrderToAllocation" />
           <EntitySet Name="Orders_OrderToItem" EntityType="designModel.Orders_OrderToItem" />
@@ -1451,6 +1563,14 @@
             <End Role="Month" EntitySet="Months" />
             <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Approver_Notes_Orders" Association="designModel.FK_Orders_Approver_Notes_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Orders" Association="designModel.FK_Orders_History_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderToAllocation_Orders" Association="designModel.FK_Orders_OrderToAllocation_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Orders_OrderToAllocation" EntitySet="Orders_OrderToAllocation" />
@@ -1470,6 +1590,18 @@
           <AssociationSet Name="FK_Orders_Users" Association="designModel.FK_Orders_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Approver_Notes_Users" Association="designModel.FK_Orders_Approver_Notes_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Orders_History_Actions" Association="designModel.FK_Orders_History_Orders_History_Actions">
+            <End Role="Orders_History_Actions" EntitySet="Orders_History_Actions" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Users" Association="designModel.FK_Orders_History_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Items_Suppliers" Association="designModel.FK_Orders_Items_Suppliers">
             <End Role="Supplier" EntitySet="Suppliers" />
@@ -1778,11 +1910,45 @@
           <NavigationProperty Name="Budget" Relationship="designModel.FK_Orders_Budgets" FromRole="Order" ToRole="Budget" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
+          <NavigationProperty Name="Orders_ApproverNotes" Relationship="designModel.FK_Orders_Approver_Notes_Orders" FromRole="Order" ToRole="Orders_ApproverNotes" />
+          <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Orders" FromRole="Order" ToRole="Orders_History" />
           <NavigationProperty Name="Orders_OrderToAllocation" Relationship="designModel.FK_Orders_OrderToAllocation_Orders" FromRole="Order" ToRole="Orders_OrderToAllocation" />
           <NavigationProperty Name="Orders_OrderToItem" Relationship="designModel.FK_Orders_OrderToItem_Orders" FromRole="Order" ToRole="Orders_OrderToItem" />
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
           <NavigationProperty Name="Supplier" Relationship="designModel.FK_Orders_Suppliers" FromRole="Order" ToRole="Supplier" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Orders_Users" FromRole="Order" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Orders_ApproverNotes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="OrderId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_Approver_Notes_Orders" FromRole="Orders_ApproverNotes" ToRole="Order" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Orders_Approver_Notes_Users" FromRole="Orders_ApproverNotes" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Orders_History">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="OrderId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="OrderHistoryActionId" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_History_Orders" FromRole="Orders_History" ToRole="Order" />
+          <NavigationProperty Name="Orders_History_Actions" Relationship="designModel.FK_Orders_History_Orders_History_Actions" FromRole="Orders_History" ToRole="Orders_History_Actions" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Orders_History_Users" FromRole="Orders_History" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Orders_History_Actions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Orders_History_Actions" FromRole="Orders_History_Actions" ToRole="Orders_History" />
         </EntityType>
         <EntityType Name="Orders_Items">
           <Key>
@@ -1917,6 +2083,8 @@
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Users" FromRole="User" ToRole="Inventory" />
           <NavigationProperty Name="Language" Relationship="designModel.FK_Users_Languages" FromRole="User" ToRole="Language" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Users" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="Orders_ApproverNotes" Relationship="designModel.FK_Orders_Approver_Notes_Users" FromRole="User" ToRole="Orders_ApproverNotes" />
+          <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Users" FromRole="User" ToRole="Orders_History" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Users" FromRole="User" ToRole="PendingUser" />
           <NavigationProperty Name="Users_HierarchyLevel" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="User" ToRole="Users_HierarchyLevel" />
           <NavigationProperty Name="Users1" Relationship="designModel.FK_Users_Users" FromRole="User" ToRole="User1" />
@@ -2463,6 +2631,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Approver_Notes_Orders">
+          <End Type="designModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="designModel.Orders_ApproverNotes" Role="Orders_ApproverNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_ApproverNotes">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Orders">
+          <End Type="designModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="designModel.Orders_History" Role="Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_OrderToAllocation_Orders">
           <End Type="designModel.Order" Role="Order" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2523,6 +2715,42 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Approver_Notes_Users">
+          <End Type="designModel.User" Role="User" Multiplicity="1" />
+          <End Type="designModel.Orders_ApproverNotes" Role="Orders_ApproverNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_ApproverNotes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Orders_History_Actions">
+          <End Type="designModel.Orders_History_Actions" Role="Orders_History_Actions" Multiplicity="1" />
+          <End Type="designModel.Orders_History" Role="Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders_History_Actions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="OrderHistoryActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_History_Users">
+          <End Type="designModel.User" Role="User" Multiplicity="1" />
+          <End Type="designModel.Orders_History" Role="Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2833,6 +3061,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Orders_ApproverNotes">
+            <EntityTypeMapping TypeName="designModel.Orders_ApproverNotes">
+              <MappingFragment StoreEntitySet="Orders_ApproverNotes">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders_History">
+            <EntityTypeMapping TypeName="designModel.Orders_History">
+              <MappingFragment StoreEntitySet="Orders_History">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="OrderHistoryActionId" ColumnName="OrderHistoryActionId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders_History_Actions">
+            <EntityTypeMapping TypeName="designModel.Orders_History_Actions">
+              <MappingFragment StoreEntitySet="Orders_History_Actions">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Orders_Items">
             <EntityTypeMapping TypeName="designModel.Orders_Items">
               <MappingFragment StoreEntitySet="Orders_Items">
@@ -2993,34 +3250,37 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="74">
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.794479252209179" PointY="19.855429882116351" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="5.137067217909296" PointY="16.377981729981482" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="8.9830446434128319" PointY="5.3926394010859724" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="10.62785703066171" PointY="26.046947878807295" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="10.241206229776706" PointY="15.1608482520845" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="5.4097094113983726" PointY="19.50216876878504" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="11.262780664145378" PointY="3.8445844668171296" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="5.3317933293673185" PointY="6.0772208301710062" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="9.9588241306873151" PointY="19.142994263741652" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="1.5831967152576878" PointY="7.2315972481070077" />
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="5.3789744811965967" PointY="3.8181158023970743" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="0.24674626451299817" PointY="3.768341602649699" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="11.853137953138509" PointY="6.7357037694825346" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="7.9763490371295944" PointY="1.0515288417467517" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="0.40277699027339786" PointY="21.96945343444564" />
-        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="0.7822493001736" PointY="21.15270974727008" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="3.7089901434765151" PointY="13.253297469230972" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="9.6731899761004332" PointY="13.47549647720321" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="4.315630670783869" PointY="9.64529350849115" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="7.9980747513464072" PointY="6.8793547185507391" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="0.69561831312981359" PointY="18.26044810668586" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="7.2051770478511123" PointY="29.004735319411726" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="9.7860328116389148" PointY="6.0151806650753974" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="9.6451606180729161" PointY="27.70462713935628" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="10.432318561911732" PointY="0.25337268423911774" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="8.18850179025368" PointY="19.226106414211031" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="6.6574600761092544" PointY="5.4956613506635934" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="7.0377473193396565" PointY="24.96716220349407" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.938032878068292" PointY="1.2545846706510451" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="5.5364330641629325" PointY="21.433080891814587" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="0.38959806244335976" PointY="27.205144105108989" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="6.6921893128623209" PointY="5.7902593937657123" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="4.213781729440103" PointY="17.71291994383229" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="5.438719798549414" PointY="19.51890395000526" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="2.2284003897702327" PointY="19.808088445946616" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="1.3722406799775737" PointY="23.224004979815337" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="3.33027428357409" PointY="27.659718600874637" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="9.2278309898580577" PointY="6.1902276455379219" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="11.543800938662049" PointY="3.0193485035651122" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="1.8293850914711995" PointY="13.680086589269381" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="9.5663726616494245" PointY="18.867943847024787" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="4.8190471775918482" PointY="8.0138533748750831" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="6.5740344964778217" PointY="15.85160049044136" />
+        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="7.5047529561001589" PointY="28.989338947920753" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="0.49374793120368754" PointY="8.3539293596306479" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_ApproverNotes" Width="1.5" PointX="2.2994707311966787" PointY="10.184226860378043" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History" Width="1.5" PointX="11.410686386474728" PointY="24.696060013350127" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History_Actions" Width="1.5" PointX="9.69121164907292" PointY="10.404207055645159" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="6.72572456427185" PointY="5.5670884426529934" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="6.3637976508419012" PointY="6.446666795037066" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="10.027563950991056" PointY="20.849594617658106" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="1.8928115562968009" PointY="0.14843787259815161" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="11.179604574655929" PointY="9.02351685288526" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="1.545058027629302" PointY="17.081629463043821" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="0.99501236760756573" PointY="9.3168695910446662" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="9.63917989546395" PointY="26.148739171283665" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="10.641084160022942" PointY="1.0837349151651072" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="10.471032672781046" PointY="14.17098431949084" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="5.3828818618240213" PointY="9.8319847927577726" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />
@@ -3064,11 +3324,16 @@
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Languages" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Languages" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Monthes" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_Approver_Notes_Orders" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_History_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToAllocation_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Orders_Statuses" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_Approver_Notes_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_History_Orders_History_Actions" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_History_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Items_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders_Items" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Users" />
