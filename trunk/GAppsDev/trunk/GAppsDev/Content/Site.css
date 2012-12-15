@@ -49,6 +49,11 @@ img
     max-width:150px;
 }
 
+.exeedingAllocation
+{
+    background-color:#FFD9D9;
+}
+
 .selectedSupplier {
     font-size:20px;
     font-weight:bold;

@@ -6,7 +6,7 @@
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "MyOrders";
     
-    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter);
+    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.FutureOrderWriter);
 }
 
 @section ExtraScripts{

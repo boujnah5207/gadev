@@ -8,7 +8,7 @@ using DB;
 
 namespace DA
 {
-    public class BudgetsPermissionsToAllocationRepository : BaseRepository<Budgets_BasketsToAllocation, Entities>, IDisposable
+    public class BasketsToAllocationsRepository : BaseRepository<Budgets_BasketsToAllocation, Entities>, IDisposable
     {
     }
 }

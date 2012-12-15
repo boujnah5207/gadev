@@ -676,7 +676,7 @@
     <value>כניסה לספקים</value>
   </data>
   <data name="AmountExceedsAllocation" xml:space="preserve">
-    <value>הכמות עולה על סך ההקצאה</value>
+    <value>הכמות עולה על סך ההקצאה, הזמנתך תסומן כהזמנה חריגה</value>
   </data>
   <data name="InvalidAmount" xml:space="preserve">
     <value>אנא הכנס כמות ונסה שוב</value>
@@ -1325,5 +1325,17 @@
   </data>
   <data name="MaxFileSize" xml:space="preserve">
     <value>גודל מקסימלי</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>הדפס</value>
+  </data>
+  <data name="ReceiptFile" xml:space="preserve">
+    <value>קובץ קבלה</value>
+  </data>
+  <data name="ExeedingAllocation" xml:space="preserve">
+    <value>הקצאה חריגה</value>
+  </data>
+  <data name="Warning_OrderExceedsAllocations" xml:space="preserve">
+    <value>הזמנה זו חורגת מהסכום שנותר בהקצאות התקציביות שלה</value>
   </data>
 </root>

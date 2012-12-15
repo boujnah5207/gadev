@@ -385,7 +385,7 @@ namespace GAppsDev.Controllers
                     bool noErrors = true;
 
                     using (UsersRepository usersRep = new UsersRepository())
-                    using (BudgetsUsersToPermissionsRepository userPermissionsRep = new BudgetsUsersToPermissionsRepository())
+                    using (UsersToBasketsRepository userPermissionsRep = new UsersToBasketsRepository())
                     {
                         userFromDB = usersRep.GetEntity(model.UserId);
 

@@ -367,7 +367,7 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The amount is higher then the remaining amount.
+        ///   Looks up a localized string similar to The amount is higher then the remaining amount, your order will become an exeeding order.
         /// </summary>
         public static string AmountExceedsAllocation {
             get {
@@ -1753,6 +1753,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exeeding allocation.
+        /// </summary>
+        public static string ExeedingAllocation {
+            get {
+                return ResourceManager.GetString("ExeedingAllocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expense.
         /// </summary>
         public static string Expense {
@@ -2815,6 +2824,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        public static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print Order.
         /// </summary>
         public static string PrintOrder {
@@ -2883,6 +2901,15 @@ namespace Loc {
         public static string Receipt {
             get {
                 return ResourceManager.GetString("Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receipt file.
+        /// </summary>
+        public static string ReceiptFile {
+            get {
+                return ResourceManager.GetString("ReceiptFile", resourceCulture);
             }
         }
         
@@ -3639,6 +3666,15 @@ namespace Loc {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This order exeeds the remaining amount of it&apos;s allocations.
+        /// </summary>
+        public static string Warning_OrderExceedsAllocations {
+            get {
+                return ResourceManager.GetString("Warning_OrderExceedsAllocations", resourceCulture);
             }
         }
         

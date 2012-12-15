@@ -676,7 +676,7 @@
     <value>Suppliers Entrence</value>
   </data>
   <data name="AmountExceedsAllocation" xml:space="preserve">
-    <value>The amount is higher then the remaining amount</value>
+    <value>The amount is higher then the remaining amount, your order will become an exeeding order</value>
   </data>
   <data name="InvalidAmount" xml:space="preserve">
     <value>Invalid amount</value>
@@ -1328,5 +1328,17 @@
   </data>
   <data name="MaxFileSize" xml:space="preserve">
     <value>Max file size</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="ReceiptFile" xml:space="preserve">
+    <value>Receipt file</value>
+  </data>
+  <data name="ExeedingAllocation" xml:space="preserve">
+    <value>Exeeding allocation</value>
+  </data>
+  <data name="Warning_OrderExceedsAllocations" xml:space="preserve">
+    <value>This order exeeds the remaining amount of it's allocations</value>
   </data>
 </root>

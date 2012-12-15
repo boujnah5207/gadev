@@ -1,8 +1,8 @@
-﻿@model GAppsDev.Models.PrintOrderModel
+﻿@model DB.Order
 
 @{
     Layout = "~/Views/Shared/_EmptyLayout.cshtml";
-    ViewBag.Title = "PrintOrderToScreen";
+    ViewBag.Title = Loc.Dic.PrintOrder;
 }
 
 @section ExtraCss{
@@ -29,36 +29,36 @@
     @if (ViewBag.LogoExists)
     {
     <div id="logoContainer">
-        <img src=@(Url.Content("~/Content/LogoImages/" + Model.Order.Company.Id + ".png")) style="max-width:500px;max-height:200px;"/>
+        <img src=@(Url.Content("~/Content/LogoImages/" + Model.Company.Id + ".png")) style="max-width:500px;max-height:200px;"/>
     </div>
     }
     else
     {
-        <h1> @Model.Order.Company.Name </h1>
+        <h1> @Model.Company.Name </h1>
     }
     <br />
     <br />
 
-    <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => model.Order.Company.CompanyNumber)</span>
+    <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => Model.Company.CompanyNumber)</span>
     <br />
-    <span class="bold">@Loc.Dic.OrderNumber:</span> <span>@Html.DisplayFor(model => model.Order.OrderNumber)</span>
+    <span class="bold">@Loc.Dic.OrderNumber:</span> <span>@Html.DisplayFor(model => Model.OrderNumber)</span>
     <br />
-    <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => model.Order.User.FirstName) @Html.DisplayFor(model => model.Order.User.LastName)</span>
+    <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => Model.User.FirstName) @Html.DisplayFor(model => Model.User.LastName)</span>
     <br />
-    <span class="bold">@Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => model.Order.Supplier.Name)</span>
+    <span class="bold">@Loc.Dic.SupplierName:</span> <span>@Html.DisplayFor(model => Model.Supplier.Name)</span>
     <br />
-    <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.Order.CreationDate.ToShortDateString()</span>
+    <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.CreationDate.ToShortDateString()</span>
     <br />
 
-    @Html.Action("ListOrderItems", new { orderItems = Model.Items, baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
     <br />
 
     <div class="floatToSide" style="font-size:large;">
-        <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => model.Order.Price)</span>
+        <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => Model.Price)</span>
     </div>
     <br />
 
     <span class="bold">@Loc.Dic.Notes:</span><br />
-    <span>@Html.DisplayFor(model => model.Order.Notes)</span>
+    <span>@Html.DisplayFor(model => Model.Notes)</span>
     <br /><br />
 </fieldset>

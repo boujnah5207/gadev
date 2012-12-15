@@ -10,6 +10,9 @@
     {
         ReverseOrder = "ASC";
     }
+
+    DA.OrdersRepository.ExeedingOrderData data = ViewBag.ExeedingData;
+    
     List<DB.Orders_OrderToAllocation> displayAllocations;
 
     if (!ViewBag.IsFutureOrder)
@@ -74,11 +77,16 @@
     @for (int index = 0; index < displayAllocations.Count; index++)
     {
         DB.Orders_OrderToAllocation item = displayAllocations[index];
-    
-        <tr class="@if (index % 2 != 0)
+        var exeed = data.ExeedingMonthAllocations.SingleOrDefault( x => x.AllocationId == item.AllocationId && x.MonthId == item.MonthId);
+            
+        <tr class="@if (exeed != null)
+                   {<text>exeedingAllocation </text>}
+                   else if (index % 2 != 0)
                    {<text>oddRow</text>}
                    else
-                   {<text>evenRow</text>}" >
+                   {<text>evenRow</text>}
+                   " >
+
             @if (ViewBag.IsCheckBoxed)
             {
                 <td>
@@ -98,7 +106,12 @@
                 </td>
             }
             <td>
-                @Html.DisplayTextFor(modelItem => item.Amount)
+                @Html.DisplayTextFor(modelItem => item.Amount) 
+                
+                @if (exeed != null)
+                {
+                    <span style="color:red;">@Loc.Dic.ExeedingAllocation! (+ @exeed.ExeedingAmount)</span>
+                }
             </td>
         </tr>
     }

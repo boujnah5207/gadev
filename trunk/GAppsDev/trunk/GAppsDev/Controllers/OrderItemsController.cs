@@ -49,7 +49,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 List<Supplier> allSuppliers;
-                using(SuppliersRepository suppliersRep = new SuppliersRepository())
+                using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
                 {
                     allSuppliers = suppliersRep.GetList().ToList();
                 }

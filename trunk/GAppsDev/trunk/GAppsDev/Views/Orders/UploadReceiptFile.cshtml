@@ -1,13 +1,34 @@
-﻿@{
-    ViewBag.Title = "UploadReceiptFile";
+﻿@model GAppsDev.Models.UploadReceiptModel
+
+@{
+    ViewBag.Title = Model != null && Model.isUpdate ? Loc.Dic.UpdateReceipt : Loc.Dic.UploadReceipt;
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "AllOrders";
 }
 
-@using (Html.BeginForm("UploadReceiptFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<h2>@(Model != null && Model.isUpdate ? Loc.Dic.UpdateReceipt : Loc.Dic.UploadReceipt)</h2>
+<br />
+
+@if (Model != null && Model.isUpdate)
 {
-    @Loc.Dic.UploadReceipt<text>:</text>
-    <input type="hidden" name="orderId" value="@ViewBag.OrderId" /> 
-    <input type="file" name="file"  />
-    <input type="submit" value="OK" />
+    @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = ViewBag.OrderId })
+    <br /><br />
+}
+
+@using (Html.BeginForm("UploadReceiptFile", "Orders", new { id = ViewBag.OrderId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor( model => model.isUpdate)
+    
+    <div class="editor-label">
+        @Loc.Dic.ReceiptFile <span class="bold">(@Loc.Dic.MaxFileSize 250Kb)</span>
+    </div>
+    <div class="editor-field">
+        <input id="File" @if(!ViewContext.ViewData.ModelState.IsValidField("File")){<text>class="input-validation-error"</text>} type="file" name="File" />
+        @Html.ValidationMessageFor(model => model.File)
+    </div>
+    <br />
+    
+    <p>
+        <input type="submit" value="@Loc.Dic.Submit" />
+    </p>
 }

@@ -25,7 +25,8 @@
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.ItemName, "name", ReverseOrder, (string)ViewBag.Sortby)</th>
             <th>@Loc.Dic.ItemDescription</th>
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Quantity, "quantity", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Price, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.SingleItemPrice, "price", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.Total, "total", ReverseOrder, (string)ViewBag.Sortby)</th>
         }
         else
         { 
@@ -39,7 +40,10 @@
                 @Loc.Dic.Quantity
             </th>
             <th>
-                @Loc.Dic.Price
+                @Loc.Dic.SingleItemPrice
+            </th>
+            <th>
+                @Loc.Dic.Total
             </th>
         }
     </tr>
@@ -68,6 +72,9 @@
             </td>
             <td>
                 @Html.DisplayTextFor(modelItem => item.SingleItemPrice)
+            </td>
+            <td>
+                @(item.Quantity * item.SingleItemPrice)
             </td>
         </tr>
     }

@@ -1,4 +1,4 @@
-﻿@model DB.Order
+﻿@model DA.OrdersRepository.ExeedingOrderData
 
 @{
     ViewBag.Title = Loc.Dic.OrderDetails;
@@ -6,4 +6,4 @@
     ViewBag.SubPageName = "MyOrders";
 }
 
-@Html.Action("PartialDetails", new { order = Model})
+@Html.Action("PartialDetails", new { model = Model})

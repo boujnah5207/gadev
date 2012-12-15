@@ -15,7 +15,7 @@ namespace DB
 
     public class OrderMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:0}")]
+        [DisplayFormat(DataFormatString = "{0:0.##}")]
         public decimal Price { get; set; }
 
         [StringLength(250)]
@@ -33,7 +33,7 @@ namespace DB
 
     public class AllocationToMonthMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:0}")]
+        [DisplayFormat(DataFormatString = "{0:0.##}")]
         public decimal Amount { get; set; }
         
     }

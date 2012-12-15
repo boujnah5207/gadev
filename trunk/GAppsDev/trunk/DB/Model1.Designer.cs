@@ -6194,7 +6194,8 @@ namespace DB
         /// <param name="statusId">Initial value of the StatusId property.</param>
         /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
         /// <param name="wasAddedToInventory">Initial value of the WasAddedToInventory property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory)
+        /// <param name="isExeeding">Initial value of the IsExeeding property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding)
         {
             Order order = new Order();
             order.Id = id;
@@ -6206,6 +6207,7 @@ namespace DB
             order.StatusId = statusId;
             order.IsFutureOrder = isFutureOrder;
             order.WasAddedToInventory = wasAddedToInventory;
+            order.IsExeeding = isExeeding;
             return order;
         }
 
@@ -6647,6 +6649,30 @@ namespace DB
         private global::System.Boolean _WasAddedToInventory;
         partial void OnWasAddedToInventoryChanging(global::System.Boolean value);
         partial void OnWasAddedToInventoryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsExeeding
+        {
+            get
+            {
+                return _IsExeeding;
+            }
+            set
+            {
+                OnIsExeedingChanging(value);
+                ReportPropertyChanging("IsExeeding");
+                _IsExeeding = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsExeeding");
+                OnIsExeedingChanged();
+            }
+        }
+        private global::System.Boolean _IsExeeding;
+        partial void OnIsExeedingChanging(global::System.Boolean value);
+        partial void OnIsExeedingChanged();
 
         #endregion
 

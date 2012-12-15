@@ -23,7 +23,7 @@ namespace BL
             int firstValuesLine = 0;
             bool noErros = true;
             string errorType = String.Empty;
-            using (SuppliersRepository suppliersRep = new SuppliersRepository())
+            using (SuppliersRepository suppliersRep = new SuppliersRepository(companyId))
             {
                 for (int i = firstValuesLine; i < fileLines.Length; i++)
                 {
@@ -194,7 +194,7 @@ namespace BL
             bool noErros = true;
             string errorType = String.Empty;
             Budget budget;
-            using (BudgetsRepository budgetsRepository = new BudgetsRepository())
+            using (BudgetsRepository budgetsRepository = new BudgetsRepository(companyId))
             {
                 budget = budgetsRepository.GetList().SingleOrDefault(x => x.Id == budgetId);
             }
@@ -280,7 +280,7 @@ namespace BL
 
             using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
             using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(companyId))
             {
                 foreach (var item in importedAllocations)
                 {

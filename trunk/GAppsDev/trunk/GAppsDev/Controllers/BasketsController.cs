@@ -49,7 +49,7 @@ namespace GAppsDev.Controllers
             IEnumerable<Budgets_Baskets> baskets;
             Budgets_BasketsToAllocation per = new Budgets_BasketsToAllocation();
 
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
                 baskets = permissionsRep.GetList("Budgets_BasketsToAllocation").Where(x => x.CompanyId == CurrentUser.CompanyId);
@@ -237,9 +237,9 @@ namespace GAppsDev.Controllers
             PermissionAllocationsModel model = new PermissionAllocationsModel();
             Budget budget;
 
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-            using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
+            using (BasketsToAllocationsRepository permissionsAllocationsRep = new BasketsToAllocationsRepository())
             {
                 model.Basket = permissionsRep.GetEntity(id);
 
@@ -293,10 +293,10 @@ namespace GAppsDev.Controllers
             List<Budgets_Allocations> existingPermissionAllocations;
             List<Budgets_BasketsToAllocation> existingPermissionToAllocations;
 
-            using (BudgetsRepository budgetsRep = new BudgetsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-            using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
-            using (AllocationRepository allocationsRep = new AllocationRepository())
+            using (BasketsToAllocationsRepository permissionsAllocationsRep = new BasketsToAllocationsRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
                 permissionFromDB = permissionsRep.GetEntity(model.Basket.Id);
                 //TODO: Error gets ALL pemissions from DB
@@ -392,8 +392,8 @@ namespace GAppsDev.Controllers
 
                 using (OrdersRepository orderssRep = new OrdersRepository(CurrentUser.CompanyId))
                 using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
-                using (BudgetsPermissionsToAllocationRepository permissionsAllocationsRep = new BudgetsPermissionsToAllocationRepository())
-                using (BudgetsUsersToPermissionsRepository usersPermissionsRep = new BudgetsUsersToPermissionsRepository())
+                using (BasketsToAllocationsRepository permissionsAllocationsRep = new BasketsToAllocationsRepository())
+                using (UsersToBasketsRepository usersPermissionsRep = new UsersToBasketsRepository())
                 {
                     permission = permissionsRep.GetEntity(id);
 
