@@ -52,12 +52,12 @@ $(function () {
         var isFutureOrder = $("#isFutureOrder").is(':checked');
 
         var totalAllocation;
-        var totalOrderPrice = parseInt($("#totalOrderPrice").val());
+        var totalOrderPrice = parseFloat($("#totalOrderPrice").val());
 
         if (isFutureOrder)
-            totalAllocation = parseInt($("#totalFutureAllocation").val());
+            totalAllocation = parseFloat($("#totalFutureAllocation").val());
         else
-            totalAllocation = parseInt($("#totalNormalAllocation").val());
+            totalAllocation = parseFloat($("#totalNormalAllocation").val());
 
         if (totalAllocation > totalOrderPrice) {
             alert(local.error_allocation_exceeds_price);
@@ -98,7 +98,7 @@ function beginForm() {
 
             addItemButton.click(function () {
                 if ($("#ItemDropDownList option:selected") != null) {
-                    if (isInt(itemPriceField.val()) && isInt(itemQuantityField.val())) {
+                    if (isNumber(itemPriceField.val()) && isNumber(itemQuantityField.val())) {
                         if (itemQuantityField.val() != 0) {
                             addNewItem(
                                 $("#ItemDropDownList option:selected").val(),
@@ -256,21 +256,21 @@ function updateItemFinalPrice() {
     var quantity;
     var itemPrice;
 
-    if (isInt(itemQuantityField.val())) {
-        quantity = parseInt(itemQuantityField.val(), 10);
+    if (isNumber(itemQuantityField.val())) {
+        quantity = parseFloat(itemQuantityField.val(), 10);
     }
     else {
         quantity = 0;
     }
 
-    if (isInt(itemPriceField.val())) {
-        itemPrice = parseInt(itemPriceField.val(), 10);
+    if (isNumber(itemPriceField.val())) {
+        itemPrice = parseFloat(itemPriceField.val(), 10);
     }
     else {
         itemPrice = 0;
     }
 
-    itemFinalPrice.val(quantity * itemPrice);
+    itemFinalPrice.val((quantity * itemPrice).toFixed(2));
 }
 
 function UpdateSupplierList(newSupplierList) {
@@ -316,7 +316,7 @@ function UpdateItemsList(newItemList) {
 }
 
 function addNewItem(itemId, itemName, quantity, price) {
-    var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: price * quantity };
+    var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: (price * quantity).toFixed(2) };
 
     var isInArray = false;
     var doubleIndex;
@@ -340,9 +340,9 @@ function addNewItem(itemId, itemName, quantity, price) {
         var dialog_buttons = {};
 
         dialog_buttons[local.Merge] = function () {
-            itemList[doubleIndex].quantity = parseInt(itemList[doubleIndex].quantity, 10) + parseInt(itemToInsert.quantity, 10);
+            itemList[doubleIndex].quantity = parseFloat(itemList[doubleIndex].quantity, 10) + parseFloat(itemToInsert.quantity, 10);
             itemList[doubleIndex].price = itemToInsert.price;
-            itemList[doubleIndex].finalPrice = parseInt(itemList[doubleIndex].price, 10) * parseInt(itemList[doubleIndex].quantity, 10);
+            itemList[doubleIndex].finalPrice = parseFloat(itemList[doubleIndex].price, 10) * parseFloat(itemList[doubleIndex].quantity, 10);
             itemPriceField.val("");
             itemQuantityField.val("");
             itemFinalPrice.val("0");
@@ -387,7 +387,7 @@ function updateItems() {
         value = value.slice(0, value.length - 1);
     }
     hiddenItemField.val(value);
-    totalOrderPriceField.val(totalPrice);
+    totalOrderPriceField.val(totalPrice.toFixed(2));
 }
 
 function removeItem(index) {
@@ -396,8 +396,15 @@ function removeItem(index) {
     updateItems();
 }
 
-function isInt(value) {
-    var intRegex = /^\d+$/;
+function isNumber(value) {
+
+    //if (value == null) return false;
+    //if (value == "") return false;
+    //return !isNaN(value);
+
+    //return typeof value === "Number";
+    
+    var intRegex = /^(?:\d+|\d*\.\d+)$/ // /^\d+$/;
     if (intRegex.test(value)) {
         return true;
     }
@@ -424,10 +431,12 @@ function addAllocation() {
     var isExeedingAllocation = false;
     var exeedingMark = "";
 
-    if (!isInt(wantedAmount) || wantedAmount <= 0) {
+    if (!isNumber(wantedAmount) || wantedAmount <= 0) {
         alert(local.InvalidAmount);
         return;
     }
+
+    wantedAmount = parseFloat(wantedAmount).toFixed(2);
 
     var isFutureOrder = $("#isFutureOrder").is(':checked');
 
@@ -598,12 +607,12 @@ function updateTotalAllocation() {
 
     for (var i = 0; i < existingFutureAllocations.length; i++) {
         if ($(existingFutureAllocations[i]).find(".isActiveField").val() == "true")
-            totalFutureAllocation += parseInt($(existingFutureAllocations[i]).find(".amountField").val());
+            totalFutureAllocation += parseFloat($(existingFutureAllocations[i]).find(".amountField").val());
     }
 
     for (var i = 0; i < existingNormalAllocations.length; i++) {
         if ($(existingNormalAllocations[i]).find(".isActiveField").val() == "true")
-            totalNormalAllocation += parseInt($(existingNormalAllocations[i]).find(".amountField").val());
+            totalNormalAllocation += parseFloat($(existingNormalAllocations[i]).find(".amountField").val());
     }
 
     $("#totalNormalAllocation").val(totalNormalAllocation);
