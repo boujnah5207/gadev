@@ -674,120 +674,103 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+
+            CreateOrderModel model = new CreateOrderModel();
+            model.Allocations = new List<OrderAllocation>();
+
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (UsersToBasketsRepository budgetsUsersToPermissionsRepository = new UsersToBasketsRepository())
+            using (BasketsToAllocationsRepository budgetsPermissionsToAllocationRepository = new BasketsToAllocationsRepository())
+            using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
-                CreateOrderModel model = new CreateOrderModel();
-                model.Allocations = new List<OrderAllocation>();
+                model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                if (model.Order == null) return Error(Loc.Dic.error_order_not_found);
+                
+                Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+                model.IsFutureOrder = model.Order.IsFutureOrder;
 
-                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (UsersToBasketsRepository budgetsUsersToPermissionsRepository = new UsersToBasketsRepository())
-                using (BasketsToAllocationsRepository budgetsPermissionsToAllocationRepository = new BasketsToAllocationsRepository())
-                using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
+                List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
+                List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
+                List<Budgets_UsersToBaskets> permissions =
+                    budgetsUsersToPermissionsRepository
+                    .GetList()
+                    .Where(x => x.UserId == CurrentUser.UserId)
+                    .ToList();
+
+                List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
+
+                foreach (var allocation in existingOrderAllocations)
                 {
-                    model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
-                    Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
+                    string allocationName = allocation.Budgets_Allocations.Name;
 
-                    model.IsFutureOrder = model.Order.IsFutureOrder;
-
-                    List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
-                    List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-                    List<Budgets_UsersToBaskets> permissions =
-                        budgetsUsersToPermissionsRepository
-                        .GetList()
-                        .Where(x => x.UserId == CurrentUser.UserId)
-                        .ToList();
-
-                    List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
-
-                    foreach (var allocation in existingOrderAllocations)
-                    {
-                        string allocationName = allocation.Budgets_Allocations.Name;
-
-                        model.Allocations.Add(
-                            new OrderAllocation()
-                            {
-                                AllocationId = allocation.AllocationId,
-                                Name = allocationName,
-                                MonthId = allocation.MonthId,
-                                IsActive = true,
-                                Amount = allocation.Amount
-                            }
-                        );
-                    }
-
-                    foreach (var permission in permissions)
-                    {
-                        allocations.AddRange(
-                            budgetsPermissionsToAllocationRepository.GetList()
-                                .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
-                                .Select(x => x.Budgets_Allocations)
-                                .ToList()
-                                );
-                    }
-
-                    allocations = allocations.Distinct().ToList();
-
-                    foreach (var allocation in allocations)
-                    {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
-                        decimal totalRemaining = 0;
-
-                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
+                    model.Allocations.Add(
+                        new OrderAllocation()
                         {
-                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                            allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                            if (monthNumber <= DateTime.Now.Month)
-                                totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                            AllocationId = allocation.AllocationId,
+                            Name = allocationName,
+                            MonthId = allocation.MonthId,
+                            IsActive = true,
+                            Amount = allocation.Amount
                         }
-                    }
-
-                    allocationsSelectList = allocations
-                        .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
-                        .AsEnumerable()
-                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                        .ToList();
-
-                    ViewBag.Allocations = allocations;
-                    ViewBag.UserRoles = CurrentUser.Roles;
-                    ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
-                    ViewBag.BudgetYear = activeBudget.Year;
+                    );
                 }
 
-                if (model.Order.UserId == CurrentUser.UserId)
+                foreach (var permission in permissions)
                 {
-                    if (model != null)
-                    {
-                        string existingItems = "";
-                        foreach (var item in model.Order.Orders_OrderToItem)
-                        {
-                            existingItems += String.Format("{0},{1},{2},{3};", item.ItemId, item.Orders_Items.Title, item.Quantity, item.SingleItemPrice);
-                        }
-
-                        if (!String.IsNullOrEmpty(existingItems))
-                            existingItems = existingItems.Remove(existingItems.Length - 1);
-
-                        ViewBag.ExistingItems = existingItems;
-
-                        return View(model);
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_order_not_found);
-                    }
+                    allocations.AddRange(
+                        budgetsPermissionsToAllocationRepository.GetList()
+                            .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
+                            .Select(x => x.Budgets_Allocations)
+                            .ToList()
+                            );
                 }
-                else
+
+                allocations = allocations.Distinct().ToList();
+                foreach (var allocation in allocations)
                 {
-                    return Error(Loc.Dic.error_no_permission);
+                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                    decimal totalRemaining = 0;
+
+                    for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
+                    {
+                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
+                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
+                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
+
+                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+
+                        if (monthNumber <= DateTime.Now.Month)
+                            totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                    }
                 }
+
+                allocationsSelectList = allocations
+                    .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
+                    .AsEnumerable()
+                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
+                    .ToList();
+
+                ViewBag.Allocations = allocations;
+                ViewBag.UserRoles = CurrentUser.Roles;
+                ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                ViewBag.BudgetYear = activeBudget.Year;
             }
-            else
+
+            if (model.Order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+
+            string existingItems = "";
+            foreach (var item in model.Order.Orders_OrderToItem)
             {
-                return Error(Loc.Dic.error_no_permission);
+                existingItems += String.Format("{0},{1},{2},{3};", item.ItemId, item.Orders_Items.Title, item.Quantity, item.SingleItemPrice);
             }
+
+            if (!String.IsNullOrEmpty(existingItems))
+                existingItems = existingItems.Remove(existingItems.Length - 1);
+
+            ViewBag.ExistingItems = existingItems;
+
+            return View(model);
         }
 
         [OpenIdAuthorize]
