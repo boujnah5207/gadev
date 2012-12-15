@@ -6,12 +6,17 @@
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "AllOrders";
 
-    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.UserRoles, DA.RoleType.FutureOrderWriter);
+    bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.FutureOrderWriter);
 }
 
 @section ExtraScripts{
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/editOrderScript.js"></script>
+    <script>
+        $(function () {
+            beginForm("@ViewBag.ExistingItems");
+        });
+    </script>
 }
 
 <fieldset>
@@ -212,12 +217,4 @@
     @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 
-<script>
-    $(function () {
-        beginForm("@ViewBag.ExistingItems");
-    });
-</script>

@@ -453,7 +453,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            DA.OrdersRepository.ExeedingOrderData model = new DA.OrdersRepository.ExeedingOrderData();
+            OrdersRepository.ExeedingOrderData model = new OrdersRepository.ExeedingOrderData();
 
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
@@ -472,68 +472,19 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
-            List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
-            List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-
             using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
-            using (UsersToBasketsRepository usersToBasketsRep = new UsersToBasketsRepository())
-            using (BasketsToAllocationsRepository basketsToAllocationRep = new BasketsToAllocationsRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
-                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().OrderBy(s => s.Name).ToList(), "Id", "Name");
+                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where( x => x.ExternalId != null).OrderBy(s => s.Name).ToList(), "Id", "Name");
 
-                List<Budgets_UsersToBaskets> baskets = usersToBasketsRep.GetList().Where(x => x.UserId == CurrentUser.UserId).ToList();
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
-
                 if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
 
-                foreach (var basket in baskets)
-                {
-                    allocations.AddRange(
-                        basketsToAllocationRep.GetList()
-                            .Where(x => x.BasketId == basket.BasketId && x.BudgetId == activeBudget.Id)
-                            .Select(x => x.Budgets_Allocations)
-                            .ToList()
-                            );
-                }
-
-                allocations = allocations.Distinct().ToList();
-
-                if (allocations.Count == 0) return Error(Loc.Dic.error_user_have_no_allocations);
-
-                foreach (var allocation in allocations)
-                {
-                    List<Orders_OrderToAllocation> approvedAllocations =
-                        allocation.Orders_OrderToAllocation
-                        .Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled)
-                        .ToList();
-
-                    decimal totalRemaining = 0;
-                    for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
-                    {
-                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                        allocationMonth.Amount = remainingAmount.HasValue ? remainingAmount.Value : 0;
-
-                        if (monthNumber <= DateTime.Now.Month)
-                            totalRemaining += remainingAmount.HasValue ? remainingAmount.Value : 0;
-                    }
-                }
-
-                allocationsSelectList = allocations
-                    .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.DisplayName, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
-                    .AsEnumerable()
-                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
-                    .ToList();
-
+                ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id);
                 ViewBag.BudgetYear = activeBudget.Year;
-                ViewBag.Allocations = allocations;
-                ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                return View();
             }
-
-            return View();
         }
 
         [OpenIdAuthorize]
@@ -677,41 +628,28 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
             CreateOrderModel model = new CreateOrderModel();
-            model.Allocations = new List<OrderAllocation>();
-
             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-            using (UsersToBasketsRepository usersToBasketsRep = new UsersToBasketsRepository())
-            using (BasketsToAllocationsRepository basketsToAllocationRep = new BasketsToAllocationsRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
-                model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation.Budgets_Allocations");
                 if (model.Order == null) return Error(Loc.Dic.error_order_not_found);
+                if (model.Order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
                 
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
                 if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
 
                 model.IsFutureOrder = model.Order.IsFutureOrder;
 
-                List<SelectListItemDB> allocationsSelectList = new List<SelectListItemDB>();
-                List<Budgets_Allocations> allocations = new List<Budgets_Allocations>();
-
-                List<Budgets_UsersToBaskets> permissions =
-                    usersToBasketsRep
-                    .GetList()
-                    .Where(x => x.UserId == CurrentUser.UserId)
-                    .ToList();
-
+                model.Allocations = new List<OrderAllocation>();
                 List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
-
                 foreach (var allocation in existingOrderAllocations)
                 {
-                    string allocationName = allocation.Budgets_Allocations.Name;
-
                     model.Allocations.Add(
                         new OrderAllocation()
                         {
                             AllocationId = allocation.AllocationId,
-                            Name = allocationName,
+                            Name = allocation.Budgets_Allocations.Name,
                             MonthId = allocation.MonthId,
                             IsActive = true,
                             Amount = allocation.Amount
@@ -719,61 +657,11 @@ namespace GAppsDev.Controllers
                     );
                 }
 
-                foreach (var permission in permissions)
-                {
-                    allocations.AddRange(
-                        basketsToAllocationRep.GetList()
-                            .Where(x => x.BasketId == permission.Budgets_Baskets.Id && x.BudgetId == activeBudget.Id)
-                            .Select(x => x.Budgets_Allocations)
-                            .ToList()
-                            );
-                }
-
-                allocations = allocations.Distinct().ToList();
-                foreach (var allocation in allocations)
-                {
-                    List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
-                    decimal totalRemaining = 0;
-
-                    for (int monthNumber = 1; monthNumber <= DateTime.Now.Month; monthNumber++)
-                    {
-                        var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                        decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                        decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                        allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-
-                        if (monthNumber <= DateTime.Now.Month)
-                            totalRemaining += remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
-                    }
-                }
-
-                allocationsSelectList = allocations
-                    .Select(a => new { Id = a.Id, Name = String.Format("{0} ({1})", a.Name, a.Budgets_AllocationToMonth.Sum(x => x.Amount)) })
-                    .AsEnumerable()
-                    .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name.ToString() })
-                    .ToList();
-
-                ViewBag.Allocations = allocations;
-                ViewBag.UserRoles = CurrentUser.Roles;
-                ViewBag.BudgetAllocationId = new SelectList(allocationsSelectList, "Id", "Name");
+                ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id);
                 ViewBag.BudgetYear = activeBudget.Year;
+                ViewBag.ExistingItems = ItemsToString(model.Order.Orders_OrderToItem);
+                return View(model);
             }
-
-            if (model.Order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
-
-            string existingItems = "";
-            foreach (var item in model.Order.Orders_OrderToItem)
-            {
-                existingItems += String.Format("{0},{1},{2},{3};", item.ItemId, item.Orders_Items.Title, item.Quantity, item.SingleItemPrice);
-            }
-
-            if (!String.IsNullOrEmpty(existingItems))
-                existingItems = existingItems.Remove(existingItems.Length - 1);
-
-            ViewBag.ExistingItems = existingItems;
-
-            return View(model);
         }
 
         [OpenIdAuthorize]
@@ -1100,21 +988,21 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.OrdersWriter))
             {
-                Order order = new Order();
+                OrdersRepository.ExeedingOrderData model = new OrdersRepository.ExeedingOrderData();
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    order = ordersRep.GetEntity(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                    model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
                 }
 
-                if (order != null)
+                if (model != null)
                 {
-                    if (order.UserId == CurrentUser.UserId)
+                    if (model.OriginalOrder.UserId == CurrentUser.UserId)
                     {
-                        if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
+                        if (model.OriginalOrder.StatusId == (int)StatusType.Pending || model.OriginalOrder.StatusId == (int)StatusType.PendingOrderCreator)
                         {
-                            ViewBag.OrderId = order.Id;
-                            return View(order);
+                            ViewBag.OrderId = model.OriginalOrder.Id;
+                            return View(model);
                         }
                         else
                         {
@@ -2149,7 +2037,21 @@ namespace GAppsDev.Controllers
             return items;
         }
 
-        public UploadedFile GetUniqueFile(string folderName, int uniqueId)
+        private string ItemsToString(IEnumerable<Orders_OrderToItem> orderItems)
+        {
+            string existingItems = "";
+
+            foreach (var item in orderItems)
+            {
+                existingItems += String.Format("{0},{1},{2},{3};", item.ItemId, item.Orders_Items.Title, item.Quantity, item.SingleItemPrice);
+            }
+
+            if (!String.IsNullOrEmpty(existingItems)) existingItems = existingItems.Remove(existingItems.Length - 1);
+
+            return existingItems;
+        }
+
+        private UploadedFile GetUniqueFile(string folderName, int uniqueId)
         {
             UploadedFile file = new UploadedFile();
 
@@ -2174,7 +2076,7 @@ namespace GAppsDev.Controllers
             return file;
         }
 
-        public void SaveUniqueFile(HttpPostedFileBase file, string folderName, int uniqueId)
+        private void SaveUniqueFile(HttpPostedFileBase file, string folderName, int uniqueId)
         {
             string directoryPath = Server.MapPath("~/App_Data/Uploads/" + folderName);
             string PrefixPattern = String.Format("{0}_{1}.*", CurrentUser.CompanyId, uniqueId);
