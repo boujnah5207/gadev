@@ -17,6 +17,11 @@ body {
     padding: 0;
 }
 
+.pattern {
+    font-style:italic;
+    color:gray;
+}
+
 img
 {
     border:none;

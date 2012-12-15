@@ -4,41 +4,69 @@ $(function () {
 
 });
 
-function addItem() {
+function addSelectedItem() {
+    console.log($("#budgetAllocations option:selected"));
     if ($("#budgetAllocations option:selected").length > 0) {
-        var allocationId = $("#budgetAllocations").val();
+        var allocationId = $("#budgetAllocations option:selected").val();
         var allocationText = $("#budgetAllocations option:selected").text();
-        var container = $("#budgetContainer");
-        var nextNumber = $(".budget").length;
+        
+        addItem(allocationId, allocationText);
+    }
+}
 
-        var existingItems = $(".existingAllocations");
-        var itemExists = false;
+function addItem(id, text) {
+    var container = $("#budgetContainer");
+    var nextNumber = $(".budget").length;
 
-        for (var i = 0; i < existingItems.length; i++) {
-            if ($(existingItems[i]).val() == allocationId) {
-                itemExists = true;
-            }
-        }
+    var existingItems = $(".existingAllocations");
+    var itemExists = false;
 
-        var existingRemovedItem = getRemovedItem(allocationId);
-        if (existingRemovedItem == null) {
-            if (!itemExists) {
-                var newItem = $(
-                    "<div class='budget' id='permissionAllocation-" + nextNumber + "'>" +
-                                "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
-                                "<input type='hidden' class='existingAllocations' id='allocationField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].Allocation.BudgetsAllocationId' value='" + allocationId + "' />" +
-                                "<span>" + allocationText + "<\span>" +
-                                "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + nextNumber + ") '/>" +
-                            "</div>"
-                    );
-
-                container.append(newItem);
-            }
-        }
-        else {
-            unRemove(allocationId);
+    for (var i = 0; i < existingItems.length; i++) {
+        if ($(existingItems[i]).val() == id) {
+            itemExists = true;
         }
     }
+
+    var existingRemovedItem = getRemovedItem(id);
+    if (existingRemovedItem == null) {
+        if (!itemExists) {
+            var newItem = $(
+                "<div class='budget' id='permissionAllocation-" + nextNumber + "'>" +
+                            "<input type='hidden' class='isActiveField' id='isActiveField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].IsActive' value='true' />" +
+                            "<input type='hidden' class='existingAllocations' id='allocationField-" + nextNumber + "' name='BudgetAllocations.PermissionAllocations[" + nextNumber + "].Allocation.BudgetsAllocationId' value='" + id + "' />" +
+                            "<span>" + text + "<\span>" +
+                            "<input type='button'  value='" + local.Delete + "' onClick='removeItem(" + nextNumber + ") '/>" +
+                        "</div>"
+                );
+
+            container.append(newItem);
+        }
+    }
+    else {
+        unRemove(id);
+    }
+}
+
+function addRange() {
+    var fromSortingCode = $("#budgetAllocationsFrom option:selected").data("sort");
+    var ToSortingCode = $("#budgetAllocationsTo option:selected").data("sort");
+    console.log(fromSortingCode);
+    console.log(ToSortingCode);
+    for (var i = fromSortingCode; i <= ToSortingCode; i++) {
+        console.log(i);
+        var allocations = $("#budgetAllocations option[data-sort='" + i + "']");
+        if (allocations.length == 0) continue;
+        console.log(allocations);
+        for (var i2 = 0; i2 < allocations.length; i2++ ) {
+            console.log($(allocations[i2]));
+            console.log($(allocations[i2]).val());
+            console.log($(allocations[i2]).html());
+            addItem($(allocations[i2]).val(), $(allocations[i2]).text());
+            console.log("finish1");
+        }
+        console.log("finish2");
+    }
+    console.log("finish3");
 }
 
 function removeItem(allocationIndex) {

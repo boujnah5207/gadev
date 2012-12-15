@@ -1338,4 +1338,10 @@
   <data name="Warning_OrderExceedsAllocations" xml:space="preserve">
     <value>הזמנה זו חורגת מהסכום שנותר בהקצאות התקציביות שלה</value>
   </data>
+  <data name="AllocationName" xml:space="preserve">
+    <value>שם סעיף תקציבי</value>
+  </data>
+  <data name="SortingCode" xml:space="preserve">
+    <value>קוד מיון</value>
+  </data>
 </root>
