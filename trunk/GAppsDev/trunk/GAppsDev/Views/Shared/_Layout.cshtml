@@ -15,15 +15,25 @@
             <style>
                 div, span, html, body, table, td, tr, th
                 {
-                    padding: 2px !important;
+                    max-width:480px;
+                    padding: 3px !important;
                     margin: 1px !important;
                     width: auto !important;
-                    font-size:smaller !important;
+                    font-size:small !important;
                 }
             </style>
         }
     }
-
+    <style>
+                div, span, html, body, table, td, tr, th
+                {
+                    max-width:480px;
+                    padding: 3px !important;
+                    margin: 0 !important;
+                    width: auto !important;
+                    font-size:small !important;
+                }
+            </style>
     @if (ViewBag.CurrentUser != null)
     {
         if (ViewBag.CurrentUser.LanguageCode == "he" || ViewBag.CurrentUser.LanguageCode == "ar")
