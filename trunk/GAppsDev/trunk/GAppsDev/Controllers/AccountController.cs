@@ -8,6 +8,7 @@ using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using DotNetOpenAuth.Messaging;
 using WebMatrix.WebData;
+using System.Text;
 
 namespace GAppsDev.Controllers
 {
@@ -42,22 +43,15 @@ namespace GAppsDev.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "חשבון המשתמש אינו רשום במערכת";
+                    StringBuilder builder = new StringBuilder();
+                    builder.AppendLine("חשבון המשתמש אינו רשום במערכת");
+                    builder.AppendLine("<br />");
+                    builder.AppendLine("אנא צא מהחשבון הנוכחי והיכנס עם הרשאות מערכת הרכש");
+
+                    ViewBag.ErrorMessage = builder.ToString();
                     return View("Error");
                 }
             }
-
-
-            //bool sucsess = Membership.ValidateUser("netivot@org", "123456");
-
-            //string s = HttpContext.User.Identity.AuthenticationType;
-            //string h = User.Identity.AuthenticationType;
-
-            //using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, @"https://matnasim.co.il"))
-            //{
-            //    // validate the credentials
-            //    bool isValid = pc.ValidateCredentials("netivot@org", "123456");
-            //}
 
             return View();
         }

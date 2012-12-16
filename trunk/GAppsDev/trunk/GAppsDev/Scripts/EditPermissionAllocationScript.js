@@ -5,7 +5,6 @@ $(function () {
 });
 
 function addSelectedItem() {
-    console.log($("#budgetAllocations option:selected"));
     if ($("#budgetAllocations option:selected").length > 0) {
         var allocationId = $("#budgetAllocations option:selected").val();
         var allocationText = $("#budgetAllocations option:selected").text();
@@ -50,23 +49,13 @@ function addItem(id, text) {
 function addRange() {
     var fromSortingCode = $("#budgetAllocationsFrom option:selected").data("sort");
     var ToSortingCode = $("#budgetAllocationsTo option:selected").data("sort");
-    console.log(fromSortingCode);
-    console.log(ToSortingCode);
     for (var i = fromSortingCode; i <= ToSortingCode; i++) {
-        console.log(i);
         var allocations = $("#budgetAllocations option[data-sort='" + i + "']");
         if (allocations.length == 0) continue;
-        console.log(allocations);
         for (var i2 = 0; i2 < allocations.length; i2++ ) {
-            console.log($(allocations[i2]));
-            console.log($(allocations[i2]).val());
-            console.log($(allocations[i2]).html());
             addItem($(allocations[i2]).val(), $(allocations[i2]).text());
-            console.log("finish1");
         }
-        console.log("finish2");
     }
-    console.log("finish3");
 }
 
 function removeItem(allocationIndex) {

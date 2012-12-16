@@ -375,7 +375,6 @@ function UpdateItemsList(newItemList) {
 
 function addNewItem(itemId, itemName, quantity, price) {
     var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: (price * quantity).toFixed(2) };
-    console.log(itemToInsert);
     var isInArray = false;
     var doubleIndex;
     for (var i in itemList) {
@@ -504,7 +503,6 @@ function addAllocation() {
         existingAllocations = $(".existingFutureAllocations");
 
         if (wantedAmount > remainingMonthAmount) {
-            console.log(wantedAmount + " > " + remainingMonthAmount);
             isExeedingAllocation = true;
             //alert(local.AmountExceedsAllocation);
             //return;
