@@ -120,6 +120,11 @@
         @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
         <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
 
+        @if(ViewBag.ReAllocationRequired)
+        {
+            <br />
+            <span style="color:red;"> @Loc.Dic.BasketsChangedPleaseReAllocate. </span>
+        }
         @if (hasFuturePermission)
         {
         <div id="FutureOrderContainer" @if(!Model.IsFutureOrder){<text>style="display:none;"</text>}>
@@ -131,30 +136,31 @@
                     {
                         for (int i = 0; i < Model.Allocations.Count; i++)
                         {
-                        <div id='futureAllocation-@i' class='existingFutureAllocations'>
+                            bool allocationMonthExists = false;
+                            DB.Budgets_Allocations existingAllocation = ((List<DB.Budgets_Allocations>)ViewBag.Allocations).SingleOrDefault(x => x.Id == Model.Allocations[i].AllocationId);
+                            DB.Budgets_AllocationToMonth existingMonth = null;
+                            if (existingAllocation != null)
+                            {
+                                existingMonth = existingAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == Model.Allocations[i].MonthId);
+                                if (existingMonth != null)
+                                {
+                                    allocationMonthExists = true;
+                                }
+                            }
+
+                            bool isExeeding = allocationMonthExists && Model.Allocations[i].Amount > existingMonth.Amount;
+                        
+                        <div id='futureAllocation-@i' class='existingFutureAllocations @if(isExeeding){<text>exeedingAllocation</text>}'>
                         <input type='hidden' class='isActiveField' id='futureAllocation-isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
                         <input type='hidden' class='allocationIdField' id='futureAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@Model.Allocations[i].AllocationId' />
                         <input type='hidden' class='monthIdField' id='futureAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
                         <input type='hidden' class='amountField' id='futureAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
-                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name (@existingMonth.Amount) <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
                         <span class='exeedingMark' style='color:red;'>
-                            @{
-                                bool allocationMonthExists = false;
-                                DB.Budgets_Allocations existingAllocation = ((List<DB.Budgets_Allocations>)ViewBag.Allocations).SingleOrDefault(x => x.Id == Model.Allocations[i].AllocationId);
-                                DB.Budgets_AllocationToMonth existingMonth = null;
-                                if(existingAllocation != null)
-                                {
-                                    existingMonth = existingAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == Model.Allocations[i].MonthId);
-                                    if(existingMonth != null)
-                                    {
-                                        allocationMonthExists = true;
-                                    }
-                                }
-                            }
-                            @if (allocationMonthExists && Model.Allocations[i].Amount > existingMonth.Amount)
-                            {
-                                <text>@Loc.Dic.ExeedingAllocation</text>
-                            }
+                        @if (isExeeding)
+                        {
+                            <text>(@Loc.Dic.ExeedingAllocation)</text>
+                        }
                         </span>
                         <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("futureAllocation", @i)' />
                         </div>
@@ -172,14 +178,15 @@
         </div>
         }
 
-        <div id="NormalOrderContainer" @if(Model.IsFutureOrder){<text>style="display:none;"</text>}>
+        <div id="NormalOrderContainer" @if (Model.IsFutureOrder)
+                                       {<text>style="display:none;"</text>}>
             <fieldset id="normalAllocationsFieldset">
                 <legend>@Loc.Dic.BudgetAllocations</legend>
         
                 <div id="normalAllocationsContainer">
                     @if (!Model.IsFutureOrder && Model.Allocations.Count > 0)
                     {
-                        List<int> distinctAllocations = Model.Allocations.Select(x => x.AllocationId).Distinct().ToList(); 
+                        List<int> distinctAllocations = Model.Allocations.Select(x => x.AllocationId).Distinct().ToList();
                         List<GAppsDev.Models.OrderAllocation> combinedAllocations = new List<GAppsDev.Models.OrderAllocation>();
 
                         foreach (int allocationId in distinctAllocations)
@@ -187,21 +194,41 @@
                             combinedAllocations.Add(new GAppsDev.Models.OrderAllocation()
                             {
                                 AllocationId = allocationId,
-                                Amount = Model.Allocations.Sum( x => x.Amount),
+                                Amount = Model.Allocations.Sum(x => x.Amount),
                                 IsActive = true,
                                 MonthId = null,
-                                Name = Model.Allocations.First( x => x.AllocationId == allocationId).Name
+                                Name = Model.Allocations.First(x => x.AllocationId == allocationId).Name
                             });
                         }
 
                         for (int i = 0; i < combinedAllocations.Count; i++)
                         {
-                        <div id='normalAllocation-@i' class='existingNormalAllocations'>
+                            bool allocationMonthExists = false;
+                            DB.Budgets_Allocations existingAllocation = ((List<DB.Budgets_Allocations>)ViewBag.Allocations).SingleOrDefault(x => x.Id == Model.Allocations[i].AllocationId);
+                            DB.Budgets_AllocationToMonth existingMonth = null;
+                            if (existingAllocation != null)
+                            {
+                                existingMonth = existingAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == Model.Allocations[i].MonthId);
+                                if (existingMonth != null)
+                                {
+                                    allocationMonthExists = true;
+                                }
+                            }
+
+                            bool isExeeding = allocationMonthExists && Model.Allocations[i].Amount > existingMonth.Amount;
+                            
+                        <div id='normalAllocation-@i' class='existingNormalAllocations @if(isExeeding){<text>exeedingAllocation</text>}'>
                         <input type='hidden' class='isActiveField' id='normalAllocation-isActiveField-@i' name='Allocations[@i].IsActive' value='true' />
                         <input type='hidden' class='allocationIdField' id='normalAllocation-allocationIdField-@i' name='Allocations[@i].AllocationId' value='@combinedAllocations[i].AllocationId' />
                         <input type='hidden' class='monthIdField' id='normalAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@combinedAllocations[i].MonthId' />
                         <input type='hidden' class='amountField' id='normalAllocation-amountField-@i' name='Allocations[@i].Amount' value='@combinedAllocations[i].Amount' />
-                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @combinedAllocations[i].Name <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @combinedAllocations[i].Amount </span></span>
+                        <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @combinedAllocations[i].Name (@existingMonth.Amount) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @combinedAllocations[i].Amount </span></span>
+                        <span class='exeedingMark' style='color:red;'>
+                        @if (isExeeding)
+                        {
+                            <text>(@Loc.Dic.ExeedingAllocation)</text>
+                        }
+                        </span>
                         <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("normalAllocation", @i)' />
                         </div>
                         }

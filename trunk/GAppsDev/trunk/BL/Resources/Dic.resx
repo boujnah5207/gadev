@@ -1254,8 +1254,8 @@
   <data name="Status_PendingExport" xml:space="preserve">
     <value>Pending export</value>
   </data>
-  <data name="Status_PendingInvoice" xml:space="preserve">
-    <value>Pending invoice</value>
+  <data name="Status_ApprovedPendingInvoice" xml:space="preserve">
+    <value>Approved</value>
   </data>
   <data name="Status_PendingInvoiceApproval" xml:space="preserve">
     <value>Pending invoice approval</value>
@@ -1346,5 +1346,14 @@
   </data>
   <data name="SortingCode" xml:space="preserve">
     <value>Sortiong Code</value>
+  </data>
+  <data name="BasketsChangedPleaseReAllocate" xml:space="preserve">
+    <value>Your budget baskets were changed, please update allocations</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Log off</value>
+  </data>
+  <data name="LogOffWasSuccessful" xml:space="preserve">
+    <value>You successfully loged off the system</value>
   </data>
 </root>

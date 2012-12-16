@@ -34,12 +34,14 @@
                 <section id="login">
                     @Html.Partial("_LoginPartial")
                 </section>
+                @if (ViewBag.CurrentUser != null)
+                {
                 <nav>
                     <div id="mainMenu" style="text-align:center">
                         <ul>
                             <li id="OrdersPage">
                                 <img src="~/Content/images/GoldCoins.png" />
-                                @{ 
+                                    @{
                                     string actionName; 
                                     if(DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
                                     {
@@ -57,8 +59,8 @@
                                     {
                                         actionName = "Home";
                                     }
-                                }
-                                @Html.ActionLink(Loc.Dic.Procurement, actionName, "Orders", null, new { id = "OrdersLink" })
+                                    }
+                                    @Html.ActionLink(Loc.Dic.Procurement, actionName, "Orders", null, new { id = "OrdersLink" })
                             </li>
                             <li>|</li>
                             <li id="InventoryPage">
@@ -93,6 +95,7 @@
                         }
                     </ul>
                 </nav>
+                }
             </div>
         </div>
     </header>

@@ -1251,8 +1251,8 @@
   <data name="Status_PendingExport" xml:space="preserve">
     <value>ממתינה לייצוא</value>
   </data>
-  <data name="Status_PendingInvoice" xml:space="preserve">
-    <value>ממתינה לחשבונית</value>
+  <data name="Status_ApprovedPendingInvoice" xml:space="preserve">
+    <value>אושרה</value>
   </data>
   <data name="Status_PendingInvoiceApproval" xml:space="preserve">
     <value>ממתינה לאישור חשבונית</value>
@@ -1343,5 +1343,14 @@
   </data>
   <data name="SortingCode" xml:space="preserve">
     <value>קוד מיון</value>
+  </data>
+  <data name="BasketsChangedPleaseReAllocate" xml:space="preserve">
+    <value> הסלים התקציביים שלך השתנו, אנא הקצה מחדש</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>התנתקות</value>
+  </data>
+  <data name="LogOffWasSuccessful" xml:space="preserve">
+    <value>התנתקת בהצלחה מהמערכת</value>
   </data>
 </root>

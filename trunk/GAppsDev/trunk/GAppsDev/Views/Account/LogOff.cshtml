@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "התנתקות";
+    ViewBag.Title = ViewBag.Title;
     ViewBag.PageName = "";
     ViewBag.noSubMenu = true;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<span>התנתקת בהצלחה מהמערכת.</span>
+<div style="text-align:@ViewBag.Align;">
+    <span>@ViewBag.Message</span>
+</div>
