@@ -36,7 +36,6 @@ function UpdateItemsList(newItemList) {
 
 function addSupplier() {
     var newSupplierId = 0;
-    console.log(isSupplierDialogOpen);
     if (isSupplierDialogOpen)
         return;
     isSupplierDialogOpen = true;
