@@ -11,10 +11,10 @@
 
 @section ExtraScripts{
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
-    <script src="~/Scripts/editOrderScript.js"></script>
+    <script src="~/Scripts/createOrderScript.js"></script>
     <script>
         $(function () {
-            beginForm("@ViewBag.ExistingItems");
+            beginEdit("@ViewBag.ExistingItems");
         });
     </script>
 }
@@ -99,11 +99,14 @@
                         if (month == DateTime.Now.Month)
                         {
                             amount = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.Where(m => m.MonthId <= month).Sum(x => x.Amount);
+                            DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
+                            monthAllocation.Amount = amount;
                         }
                         else
                         {
                             DB.Budgets_AllocationToMonth monthAllocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]).Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month);
                             amount = monthAllocation == null ? 0 : monthAllocation.Amount;
+                            monthAllocation.Amount = amount;
                         }
                         
                         <option data-amount="@amount" value="@month">@Html.GetMonthName(month) (@amount)</option>
@@ -134,6 +137,25 @@
                         <input type='hidden' class='monthIdField' id='futureAllocation-monthIdField-@i' name='Allocations[@i].MonthId' value='@Model.Allocations[i].MonthId' />
                         <input type='hidden' class='amountField' id='futureAllocation-amountField-@i' name='Allocations[@i].Amount' value='@Model.Allocations[i].Amount' />
                         <span class='allocationText'> <span class="bold">@Loc.Dic.Allocation:</span> @Model.Allocations[i].Name <span class="bold">@Loc.Dic.Month:</span> @Html.GetMonthName(Model.Allocations[i].MonthId.Value) <span class="bold">@Loc.Dic.Amount:</span> <span class='amountText'> @Model.Allocations[i].Amount </span></span>
+                        <span class='exeedingMark' style='color:red;'>
+                            @{
+                                bool allocationMonthExists = false;
+                                DB.Budgets_Allocations existingAllocation = ((List<DB.Budgets_Allocations>)ViewBag.Allocations).SingleOrDefault(x => x.Id == Model.Allocations[i].AllocationId);
+                                DB.Budgets_AllocationToMonth existingMonth = null;
+                                if(existingAllocation != null)
+                                {
+                                    existingMonth = existingAllocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == Model.Allocations[i].MonthId);
+                                    if(existingMonth != null)
+                                    {
+                                        allocationMonthExists = true;
+                                    }
+                                }
+                            }
+                            @if (allocationMonthExists && Model.Allocations[i].Amount > existingMonth.Amount)
+                            {
+                                <text>@Loc.Dic.ExeedingAllocation</text>
+                            }
+                        </span>
                         <input type='button' value='@Loc.Dic.Delete' onClick='removeAllocation("futureAllocation", @i)' />
                         </div>
                         }

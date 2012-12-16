@@ -77,7 +77,7 @@ $(function () {
     });
 });
 
-function beginForm() {
+function beginCreate() {
     formContainer.slideToggle(0, null);
     form.slideToggle(500, null);
     selectedSupplier = {};
@@ -127,6 +127,64 @@ function beginForm() {
 
     itemPriceField.keyup(updateItemFinalPrice);
     itemQuantityField.keyup(updateItemFinalPrice);
+}
+
+function beginEdit(existingItems) {
+    selectedSupplier = {};
+    selectedSupplier.ID = hiddenSupplierField.val();
+
+    if (existingItems != "") {
+        var items = existingItems.split(";");
+        for (var i in items) {
+            itemValues = items[i].split(",");
+            addNewItem(
+                itemValues[0],
+                itemValues[1],
+                itemValues[2],
+                itemValues[3]
+            );
+        }
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID,
+    }).done(function (response) {
+        if (response.gotData) {
+            InitializeItemsList(response.data);
+
+            addItemButton.click(function () {
+                if ($("#ItemDropDownList option:selected") != null) {
+                    if (isNumber(itemPriceField.val()) && isNumber(itemQuantityField.val())) {
+                        if (itemQuantityField.val() != 0) {
+                            addNewItem(
+                                $("#ItemDropDownList option:selected").val(),
+                                $("#ItemDropDownList option:selected").text(),
+                                itemQuantityField.val(),
+                                itemPriceField.val()
+                                );
+                        }
+                        else {
+                            alert(local.QuantityIsZero);
+                        }
+                    }
+                    else {
+                        alert(local.InvalidQuantityOrPrice);
+                    }
+                }
+                else {
+                    alert(local.NoItemSelected);
+                }
+            });
+        }
+        else {
+            alert(response.message);
+        }
+    });
+
+    itemPriceField.keyup(updateItemFinalPrice);
+    itemQuantityField.keyup(updateItemFinalPrice);
+    updateTotalAllocation();
 }
 
 function addSupplier() {
@@ -317,7 +375,7 @@ function UpdateItemsList(newItemList) {
 
 function addNewItem(itemId, itemName, quantity, price) {
     var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: (price * quantity).toFixed(2) };
-
+    console.log(itemToInsert);
     var isInArray = false;
     var doubleIndex;
     for (var i in itemList) {
@@ -342,8 +400,7 @@ function addNewItem(itemId, itemName, quantity, price) {
         dialog_buttons[local.Merge] = function () {
             itemList[doubleIndex].quantity = parseFloat(itemList[doubleIndex].quantity, 10) + parseFloat(itemToInsert.quantity, 10);
             itemList[doubleIndex].price = itemToInsert.price;
-            itemList[doubleIndex].finalPrice = parseFloat(itemList[doubleIndex].price, 10) * parseFloat(itemList[doubleIndex].quantity, 10);
-            itemPriceField.val("");
+            itemList[doubleIndex].finalPrice = (parseFloat(itemList[doubleIndex].price, 10) * parseFloat(itemList[doubleIndex].quantity, 10)).toFixed(2);
             itemQuantityField.val("");
             itemFinalPrice.val("0");
             updateItems();
@@ -418,8 +475,8 @@ function addAllocation() {
     var allocationId = $("#allocationsSelectList option:selected").val();
     var monthId = $("#allocation-" + allocationId + " option:selected").val();
     var monthName = $("#allocation-" + allocationId + " option:selected").text();
-    var wantedAmount = $("#allocationAmount").val();
-    var remainingMonthAmount = $("#allocation-" + allocationId + " option:selected").data("amount");
+    var wantedAmount = parseFloat($("#allocationAmount").val());
+    var remainingMonthAmount = parseFloat($("#allocation-" + allocationId + " option:selected").data("amount"));
     var remainingAllocationAmount = $("#allocationsSelectList option:selected").data("amount");
     var allocationText = $("#allocationsSelectList option:selected").text();
     var allocationExists = false;
@@ -447,6 +504,7 @@ function addAllocation() {
         existingAllocations = $(".existingFutureAllocations");
 
         if (wantedAmount > remainingMonthAmount) {
+            console.log(wantedAmount + " > " + remainingMonthAmount);
             isExeedingAllocation = true;
             //alert(local.AmountExceedsAllocation);
             //return;
@@ -615,6 +673,6 @@ function updateTotalAllocation() {
             totalNormalAllocation += parseFloat($(existingNormalAllocations[i]).find(".amountField").val());
     }
 
-    $("#totalNormalAllocation").val(totalNormalAllocation);
-    $("#totalFutureAllocation").val(totalFutureAllocation);
+    $("#totalNormalAllocation").val(totalNormalAllocation.toFixed(2));
+    $("#totalFutureAllocation").val(totalFutureAllocation.toFixed(2));
 }

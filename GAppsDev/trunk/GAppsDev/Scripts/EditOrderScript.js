@@ -327,7 +327,6 @@ function isInt(value) {
     }
 }
 
-
 function addAllocation() {
 
     var allocationId = $("#allocationsSelectList option:selected").val();
