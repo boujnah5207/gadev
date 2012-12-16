@@ -131,7 +131,7 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
 
-            if (model.OrderApproverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
+            if (model.OrderApproverNotes != null && model.OrderApproverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
             Order orderFromDB;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))

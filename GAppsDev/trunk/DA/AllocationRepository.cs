@@ -22,10 +22,10 @@ namespace DA
                 .Where(x => x.CompanyId == _companyId && !x.IsCanceled);
         }
 
-        public IQueryable<Budgets_Allocations> GetCanceled(params string[] includes)
+        public IQueryable<Budgets_Allocations> GetWithCanceled(params string[] includes)
         {
             return base.GetList(includes)
-                .Where(x => x.CompanyId == _companyId && x.IsCanceled);
+                .Where(x => x.CompanyId == _companyId);
         }
 
         public override Budgets_Allocations GetEntity(int id, params string[] includes)
@@ -49,7 +49,7 @@ namespace DA
 
             List<Budgets_Allocations> allocations;
 
-            allocations = this.GetList(includes).Where(x => allocationIds.Contains(x.Id)).ToList();
+            allocations = this.GetWithCanceled(includes).Where(x => allocationIds.Contains(x.Id)).ToList();
 
             foreach (var allocation in allocations)
             {
