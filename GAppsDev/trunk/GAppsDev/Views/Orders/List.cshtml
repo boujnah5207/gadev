@@ -104,7 +104,7 @@
 
             <td>
                 @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
-                @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator)
+                @if (item.Orders_Statuses.Id == (int)DA.StatusType.Pending || item.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator || item.Orders_Statuses.Id == (int)DA.StatusType.PartiallyApproved)
                 {
                     if (item.UserId == ViewBag.CurrentUserId)
                     {

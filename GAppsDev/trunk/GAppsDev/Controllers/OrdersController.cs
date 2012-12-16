@@ -95,7 +95,9 @@ namespace GAppsDev.Controllers
             {
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                     .Where(x =>
-                        x.NextOrderApproverId == CurrentUser.UserId
+                        x.NextOrderApproverId == CurrentUser.UserId &&
+                        x.StatusId != (int)StatusType.Declined &&
+                        x.StatusId != (int)StatusType.PendingOrderCreator
                         );
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
