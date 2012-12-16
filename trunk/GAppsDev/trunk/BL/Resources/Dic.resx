@@ -1356,4 +1356,7 @@
   <data name="LogOffWasSuccessful" xml:space="preserve">
     <value>You successfully loged off the system</value>
   </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
 </root>
