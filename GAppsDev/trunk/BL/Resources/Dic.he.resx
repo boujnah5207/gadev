@@ -1353,4 +1353,7 @@
   <data name="LogOffWasSuccessful" xml:space="preserve">
     <value>התנתקת בהצלחה מהמערכת</value>
   </data>
+  <data name="Support" xml:space="preserve">
+    <value>תמיכה</value>
+  </data>
 </root>
