@@ -25,7 +25,7 @@ namespace GAppsDev
                 case StatusType.PartiallyApproved:
                     return Loc.Dic.Status_PartiallyApproved;
                 case StatusType.ApprovedPendingInvoice:
-                    return Loc.Dic.Status_PendingInvoice;
+                    return Loc.Dic.Status_ApprovedPendingInvoice;
                 case StatusType.InvoiceScannedPendingOrderCreator:
                     return Loc.Dic.Status_PendingOrderCreator;
                 case StatusType.InvoiceApprovedByOrderCreatorPendingFileExport:

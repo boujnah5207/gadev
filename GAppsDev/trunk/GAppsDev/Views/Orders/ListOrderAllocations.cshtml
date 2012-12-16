@@ -12,29 +12,25 @@
     }
 
     DA.OrdersRepository.ExeedingOrderData data = ViewBag.ExeedingData;
-    
-    List<DB.Orders_OrderToAllocation> displayAllocations;
 
-    if (!ViewBag.IsFutureOrder)
+    var distinctAllocationIds = Model.Select(x => x.AllocationId).Distinct().ToList();
+    foreach (var allocationId in distinctAllocationIds)
     {
-        List<int> distinctAllocationsIds = Model.Select(x => x.AllocationId).Distinct().ToList();
-        displayAllocations = new List<DB.Orders_OrderToAllocation>();
+        var combineSplitted = Model.Where(x => x.MonthId <= data.OriginalOrder.CreationDate.Month && x.AllocationId == allocationId).ToList();
 
-        foreach (int allocationId in distinctAllocationsIds)
+        foreach (var item in combineSplitted)
         {
-            displayAllocations.Add(
-                new DB.Orders_OrderToAllocation()
-                {
-                    Budgets_Allocations = Model.First(x => x.AllocationId == allocationId).Budgets_Allocations,
-                    MonthId = 0,
-                    Amount = Model.Where(x => x.AllocationId == allocationId).Sum(a => a.Amount)
-                }
-                );
+            Model.Remove(item);
         }
-    }
-    else
-    {
-        displayAllocations = Model;
+
+        Model.Add(
+            new DB.Orders_OrderToAllocation()
+            {
+                AllocationId = allocationId,
+                MonthId = data.OriginalOrder.CreationDate.Month,
+                Amount = combineSplitted.Sum(x => x.Amount)
+            }
+        );
     }
 }
 
@@ -74,11 +70,11 @@
             </th>
         }
     </tr>
-    @for (int index = 0; index < displayAllocations.Count; index++)
+    @for (int index = 0; index < Model.Count; index++)
     {
-        DB.Orders_OrderToAllocation item = displayAllocations[index];
+        DB.Orders_OrderToAllocation item = Model[index];
         var exeed = data.ExeedingMonthAllocations.SingleOrDefault( x => x.AllocationId == item.AllocationId && x.MonthId == item.MonthId);
-            
+        
         <tr class="@if (exeed != null)
                    {<text>exeedingAllocation </text>}
                    else if (index % 2 != 0)

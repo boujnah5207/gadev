@@ -116,7 +116,8 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
+                model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
                 if (model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
@@ -457,7 +458,8 @@ namespace GAppsDev.Controllers
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
-                model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
+                model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
                 if (!Authorized(RoleType.OrdersViewer) && model.OriginalOrder.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
@@ -475,12 +477,13 @@ namespace GAppsDev.Controllers
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
-                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where( x => x.ExternalId != null).OrderBy(s => s.Name).ToList(), "Id", "Name");
+                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.ExternalId != null).OrderBy(s => s.Name).ToList(), "Id", "Name");
 
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
                 if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
 
                 ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id);
+                if (!((List<Budgets_Allocations>)ViewBag.Allocations).Any()) return Error(Loc.Dic.error_user_have_no_allocations);
                 ViewBag.BudgetYear = activeBudget.Year;
                 return View();
             }
@@ -634,45 +637,38 @@ namespace GAppsDev.Controllers
                 model.Order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation.Budgets_Allocations");
                 if (model.Order == null) return Error(Loc.Dic.error_order_not_found);
                 if (model.Order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
-                
+
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
                 if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
 
                 model.IsFutureOrder = model.Order.IsFutureOrder;
 
+                List<Budgets_Allocations> userAllocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id, id);
+                if (!userAllocations.Any()) return Error(Loc.Dic.error_user_have_no_allocations);
+
                 model.Allocations = new List<OrderAllocation>();
-                List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
-                
-                var distinctAllocationIds = existingOrderAllocations.Select(x => x.AllocationId).Distinct().ToList();
+                List<Orders_OrderToAllocation> validOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
+
+                var distinctAllocationIds = validOrderAllocations.Select(x => x.AllocationId).Distinct().ToList();
                 foreach (var allocationId in distinctAllocationIds)
                 {
-                    var combineSplitted = existingOrderAllocations.Where(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
+                    var combineSplitted = validOrderAllocations.Where(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
                     model.Allocations.Add(
                         new OrderAllocation()
                             {
                                 AllocationId = allocationId,
-                                Name = existingOrderAllocations.First(x => x.AllocationId == allocationId).Budgets_Allocations.Name,
+                                Name = validOrderAllocations.First(x => x.AllocationId == allocationId).Budgets_Allocations.DisplayName,
                                 MonthId = model.Order.CreationDate.Month,
                                 IsActive = true,
                                 Amount = combineSplitted.Sum(x => x.Amount)
                             }
                     );
 
-                    existingOrderAllocations.RemoveAll(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
+                    validOrderAllocations.RemoveAll(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
                 }
 
-                foreach (var allocation in existingOrderAllocations)
+                foreach (var allocation in validOrderAllocations)
                 {
-                    var combineSplitted = existingOrderAllocations.Where(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocation.AllocationId);
-                    new OrderAllocation()
-                    {
-                        AllocationId = allocation.AllocationId,
-                        Name = allocation.Budgets_Allocations.Name,
-                        MonthId = model.Order.CreationDate.Month,
-                        IsActive = true,
-                        Amount = existingOrderAllocations.Sum(x => x.Amount)
-                    };
-
                     model.Allocations.Add(
                         new OrderAllocation()
                         {
@@ -685,7 +681,13 @@ namespace GAppsDev.Controllers
                     );
                 }
 
-                ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id, id);
+                ViewBag.Allocations = userAllocations;
+
+                int allAllocationsCount = model.Allocations.Count;
+                model.Allocations = model.Allocations.Where(x => userAllocations.Any(a => a.Id == x.AllocationId)).ToList();
+                int validAllocationsCount = model.Allocations.Count;
+
+                ViewBag.ReAllocationRequired = allAllocationsCount > validAllocationsCount;
                 ViewBag.BudgetYear = activeBudget.Year;
                 ViewBag.ExistingItems = ItemsToString(model.Order.Orders_OrderToItem);
                 return View(model);
@@ -1020,7 +1022,8 @@ namespace GAppsDev.Controllers
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
-                    model = ordersRep.GetOrderWithExeedingData(id, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                    StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
+                    model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
                 }
 
                 if (model != null)

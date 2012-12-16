@@ -39,7 +39,6 @@ namespace DA
 
             entity.OrderNumber = latestOrderNumber.Value;
             entity.CreationDate = DateTime.Now;
-            entity.StatusId = (int)StatusType.Pending;
             entity.LastStatusChangeDate = DateTime.Now;
             entity.WasAddedToInventory = false;
             entity.CompanyId = _companyId;
@@ -47,7 +46,7 @@ namespace DA
             return base.Create(entity);
         }
 
-        public ExeedingOrderData GetOrderWithExeedingData(int id, params string[] includes)
+        public ExeedingOrderData GetOrderWithExeedingData(int id, StatusType minStatus, params string[] includes)
         {
             ExeedingOrderData data = new ExeedingOrderData();
             data.ExeedingMonthAllocations = new List<ExeedingAllocationMonthData>();
@@ -61,7 +60,7 @@ namespace DA
             {
                 foreach (var allocationId in orderAllocationIds)
                 {
-                    var allocationData = allocationsRep.GetAllocationsData(new int[] { allocationId }, StatusType.Pending).First();
+                    var allocationData = allocationsRep.GetAllocationsData(new int[] { allocationId }, minStatus).First();
 
                     var previousOrdersMonthAllocations =
                         allocationData
@@ -85,6 +84,20 @@ namespace DA
                         var monthData = allocationData.Months.Single( x => x.MonthId == month.MonthId);
                         decimal orderAmountFromMonth = orderMonthAllocations.Where( x => x.MonthId == month.MonthId).Sum( x => x.Amount);
                         decimal previousAmountFromMonth = previousOrdersMonthAllocations.Where( x => x.MonthId == month.MonthId).Sum( x => x.Amount);
+
+                        //bool isAccumulated = false;
+                        //decimal accumulatedRemainingAmount = 0;
+                        //decimal accumulatedUsingAmount = 0;
+                        if (month.MonthId == data.OriginalOrder.CreationDate.Month)
+                        {
+                            monthData.TotalAmount = allocationData.Months.Where(x => x.MonthId <= month.MonthId).Sum(x => x.TotalAmount);
+
+                            orderAmountFromMonth = orderMonthAllocations.Where(x => x.MonthId <= month.MonthId).Sum(x => x.Amount);
+                            previousAmountFromMonth = previousOrdersMonthAllocations.Where(x => x.MonthId <= month.MonthId).Sum(x => x.Amount);
+                            //isAccumumonthDatalated = true;
+                            //accumulatedRemainingAmount = allocationData.Months.Where(x => x.MonthId <= month.MonthId).Sum(x => x.RemainingAmount);
+                            //accumulatedUsingAmount = allocationData.Months.Where(x => x.MonthId <= month.MonthId).Sum(x => x.UsedAmount);
+                        }
 
                         if ((previousAmountFromMonth + orderAmountFromMonth) > monthData.TotalAmount)
                         {

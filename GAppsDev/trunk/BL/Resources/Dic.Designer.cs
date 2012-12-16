@@ -466,6 +466,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your budget baskets were changed, please update allocations.
+        /// </summary>
+        public static string BasketsChangedPleaseReAllocate {
+            get {
+                return ResourceManager.GetString("BasketsChangedPleaseReAllocate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Baskets To Allocation.
         /// </summary>
         public static string BasketsToAllocation {
@@ -2257,6 +2266,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log off.
+        /// </summary>
+        public static string LogOff {
+            get {
+                return ResourceManager.GetString("LogOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You successfully loged off the system.
+        /// </summary>
+        public static string LogOffWasSuccessful {
+            get {
+                return ResourceManager.GetString("LogOffWasSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Managment.
         /// </summary>
         public static string Managment {
@@ -3166,6 +3193,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string Status_ApprovedPendingInvoice {
+            get {
+                return ResourceManager.GetString("Status_ApprovedPendingInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Declined.
         /// </summary>
         public static string Status_Declined {
@@ -3216,15 +3252,6 @@ namespace Loc {
         public static string Status_PendingExport {
             get {
                 return ResourceManager.GetString("Status_PendingExport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pending invoice.
-        /// </summary>
-        public static string Status_PendingInvoice {
-            get {
-                return ResourceManager.GetString("Status_PendingInvoice", resourceCulture);
             }
         }
         

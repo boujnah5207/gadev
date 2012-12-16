@@ -37,13 +37,13 @@ namespace GAppsDev.Controllers
                 }
                 else if (result.IsCanceled)
                 {
-                    ViewBag.ErrorMessage = Loc.Dic.error_user_was_canceled;
-                    return View("Error_NoLayout");
+                    ViewBag.ErrorMessage = "חשבון משתמש זה בוטל, אנא פנה למנהל המערכת";
+                    return View("Error");
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = Loc.Dic.error_user_not_registerd;
-                    return View("Error_NoLayout");
+                    ViewBag.ErrorMessage = "חשבון המשתמש אינו רשום במערכת";
+                    return View("Error");
                 }
             }
 
@@ -78,11 +78,21 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult LogOff()
         {
-            Session.Remove("User");
+            ViewBag.Title = Loc.Dic.LogOff;
+            ViewBag.Message = Loc.Dic.LogOffWasSuccessful;
+            ViewBag.Align = (CurrentUser.LanguageCode == "he" || CurrentUser.LanguageCode == "ar") ? "right" : "left";
 
-            HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
-            myCookie.Expires = DateTime.Now.AddDays(-1d);
-            Response.Cookies.Add(myCookie);
+            Session.Clear();
+
+            string[] myCookies = Request.Cookies.AllKeys;
+            foreach (string cookie in myCookies)
+            {
+                Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
+            }
+
+            //HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
+            //myCookie.Expires = DateTime.Now.AddDays(-1d);
+            //Response.Cookies.Add(myCookie);
 
             return View();
         }
