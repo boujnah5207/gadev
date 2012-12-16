@@ -385,9 +385,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="App_Data\Uploads\Invoices\1_3.pdf" />
-    <Content Include="App_Data\Uploads\Receipts\1_3.pdf" />
-    <None Include="Properties\PublishProfiles\profile1.pubxml" />
+    <None Include="Properties\PublishProfiles\bezeqintFTP.pubxml" />
+    <None Include="Properties\PublishProfiles\fileSystem.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Rotativa\libeay32.dll" />
     <Content Include="Rotativa\libgcc_s_dw2-1.dll" />
@@ -592,7 +591,10 @@
     <Content Include="Views\Orders\UpdateInvoiceFile.cshtml" />
     <Content Include="Views\Orders\UpdateReceipt.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\Uploads\Invoices\" />
+    <Folder Include="App_Data\Uploads\Receipts\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
