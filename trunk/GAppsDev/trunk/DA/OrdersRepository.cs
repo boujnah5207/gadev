@@ -101,6 +101,8 @@ namespace DA
 
                         if ((previousAmountFromMonth + orderAmountFromMonth) > monthData.TotalAmount)
                         {
+                            decimal exeedingAmount = ((monthData.TotalAmount - (previousAmountFromMonth + orderAmountFromMonth)) * -1);
+
                             var newData = new ExeedingAllocationMonthData()
                             {
                                 AllocationId = allocationData.AllocationId,
@@ -109,7 +111,7 @@ namespace DA
                                 AmountUsedByPreviousOrders = previousAmountFromMonth,
                                 OrderAmountFromMonth = orderAmountFromMonth,
                                 RemainingMonthAmount = monthData.RemainingAmount,
-                                ExeedingAmount = (monthData.TotalAmount - (previousAmountFromMonth + orderAmountFromMonth)) * -1,
+                                ExeedingAmount = exeedingAmount > orderAmountFromMonth ? orderAmountFromMonth : exeedingAmount,
                             };
 
                             data.ExeedingMonthAllocations.Add(newData);

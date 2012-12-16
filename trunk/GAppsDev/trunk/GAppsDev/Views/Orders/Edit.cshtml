@@ -251,7 +251,7 @@
             @Loc.Dic.Notes
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Order.Notes)
+            @Html.TextAreaFor(model => model.Order.Notes, new { maxlength = "250" })
             @Html.ValidationMessageFor(model => model.Order.Notes)
         </div>
         <br />
