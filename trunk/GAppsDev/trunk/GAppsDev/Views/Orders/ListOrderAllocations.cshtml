@@ -28,7 +28,8 @@
             {
                 AllocationId = allocationId,
                 MonthId = data.OriginalOrder.CreationDate.Month,
-                Amount = combineSplitted.Sum(x => x.Amount)
+                Amount = combineSplitted.Sum(x => x.Amount),
+                Budgets_Allocations = combineSplitted.First().Budgets_Allocations
             }
         );
     }
