@@ -33,7 +33,7 @@ namespace DA
             int? latestInventarNumber;
             using (InventoryRepository inventoryRepository = new InventoryRepository(_companyId))
             {
-                latestInventarNumber = inventoryRepository.GetList().Select(x => x.InventarNumber).Max();
+                latestInventarNumber = inventoryRepository.GetList().Select(x => (int?)x.InventarNumber).Max();
                 if (latestInventarNumber.HasValue)
                     latestInventarNumber++;
                 else

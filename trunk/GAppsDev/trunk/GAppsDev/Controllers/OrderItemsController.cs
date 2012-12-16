@@ -190,9 +190,9 @@ namespace GAppsDev.Controllers
                 using (OrderItemsRepository itemRep = new OrderItemsRepository(CurrentUser.CompanyId))
                 {
                     if(id.HasValue)
-                        allItems = itemRep.GetList().Where(item => item.SupplierId == id && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).ToList();
+                        allItems = itemRep.GetList().Where(item => item.SupplierId == id && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).OrderBy(x => x.Title).ToList();
                     else
-                        allItems = itemRep.GetList().Where(item => item.SupplierId == null && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).ToList();
+                        allItems = itemRep.GetList().Where(item => item.SupplierId == null && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).OrderBy(x => x.Title).ToList();
 
                 }
 
