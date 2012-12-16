@@ -95,8 +95,7 @@ namespace GAppsDev.Controllers
             {
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                     .Where(x =>
-                        x.NextOrderApproverId == CurrentUser.UserId &&
-                        x.StatusId == (int)StatusType.Pending
+                        x.NextOrderApproverId == CurrentUser.UserId
                         );
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
@@ -684,6 +683,10 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
             if (!ModelState.IsValid) return Error(Loc.Dic.error_invalid_form);
 
+            // Initializing needed temporary variables
+            bool allowExeeding = true;
+            List<Orders_OrderToAllocation> AllocationsToCreate = new List<Orders_OrderToAllocation>();
+
             Order orderFromDatabase;
             List<Orders_OrderToItem> itemsFromEditForm = new List<Orders_OrderToItem>();
             List<Orders_OrderToItem> itemsToDelete = new List<Orders_OrderToItem>();
@@ -710,7 +713,7 @@ namespace GAppsDev.Controllers
             if (itemsFromEditForm.Count == 0) return Error(Loc.Dic.error_order_has_no_items);
 
             totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
-            
+
             if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
             model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
             totalAllocation = model.Allocations.Sum(x => x.Amount);
@@ -722,157 +725,75 @@ namespace GAppsDev.Controllers
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             {
                 Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive);
-
                 if (currentBudget == null) return Error(Loc.Dic.error_database_error);
-
                 model.Order.BudgetId = currentBudget.Id;
 
                 int[] orderAllocationsIds = model.Allocations.Select(x => x.AllocationId).Distinct().ToArray();
-                orderAllocations = allocationsRep.GetList().Where(x => orderAllocationsIds.Contains(x.Id)).ToList();
+                var allocationsData = allocationsRep.GetAllocationsData(orderAllocationsIds, StatusType.Pending);
                 bool IsValidAllocations =
-                    (orderAllocations.Count == orderAllocationsIds.Length) &&
-                    orderAllocations.All(x => x.CompanyId == CurrentUser.CompanyId) &&
+                    (allocationsData.Count == orderAllocationsIds.Length) &&
                     model.Allocations.All(x => (x.MonthId == null || (x.MonthId >= 1 && x.MonthId <= 12)) && x.Amount > 0);
-
                 if (!IsValidAllocations) return Error(Loc.Dic.error_invalid_form);
 
                 if (model.IsFutureOrder)
                 {
-                    List<OrderAllocation> allocationsToRemove = new List<OrderAllocation>();
-
-                    foreach (var allocation in orderAllocations)
+                    foreach (var allocationData in allocationsData)
                     {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.OrderId != orderFromDatabase.Id && x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
-
-                        List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocation.Id).ToList();
+                        List<OrderAllocation> allocationMonths = model.Allocations.Where(x => x.AllocationId == allocationData.AllocationId).ToList();
 
                         foreach (var month in allocationMonths)
                         {
                             if (month.MonthId == DateTime.Now.Month)
                             {
-                                OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
+                                OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocationData.AllocationId);
 
-                                allocationsToRemove.Add(currentAllocation);
+                                var newAllocations = allocationsRep.GenerateOrderAllocations(allocationData, currentAllocation.Amount, allowExeeding, DateTime.Now.Month, orderFromDatabase.Id);
+                                if (newAllocations == null) return Error(Loc.Dic.error_order_insufficient_allocation);
 
-                                decimal remainingOrderPrice = currentAllocation.Amount;
-
-                                for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
-                                {
-                                    var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                                    decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                    decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                                    if (remainingAmount.HasValue && remainingAmount.Value > 0)
-                                    {
-                                        OrderAllocation newOrderAllocation = new OrderAllocation()
-                                        {
-                                            AllocationId = allocation.Id,
-                                            Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
-                                            MonthId = monthNumber,
-                                            IsActive = true
-                                        };
-
-                                        model.Allocations.Add(newOrderAllocation);
-                                        remainingOrderPrice -= newOrderAllocation.Amount;
-                                    }
-                                }
-
-                                if (remainingOrderPrice > 0)
-                                    return Error(Loc.Dic.error_order_insufficient_allocation);
+                                AllocationsToCreate.AddRange(newAllocations);
                             }
                             else
                             {
-                                var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == month.MonthId);
-                                decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                                decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == month.MonthId).Select(d => (decimal?)d.Amount).Sum();
-                                allocationMonth.Amount = remainingAmount.HasValue ? Math.Max(0, remainingAmount.Value) : 0;
+                                var monthData = allocationData.Months.SingleOrDefault(x => x.MonthId == month.MonthId);
+                                if (!allowExeeding && month.Amount > monthData.RemainingAmount) return Error(Loc.Dic.error_order_insufficient_allocation);
 
-                                if (month.Amount > allocationMonth.Amount)
-                                    return Error(Loc.Dic.error_order_insufficient_allocation);
+                                Orders_OrderToAllocation newAllocation = new Orders_OrderToAllocation()
+                                {
+                                    AllocationId = allocationData.AllocationId,
+                                    MonthId = month.MonthId.Value,
+                                    Amount = month.Amount,
+                                    OrderId = orderFromDatabase.Id
+                                };
+
+                                AllocationsToCreate.Add(newAllocation);
                             }
                         }
-                    }
-
-                    foreach (var item in allocationsToRemove)
-                    {
-                        model.Allocations.Remove(item);
                     }
                 }
                 else
                 {
-                    List<OrderAllocation> originalAllocations = new List<OrderAllocation>(model.Allocations);
-                    model.Allocations = new List<OrderAllocation>();
-
-                    foreach (var allocation in orderAllocations)
+                    foreach (var allocationData in allocationsData)
                     {
-                        List<Orders_OrderToAllocation> approvedAllocations = allocation.Orders_OrderToAllocation.Where(x => x.OrderId != orderFromDatabase.Id && x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled).ToList();
+                        OrderAllocation currentAllocation = model.Allocations.SingleOrDefault(x => x.AllocationId == allocationData.AllocationId);
 
-                        OrderAllocation currentAllocation = originalAllocations.SingleOrDefault(x => x.AllocationId == allocation.Id);
-                        if (currentAllocation == null)
-                            return Error(Loc.Dic.error_invalid_form);
+                        var newAllocations = allocationsRep.GenerateOrderAllocations(allocationData, currentAllocation.Amount, allowExeeding, DateTime.Now.Month, orderFromDatabase.Id);
+                        if (newAllocations == null) return Error(Loc.Dic.error_order_insufficient_allocation);
 
-                        decimal remainingOrderPrice = currentAllocation.Amount;
-
-                        for (int monthNumber = 1; monthNumber <= DateTime.Now.Month && remainingOrderPrice > 0; monthNumber++)
-                        {
-                            var allocationMonth = allocation.Budgets_AllocationToMonth.SingleOrDefault(x => x.MonthId == monthNumber);
-                            decimal monthAmount = allocationMonth == null ? 0 : allocationMonth.Amount;
-                            decimal? remainingAmount = monthAmount - approvedAllocations.Where(m => m.MonthId == monthNumber).Select(d => (decimal?)d.Amount).Sum();
-
-                            if (remainingAmount.HasValue && remainingAmount.Value > 0)
-                            {
-                                OrderAllocation newOrderAllocation = new OrderAllocation()
-                                {
-                                    AllocationId = allocation.Id,
-                                    Amount = remainingAmount.Value < remainingOrderPrice ? remainingAmount.Value : remainingOrderPrice,
-                                    MonthId = monthNumber,
-                                    IsActive = true
-                                };
-
-                                model.Allocations.Add(newOrderAllocation);
-                                remainingOrderPrice -= newOrderAllocation.Amount;
-                            }
-                        }
-
-                        if (remainingOrderPrice > 0)
-                            return Error(Loc.Dic.error_order_insufficient_allocation);
+                        AllocationsToCreate.AddRange(newAllocations);
                     }
                 }
             }
 
-            foreach (var item in orderFromDatabase.Orders_OrderToAllocation)
+            using (OrderToAllocationRepository orderAllocationRep = new OrderToAllocationRepository())
             {
-                using (OrderToAllocationRepository orderAllocationRep = new OrderToAllocationRepository())
+                foreach (var item in orderFromDatabase.Orders_OrderToAllocation)
                 {
                     orderAllocationRep.Delete(item.Id);
                 }
-            }
 
-            List<Orders_OrderToAllocation> createdAllocations = new List<Orders_OrderToAllocation>();
-
-            foreach (var allocation in model.Allocations)
-            {
-                using (OrderToAllocationRepository orderAllocationsRep = new OrderToAllocationRepository())
+                foreach (var item in AllocationsToCreate)
                 {
-                    Orders_OrderToAllocation newOrderAllocation = new Orders_OrderToAllocation()
-                    {
-                        OrderId = model.Order.Id,
-                        AllocationId = allocation.AllocationId,
-                        MonthId = allocation.MonthId.Value,
-                        Amount = allocation.Amount
-                    };
-
-                    if (orderAllocationsRep.Create(newOrderAllocation))
-                        createdAllocations.Add(newOrderAllocation);
-                    else
-                    {
-                        foreach (var item in createdAllocations)
-                        {
-                            orderAllocationsRep.Delete(item.Id);
-                        }
-
-                        break;
-                    }
+                    orderAllocationRep.Create(item);
                 }
             }
 
