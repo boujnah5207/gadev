@@ -263,7 +263,7 @@ namespace GAppsDev.Controllers
                 model.BudgetAllocations = new BudgetAllocations()
                 {
                     Budget = budget,
-                    AllocationsList = budget.Budgets_Allocations.ToList(),
+                    AllocationsList = budget.Budgets_Allocations.OrderBy(x=>x.SortingCode).ToList(),
                     PermissionAllocations = permissionsToAllocations
                 };
 
