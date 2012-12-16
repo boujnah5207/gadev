@@ -130,7 +130,6 @@ namespace GAppsDev.Controllers
         public ActionResult ModifyStatus(Order model, string selectedStatus)
         {
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
-
             if (model.OrderApproverNotes != null && model.OrderApproverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
             Order orderFromDB;
@@ -643,8 +642,37 @@ namespace GAppsDev.Controllers
 
                 model.Allocations = new List<OrderAllocation>();
                 List<Orders_OrderToAllocation> existingOrderAllocations = model.Order.Orders_OrderToAllocation.ToList();
+                
+                var distinctAllocationIds = existingOrderAllocations.Select(x => x.AllocationId).Distinct().ToList();
+                foreach (var allocationId in distinctAllocationIds)
+                {
+                    var combineSplitted = existingOrderAllocations.Where(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
+                    model.Allocations.Add(
+                        new OrderAllocation()
+                            {
+                                AllocationId = allocationId,
+                                Name = existingOrderAllocations.First(x => x.AllocationId == allocationId).Budgets_Allocations.Name,
+                                MonthId = model.Order.CreationDate.Month,
+                                IsActive = true,
+                                Amount = combineSplitted.Sum(x => x.Amount)
+                            }
+                    );
+
+                    existingOrderAllocations.RemoveAll(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocationId);
+                }
+
                 foreach (var allocation in existingOrderAllocations)
                 {
+                    var combineSplitted = existingOrderAllocations.Where(x => x.MonthId <= model.Order.CreationDate.Month && x.AllocationId == allocation.AllocationId);
+                    new OrderAllocation()
+                    {
+                        AllocationId = allocation.AllocationId,
+                        Name = allocation.Budgets_Allocations.Name,
+                        MonthId = model.Order.CreationDate.Month,
+                        IsActive = true,
+                        Amount = existingOrderAllocations.Sum(x => x.Amount)
+                    };
+
                     model.Allocations.Add(
                         new OrderAllocation()
                         {
@@ -657,7 +685,7 @@ namespace GAppsDev.Controllers
                     );
                 }
 
-                ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id);
+                ViewBag.Allocations = allocationsRep.GetUserAllocations(CurrentUser.UserId, activeBudget.Id, id);
                 ViewBag.BudgetYear = activeBudget.Year;
                 ViewBag.ExistingItems = ItemsToString(model.Order.Orders_OrderToItem);
                 return View(model);

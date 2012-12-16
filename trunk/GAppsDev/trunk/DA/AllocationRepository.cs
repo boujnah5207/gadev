@@ -40,7 +40,7 @@ namespace DA
             return base.Create(entity);
         }
 
-        public List<AllocationAmountData> GetAllocationsData(int[] allocationIds, StatusType minOrderStatus = StatusType.ApprovedPendingInvoice, int startMonth = 1, int endMonth = 12, params string[] includes)
+        public List<AllocationAmountData> GetAllocationsData(int[] allocationIds, StatusType minOrderStatus = StatusType.ApprovedPendingInvoice, int? excludeOrder = null, int startMonth = 1, int endMonth = 12, params string[] includes)
         {
             List<AllocationAmountData> data = new List<AllocationAmountData>();
 
@@ -53,11 +53,17 @@ namespace DA
 
             foreach (var allocation in allocations)
             {
-                List<Orders_OrderToAllocation> approvedAllocations =
+                IEnumerable<Orders_OrderToAllocation> approvedAllocationsQuery =
                 allocation
                 .Orders_OrderToAllocation
-                .Where(x => x.Order.StatusId >= (int)minOrderStatus && x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled)
-                .ToList();
+                .Where(x => x.Order.StatusId >= (int)minOrderStatus && x.Order.StatusId != (int)StatusType.Declined && x.Order.StatusId != (int)StatusType.OrderCancelled);
+
+                if (excludeOrder.HasValue)
+                {
+                    approvedAllocationsQuery = approvedAllocationsQuery.Where(x => x.OrderId != excludeOrder.Value);
+                }
+
+                List<Orders_OrderToAllocation> approvedAllocations = approvedAllocationsQuery.ToList();
 
                 List<AllocationMonthAmountData> allocationMonthData = new List<AllocationMonthAmountData>();
                 for (int monthId = startMonth; monthId <= endMonth; monthId++)
@@ -127,7 +133,7 @@ namespace DA
             return generatedAllocations;
         }
 
-        public List<Budgets_Allocations> GetUserAllocations(int userId, int budgetId)
+        public List<Budgets_Allocations> GetUserAllocations(int userId, int budgetId, int? excludeOrder = null)
         {
             List<int> userAllocationIds = new List<int>();
             List<Budgets_Allocations> userAllocations = new List<Budgets_Allocations>();
@@ -154,7 +160,7 @@ namespace DA
                 userAllocationIds = userAllocationIds.Distinct().ToList();
             }
 
-            var data = this.GetAllocationsData(userAllocationIds.ToArray(), StatusType.Pending);
+            var data = this.GetAllocationsData(userAllocationIds.ToArray(), StatusType.Pending, excludeOrder);
 
             foreach (var allocationData in data)
             {
