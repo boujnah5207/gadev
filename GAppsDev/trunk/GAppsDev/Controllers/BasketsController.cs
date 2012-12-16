@@ -151,9 +151,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // GET: /Permissions/Edit/5
-
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
