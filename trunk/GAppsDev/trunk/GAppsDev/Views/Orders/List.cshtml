@@ -28,7 +28,7 @@
         @if ((bool)ViewBag.IsOrdered)
         {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderNumber, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
-            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.LastChangeDate, "lastChange", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th class="mobile-hidden">@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.LastChangeDate, "lastChange", ReverseOrder, (string)ViewBag.Sortby)</th>
             if (ViewBag.ShowUserName)
             {
             <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderCreatorName, "username", ReverseOrder, (string)ViewBag.Sortby)</th>
@@ -40,7 +40,7 @@
         }
         else
         { 
-            <th>
+            <th class="mobile-hidden">
                 @Loc.Dic.LastChangeDate
             </th>
             <th>
@@ -83,7 +83,7 @@
             <td>
                 @Html.DisplayTextFor(modelItem => item.OrderNumber)
             </td>
-            <td>
+            <td class="mobile-hidden">
                 @Html.DisplayTextFor(modelItem => item.LastStatusChangeDate)
             </td>
             @if (ViewBag.ShowUserName)
