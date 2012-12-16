@@ -76,14 +76,15 @@ namespace GAppsDev.Controllers
                                   .Select( x => new { Id = x.Id, InventarNumber = x.InventarNumber, Title = x.Orders_Items.Title, SubTitle = x.Orders_Items.SubTitle })
                                   .ToList()
                   .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.InventarNumber + " " + x.Title + " " + x.SubTitle })
+                  .OrderBy(x => x.Name)
                   .ToList(), "Id", "Name");
 
 
                 if (locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count() == 0)
                     return Error(Loc.Dic.error_no_location_exist);
-                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+                ViewBag.LocationId = new SelectList(locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).OrderBy(x => x.Name).ToList(), "Id", "Name");
 
-                ViewBag.Suppliers = new SelectList(suppliersRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList(), "Id", "Name");
+                ViewBag.Suppliers = new SelectList(suppliersRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).OrderBy(x=>x.Name).ToList(), "Id", "Name");
 
                 
             }
