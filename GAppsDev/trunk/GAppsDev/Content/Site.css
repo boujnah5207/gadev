@@ -1,4 +1,16 @@
-﻿html {
+﻿@media handheld
+{
+    div, span, html, body, table, td, tr, th
+    {
+        padding: 3px !important;
+        margin: 0px !important;
+        width: auto !important;
+        font-size:small !important;
+        overflow:hidden !important;
+    }
+}
+
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
@@ -1006,4 +1018,14 @@ input {
         footer p {
             margin: 0;
         }
+
+    
+@media handheld {
+    *
+    {
+        padding: 0;
+        margin: 0;
+    }
+} /* END print media */
+
 }
