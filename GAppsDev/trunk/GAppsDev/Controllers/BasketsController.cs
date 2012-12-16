@@ -317,7 +317,7 @@ namespace GAppsDev.Controllers
                         {
                             allocation.Allocation.BudgetId = budgetFromDB.Id;
                             allocation.Allocation.BasketId = permissionFromDB.Id;
-                            permissionsAllocationsRep.Create(allocation.Allocation);
+                            if(!permissionsAllocationsRep.Create(allocation.Allocation)) return Error(Loc.Dic.error_database_error);
                         }
                     }
                     else
@@ -332,9 +332,6 @@ namespace GAppsDev.Controllers
                 return RedirectToAction("BudgetBaskets", new { id = budgetFromDB.Id });
             }
         }
-
-        //
-        // GET: /Permissions/Delete/5
 
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0, int budgetId = 0)
