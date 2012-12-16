@@ -18,6 +18,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.CreationDate)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.ItemName
@@ -25,6 +26,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Orders_Items.Title)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.ItemDescription
@@ -32,6 +34,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Orders_Items.SubTitle)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.Location
@@ -39,6 +42,8 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Location.Name)
     </div>
+    <br />
+
     @if (Model.OrderId != null)
     {
         <div class="display-label">
@@ -48,13 +53,16 @@
             @Model.Order.OrderNumber
             @Html.ActionLink(Loc.Dic.View + " " + Loc.Dic.Order, "Details", "Orders", new { id = Model.OrderId }, null)
         </div>
+        <br />
     }
+
     <div class="display-label">
         @Loc.Dic.AssignedTo
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.AssignedTo)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.SerialNumber
@@ -62,6 +70,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.SerialNumber)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.WarrentyPeriodStart
@@ -69,6 +78,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.WarrentyPeriodStart)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.WarrentyPeriodEnd
@@ -76,6 +86,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.WarrentyPeriodEnd)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.Notes
@@ -83,6 +94,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Notes)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.RelatedInventoryItem
@@ -92,7 +104,7 @@
         @Html.DisplayFor(model => model.Inventory2.Orders_Items.SubTitle)
 
     </div>
-
+    <br />
 
     <div class="display-label">
         @Loc.Dic.Status
@@ -100,6 +112,7 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Status)
     </div>
+    <br />
 
     <div class="display-label">
         @Loc.Dic.IsOutOfInventory
@@ -107,7 +120,10 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.IsOutOfInventory)
     </div>
+    <br />
+
 </fieldset>
+
 <p>
     @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id }) |
     @Html.ActionLink(Loc.Dic.BackToList, "Index")
