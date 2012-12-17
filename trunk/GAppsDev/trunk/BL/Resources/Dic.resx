@@ -1368,4 +1368,7 @@
   <data name="Support" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="RemoteControl" xml:space="preserve">
+    <value>Remote Control</value>
+  </data>
 </root>
