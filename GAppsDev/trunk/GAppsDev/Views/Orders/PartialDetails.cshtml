@@ -89,6 +89,23 @@
     <br />
     }
 
+    <div class="display-label">
+        @Loc.Dic.Price
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OriginalOrder.Price)
+    </div>
+    <br />
+
+    <div class="display-label"> @Loc.Dic.OrderItems </div>
+    @Html.Action("ListOrderItems", new { orderItems = Model.OriginalOrder.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
+    <br />
+
+    <div class="display-label"> @Loc.Dic.OrderAllocations </div>
+    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.OriginalOrder.Orders_OrderToAllocation.ToList(), budgetYear = Model.OriginalOrder.Budget.Year, isFutureOrder = Model.OriginalOrder.IsFutureOrder, baseUrl = Url.Action("Index"), exeedingData = Model })    
+    <br />
+
+    
     @if (!String.IsNullOrEmpty(Model.OriginalOrder.Notes))
     {
     <div class="display-label">
@@ -110,22 +127,6 @@
     </div>
     <br />
     }
-    
-    <div class="display-label">
-        @Loc.Dic.Price
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OriginalOrder.Price)
-    </div>
-    <br />
-
-    <div class="display-label"> @Loc.Dic.OrderItems </div>
-    @Html.Action("ListOrderItems", new { orderItems = Model.OriginalOrder.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
-    <br />
-
-    <div class="display-label"> @Loc.Dic.OrderAllocations </div>
-    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.OriginalOrder.Orders_OrderToAllocation.ToList(), budgetYear = Model.OriginalOrder.Budget.Year, isFutureOrder = Model.OriginalOrder.IsFutureOrder, baseUrl = Url.Action("Index"), exeedingData = Model })    
-    <br />
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
@@ -154,5 +155,4 @@
         @Html.ActionLink(Loc.Dic.Print, "DownloadOrderAsPdf", new { id = Model.OriginalOrder.Id }) 
         <br />
     }
-
 </fieldset>

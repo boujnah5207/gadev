@@ -1356,6 +1356,15 @@
   <data name="LogOffWasSuccessful" xml:space="preserve">
     <value>You successfully loged off the system</value>
   </data>
+  <data name="By" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="error_no_suppliers_for_order" xml:space="preserve">
+    <value>There are no suppliers to order from</value>
+  </data>
+  <data name="SeeDetailsAt" xml:space="preserve">
+    <value>See details at</value>
+  </data>
   <data name="Support" xml:space="preserve">
     <value>Support</value>
   </data>
