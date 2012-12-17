@@ -49,6 +49,9 @@
       <HintPath>..\ExternalLibraries\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Novell.Directory.Ldap">
+      <HintPath>..\ExternalLibraries\Novell.Directory.Ldap.dll</HintPath>
+    </Reference>
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Rotativa\Rotativa.dll</HintPath>
