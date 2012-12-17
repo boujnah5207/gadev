@@ -91,7 +91,9 @@ function beginCreate() {
 
     $.ajax({
         type: "GET",
-        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID,
+        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID + "?unique=" + Math.random(),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
     }).done(function (response) {
         if (response.gotData) {
             InitializeItemsList(response.data);
@@ -148,7 +150,9 @@ function beginEdit(existingItems) {
 
     $.ajax({
         type: "GET",
-        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID,
+        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID + "?unique=" + Math.random(),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
     }).done(function (response) {
         if (response.gotData) {
             InitializeItemsList(response.data);
@@ -192,7 +196,9 @@ function addSupplier() {
 
     $.ajax({
         type: "POST",
-        url: "/Suppliers/PopOutCreate/",
+        url: "/Suppliers/PopOutCreate/" + "?unique=" + Math.random(),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
     }).done(function (response) {
         dialogContainer = $(response);
         dialogContainer.find("#submitSupplier").click(function () {
@@ -214,7 +220,9 @@ function addSupplier() {
 
             $.ajax({
                 type: "POST",
-                url: "/Suppliers/AjaxCreate/",
+                url: "/Suppliers/AjaxCreate/" + "?unique=" + Math.random(),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 data: newSupplier
             }).done(function (response) {
                 if (response.success) {
@@ -238,7 +246,9 @@ function addSupplier() {
             close: function () {
                 $.ajax({
                     type: "GET",
-                    url: "/Suppliers/GetAll",
+                    url: "/Suppliers/GetAll" + "?unique=" + Math.random(),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
                 }).done(function (response) {
                     if (response.gotData) {
                         UpdateSupplierList(response.data);
@@ -256,7 +266,7 @@ function addOrderItem() {
         var newItemId = 0;
         $.ajax({
             type: "POST",
-            url: "/OrderItems/PopOutCreate/",
+            url: "/OrderItems/PopOutCreate/"
         }).done(function (response) {
             createItemDialogContainer = $(response);
             createItemDialogContainer.find("#submitOrderItem").click(function () {
@@ -272,6 +282,22 @@ function addOrderItem() {
                 }).done(function (response) {
                     if (response.success) {
                         newItemId = response.newItemId;
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID + "?unique=" + Math.random(),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json"
+                        }).done(function (response) {
+                            if (response.gotData) {
+                                UpdateItemsList(response.data);
+                                $('#ItemDropDownList option[value="' + newItemId + '"]').attr('selected', 'selected');
+                                createItemDialogContainer.dialog("destroy");
+                                createItemDialogContainer.remove();
+                                isAddItemDialogOpen = false;
+                            }
+                        });
+
                         alert(local.ItemWasCreated);
                     }
                     else {
@@ -288,21 +314,7 @@ function addOrderItem() {
             createItemDialog = createItemDialogContainer.dialog({
                 title: local.AddItem,
                 width: 400,
-                height: 400,
-                close: function () {
-                    $.ajax({
-                        type: "GET",
-                        url: "/OrderItems/GetBySupplier/" + selectedSupplier.ID,
-                    }).done(function (response) {
-                        if (response.gotData) {
-                            UpdateItemsList(response.data);
-                            $('#ItemDropDownList option[value="' + newItemId + '"]').attr('selected', 'selected');
-                            createItemDialogContainer.dialog("destroy");
-                            createItemDialogContainer.remove();
-                            isAddItemDialogOpen = false;
-                        }
-                    });
-                }
+                height: 400
             });
 
             isAddItemDialogOpen = true;

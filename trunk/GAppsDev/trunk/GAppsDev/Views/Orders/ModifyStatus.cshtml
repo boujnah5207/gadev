@@ -10,14 +10,14 @@
 <br />
 
 @using (Html.BeginForm()) {
+    <input type="hidden" name="id" value="@Model.OriginalOrder.Id" />
     
     <div class="display-label">
         @Loc.Dic.OrderApproverNotes
     </div>
     <div class="editor-field">
-        @Html.TextAreaFor(model => model.OriginalOrder.OrderApproverNotes, new { maxlength = "250" })
+        <textarea name="approverNotes" maxlength="250" ></textarea>
     </div>
-    @Html.HiddenFor(model => model.OriginalOrder.Id)
     <p>
         <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
         <input type="submit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />

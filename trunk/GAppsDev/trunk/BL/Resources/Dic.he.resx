@@ -1243,10 +1243,10 @@
     <value>יוצאה לקובץ</value>
   </data>
   <data name="Status_OrderCancelled" xml:space="preserve">
-    <value>מבוטלת</value>
+    <value>בוטלה</value>
   </data>
   <data name="Status_PartiallyApproved" xml:space="preserve">
-    <value>מאושרת חלקית</value>
+    <value>אושרה חלקית</value>
   </data>
   <data name="Status_PendingExport" xml:space="preserve">
     <value>ממתינה לייצוא</value>
@@ -1264,7 +1264,7 @@
     <value>ממתינה לקבלה</value>
   </data>
   <data name="Status_ReceiptScanned" xml:space="preserve">
-    <value>קבלה נסרקה</value>
+    <value>עברה סריקת קבלה</value>
   </data>
   <data name="error_no_suppliers" xml:space="preserve">
     <value>אין ספקים</value>
@@ -1352,6 +1352,15 @@
   </data>
   <data name="LogOffWasSuccessful" xml:space="preserve">
     <value>התנתקת בהצלחה מהמערכת</value>
+  </data>
+  <data name="By" xml:space="preserve">
+    <value>על ידי</value>
+  </data>
+  <data name="error_no_suppliers_for_order" xml:space="preserve">
+    <value>אין ספקים שניתן להזמין מהם</value>
+  </data>
+  <data name="SeeDetailsAt" xml:space="preserve">
+    <value>ראה פרטים</value>
   </data>
   <data name="Support" xml:space="preserve">
     <value>תמיכה</value>

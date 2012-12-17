@@ -129,21 +129,21 @@ namespace GAppsDev.Controllers
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult ModifyStatus(Order model, string selectedStatus)
+        public ActionResult ModifyStatus(string approverNotes, string selectedStatus, int id = 0)
         {
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
-            if (model.OrderApproverNotes != null && model.OrderApproverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
+            if (approverNotes != null && approverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
             Order orderFromDB;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
-                orderFromDB = ordersRep.GetEntity(model.Id);
+                orderFromDB = ordersRep.GetEntity(id);
 
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
                 if (orderFromDB.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
-                orderFromDB.OrderApproverNotes = model.OrderApproverNotes;
+                orderFromDB.OrderApproverNotes = approverNotes;
 
                 if (selectedStatus == Loc.Dic.ApproveOrder)
                 {
@@ -174,7 +174,15 @@ namespace GAppsDev.Controllers
                 if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
-                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, Loc.Dic.OrderStatusUpdateEvent + " " + Loc.Dic.OrderNumber + orderFromDB.OrderNumber, Loc.Dic.OrderStatusOf + orderFromDB.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)orderFromDB.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
+
+                string emailSubject = String.Format("{0} {1} {2} {3} {4}", Loc.Dic.Order, orderFromDB.OrderNumber, Translation.Status((StatusType)orderFromDB.StatusId), Loc.Dic.By, CurrentUser.FullName);
+                StringBuilder emailBody = new StringBuilder();
+
+                emailBody.AppendLine(emailSubject);
+                emailBody.AppendLine();
+                emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, Url.Action("Details", "Orders", new { id = id }, "http")));
+
+                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, emailSubject, emailBody.ToString());
 
                 return RedirectToAction("PendingOrders");
             }
@@ -457,7 +465,10 @@ namespace GAppsDev.Controllers
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
-                ViewBag.SupplierId = new SelectList(suppliersRep.GetList().Where(x => x.ExternalId != null).OrderBy(s => s.Name).ToList(), "Id", "Name");
+                List<Supplier> allSuppliers = suppliersRep.GetList().Where(x => x.ExternalId != null).OrderBy(s => s.Name).ToList();
+                if (!allSuppliers.Any()) return Error(Loc.Dic.error_no_suppliers_for_order);
+
+                ViewBag.SupplierId = new SelectList(allSuppliers, "Id", "Name");
 
                 Budget activeBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
                 if (activeBudget == null) return Error(Loc.Dic.error_no_active_budget);
