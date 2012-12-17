@@ -4,7 +4,8 @@
     @Loc.Dic.Welcome, @Html.ActionLink((string)ViewBag.CurrentUser.FullName,"LanguageSet","Users",null,null) ! @Loc.Dic.Company @Html.ActionLink((string)ViewBag.CurrentUser.CompanyName, "Details", "Companies", new { id = (int)ViewBag.CurrentUser.CompanyId }, null) |
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
             <a href="javascript:document.getElementById('logoutForm').submit()">@Loc.Dic.Disconnect</a>
-            <span>&nbsp&nbsp @Loc.Dic.Support : 053-30-30-433</span> 
+            <span>&nbsp&nbsp @Loc.Dic.Support : 050-775-74-84</span> 
+            <a href="http://download3.showmypc.com/ShowMyPC3151.exe">@Loc.Dic.RemoteControl</a>
 }
     </text>
 } else {
