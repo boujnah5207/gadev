@@ -394,7 +394,7 @@ namespace GAppsDev.Controllers
         }
 
         //[OpenIdAuthorize]
-        public ActionResult PrintOrderToScreen(string password, int userId, int userRoles, int id = 0, int companyId = 0, string languageCode = "he")
+        public ActionResult PrintOrderToScreen(string password, int userId, int userRoles, int id = 0, int companyId = 0, string languageCode = "he", string coinSign = "$")
         {
             if (password != PRINT_PASSWORD) return Error(Loc.Dic.Error_NoPermission);
 
@@ -418,6 +418,8 @@ namespace GAppsDev.Controllers
             ViewBag.LogoExists = System.IO.File.Exists(path);
 
             ViewBag.LanguageCode = languageCode;
+            ViewBag.CompanyCoinSign = coinSign;
+
             return View(order);
         }
 
@@ -435,7 +437,7 @@ namespace GAppsDev.Controllers
                 order = ordersRep.GetEntity(id);
             }
 
-            return new ActionAsPdf("PrintOrderToScreen", new { password = PRINT_PASSWORD, id = id, companyId = CurrentUser.CompanyId, userId = CurrentUser.UserId, userRoles = CurrentUser.Roles, languageCode = CurrentUser.LanguageCode }) { FileName = String.Format("Order_{0}.pdf", order.OrderNumber) };
+            return new ActionAsPdf("PrintOrderToScreen", new { password = PRINT_PASSWORD, id = id, companyId = CurrentUser.CompanyId, userId = CurrentUser.UserId, userRoles = CurrentUser.Roles, languageCode = CurrentUser.LanguageCode, coinSign = CurrentUser.CompanyCoinSign }) { FileName = String.Format("Order_{0}.pdf", order.OrderNumber) };
         }
 
         [OpenIdAuthorize]
@@ -1529,7 +1531,7 @@ namespace GAppsDev.Controllers
                 ViewBag.HideSupplierField = model.HideSupplierField;
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (UsersRepository usersRep = new UsersRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
                 using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
                 {
@@ -1687,7 +1689,7 @@ namespace GAppsDev.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ListOrderItems(IEnumerable<Orders_OrderToItem> orderItems, string baseUrl)
+        public ActionResult ListOrderItems(IEnumerable<Orders_OrderToItem> orderItems, string baseUrl, bool showCoinSign = false, string coinSign = null)
         {
             ViewBag.BaseUrl = baseUrl;
             ViewBag.IsOrdered = false;
@@ -1699,6 +1701,8 @@ namespace GAppsDev.Controllers
 
             ViewBag.IsCheckBoxed = false;
             ViewBag.ShowUserName = true;
+            ViewBag.ShowCoinSign = showCoinSign;
+            ViewBag.CompanyCoinSign = coinSign ?? CurrentUser.CompanyCoinSign;
 
             return PartialView("ListOrderItems", orderItems);
         }
@@ -1736,7 +1740,7 @@ namespace GAppsDev.Controllers
             if (model == null)
                 model = new OrdersSearchValuesModel();
 
-            using (UsersRepository usersRep = new UsersRepository())
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
             using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
             using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())

@@ -16,6 +16,7 @@ namespace GAppsDev.OpenIdService
         public int UserId { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string CompanyCoinSign { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -107,6 +108,7 @@ namespace GAppsDev.OpenIdService
                                     UserId = loggingUser.Id,
                                     CompanyId = loggingUser.CompanyId,
                                     CompanyName = loggingUser.Company.Name,
+                                    CompanyCoinSign = loggingUser.Company.CoinSign,
                                     Email = loggingUser.Email,
                                     FirstName = loggingUser.FirstName,
                                     LastName = loggingUser.LastName,

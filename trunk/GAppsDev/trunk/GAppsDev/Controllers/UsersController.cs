@@ -29,7 +29,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult LanguageSet()
         {
-            using (UsersRepository userRepository = new UsersRepository())
+            using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
             using (LanguagesRepository languagesRepository = new LanguagesRepository())
             {
                 int lanId = userRepository.GetEntity(CurrentUser.UserId).LanguageId;
@@ -41,7 +41,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult LanguageSet(int languageId)
         {
-            using (UsersRepository usersRep = new UsersRepository())
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             {
                 User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
                 user.LanguageId = languageId;
@@ -58,7 +58,7 @@ namespace GAppsDev.Controllers
             {
                 AllUsersModel model = new AllUsersModel();
                 IEnumerable<User> activeUsers;
-                using (UsersRepository usersRep = new UsersRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                 using (CompaniesRepository companiesRep = new CompaniesRepository())
                 {
@@ -156,7 +156,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             User user;
-            using (UsersRepository usersRep = new UsersRepository())
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             {
                 user = usersRep.GetEntity(id, "Language", "User1", "Users1");
             }
@@ -214,7 +214,7 @@ namespace GAppsDev.Controllers
                 List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
                 SelectList languagesList;
 
-                using (UsersRepository usersRep = new UsersRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (LanguagesRepository languagesRep = new LanguagesRepository())
                 {
                     usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
@@ -250,7 +250,7 @@ namespace GAppsDev.Controllers
                     int companyUserCount = 0;
                     int companyUserLimit = 0;
 
-                    using (UsersRepository usersRep = new UsersRepository())
+                    using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                     using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                     using (CompaniesRepository companiesRep = new CompaniesRepository())
                     {
@@ -339,7 +339,7 @@ namespace GAppsDev.Controllers
             User user;
             List<Budgets_Baskets> allPermissions;
 
-            using (UsersRepository usersRep = new UsersRepository())
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             using (BudgetsPermissionsRepository permissionsRep = new BudgetsPermissionsRepository())
             {
                 user = usersRep.GetEntity(id);
@@ -387,7 +387,7 @@ namespace GAppsDev.Controllers
                     List<Budgets_UsersToBaskets> existingPermissions;
                     bool noErrors = true;
 
-                    using (UsersRepository usersRep = new UsersRepository())
+                    using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                     using (UsersToBasketsRepository userPermissionsRep = new UsersToBasketsRepository())
                     {
                         userFromDB = usersRep.GetEntity(model.UserId);
@@ -522,7 +522,7 @@ namespace GAppsDev.Controllers
                 if (ModelState.IsValid)
                 {
                     User userFromDatabase;
-                    using (UsersRepository userRep = new UsersRepository())
+                    using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
                     {
                         userFromDatabase = userRep.GetEntity(user.Id);
 
@@ -583,7 +583,7 @@ namespace GAppsDev.Controllers
                 PendingUser user;
                 List<SelectListItemDB> usersList = new List<SelectListItemDB> { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
 
-                using (UsersRepository usersRep = new UsersRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
                 {
                     user = pendingUserRep.GetEntity(id);
@@ -927,7 +927,7 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                using (UsersRepository usersRep = new UsersRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 {
                     IQueryable<User> usersQuery = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
 
@@ -1042,7 +1042,7 @@ namespace GAppsDev.Controllers
         {
             int companyUserCount = 0;
             int companyUserLimit = 0;
-            using (UsersRepository usersRep = new UsersRepository())
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
             using (CompaniesRepository companiesRep = new CompaniesRepository())
             {

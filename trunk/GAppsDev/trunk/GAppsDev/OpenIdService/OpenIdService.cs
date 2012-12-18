@@ -241,9 +241,9 @@ namespace Mvc4.OpenId.Sample.Security
             {
                 OpenIdUser sessionUser = (OpenIdUser)HttpContext.Current.Session["User"];
                 User databaseUser;
-                using (UsersRepository userRep = new UsersRepository())
+                using (AllUsersRepository allUserRep = new AllUsersRepository())
                 {
-                    databaseUser = userRep.GetEntity(sessionUser.UserId);
+                    databaseUser = allUserRep.GetEntity(sessionUser.UserId);
                 }
 
                 if (databaseUser != null)

@@ -39,8 +39,6 @@
     <br />
     <br />
 
-    <span class="bold">@Loc.Dic.CompanyNumber:</span> <span>@Html.DisplayFor(model => Model.Company.CompanyNumber)</span>
-    <br />
     <span class="bold">@Loc.Dic.OrderNumber:</span> <span>@Html.DisplayFor(model => Model.OrderNumber)</span>
     <br />
     <span class="bold">@Loc.Dic.OrderCreatorName:</span> <span>@Html.DisplayFor(model => Model.User.FirstName) @Html.DisplayFor(model => Model.User.LastName)</span>
@@ -50,11 +48,11 @@
     <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.CreationDate.ToShortDateString()</span>
     <br />
 
-    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
+    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index"), showCoinSign = true, coinSign = ViewBag.CompanyCoinSign})    
     <br />
 
     <div class="floatToSide" style="font-size:large;">
-        <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => Model.Price)</span>
+        <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => Model.Price) @ViewBag.CompanyCoinSign @Loc.Dic.IncludingVAT</span>
     </div>
     <br />
 

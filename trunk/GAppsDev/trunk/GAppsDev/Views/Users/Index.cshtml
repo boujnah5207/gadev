@@ -25,7 +25,7 @@
 @Html.ActionLink(Loc.Dic.CreateNew, "Create")
 
 
-<h2>@Loc.Dic.ActiveUsers (@Model.ActiveUsers.Count)</h2>
+<h2>@Loc.Dic.ActiveUsers (@Model.ActiveUsersCount)</h2>
 @if (Model.ActiveUsers.Count() != 0)
 { 
     @Html.Action("List", new { users = Model.ActiveUsers, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })
@@ -48,7 +48,7 @@ else
 }
 
 
-<h2>@Loc.Dic.CanceledUsers (@Model.NonActiveUsers.Count)</h2>
+<h2>@Loc.Dic.CanceledUsers (@Model.CanceledUsersCount)</h2>
 @if (Model.NonActiveUsers.Count > 0)
 {
     @Html.Action("List", new { users = Model.NonActiveUsers, baseUrl = Url.Action("Index"), isOrdered = false, isPaged = false, sortby = "none", order = "DESC", currPage = 1, NumberOfPages = 1 })
