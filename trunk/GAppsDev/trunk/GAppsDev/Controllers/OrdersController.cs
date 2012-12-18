@@ -121,7 +121,7 @@ namespace GAppsDev.Controllers
                 model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
 
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
-                if (model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+                if ((model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
                 return View(model);
             }
@@ -141,7 +141,7 @@ namespace GAppsDev.Controllers
                 orderFromDB = ordersRep.GetEntity(id);
 
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
-                if (orderFromDB.NextOrderApproverId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+                if ((orderFromDB.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
                 orderFromDB.OrderApproverNotes = approverNotes;
 
