@@ -71,10 +71,10 @@
                 @Html.DisplayTextFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.SingleItemPrice)
+                @Html.DisplayTextFor(modelItem => item.SingleItemPrice) @if (ViewBag.ShowCoinSign) {<text>@ViewBag.CompanyCoinSign</text> }
             </td>
             <td>
-                @(item.Quantity * item.SingleItemPrice)
+                @(item.Quantity * item.SingleItemPrice) @if (ViewBag.ShowCoinSign) {<text>@ViewBag.CompanyCoinSign</text> }
             </td>
         </tr>
     }

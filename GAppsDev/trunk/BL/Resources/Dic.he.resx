@@ -193,7 +193,7 @@
     <value>הערות</value>
   </data>
   <data name="OrderApproverNotes" xml:space="preserve">
-    <value>הערות מנהל</value>
+    <value>הערות מאשר</value>
   </data>
   <data name="OrderCreatorName" xml:space="preserve">
     <value>שם המזמין</value>
@@ -346,7 +346,7 @@
     <value>פרטים</value>
   </data>
   <data name="PrintOrder" xml:space="preserve">
-    <value>הדפס הזמנה</value>
+    <value>הורדת הזמנה</value>
   </data>
   <data name="UpdateStatus" xml:space="preserve">
     <value>עדכן סטאטוס</value>
@@ -1367,5 +1367,11 @@
   </data>
   <data name="RemoteControl" xml:space="preserve">
     <value>השתלטות מרחוק</value>
+  </data>
+  <data name="IncludingVAT" xml:space="preserve">
+    <value>כולל מע"מ</value>
+  </data>
+  <data name="NotIncludingVAT" xml:space="preserve">
+    <value>לא כולל מע"מ</value>
   </data>
 </root>

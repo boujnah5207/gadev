@@ -4103,7 +4103,8 @@ namespace DB
         /// <param name="companyNumber">Initial value of the CompanyNumber property.</param>
         /// <param name="isUsingExternalAccountManagment">Initial value of the IsUsingExternalAccountManagment property.</param>
         /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
-        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber, global::System.Boolean isUsingExternalAccountManagment, global::System.Boolean isCanceled)
+        /// <param name="coinSign">Initial value of the CoinSign property.</param>
+        public static Company CreateCompany(global::System.Int32 id, global::System.String name, global::System.DateTime creationDate, global::System.Int32 usersLimit, global::System.String domain, global::System.String city, global::System.String street, global::System.Int32 houseNumber, global::System.String bankAccount, global::System.String bankBranch, global::System.String bankNumber, global::System.String telephoneNumber, global::System.String companyNumber, global::System.Boolean isUsingExternalAccountManagment, global::System.Boolean isCanceled, global::System.String coinSign)
         {
             Company company = new Company();
             company.Id = id;
@@ -4121,6 +4122,7 @@ namespace DB
             company.CompanyNumber = companyNumber;
             company.IsUsingExternalAccountManagment = isUsingExternalAccountManagment;
             company.IsCanceled = isCanceled;
+            company.CoinSign = coinSign;
             return company;
         }
 
@@ -4538,6 +4540,30 @@ namespace DB
         private global::System.Boolean _IsCanceled;
         partial void OnIsCanceledChanging(global::System.Boolean value);
         partial void OnIsCanceledChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String CoinSign
+        {
+            get
+            {
+                return _CoinSign;
+            }
+            set
+            {
+                OnCoinSignChanging(value);
+                ReportPropertyChanging("CoinSign");
+                _CoinSign = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("CoinSign");
+                OnCoinSignChanged();
+            }
+        }
+        private global::System.String _CoinSign;
+        partial void OnCoinSignChanging(global::System.String value);
+        partial void OnCoinSignChanged();
 
         #endregion
 
@@ -9896,7 +9922,8 @@ namespace DB
         /// <param name="lastLogInTime">Initial value of the LastLogInTime property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
         /// <param name="languageId">Initial value of the LanguageId property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.DateTime creationTime, global::System.Int32 companyId, global::System.String email, global::System.String firstName, global::System.String lastName, global::System.Int32 roles, global::System.DateTime lastLogInTime, global::System.Boolean isActive, global::System.Int32 languageId)
+        /// <param name="isForManagment">Initial value of the IsForManagment property.</param>
+        public static User CreateUser(global::System.Int32 id, global::System.DateTime creationTime, global::System.Int32 companyId, global::System.String email, global::System.String firstName, global::System.String lastName, global::System.Int32 roles, global::System.DateTime lastLogInTime, global::System.Boolean isActive, global::System.Int32 languageId, global::System.Boolean isForManagment)
         {
             User user = new User();
             user.Id = id;
@@ -9909,6 +9936,7 @@ namespace DB
             user.LastLogInTime = lastLogInTime;
             user.IsActive = isActive;
             user.LanguageId = languageId;
+            user.IsForManagment = isForManagment;
             return user;
         }
 
@@ -10182,6 +10210,30 @@ namespace DB
         private global::System.Int32 _LanguageId;
         partial void OnLanguageIdChanging(global::System.Int32 value);
         partial void OnLanguageIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsForManagment
+        {
+            get
+            {
+                return _IsForManagment;
+            }
+            set
+            {
+                OnIsForManagmentChanging(value);
+                ReportPropertyChanging("IsForManagment");
+                _IsForManagment = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsForManagment");
+                OnIsForManagmentChanged();
+            }
+        }
+        private global::System.Boolean _IsForManagment;
+        partial void OnIsForManagmentChanging(global::System.Boolean value);
+        partial void OnIsForManagmentChanged();
 
         #endregion
 

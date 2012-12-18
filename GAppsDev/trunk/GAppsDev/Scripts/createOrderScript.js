@@ -488,7 +488,7 @@ function addAllocation() {
     var monthName = $("#allocation-" + allocationId + " option:selected").text();
     var wantedAmount = parseFloat($("#allocationAmount").val());
     var remainingMonthAmount = parseFloat($("#allocation-" + allocationId + " option:selected").data("amount"));
-    var remainingAllocationAmount = $("#allocationsSelectList option:selected").data("amount");
+    var remainingAllocationAmount = parseFloat($("#allocationsSelectList option:selected").data("amount"));
     var allocationText = $("#allocationsSelectList option:selected").text();
     var allocationExists = false;
     var existingAllocation;
@@ -536,6 +536,7 @@ function addAllocation() {
         existingAllocations = $(".existingNormalAllocations");
 
         if (wantedAmount > remainingAllocationAmount) {
+            console.log(wantedAmount + " > " + remainingAllocationAmount);
             isExeedingAllocation = true;
             //alert(local.AmountExceedsAllocation);
             //return;

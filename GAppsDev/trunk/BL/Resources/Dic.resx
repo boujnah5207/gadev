@@ -346,7 +346,7 @@
     <value>Details</value>
   </data>
   <data name="PrintOrder" xml:space="preserve">
-    <value>Print Order</value>
+    <value>Download order</value>
   </data>
   <data name="UpdateStatus" xml:space="preserve">
     <value>Update Status</value>
@@ -1370,5 +1370,11 @@
   </data>
   <data name="RemoteControl" xml:space="preserve">
     <value>Remote Control</value>
+  </data>
+  <data name="IncludingVAT" xml:space="preserve">
+    <value>Including VAT</value>
+  </data>
+  <data name="NotIncludingVAT" xml:space="preserve">
+    <value>Not including VAT</value>
   </data>
 </root>
