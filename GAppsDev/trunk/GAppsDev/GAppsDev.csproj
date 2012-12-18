@@ -593,6 +593,7 @@
     <Content Include="Views\Locations\List.cshtml" />
     <Content Include="Views\Orders\UpdateInvoiceFile.cshtml" />
     <Content Include="Views\Orders\UpdateReceipt.cshtml" />
+    <Content Include="Views\Orders\DelayingOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

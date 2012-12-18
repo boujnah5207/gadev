@@ -44,7 +44,7 @@ namespace DA
         {
             List<AllocationAmountData> data = new List<AllocationAmountData>();
 
-            string[] baseIncludes = { "Budgets_AllocationToMonth" };
+            string[] baseIncludes = { "Budget", "Budgets_AllocationToMonth" };
             includes = baseIncludes.Union(includes).ToArray();
 
             List<Budgets_Allocations> allocations;
@@ -53,6 +53,8 @@ namespace DA
 
             foreach (var allocation in allocations)
             {
+                bool budgetYearPassed = allocation.Budget.Year < DateTime.Now.Year;
+
                 IEnumerable<Orders_OrderToAllocation> approvedAllocationsQuery =
                 allocation
                 .Orders_OrderToAllocation
@@ -75,7 +77,8 @@ namespace DA
                         OriginalAllocationMonth = allocationMonth,
                         MonthId = allocationMonth.MonthId,
                         TotalAmount = allocationMonth.Amount,
-                        UsedAmount = approvedAllocations.Where(m => m.MonthId == monthId).Select(d => (decimal?)d.Amount).Sum() ?? 0
+                        UsedAmount = approvedAllocations.Where(m => m.MonthId == monthId).Select(d => (decimal?)d.Amount).Sum() ?? 0,
+                        BudgetYearPassed = budgetYearPassed
                     };
 
                     allocationMonthData.Add(newMonthData);
@@ -87,7 +90,8 @@ namespace DA
                     AllocationId = allocation.Id,
                     TotalAmount = allocation.Budgets_AllocationToMonth.Select(x => (decimal?)x.Amount).Sum() ?? 0,
                     UsedAmount = approvedAllocations.Select(x => (decimal?)x.Amount).Sum() ?? 0,
-                    Months = allocationMonthData
+                    Months = allocationMonthData,
+                    BudgetYearPassed = budgetYearPassed
                 };
 
                 data.Add(newData);
@@ -180,10 +184,11 @@ namespace DA
             public decimal TotalAmount { get; set; }
             public decimal UsedAmount { get; set; }
             public List<AllocationMonthAmountData> Months { get; set; }
+            public bool BudgetYearPassed { get; set; }
 
             public decimal RemainingAmount
             {
-                get { return TotalAmount - UsedAmount; }
+                get { return BudgetYearPassed ? 0 : TotalAmount - UsedAmount; }
             }
             public decimal MonthsTotalAmount
             {
@@ -195,7 +200,7 @@ namespace DA
             }
             public decimal MonthsRemainingAmount
             {
-                get { return MonthsTotalAmount - MonthsUsedAmount; }
+                get { return BudgetYearPassed ? 0 : MonthsTotalAmount - MonthsUsedAmount; }
             }
         }
 
@@ -205,10 +210,11 @@ namespace DA
             public int MonthId { get; set; }
             public decimal TotalAmount { get; set; }
             public decimal UsedAmount { get; set; }
+            public bool BudgetYearPassed { get; set; }
 
             public decimal RemainingAmount
             {
-                get { return TotalAmount - UsedAmount; }
+                get { return BudgetYearPassed ? 0 : TotalAmount - UsedAmount; }
             }
         }
     }

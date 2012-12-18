@@ -529,6 +529,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget baskets of.
+        /// </summary>
+        public static string BudgetBasketsOf {
+            get {
+                return ResourceManager.GetString("BudgetBasketsOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By.
         /// </summary>
         public static string By {
@@ -786,6 +795,15 @@ namespace Loc {
         public static string DefineBaskets {
             get {
                 return ResourceManager.GetString("DefineBaskets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delaying orders.
+        /// </summary>
+        public static string DelayingOrders {
+            get {
+                return ResourceManager.GetString("DelayingOrders", resourceCulture);
             }
         }
         

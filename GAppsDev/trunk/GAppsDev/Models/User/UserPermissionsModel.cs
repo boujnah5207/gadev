@@ -10,6 +10,7 @@ namespace GAppsDev.Models
     public class UserPermissionsModel
     {
         public int UserId { get; set; }
+        public User User { get; set; }
         public SelectList PermissionsSelectList { get; set; }
         public List<UserPermission> UserPermissions { get; set; }
     }
