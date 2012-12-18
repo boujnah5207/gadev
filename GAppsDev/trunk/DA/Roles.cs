@@ -20,6 +20,7 @@ namespace DA
         BudgetViewer = 64,
         FutureOrderWriter = 128,
         InventoryManager = 256,
+        SuperApprover = 512 | OrdersViewer | OrdersApprover,
         SuperAdmin = int.MaxValue
     }
 

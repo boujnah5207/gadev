@@ -210,19 +210,21 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
-                List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+                List<string> roleNames = GetRoleNames();
                 List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
                 SelectList languagesList;
 
                 using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (LanguagesRepository languagesRep = new LanguagesRepository())
                 {
-                    usersList.AddRange(usersRep.GetList().Where(user => user.CompanyId == CurrentUser.CompanyId && ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                    usersList.AddRange (
+                            usersRep.GetList()
+                            .Where(user => ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover)
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName })
+                            );
+                    
                     languagesList = new SelectList(languagesRep.GetList().ToList(), "Id", "Name");
                 }
-
-                roleNames.Remove(RoleType.None.ToString());
-                roleNames.Remove(RoleType.SuperAdmin.ToString());
 
                 ViewBag.RolesList = roleNames;
                 ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
@@ -281,12 +283,14 @@ namespace GAppsDev.Controllers
                     user.CreationDate = DateTime.Now;
 
                     RoleType combinedRoles = RoleType.None;
+                    List<RoleType> forbiddenRoles = GetForbiddenRoles();
+
                     if (roleNames != null && roleNames.Count() > 0)
                     {
                         foreach (string roleName in roleNames)
                         {
                             RoleType role;
-                            if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                            if (Enum.TryParse(roleName, out role) && !forbiddenRoles.Contains(role))
                             {
                                 combinedRoles = Roles.CombineRoles(combinedRoles, role);
                             }
@@ -486,9 +490,8 @@ namespace GAppsDev.Controllers
 
                         ViewBag.OrdersApproverId = new SelectList(usersList, "Id", "Name", user.OrdersApproverId.HasValue ? user.OrdersApproverId.Value : -1);
 
-                        List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                        roleNames.Remove(RoleType.None.ToString());
-                        roleNames.Remove(RoleType.SuperAdmin.ToString());
+                        List<string> roleNames = GetRoleNames();
+
                         ViewBag.RolesList = roleNames;
 
                         ViewBag.ExistingRoles =
@@ -532,10 +535,12 @@ namespace GAppsDev.Controllers
                                 return Error(Loc.Dic.error_no_permission);
 
                             RoleType combinedRoles = RoleType.None;
+                            List<RoleType> forbiddenRoles = GetForbiddenRoles();
+
                             foreach (string roleName in roleNames)
                             {
                                 RoleType role;
-                                if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                                if (Enum.TryParse(roleName, out role) && !forbiddenRoles.Contains(role))
                                 {
                                     combinedRoles = Roles.CombineRoles(combinedRoles, role);
                                 }
@@ -597,9 +602,7 @@ namespace GAppsDev.Controllers
                 {
                     ViewBag.OrdersApproverId = new SelectList(usersList, "Id", "Name", user.OrdersApproverId.HasValue ? user.OrdersApproverId.Value : -1);
 
-                    List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
-                    roleNames.Remove(RoleType.None.ToString());
-                    roleNames.Remove(RoleType.SuperAdmin.ToString());
+                    List<string> roleNames = GetRoleNames();
                     ViewBag.RolesList = roleNames;
 
                     ViewBag.ExistingRoles =
@@ -642,10 +645,12 @@ namespace GAppsDev.Controllers
                                 return Error(Loc.Dic.error_no_permission);
 
                             RoleType combinedRoles = RoleType.None;
+                            List<RoleType> forbiddenRoles = GetForbiddenRoles();
+                            
                             foreach (string roleName in roleNames)
                             {
                                 RoleType role;
-                                if (Enum.TryParse(roleName, out role) && role != RoleType.SuperAdmin)
+                                if (Enum.TryParse(roleName, out role) && !forbiddenRoles.Contains(role))
                                 {
                                     combinedRoles = Roles.CombineRoles(combinedRoles, role);
                                 }
@@ -1061,6 +1066,35 @@ namespace GAppsDev.Controllers
             }
 
             return companyUserCount < companyUserLimit;
+        }
+
+        private List<string> GetRoleNames()
+        {
+            List<string> roleNames = Enum.GetNames(typeof(RoleType)).ToList();
+
+            roleNames.Remove(RoleType.None.ToString());
+
+            if (!Authorized(RoleType.SuperAdmin))
+            {
+                roleNames.Remove(RoleType.SuperApprover.ToString());
+                roleNames.Remove(RoleType.SuperAdmin.ToString());
+            }
+
+            return roleNames;
+        }
+
+        private List<RoleType> GetForbiddenRoles()
+        {
+            List<RoleType> forbiddenRoles = new List<RoleType>();
+
+            if (!Authorized(RoleType.SuperAdmin))
+            {
+                forbiddenRoles.Add(RoleType.None);
+                forbiddenRoles.Add(RoleType.SuperApprover);
+                forbiddenRoles.Add(RoleType.SuperAdmin);
+            }
+
+            return forbiddenRoles;
         }
 
         protected override void Dispose(bool disposing)
