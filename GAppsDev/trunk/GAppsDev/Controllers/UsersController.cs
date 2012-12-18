@@ -66,6 +66,9 @@ namespace GAppsDev.Controllers
                     model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
                     model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
 
+                    model.ActiveUsersCount = activeUsers.Count();
+                    model.CanceledUsersCount = model.NonActiveUsers.Count();
+
                     if (model.ActiveUsers != null && model.PendingUsers != null && model.NonActiveUsers != null)
                     {
                         try

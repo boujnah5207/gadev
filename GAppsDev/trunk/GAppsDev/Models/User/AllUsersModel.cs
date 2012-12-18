@@ -12,7 +12,8 @@ namespace GAppsDev.Models.UserModels
         public List<PendingUser> PendingUsers { get; set; }
         public List<User> NonActiveUsers { get; set; }
 
-        public int UsersCount { get { return ActiveUsers.Count + PendingUsers.Count; } }
+        public int ActiveUsersCount { get; set; }
+        public int CanceledUsersCount { get; set; }
         public int UsersLimit { get; set; }
 
         public AllUsersModel()
