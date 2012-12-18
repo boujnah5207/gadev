@@ -19,7 +19,12 @@ namespace DA
         public override IQueryable<Order> GetList(params string[] includes)
         {
             return base.GetList(includes)
-                .Where(x => x.CompanyId == _companyId);
+                .Where(x => x.CompanyId == _companyId && x.StatusId != (int)StatusType.OrderCancelled);
+        }
+
+        public IQueryable<Order> GetListWithCanceled(params string[] includes)
+        {
+            return base.GetList(includes).Where(x => x.CompanyId == _companyId);
         }
 
         public override Order GetEntity(int id, params string[] includes)

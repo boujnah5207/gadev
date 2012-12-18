@@ -6298,7 +6298,8 @@ namespace DB
         /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
         /// <param name="wasAddedToInventory">Initial value of the WasAddedToInventory property.</param>
         /// <param name="isExeeding">Initial value of the IsExeeding property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding)
+        /// <param name="isDelaying">Initial value of the IsDelaying property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding, global::System.Boolean isDelaying)
         {
             Order order = new Order();
             order.Id = id;
@@ -6311,6 +6312,7 @@ namespace DB
             order.IsFutureOrder = isFutureOrder;
             order.WasAddedToInventory = wasAddedToInventory;
             order.IsExeeding = isExeeding;
+            order.IsDelaying = isDelaying;
             return order;
         }
 
@@ -6776,6 +6778,30 @@ namespace DB
         private global::System.Boolean _IsExeeding;
         partial void OnIsExeedingChanging(global::System.Boolean value);
         partial void OnIsExeedingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDelaying
+        {
+            get
+            {
+                return _IsDelaying;
+            }
+            set
+            {
+                OnIsDelayingChanging(value);
+                ReportPropertyChanging("IsDelaying");
+                _IsDelaying = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDelaying");
+                OnIsDelayingChanged();
+            }
+        }
+        private global::System.Boolean _IsDelaying;
+        partial void OnIsDelayingChanging(global::System.Boolean value);
+        partial void OnIsDelayingChanged();
 
         #endregion
 

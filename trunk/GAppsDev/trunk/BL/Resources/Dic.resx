@@ -1377,4 +1377,10 @@
   <data name="NotIncludingVAT" xml:space="preserve">
     <value>Not including VAT</value>
   </data>
+  <data name="BudgetBasketsOf" xml:space="preserve">
+    <value>Budget baskets of</value>
+  </data>
+  <data name="DelayingOrders" xml:space="preserve">
+    <value>Delaying orders</value>
+  </data>
 </root>

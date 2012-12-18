@@ -348,13 +348,12 @@ namespace GAppsDev.Controllers
             {
                 user = usersRep.GetEntity(id);
 
-                if (user == null)
-                    return Error(Loc.Dic.error_users_get_error);
+                if (user == null) return Error(Loc.Dic.error_users_get_error);
 
+                model.User = user;
                 model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).Where(x=>x.Permission.CompanyId == CurrentUser.CompanyId).ToList();
 
-                if (model.UserPermissions == null)
-                    return Error(Loc.Dic.error_permissions_get_error);
+                if (model.UserPermissions == null) return Error(Loc.Dic.error_permissions_get_error);
 
                 allPermissions = permissionsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
                 if (allPermissions == null)

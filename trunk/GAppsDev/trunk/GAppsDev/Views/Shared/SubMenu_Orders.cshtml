@@ -13,6 +13,11 @@
                 <li>|</li>
                 <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders", null, new { id = "PendingOrdersLink" })</li>
             }
+            @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SuperApprover))
+            {
+                <li>|</li>
+                <li>@Html.ActionLink(Loc.Dic.DelayingOrders, "DelayingOrders", "Orders", null, new { id = "DelayingOrdersLink" })</li>
+            }
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
             {
                 <li>|</li>

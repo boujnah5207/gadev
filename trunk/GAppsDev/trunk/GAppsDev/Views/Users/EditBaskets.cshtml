@@ -11,6 +11,9 @@
     <script src="~/Scripts/EditUserPermissions.js"></script>
 }
 
+<h3>@Loc.Dic.BudgetBasketsOf @Model.User.FullName</h3>
+<br />
+
 @using(Html.BeginForm()) {
 
     <input type="hidden" name="userId" value="@Model.UserId" />
@@ -23,7 +26,6 @@
     {
         <span class="bold">@Loc.Dic.NoMoreBasketsToAdd</span>
     }
-    <br />
     <br />
     
     <fieldset>

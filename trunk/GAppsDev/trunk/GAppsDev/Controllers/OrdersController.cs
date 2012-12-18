@@ -21,6 +21,7 @@ using System.DirectoryServices.AccountManagement;
 using BL;
 using GAppsDev.Models.FileModels;
 using Roles = DA.Roles;
+using System.Data.Objects;
 
 namespace GAppsDev.Controllers
 {
@@ -57,7 +58,7 @@ namespace GAppsDev.Controllers
             IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
+                orders = ordersRep.GetListWithCanceled("Orders_Statuses", "Supplier", "User");
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
@@ -75,7 +76,7 @@ namespace GAppsDev.Controllers
             IEnumerable<Order> orders;
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                orders = ordersRep.GetList("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId);
+                orders = ordersRep.GetListWithCanceled("Orders_Statuses", "Supplier").Where(x => x.UserId == CurrentUser.UserId);
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
@@ -98,6 +99,32 @@ namespace GAppsDev.Controllers
                         x.NextOrderApproverId == CurrentUser.UserId &&
                         x.StatusId != (int)StatusType.Declined &&
                         x.StatusId != (int)StatusType.PendingOrderCreator
+                        );
+
+                if (orders == null) return Error(Loc.Dic.error_orders_get_error);
+
+                orders = Pagination(orders, page, sortby, order);
+
+                return View(orders.ToList());
+            }
+        }
+
+        [OpenIdAuthorize]
+        public ActionResult DelayingOrders(int page = FIRST_PAGE, string sortby = "creation", string order = DEFAULT_DESC_ORDER)
+        {
+            if (!Authorized(RoleType.OrdersViewer)) return Error(Loc.Dic.error_no_permission);
+
+            IEnumerable<Order> orders;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                DateTime CurrentTime = DateTime.Now;
+                TimeSpan twoDays = TimeSpan.FromDays(2);
+                orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x => 
+                        EntityFunctions.DiffHours(x.CreationDate, CurrentTime) >= 48 &&
+                        x.StatusId < (int)StatusType.ApprovedPendingInvoice &&
+                        x.StatusId != (int)StatusType.Declined &&
+                        x.StatusId != (int)StatusType.OrderCancelled
                         );
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);

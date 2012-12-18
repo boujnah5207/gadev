@@ -1374,4 +1374,10 @@
   <data name="NotIncludingVAT" xml:space="preserve">
     <value>לא כולל מע"מ</value>
   </data>
+  <data name="BudgetBasketsOf" xml:space="preserve">
+    <value>סלים תקציביים של</value>
+  </data>
+  <data name="DelayingOrders" xml:space="preserve">
+    <value>הזמנות מתעכבות</value>
+  </data>
 </root>

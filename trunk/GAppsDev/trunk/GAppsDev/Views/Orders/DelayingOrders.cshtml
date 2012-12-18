@@ -1,0 +1,23 @@
+﻿@model IEnumerable<DB.Order>
+
+@{
+    ViewBag.Title = Loc.Dic.DelayingOrders;
+    ViewBag.PageName = "Orders";
+    ViewBag.SubPageName = "DelayingOrders";
+}
+
+@section ExtraScripts{
+    <script src="~/Scripts/SearchScript.js"></script>
+}
+
+@Html.Action("SearchForm", new { isExpanding = true, isCollapsed= true })
+<br />
+
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { orders = Model, baseUrl = Url.Action("DelayingOrders"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoOrdersWereFound).</span> 
+}
