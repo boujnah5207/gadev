@@ -229,7 +229,7 @@ namespace BL
                 Budgets_Allocations newAllocation;
                 int sortingCode;
 
-                if (lineValues[1].Length != 8 || lineValues[2].Length > 100) return Loc.Dic.Error_FileParseError;
+                if (lineValues[1].Length > 8 || lineValues[2].Length > 100) return Loc.Dic.Error_FileParseError;
                 if (!int.TryParse(lineValues[0], out sortingCode)) return Loc.Dic.Error_FileParseError;
 
                 newAllocation = new Budgets_Allocations()

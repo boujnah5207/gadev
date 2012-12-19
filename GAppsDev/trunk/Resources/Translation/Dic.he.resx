@@ -1398,4 +1398,7 @@
   <data name="error_externalIdAlreadyExist" xml:space="preserve">
     <value>המספר החיצוני כבר קיים במערכת</value>
   </data>
+  <data name="ExternalId" xml:space="preserve">
+    <value>מספר חיצוני</value>
+  </data>
 </root>
