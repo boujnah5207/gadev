@@ -1401,4 +1401,7 @@
   <data name="error_externalIdAlreadyExist" xml:space="preserve">
     <value>The external Id already exist</value>
   </data>
+  <data name="ExternalId" xml:space="preserve">
+    <value>External Id</value>
+  </data>
 </root>

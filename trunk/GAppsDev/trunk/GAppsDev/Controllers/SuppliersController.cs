@@ -114,14 +114,14 @@ namespace GAppsDev.Controllers
         {
             //Validiation
             if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
-            if (ModelState.IsValid) return Error(ModelState);
+            if (!ModelState.IsValid) return Error(ModelState);
 
             //Creation
             SuppliersRepository.Messeges createMessege;
             using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId)) createMessege = supplierRep.Create(supplier);
 
             //BackToUI
-            if (createMessege == SuppliersRepository.Messeges.CreatedSuccessfully) RedirectToAction("Index");
+            if (createMessege == SuppliersRepository.Messeges.CreatedSuccessfully) return RedirectToAction("Index");
             else if (createMessege == SuppliersRepository.Messeges.Error_ExternalIdExist) return Error(Loc.Dic.error_externalIdAlreadyExist);
             return Error(Loc.Dic.error_suppliers_create_error);
         }

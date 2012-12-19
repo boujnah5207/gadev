@@ -41,6 +41,7 @@ namespace DA
                 if (suppliersRepository.GetList().Any(x => x.ExternalId == entity.ExternalId))
                     return Messeges.Error_ExternalIdExist;
             entity.CreationDate = DateTime.Now;
+            entity.CompanyId = _companyId;
             if (!base.Create(entity)) return Messeges.CreationError;
             return Messeges.CreatedSuccessfully;
         }
