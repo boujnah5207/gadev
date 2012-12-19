@@ -39,7 +39,7 @@ namespace Loc {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.Translation.Dic", typeof(Dic).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BL.Resources.Dic", typeof(Dic).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -1200,15 +1200,6 @@ namespace Loc {
         public static string error_expenses_get_error {
             get {
                 return ResourceManager.GetString("error_expenses_get_error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The external Id already exist.
-        /// </summary>
-        public static string error_externalIdAlreadyExist {
-            get {
-                return ResourceManager.GetString("error_externalIdAlreadyExist", resourceCulture);
             }
         }
         

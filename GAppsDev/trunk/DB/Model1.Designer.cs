@@ -5476,6 +5476,54 @@ namespace DB
         private global::System.Int32 _InventarNumber;
         partial void OnInventarNumberChanging(global::System.Int32 value);
         partial void OnInventarNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> OriginalQuantity
+        {
+            get
+            {
+                return _OriginalQuantity;
+            }
+            set
+            {
+                OnOriginalQuantityChanging(value);
+                ReportPropertyChanging("OriginalQuantity");
+                _OriginalQuantity = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OriginalQuantity");
+                OnOriginalQuantityChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _OriginalQuantity;
+        partial void OnOriginalQuantityChanging(Nullable<global::System.Int32> value);
+        partial void OnOriginalQuantityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> RemainingQuantity
+        {
+            get
+            {
+                return _RemainingQuantity;
+            }
+            set
+            {
+                OnRemainingQuantityChanging(value);
+                ReportPropertyChanging("RemainingQuantity");
+                _RemainingQuantity = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RemainingQuantity");
+                OnRemainingQuantityChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _RemainingQuantity;
+        partial void OnRemainingQuantityChanging(Nullable<global::System.Int32> value);
+        partial void OnRemainingQuantityChanged();
 
         #endregion
 

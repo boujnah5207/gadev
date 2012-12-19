@@ -10,43 +10,45 @@
         @for (int i = 0; i < Model.OrderItems.Count; i++ )
         {
             <fieldset id="ItemId-@(Model.OrderItems[i].Id)">
-                <legend>&nbsp; @Model.OrderItems[i].Orders_Items.Title &nbsp;</legend>
-
-                <span>@Loc.Dic.ItemsQuantity: @Model.OrderItems[i].Quantity</span><br />
+                <legend style="font-size:large;">&nbsp; @Model.OrderItems[i].Orders_Items.Title - @Model.OrderItems[i].Orders_Items.SubTitle &nbsp;&nbsp;(@Loc.Dic.Quantity: @Model.OrderItems[i].Quantity)&nbsp;</legend>
 
                 <input id="addToInventory-@(Model.OrderItems[i].Id)" type="hidden" name="InventoryItems[@i].AddToInventory" value="true" />
+                <input type="hidden" name="InventoryItems[@i].ItemsToAdd[0].ItemId" value="@Model.OrderItems[i].Id" />
+                <input type="hidden" Id="ItemName-@(Model.OrderItems[i].Id)" value="@Model.OrderItems[i].Orders_Items.Title" />
+                <span class="bold">@Loc.Dic.Location: </span> @Html.DropDownList("InventoryItems[" + i + "].ItemsToAdd[0].LocationId", Model.LocationsList, Loc.Dic.SelectLocation, new { id="locationList-" + Model.OrderItems[i].Id + "-" + i, @class="locationList", onChange = "updateSplittedItems(" + Model.OrderItems[i].Id + "," + i + ")" })
+                @*<span class="bold">@Loc.Dic.ItemsQuantity: </span><span>@Model.OrderItems[i].Quantity</span>*@
 
-                <div id="expandingGroup-@(Model.OrderItems[i].Id)" class="expanding-div" >
-                    <div id="expandingDiv-@(Model.OrderItems[i].Id)-0" class="expanding-div" style="display:none;" >
-                        <br />
-                        <input type="hidden" name="InventoryItems[@i].ItemsToAdd[0].ItemId" value="@Model.OrderItems[i].Id" />
-                        <label>@Loc.Dic.Location: </label> @Html.DropDownList("InventoryItems[" + i + "].ItemsToAdd[0].LocationId", Model.LocationsList, new { id="locationList-" + Model.OrderItems[i].Id + "-" + i, @class="locationList" })
-                        <label>@Loc.Dic.AssignedTo: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].AssignedTo" />
-                        <label>@Loc.Dic.SerialNumber: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].SerialNumber" />
-                        <br /> <span class='bold'>@Loc.Dic.WarrantyPeriod: </span> <br />
-                        <label style="display:inline;">@Loc.Dic.From- </label> <input class="dateField" type="text" name="InventoryItems[@i].ItemsToAdd[0].WarrentyPeriodStart" /> <label style="display:inline;">@Loc.Dic.To-</label> <input class="dateField" type="text" name="InventoryItems[@i].ItemsToAdd[0].WarrentyPeriodEnd" />
-                        <label>@Loc.Dic.Notes: </label> <textarea name="InventoryItems[@i].ItemsToAdd[0].Notes" ></textarea>
-                        <label>@Loc.Dic.State: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].Status" />
-                    </div>
-                </div>
-                
                 <input id="expandingBtn-@(Model.OrderItems[i].Id)-0" type="button" value="@Loc.Dic.ShowDetails" onClick="expand(@(Model.OrderItems[i].Id),0)" />
                 @if (Model.OrderItems[i].Quantity > 1)
                 {
                 <input id="splitBtn-@(Model.OrderItems[i].Id)-0" type="button" value="@Loc.Dic.SplitItems" onClick="split(@(Model.OrderItems[i].Id), @i, @(Model.OrderItems[i].Quantity))" />
                 }
                 <input id="removeBtn-@(Model.OrderItems[i].Id)-0" type="button" value="@Loc.Dic.NotInventoryItem" onClick="remove(@(Model.OrderItems[i].Id), @i, @(Model.OrderItems[i].Quantity))" />
+
+                <div id="expandingGroup-@(Model.OrderItems[i].Id)" class="expanding-div" >
+                    <div id="expandingDiv-@(Model.OrderItems[i].Id)-0" class="expanding-div" style="display:none;" >
+                        <br />
+                        
+                        <label>@Loc.Dic.AssignedTo: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].AssignedTo" />
+                        <label>@Loc.Dic.SerialNumber: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].SerialNumber" />
+                        <br /> <span class='bold'>@Loc.Dic.WarrantyPeriod: </span> <br />
+                        <label style="display:inline;">@Loc.Dic.From- </label> <input class="dateField" type="text" name="InventoryItems[@i].ItemsToAdd[0].WarrentyPeriodStart" /> <label style="display:inline;">@Loc.Dic.To-</label> <input class="dateField" type="text" name="InventoryItems[@i].ItemsToAdd[0].WarrentyPeriodEnd" />
+                        <label>@Loc.Dic.State: </label> <input type="text" name="InventoryItems[@i].ItemsToAdd[0].Status" />
+                        <label>@Loc.Dic.Notes: </label> <textarea name="InventoryItems[@i].ItemsToAdd[0].Notes" ></textarea>
+                    </div>
+                </div>
             </fieldset>
         }
     </div>
+    <br />
     
     <fieldset>
-        <legend>@Loc.Dic.RemovedItems</legend>
+        <legend>@Loc.Dic.NotInventoryItems</legend>
 
-        <div id="removedItems" style="display:none;">
+        <div id="removedItems">
 
         </div>
-         <input id="expandRemovedItems" type="button" value="@Loc.Dic.Show" onClick="expandRemoved()" />
+        @*<input id="expandRemovedItems" type="button" value="@Loc.Dic.Show" onClick="expandRemoved()" />*@
     </fieldset>
     <p>
         <input type="submit" value="@Loc.Dic.Submit" />

@@ -1133,6 +1133,8 @@ namespace GAppsDev.Controllers
                         using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
                         {
                             locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                            if (locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
+                            
                             model.OrderItems = orderToItemRep.GetList("Orders_Items").Where(x => x.OrderId == order.Id).ToList();
                         }
 
@@ -1190,6 +1192,7 @@ namespace GAppsDev.Controllers
                             if (order.StatusId >= (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                             {
                                 locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
+                                if (locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
 
                                 if (locations != null)
                                 {
@@ -1213,8 +1216,8 @@ namespace GAppsDev.Controllers
 
                                                 if (locations.Any(x => x.Id == listItem.LocationId))
                                                 {
-                                                    for (int i = 0; i < originalItem.Quantity; i++)
-                                                    {
+                                                    //for (int i = 0; i < originalItem.Quantity; i++)
+                                                    //{
                                                         Inventory newItem = new Inventory()
                                                         {
                                                             AssignedTo = listItem.AssignedTo,
@@ -1228,6 +1231,8 @@ namespace GAppsDev.Controllers
                                                             OrderId = order.Id,
                                                             CompanyId = CurrentUser.CompanyId,
                                                             IsOutOfInventory = false,
+                                                            OriginalQuantity = originalItem.Quantity,
+                                                            RemainingQuantity = originalItem.Quantity
                                                         };
 
                                                         if (inventoryRep.Create(newItem))
@@ -1239,7 +1244,7 @@ namespace GAppsDev.Controllers
                                                             noCreationErrors = false;
                                                             break;
                                                         }
-                                                    }
+                                                    //}
                                                 }
                                                 else
                                                 {
