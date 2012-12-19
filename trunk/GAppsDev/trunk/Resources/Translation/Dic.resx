@@ -1383,10 +1383,22 @@
   <data name="DelayingOrders" xml:space="preserve">
     <value>Delaying orders</value>
   </data>
-  <data name="error_externalIdAlreadyExist" xml:space="preserve">
-    <value>error - Supplier Id Already Exist</value>
+  <data name="error_cannot_split_over_50" xml:space="preserve">
+    <value>You can't split items with quantity over 50 items</value>
   </data>
-  <data name="ExternalId" xml:space="preserve">
-    <value>External Id</value>
+  <data name="error_no_locations_found" xml:space="preserve">
+    <value>There are no locations to insert items to</value>
+  </data>
+  <data name="NoLocationsWereFound" xml:space="preserve">
+    <value>No locations were found</value>
+  </data>
+  <data name="NotInventoryItems" xml:space="preserve">
+    <value>Not inventory items</value>
+  </data>
+  <data name="SelectLocation" xml:space="preserve">
+    <value>Select Location</value>
+  </data>
+  <data name="error_externalIdAlreadyExist" xml:space="preserve">
+    <value>The external Id already exist</value>
   </data>
 </root>

@@ -52,31 +52,42 @@ function expandRemoved() {
 }
 
 function split(id, index, quantity) {
+    if (quantity > 50) {
+        alert(local.error_cannot_split_over_50);
+        return;
+    }
+
     var oldItem = $("#expandingDiv-" + id + "-" + 0);
-    var oldItemTitle = $("#ItemId-" + id).find("legend").html();
+    var oldItemTitle = $("#ItemName-" + id).val();
     var oldExpandBtn = $("#expandingBtn-" + id + "-" + 0);
     var oldSplitBtn = $("#splitBtn-" + id + "-" + 0);
+
+    console.log("index: " + index);
+    var originalLocationId = $("#locationList-" + id + "-" + index + " option:selected").val();
 
     for (var i = 0; i < quantity; i++) {
         var newLocationList = locationList.clone();
         newLocationList.attr("id", "#locationList-" + id + "-" + i);
+        newLocationList.addClass("locationSelectList-" + id);
         newLocationList.attr("name", "InventoryItems[" + index + "].ItemsToAdd[" + i + "].LocationId");
+        newLocationList.removeAttr("onChange");
 
         var newItem = $(
             "<fieldset class='originalItem-" + id + "' id='item-" + id + "-" + i + "'>" +
                     "<legend>" + oldItemTitle + " " + (i + 1) + "</legend>" +
+                    "<span>" + local.Location + ": </span>" +
+                    $('<div>').append(newLocationList.clone()).html() +
+                    "<input id='expandingBtn-" + id + "-" + i + "' type='button' value='" + local.ShowDetails + "' onClick='expand(" + id + "," + i + ")' />" +
                     "<div id='expandingDiv-" + id + "-" + i + "' class='expanding-div' style='display:none;'>" +
                         "<input type='hidden' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].ItemId' value='" + id + "' />" +
-                        "<label>" + local.Location + ": </label> " +
-                        $('<div>').append(newLocationList.clone()).html()  +
+                        
                         "<label>" + local.AssignedTo + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].AssignedTo' />" +
                         "<label>" + local.SerialNumber + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].SerialNumber' />" +
                         "<br /> <span class='bold'>" + local.WarrantyPeriod + ": </span> <br />" +
                         "<label style='display:inline;'>" + local.From + "- </label> <input class='dateField' type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodStart' /> <label style='display:inline;'>" + local.To + "</label>- <input class='dateField' type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].WarrentyPeriodEnd' />" +
-                        "<label>" + local.Notes + ": </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
                         "<label>" + local.State + ": </label> <input type='text' name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Status' />" +
+                        "<label>" + local.Notes + ": </label> <textarea name='InventoryItems[" + index + "].ItemsToAdd[" + i + "].Notes' ></textarea>" +
                     "</div>" +
-                    "<input id='expandingBtn-" + id + "-" + i + "' type='button' value='" + local.ShowDetails + "' onClick='expand(" + id + "," + i + ")' />" +
                 "</fieldset>"
             );
 
@@ -98,11 +109,11 @@ function split(id, index, quantity) {
     oldExpandBtn.replaceWith($("<input id='expandingGroupBtn-" + id + "' type='button' value='" + local.HideGroup + "' onClick='expandGroup(" + id + ")' />"));
     oldSplitBtn.replaceWith($("<input id='unSplitBtn-" + id + "' type='button' value='" + local.CancelSplit + "' onClick='unSplit(" + id + ")' />"));
 
+    updateSplittedItems(id, index);
     setAllDatePickers();
 }
 
 function unSplit(id) {
-
     var existingSplittedItem = getSplittedItem(id);
     if (existingSplittedItem != null) {
         var allSplitedItems = $(".originalItem-" + id);
@@ -173,6 +184,19 @@ function getSplittedItem(id) {
     }
 
     return null;
+}
+
+function updateSplittedItems(id, index) {
+    console.log(id);
+    console.log($("#locationList-" + id + "-" + index + " option:selected"));
+    var originalLocationId = $("#locationList-" + id + "-" + index + " option:selected").val();
+    console.log(originalLocationId);
+
+    if (originalLocationId == null || originalLocationId == "") return;
+
+    var value = $(this).find("option:selected").val();
+
+    splittedLocations = $(".locationSelectList-" + id).find("option[value=" + originalLocationId + "]").attr('selected', 'selected');
 }
 
 function setAllDatePickers() {

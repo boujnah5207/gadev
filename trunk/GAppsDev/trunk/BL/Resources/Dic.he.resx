@@ -1395,7 +1395,4 @@
   <data name="SelectLocation" xml:space="preserve">
     <value>בחר מיקום</value>
   </data>
-  <data name="error_externalIdAlreadyExist" xml:space="preserve">
-    <value>המספר החיצוני כבר קיים במערכת</value>
-  </data>
 </root>
