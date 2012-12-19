@@ -10,6 +10,13 @@ namespace DA
 {
     public class SuppliersRepository : BaseRepository<Supplier, Entities>
     {
+        public enum Messeges
+        {
+            Error_ExternalIdExist,
+            CreatedSuccessfully,
+            CreationError,
+        }
+
         private int _companyId;
         public SuppliersRepository(int companyId)
         {
@@ -28,10 +35,14 @@ namespace DA
             return supplier.CompanyId == _companyId ? supplier : null;
         }
 
-        public override bool Create(Supplier entity)
+        public new Messeges Create(Supplier entity)
         {
+            using (SuppliersRepository suppliersRepository = new SuppliersRepository(_companyId))
+                if (suppliersRepository.GetList().Any(x => x.ExternalId == entity.ExternalId))
+                    return Messeges.Error_ExternalIdExist;
             entity.CreationDate = DateTime.Now;
-            return base.Create(entity);
+            if (!base.Create(entity)) return Messeges.CreationError;
+            return Messeges.CreatedSuccessfully;
         }
 
         public override bool AddList(List<Supplier> list)

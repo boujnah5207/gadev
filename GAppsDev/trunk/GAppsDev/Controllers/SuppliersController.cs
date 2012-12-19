@@ -31,7 +31,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if(!Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager))
                 return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Supplier> suppliers;
@@ -101,14 +101,8 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            if (Authorized(RoleType.OrdersWriter))
-            {
-                return View();
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+            return View();
         }
 
         //
@@ -118,31 +112,18 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create(Supplier supplier)
         {
-            if (Authorized(RoleType.OrdersWriter))
-            {
-                if (ModelState.IsValid)
-                {
-                    bool wasCreated;
-                    using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId))
-                    {
-                        supplier.CompanyId = CurrentUser.CompanyId;
-                        wasCreated = supplierRep.Create(supplier);
-                    }
+            //Validiation
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+            if (ModelState.IsValid) return Error(ModelState);
 
-                    if (wasCreated)
-                        return RedirectToAction("Index");
-                    else
-                        return Error(Loc.Dic.error_suppliers_create_error);
-                }
-                else
-                {
-                    return Error(ModelState);
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
+            //Creation
+            SuppliersRepository.Messeges createMessege;
+            using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId)) createMessege = supplierRep.Create(supplier);
+
+            //BackToUI
+            if (createMessege == SuppliersRepository.Messeges.CreatedSuccessfully) RedirectToAction("Index");
+            else if (createMessege == SuppliersRepository.Messeges.Error_ExternalIdExist) return Error(Loc.Dic.error_externalIdAlreadyExist);
+            return Error(Loc.Dic.error_suppliers_create_error);
         }
 
         [OpenIdAuthorize]
@@ -163,13 +144,11 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 supplier.CompanyId = CurrentUser.CompanyId;
-                bool wasCreated;
-                using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId))
-                {
-                    wasCreated = supplierRep.Create(supplier);
-                }
 
-                if (wasCreated)
+                SuppliersRepository.Messeges messege;
+                using (SuppliersRepository supplierRep = new SuppliersRepository(CurrentUser.CompanyId)) messege = supplierRep.Create(supplier);
+
+                if (messege == SuppliersRepository.Messeges.CreatedSuccessfully)
                     return Json(new { success = true, message = String.Empty, newSupplierId = supplier.Id.ToString() }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { success = false, message = Loc.Dic.error_suppliers_create_error }, JsonRequestBehavior.AllowGet);
