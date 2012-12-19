@@ -31,11 +31,23 @@ namespace DB
         public Type Metadata { get { return typeof(AllocationToMonthMetaData); } }
     }
 
+    public class SuppliersMetaData
+    {
+        [LocalizedNumberString]
+        public int ExternalId { get; set; }
+    }
+
+    [MetadataType(typeof(SuppliersMetaData))]
+    public partial class Suppliers
+    {
+        public Type Metadata { get { return typeof(SuppliersMetaData); } }
+    }
+
     public class AllocationToMonthMetaData
     {
         [DisplayFormat(DataFormatString = "{0:0.##}")]
         public decimal Amount { get; set; }
-        
+
     }
 
     public partial class Budgets_Allocations

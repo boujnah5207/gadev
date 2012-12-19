@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using BL;
+using DB;
+using Resources;
 
 namespace GAppsDev.Models
 {

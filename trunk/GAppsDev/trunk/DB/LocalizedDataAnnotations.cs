@@ -6,9 +6,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using BL;
+using Resources;
 
-namespace GAppsDev
+namespace DB
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class LocalizedNameAttribute : DisplayNameAttribute
@@ -44,7 +44,7 @@ namespace GAppsDev
         public long? MaxBytes { get; set; }
         public string FileValidationError { get; set; }
 
-        public LocalizedFileAttribute(long maxBytes = Validations.MAX_FILE_SIZE) : base()
+        public LocalizedFileAttribute(long maxBytes) : base()
         {
             MaxBytes = maxBytes;
             FileValidationError = null;

@@ -118,1269 +118,1272 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedSearch" xml:space="preserve">
-    <value>Advanced Search</value>
+    <value>חיפוש מתקדם</value>
   </data>
   <data name="AllOrders" xml:space="preserve">
-    <value>All Orders</value>
+    <value>כל ההזמנות</value>
   </data>
   <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
+    <value>כמות</value>
   </data>
   <data name="BackToList" xml:space="preserve">
-    <value>Back to List</value>
+    <value>חזור לרשימה</value>
   </data>
   <data name="Budget" xml:space="preserve">
-    <value>Budget</value>
+    <value>תקציב</value>
   </data>
   <data name="BudgetAllocations" xml:space="preserve">
-    <value>Budget Allocations</value>
+    <value>סעיפים תקציביים</value>
   </data>
   <data name="CommaSepareted" xml:space="preserve">
-    <value>Comma separeted</value>
+    <value>הפרד בפסיקים</value>
   </data>
   <data name="Company" xml:space="preserve">
-    <value>Company</value>
+    <value>חברת</value>
   </data>
   <data name="CreateNewOrder" xml:space="preserve">
-    <value>Create New Order</value>
+    <value>יצירת הזמנה חדשה</value>
   </data>
   <data name="CreationDate" xml:space="preserve">
-    <value>Creation Date</value>
+    <value>תאריך יצירה</value>
   </data>
   <data name="Departments" xml:space="preserve">
-    <value>Departments</value>
+    <value>מחלקות</value>
   </data>
   <data name="Disconnect" xml:space="preserve">
-    <value>Disconnect</value>
+    <value>התנתק</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>ערוך</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Email</value>
+    <value>דואר אלקטרוני</value>
   </data>
   <data name="Expenses" xml:space="preserve">
-    <value>Expenses</value>
+    <value>הוצאות</value>
   </data>
   <data name="From" xml:space="preserve">
-    <value>From</value>
+    <value>מ</value>
   </data>
   <data name="Hide" xml:space="preserve">
-    <value>Hide</value>
+    <value>הסתר</value>
   </data>
   <data name="Incomes" xml:space="preserve">
-    <value>Incomes</value>
+    <value>הכנסות</value>
   </data>
   <data name="ItemDescription" xml:space="preserve">
-    <value>Item Description</value>
+    <value>תיאור הפריט</value>
   </data>
   <data name="ItemName" xml:space="preserve">
-    <value>Item Name</value>
+    <value>שם הפריט</value>
   </data>
   <data name="LanguageSet" xml:space="preserve">
-    <value>Language Set</value>
+    <value>שינוי שפת תצוגה</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Connect</value>
+    <value>התחבר</value>
   </data>
   <data name="MyOrders" xml:space="preserve">
-    <value>My Orders</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>ההזמנות שלי</value>
   </data>
   <data name="NoOrdersWereFound" xml:space="preserve">
-    <value>No orders were found</value>
+    <value>לא נמצאו הזמנות</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
+    <value>הערות</value>
   </data>
   <data name="OrderApproverNotes" xml:space="preserve">
-    <value>Order Approver Notes</value>
+    <value>הערות מאשר</value>
   </data>
   <data name="OrderCreatorName" xml:space="preserve">
-    <value>Order Creator Name</value>
+    <value>שם המזמין</value>
   </data>
   <data name="OrderDetails" xml:space="preserve">
-    <value>Order Details</value>
+    <value>פרטי הזמנה</value>
   </data>
   <data name="OrderNumber" xml:space="preserve">
-    <value>Order Number</value>
+    <value>מספר הזמנה</value>
   </data>
   <data name="OrderStatusName" xml:space="preserve">
-    <value>Order Status Name</value>
+    <value>סטאטוס הזמנה</value>
   </data>
   <data name="PendingOrders" xml:space="preserve">
-    <value>Pending Orders</value>
+    <value>הזמנות ממתינות</value>
   </data>
   <data name="Permission" xml:space="preserve">
-    <value>Permission</value>
+    <value>הרשאה</value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>Budget Baskets</value>
+    <value>סלי תקציבים</value>
   </data>
   <data name="PermissionsAllocations" xml:space="preserve">
-    <value>Configure Budget Allocations</value>
+    <value>הגדרת הרשאות תקציביות</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Price</value>
+    <value>מחיר</value>
   </data>
   <data name="Projects" xml:space="preserve">
-    <value>Projects</value>
+    <value>פרוייקטים</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>חפש</value>
   </data>
   <data name="SearchForWordsInNotes" xml:space="preserve">
-    <value>Search for the following words in the notes</value>
+    <value>חפש את המילים הבאות בהערות</value>
   </data>
   <data name="Send" xml:space="preserve">
-    <value>Send</value>
+    <value>שלח</value>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Show</value>
+    <value>הצג</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Status</value>
+    <value>סטאטוס</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+    <value>שלח</value>
   </data>
-  <data name="SubProject" xml:space="preserve">
-    <value>Sub Project</value>
+  <data name="SubProjects" xml:space="preserve">
+    <value>תת-פרוייקטים</value>
   </data>
   <data name="Supplier" xml:space="preserve">
-    <value>Supplier</value>
+    <value>ספק</value>
   </data>
   <data name="SupplierName" xml:space="preserve">
-    <value>Supplier Name</value>
+    <value>שם הספק</value>
   </data>
   <data name="To" xml:space="preserve">
-    <value>To</value>
+    <value>עד</value>
   </data>
   <data name="UserPerferences" xml:space="preserve">
-    <value>User Perferences</value>
+    <value>העדפות משתמש</value>
   </data>
   <data name="UsersManagment" xml:space="preserve">
-    <value>Users Managment</value>
+    <value>ניהול משתמשים</value>
   </data>
   <data name="Welcome" xml:space="preserve">
-    <value>Hi</value>
+    <value>ברוך/ה הבא/ה</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Orders</value>
+    <value>הזמנות</value>
   </data>
   <data name="BankAccountNumber" xml:space="preserve">
-    <value>Bank Account Number</value>
+    <value>מספר חשבון בנק</value>
   </data>
   <data name="BankBranch" xml:space="preserve">
-    <value>Bank Branch</value>
+    <value>סניף בנק</value>
   </data>
   <data name="BankNumber" xml:space="preserve">
-    <value>Bank Number</value>
+    <value>מספר בנק</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>City</value>
+    <value>עיר</value>
   </data>
   <data name="CompanyDetails" xml:space="preserve">
-    <value>Company Details</value>
+    <value>פרטי החברה</value>
   </data>
   <data name="CompanyNumber" xml:space="preserve">
-    <value>Company Number</value>
+    <value>מספר חברה</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>שם</value>
   </data>
   <data name="Number" xml:space="preserve">
-    <value>Number</value>
+    <value>מספר</value>
   </data>
   <data name="Street" xml:space="preserve">
-    <value>Street</value>
+    <value>רחוב</value>
   </data>
   <data name="TelephoneNumber" xml:space="preserve">
-    <value>Telephone Number</value>
+    <value>מספר טלפון</value>
   </data>
   <data name="Inventory" xml:space="preserve">
-    <value>Inventory</value>
+    <value>מלאי</value>
   </data>
   <data name="Managment" xml:space="preserve">
-    <value>Managment</value>
+    <value>ניהול</value>
   </data>
   <data name="Procurement" xml:space="preserve">
-    <value>Procurement</value>
+    <value>רכש</value>
   </data>
   <data name="InventoryList" xml:space="preserve">
-    <value>Inventory List</value>
+    <value>רשימת מלאי</value>
   </data>
   <data name="BudgetAllocation" xml:space="preserve">
-    <value>Budget Allocation</value>
+    <value>הקצאה תקציבית</value>
   </data>
   <data name="SearchResults" xml:space="preserve">
-    <value>Search Results</value>
+    <value>תוצאות חיפוש</value>
   </data>
   <data name="AllBudgetAllocations" xml:space="preserve">
-    <value>All Budget Allocations</value>
+    <value>כל ההוצאות התקציביות</value>
   </data>
   <data name="AllBudgets" xml:space="preserve">
-    <value>All Budgets</value>
+    <value>כל התקציבים</value>
   </data>
   <data name="AllExpenses" xml:space="preserve">
-    <value>All Expenses</value>
+    <value>כל ההוצאות</value>
   </data>
   <data name="AllIncomes" xml:space="preserve">
-    <value>All Incomes</value>
+    <value>כל ההכנסות</value>
   </data>
   <data name="AllDepartments" xml:space="preserve">
-    <value>All Departments</value>
+    <value>כל המחלקות</value>
   </data>
   <data name="AllProjects" xml:space="preserve">
-    <value>All Projects</value>
+    <value>כל הפרוייקטים</value>
   </data>
   <data name="AllSubProjects" xml:space="preserve">
-    <value>All Sub-Projects</value>
+    <value>כל תתי הפרוייקטים</value>
   </data>
   <data name="OrdersSearch" xml:space="preserve">
-    <value>Orders Search</value>
+    <value>חיפוש הזמנות</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>מחק</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>פרטים</value>
   </data>
   <data name="PrintOrder" xml:space="preserve">
-    <value>Download order</value>
+    <value>הורדת הזמנה</value>
   </data>
   <data name="UpdateStatus" xml:space="preserve">
-    <value>Update Status</value>
+    <value>עדכן סטאטוס</value>
   </data>
   <data name="UploadInvoice" xml:space="preserve">
-    <value>Upload Invoice</value>
+    <value>העלאת חשבונית</value>
   </data>
   <data name="UploadReceipt" xml:space="preserve">
-    <value>Upload Receipt</value>
+    <value>העלאת קבלה</value>
   </data>
   <data name="CompanyName" xml:space="preserve">
-    <value>Company Name</value>
+    <value>שם חברה</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Order</value>
+    <value>הזמנה</value>
   </data>
   <data name="OrderDate" xml:space="preserve">
-    <value>Order Date</value>
+    <value>תאריך הזמנה</value>
   </data>
   <data name="OrderItems" xml:space="preserve">
-    <value>Order Items</value>
+    <value>פריטי הזמנה</value>
   </data>
   <data name="OrderItemSubTitle" xml:space="preserve">
-    <value>Sub Title</value>
+    <value>תיאור</value>
   </data>
   <data name="OrderItemTitle" xml:space="preserve">
-    <value>Title</value>
+    <value>שם פריט</value>
   </data>
   <data name="ProcurementOrder" xml:space="preserve">
-    <value>Procurement Order</value>
+    <value>הזמנת רכש</value>
   </data>
   <data name="Quantity" xml:space="preserve">
-    <value>Quantity</value>
+    <value>כמות</value>
   </data>
   <data name="SingleItemPrice" xml:space="preserve">
-    <value>Single Item Price</value>
+    <value>מחיר לפריט יחיד</value>
   </data>
   <data name="Total" xml:space="preserve">
-    <value>Total</value>
+    <value>סך הכל</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>User Name</value>
+    <value>שם משתמש</value>
   </data>
   <data name="CreateNew" xml:space="preserve">
-    <value>Create New</value>
+    <value>צור חדש</value>
   </data>
   <data name="CreateNewPermission" xml:space="preserve">
-    <value>Create New Permission</value>
+    <value>צור סל תקציבים חדש</value>
   </data>
   <data name="EditAllocations" xml:space="preserve">
-    <value>Edit Allocations</value>
+    <value>עריכת סעיפים תקציביים</value>
   </data>
   <data name="Department" xml:space="preserve">
-    <value>Department</value>
+    <value>אגף</value>
   </data>
   <data name="AddAllocation" xml:space="preserve">
-    <value>Add Allocation</value>
+    <value>הוסף הקצאה</value>
   </data>
   <data name="AllPermissions" xml:space="preserve">
-    <value>All Permissions</value>
+    <value>כל ההרשאות</value>
   </data>
   <data name="Active" xml:space="preserve">
-    <value>Active</value>
+    <value>פעיל</value>
   </data>
   <data name="Activate" xml:space="preserve">
-    <value>Activate</value>
+    <value>הפעל</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Year</value>
+    <value>שנה</value>
   </data>
   <data name="CustomName" xml:space="preserve">
-    <value>Custom Name</value>
+    <value>שם מותאם</value>
   </data>
   <data name="IncomeType" xml:space="preserve">
-    <value>Income Type</value>
+    <value>סוג הכנסה</value>
   </data>
   <data name="InstitutionIncome" xml:space="preserve">
-    <value>Institution Income</value>
+    <value>גורם מכניס</value>
   </data>
   <data name="Expense" xml:space="preserve">
-    <value>Expense</value>
+    <value>הוצאה</value>
   </data>
   <data name="Income" xml:space="preserve">
-    <value>Income</value>
+    <value>הכנסה</value>
   </data>
   <data name="Project" xml:space="preserve">
-    <value>Project</value>
+    <value>פרוייקט</value>
+  </data>
+  <data name="SubProject" xml:space="preserve">
+    <value>תת-פרוייקט</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>הוסף</value>
   </data>
   <data name="ChosenSupplier" xml:space="preserve">
-    <value>Chosen Supplier</value>
+    <value>ספק נבחר</value>
   </data>
   <data name="CreateNewItem" xml:space="preserve">
-    <value>Create New Item</value>
+    <value>צור פריט חדש</value>
   </data>
   <data name="EditOrder" xml:space="preserve">
-    <value>Edit Order</value>
+    <value>ערוך הזמנה</value>
   </data>
   <data name="Item" xml:space="preserve">
-    <value>Item</value>
+    <value>פריט</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading</value>
+    <value>טוען</value>
   </data>
   <data name="TotalPrice" xml:space="preserve">
-    <value>Total Price</value>
+    <value>מחיר כולל</value>
   </data>
   <data name="ApproveOrder" xml:space="preserve">
-    <value>Approve Order</value>
+    <value>אשר הזמנה</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>Are you sure you want to delete this?</value>
+    <value>האם אתה בטוח שברצונך למחוק זאת?</value>
   </data>
   <data name="DeclineOrder" xml:space="preserve">
-    <value>Decline Order</value>
+    <value>דחה הזמנה</value>
   </data>
   <data name="ModifyStatus" xml:space="preserve">
-    <value>Modify Status</value>
+    <value>עריכת סטאטוס</value>
   </data>
   <data name="SendBackToUser" xml:space="preserve">
-    <value>Return To User</value>
+    <value>החזר למשתמש</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assigned To</value>
+    <value>משויך ל</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>Location</value>
+    <value>מיקום</value>
   </data>
   <data name="AddPermission" xml:space="preserve">
-    <value>Add basket</value>
+    <value>הוסף סל</value>
   </data>
   <data name="DownloadInvoice" xml:space="preserve">
-    <value>Download Invoice</value>
+    <value>הורד חשבונית</value>
   </data>
   <data name="DownloadReceipt" xml:space="preserve">
-    <value>Download Receipt</value>
+    <value>הורד קבלה</value>
   </data>
   <data name="AddItem" xml:space="preserve">
-    <value>Add Item</value>
+    <value>הוסף פריט</value>
   </data>
   <data name="AddSupplier" xml:space="preserve">
-    <value>Add Supplier</value>
+    <value>הוסף ספק</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>בטל</value>
   </data>
   <data name="ChooseAndContinue" xml:space="preserve">
-    <value>Choose And Continue</value>
+    <value>בחר והמשך</value>
   </data>
   <data name="ChooseSupplier" xml:space="preserve">
-    <value>Choose Supplier</value>
+    <value>בחר ספק</value>
   </data>
   <data name="DuplicateItemFound" xml:space="preserve">
-    <value>This Item already exist in the order, what whould you like to do?</value>
+    <value>הפריט כבר נמצא בהזמנה, מה ברצונך לעשות?</value>
   </data>
   <data name="FinalPrice" xml:space="preserve">
-    <value>Final price</value>
+    <value>מחיר סופי</value>
   </data>
   <data name="InvalidQuantityOrPrice" xml:space="preserve">
-    <value>Please enter quantity and price and try again</value>
+    <value>אנא הכנס כמות ומחיר ונסה שוב</value>
   </data>
   <data name="ItemDuplication" xml:space="preserve">
-    <value>Item Duplication</value>
+    <value>כפילות פריטים</value>
   </data>
   <data name="ItemWasCreated" xml:space="preserve">
-    <value>Item was added successfully</value>
+    <value>הפריט נוצר בהצלחה</value>
   </data>
   <data name="LoadingItems" xml:space="preserve">
-    <value>LoadingItems</value>
+    <value>טוען פריטים</value>
   </data>
   <data name="Merge" xml:space="preserve">
-    <value>Merge</value>
+    <value>מזג</value>
   </data>
   <data name="NoItemSelected" xml:space="preserve">
-    <value>Please select an item or create a new one</value>
+    <value>אנא בחר פריט או צור פריט חדש</value>
   </data>
   <data name="NoItemsInOrder" xml:space="preserve">
-    <value>No items in the order</value>
+    <value>אין פריטים בהזמנה</value>
   </data>
   <data name="OrderItem" xml:space="preserve">
-    <value>Item</value>
+    <value>פריט</value>
   </data>
   <data name="QuantityIsZero" xml:space="preserve">
-    <value>Quantity must be greater then 0</value>
+    <value>הכמות חייבת להיות גדולה מ-0</value>
   </data>
   <data name="Replace" xml:space="preserve">
-    <value>Replace</value>
+    <value>החלף</value>
   </data>
   <data name="SupplierAdded" xml:space="preserve">
-    <value>Supplier was added successfully</value>
+    <value>הספק נוסף בהצלחה</value>
   </data>
   <data name="UpdateOrder" xml:space="preserve">
-    <value>Update order</value>
+    <value>עדכן הזמנה</value>
   </data>
   <data name="Invoice" xml:space="preserve">
-    <value>Invoice</value>
+    <value>חשבונית</value>
   </data>
   <data name="InvoiceApproval" xml:space="preserve">
-    <value>Invoice Approval</value>
+    <value>אישור חשבונית</value>
   </data>
   <data name="ApproveInvoce" xml:space="preserve">
-    <value>Approve Invoce</value>
+    <value>אישור חשבונית</value>
   </data>
   <data name="DeclineInvoice" xml:space="preserve">
-    <value>Decline Invoice</value>
+    <value>דחיית חשבונית</value>
   </data>
   <data name="CancelOrder" xml:space="preserve">
-    <value>Cancel Order</value>
+    <value>בטל הזמנה</value>
   </data>
   <data name="Error_DatabaseError" xml:space="preserve">
-    <value>An error accured while accessing the database.</value>
+    <value>הייתה שגיאה בזמן הגישה לבסיס הנתונים. אנא נסה שנית</value>
   </data>
   <data name="Error_InvoiceFileNotFound" xml:space="preserve">
-    <value>The invoice file was not found</value>
+    <value>לא הייתה אפשרות למצוא את ההזמנה שצויינה</value>
   </data>
   <data name="Error_InvoiceNotApproved" xml:space="preserve">
-    <value>The invoice is not approved by the order creator.</value>
+    <value>החשבונית לא אושרה עדיין על ידי יוצר ההזמנה</value>
   </data>
   <data name="Error_InvoiceNotScanned" xml:space="preserve">
-    <value>This order does not have an invoice yet.</value>
+    <value>עדיין לא נסרקה חשבונית להזמנה זאת</value>
   </data>
   <data name="Error_NoPermission" xml:space="preserve">
-    <value>You don't have the permission to do that action</value>
+    <value>אין לך את ההרשאה המתאימה לביצוע פעולה זאת. אנא פנה למנהל המערכת</value>
   </data>
   <data name="Error_OrderAlreadyHasReceipt" xml:space="preserve">
-    <value>This order already has a receipt</value>
+    <value>כבר נסרקה קבלה להזמנה זאת</value>
   </data>
   <data name="Error_OrderNotFound" xml:space="preserve">
-    <value>The order was not found in the database.</value>
+    <value>לא הייתה אפשרות למצוא הזמנה בבסיס הנתונים</value>
   </data>
   <data name="Error_ReceiptFileNotFound" xml:space="preserve">
-    <value>The receipt file was not found</value>
+    <value>לא הייתה אפשרות למצוא את הקבלה שצויינה</value>
   </data>
   <data name="Error_ReceiptNotScanned" xml:space="preserve">
-    <value>This order does not have an receipt yet.</value>
+    <value>עדיין לא נסרקה קבלה להזמנה זאת</value>
   </data>
   <data name="ExportToFile" xml:space="preserve">
-    <value>Export To File</value>
+    <value>ייצוא לקובץ</value>
   </data>
   <data name="ExportBudget" xml:space="preserve">
-    <value>Export Budget</value>
+    <value>ייצוא תקציב</value>
   </data>
   <data name="ImportBudget" xml:space="preserve">
-    <value>Import Budget</value>
+    <value>ייבוא תקציב</value>
   </data>
   <data name="Error_FileParseError" xml:space="preserve">
-    <value>There were errors in the submitted file.</value>
-  </data>
-  <data name="OrdersToExport" xml:space="preserve">
-    <value>Orders To Export</value>
+    <value>התגלו שגיאות בקובץ שנשלח</value>
   </data>
   <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
+    <value>פעולות</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export</value>
+    <value>ייצא</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import</value>
+    <value>ייבא</value>
+  </data>
+  <data name="OrdersToExport" xml:space="preserve">
+    <value>הזמנות לייצוא</value>
   </data>
   <data name="SelectedItems" xml:space="preserve">
-    <value>Selected</value>
+    <value>נבחרו</value>
   </data>
   <data name="EnterVatNumber" xml:space="preserve">
-    <value>Enter Vat Number</value>
+    <value>הכנס מספר עוסק מורשה</value>
   </data>
   <data name="April" xml:space="preserve">
-    <value>April</value>
+    <value>אפריל</value>
   </data>
   <data name="August" xml:space="preserve">
-    <value>August</value>
+    <value>אוגוסט</value>
   </data>
   <data name="December" xml:space="preserve">
-    <value>December</value>
+    <value>דצמבר</value>
   </data>
   <data name="February" xml:space="preserve">
-    <value>February</value>
+    <value>פברואר</value>
   </data>
   <data name="January" xml:space="preserve">
-    <value>January</value>
+    <value>ינואר</value>
   </data>
   <data name="July" xml:space="preserve">
-    <value>July</value>
+    <value>יולי</value>
   </data>
   <data name="June" xml:space="preserve">
-    <value>June</value>
+    <value>יוני</value>
   </data>
   <data name="March" xml:space="preserve">
-    <value>March</value>
+    <value>מרץ</value>
   </data>
   <data name="May" xml:space="preserve">
-    <value>May</value>
+    <value>מאי</value>
   </data>
   <data name="Month" xml:space="preserve">
-    <value>Month</value>
+    <value>חודש</value>
   </data>
   <data name="NoAllocationsInOrder" xml:space="preserve">
-    <value>No allocations in the order</value>
+    <value>אין להזמנה הקצאות</value>
   </data>
   <data name="November" xml:space="preserve">
-    <value>November</value>
+    <value>נובמבר</value>
   </data>
   <data name="October" xml:space="preserve">
-    <value>October</value>
+    <value>אוקטובר</value>
   </data>
   <data name="September" xml:space="preserve">
-    <value>September</value>
+    <value>ספטמבר</value>
   </data>
   <data name="TotalAllocation" xml:space="preserve">
-    <value>Total allocation</value>
+    <value>סך הקצאה</value>
   </data>
   <data name="LastChangeDate" xml:space="preserve">
-    <value>Last Change Date</value>
+    <value>עודכן בתאריך</value>
   </data>
   <data name="DeleteAlertMessege" xml:space="preserve">
-    <value>Are you sure you want to delete this?</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>האם למחוק פריט זה?</value>
   </data>
   <data name="Suppliers" xml:space="preserve">
-    <value>Suppliers</value>
+    <value>ספקים</value>
   </data>
   <data name="SuppliersEntrence" xml:space="preserve">
-    <value>Suppliers Entrence</value>
+    <value>כניסה לספקים</value>
   </data>
   <data name="AmountExceedsAllocation" xml:space="preserve">
-    <value>The amount is higher then the remaining amount, your order will become an exeeding order</value>
+    <value>הכמות עולה על סך ההקצאה, הזמנתך תסומן כהזמנה חריגה</value>
   </data>
   <data name="InvalidAmount" xml:space="preserve">
-    <value>Invalid amount</value>
+    <value>אנא הכנס כמות ונסה שוב</value>
   </data>
   <data name="AllUsers" xml:space="preserve">
-    <value>All Users</value>
+    <value>כל המשתמשים</value>
   </data>
   <data name="ImportSuppliers" xml:space="preserve">
-    <value>Import Suppliers</value>
+    <value>ייבוא ספקים</value>
   </data>
   <data name="Users" xml:space="preserve">
-    <value>Users</value>
+    <value>משתמשים</value>
   </data>
   <data name="UsersAmount" xml:space="preserve">
-    <value>Users Amount</value>
+    <value>כמות משתמשים</value>
   </data>
   <data name="UpdateBudget" xml:space="preserve">
-    <value>Update Budget</value>
+    <value>עדכון תקציב</value>
   </data>
   <data name="FutureOrder" xml:space="preserve">
-    <value>Future Order</value>
+    <value>הזמנה עתידית</value>
   </data>
   <data name="View" xml:space="preserve">
-    <value>View</value>
+    <value>הצג</value>
   </data>
   <data name="ImportedSupplierNumber" xml:space="preserve">
-    <value>Imported Supplier Number</value>
+    <value>מספר ספק מיובא</value>
   </data>
   <data name="ImportDate" xml:space="preserve">
-    <value>Import Date</value>
+    <value>תאריך ייבוא</value>
   </data>
   <data name="LastLogInTime" xml:space="preserve">
-    <value>Last LogIn Time</value>
+    <value>כניסה אחרונה</value>
   </data>
   <data name="Role" xml:space="preserve">
-    <value>Role</value>
+    <value>תפקיד</value>
   </data>
   <data name="error_allocations_amount_is_used" xml:space="preserve">
-    <value>error_allocations_amount_is_used</value>
+    <value>סך ההזמנות מהקצאה זאת עולה על סכום ההקצאה שצויין</value>
   </data>
   <data name="error_allocations_delete_error" xml:space="preserve">
-    <value>error_allocations_delete_error</value>
+    <value>קרתה שגיאה בזמן הסרת ההקצאה, הפעולה לא הושלמה</value>
   </data>
   <data name="error_allocations_edit_error" xml:space="preserve">
-    <value>error_allocations_edit_error</value>
+    <value>קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_allocations_get_error" xml:space="preserve">
-    <value>error_allocations_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה להקצאות בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_allocations_has_approved_orders" xml:space="preserve">
-    <value>error_allocations_has_approved_orders</value>
+    <value>להקצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההקצאה</value>
   </data>
   <data name="error_budgets_already_active" xml:space="preserve">
-    <value>error_budgets_already_active</value>
+    <value>תקציב זה כבר פעיל</value>
   </data>
   <data name="error_budgets_create_error" xml:space="preserve">
-    <value>error_budgets_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. התקציב לא נשמר במערכת</value>
   </data>
   <data name="error_budgets_get_error" xml:space="preserve">
-    <value>error_budgets_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה לתקציבים בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_budgets_year_exists" xml:space="preserve">
-    <value>error_budgets_year_exists</value>
+    <value>נוצר כבר תקציב לשנה זאת</value>
   </data>
   <data name="error_budgets_year_passed" xml:space="preserve">
-    <value>error_budgets_year_passed</value>
+    <value>לא ניתן ליצור או לערוך תקציב לשנים קודמות</value>
   </data>
   <data name="error_database_error" xml:space="preserve">
-    <value>error_database_error</value>
+    <value>הייתה שגיאה בזמן הגישה לבסיס הנתונים. אנא נסה שנית</value>
   </data>
   <data name="error_expenses_allocations_exeeds_amount" xml:space="preserve">
-    <value>error_expenses_allocations_exeeds_amount</value>
+    <value>להוצאה זאת כבר הוקצה להוצאה סכום העולה על סך ההוצאה החדש. ההוצאה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב</value>
   </data>
   <data name="error_expenses_create_error" xml:space="preserve">
-    <value>error_expenses_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההוצאה לא נשמרה במערכת</value>
   </data>
   <data name="error_expenses_delete_has_approved_orders" xml:space="preserve">
-    <value>error_expenses_delete_has_approved_orders</value>
+    <value>להוצאה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההוצאה</value>
   </data>
   <data name="error_expenses_full_allocation" xml:space="preserve">
-    <value>error_expenses_full_allocation</value>
+    <value>לא נותר מספיק סכום להוצאה שצויינה על מנת להקצות את הסכום שבוקש</value>
   </data>
   <data name="error_expenses_get_error" xml:space="preserve">
-    <value>error_expenses_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה להוצאות בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_income_allocations_exeeds_amount" xml:space="preserve">
-    <value>error_income_allocations_exeeds_amount</value>
+    <value>להכנסה זאת כבר הוקצה להוצאה סכום העולה על סך ההכנסה החדש. ההכנסה לא עודכנה. אנא ערוך את ההקצאות בהתאם ונסה שוב</value>
   </data>
   <data name="error_income_create_error" xml:space="preserve">
-    <value>error_income_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההכנסה לא נשמרה במערכת</value>
   </data>
   <data name="error_income_delete_has_approved_orders" xml:space="preserve">
-    <value>error_income_delete_has_approved_orders</value>
+    <value>להכנסה זאת קיימות הזמנות מאושרות. לא הייתה אפשרות לבטל את ההכנסה</value>
   </data>
   <data name="error_income_full_allocation" xml:space="preserve">
-    <value>error_income_full_allocation</value>
+    <value>לא נותר מספיק סכום להכנסה שצויינה על מנת להקצות את הסכום שבוקש</value>
   </data>
   <data name="error_income_get_error" xml:space="preserve">
-    <value>error_income_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה להכנסות בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_invalid_form" xml:space="preserve">
-    <value>error_invalid_form</value>
+    <value>נמצאו שגיאות בטופס, לא כל השדות תקינים</value>
   </data>
   <data name="error_inventory_create_error" xml:space="preserve">
-    <value>error_inventory_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הפריטים לא הוספו למלאי</value>
   </data>
   <data name="error_no_permission" xml:space="preserve">
-    <value>error_no_permission</value>
+    <value>אין לך את ההרשאה המתאימה לביצוע פעולה זאת. אנא פנה למנהל המערכת</value>
   </data>
   <data name="error_orderitems_get_error" xml:space="preserve">
-    <value>error_orderitems_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה לפריטים להזמנה בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_orders_create_error" xml:space="preserve">
-    <value>error_orders_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההזמנה לא נשמרה במערכת</value>
   </data>
   <data name="error_orders_delete_error" xml:space="preserve">
-    <value>error_orders_delete_error</value>
+    <value>קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק את ההזמנה</value>
   </data>
   <data name="error_orders_delete_items_error" xml:space="preserve">
-    <value>error_orders_delete_items_error</value>
+    <value>קרתה שגיאה בזמן הגישה למסד הנתונים. לא הייתה אפשרות למחוק פריטים מההזמנה</value>
   </data>
   <data name="error_orders_get_error" xml:space="preserve">
-    <value>error_orders_get_error</value>
+    <value>קרתה שגיאה בזמן משיכת ההזמנות מבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_order_already_has_invoice" xml:space="preserve">
-    <value>error_order_already_has_invoice</value>
+    <value>כבר נסרקה חשבונית להזמנה זאת</value>
   </data>
   <data name="error_order_delete_after_approval" xml:space="preserve">
-    <value>error_order_delete_after_approval</value>
+    <value>אין למחוק הזמנה לאחר אישורה\\ביטולה</value>
   </data>
   <data name="error_order_edit_after_approval" xml:space="preserve">
-    <value>error_order_edit_after_approval</value>
+    <value>אין לערוך הזמנה לאחר אישורה\\ביטולה, אנא צור הזמנה חדשה במקום</value>
   </data>
   <data name="error_order_get_error" xml:space="preserve">
-    <value>error_order_get_error</value>
+    <value>קרתה שגיאה בזמן משיכת ההזמנה מבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_order_has_no_items" xml:space="preserve">
-    <value>error_order_has_no_items</value>
+    <value>אין אפשרות ליצור הזמנה ללא פריטים. אנא הוסף פריט ונסה שוב</value>
   </data>
   <data name="error_order_insufficient_allocation" xml:space="preserve">
-    <value>error_order_insufficient_allocation</value>
+    <value>סכום ההזמנה עולה על הסכום שנותר להקצאה שנבחרה</value>
   </data>
   <data name="error_order_not_approved" xml:space="preserve">
-    <value>error_order_not_approved</value>
+    <value>ההזמנה עדיין לא אושרה. אנא המתן עד לאישור ההזמנה</value>
   </data>
   <data name="error_order_not_found" xml:space="preserve">
-    <value>error_order_not_found</value>
+    <value>לא הייתה אפשרות למצוא הזמנה בבסיס הנתונים</value>
   </data>
   <data name="error_order_save_items_error" xml:space="preserve">
-    <value>error_order_save_items_error</value>
+    <value>קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה נשמרו</value>
   </data>
   <data name="error_order_update_items_error" xml:space="preserve">
-    <value>error_order_update_items_error</value>
+    <value>קרתה שגיאה בזמן השמירה לבסיס הנתונים, לא כל פריטי ההזמנה עודכנו</value>
   </data>
   <data name="error_permissions_create_error" xml:space="preserve">
-    <value>error_permissions_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. ההרשאה לא נשמר במערכת</value>
   </data>
   <data name="error_permissions_delete_error" xml:space="preserve">
-    <value>error_permissions_delete_error</value>
+    <value>קרתה שגיאה בזמן הסרת ההרשאה, הפעולה לא הושלמה</value>
   </data>
   <data name="error_permissions_get_error" xml:space="preserve">
-    <value>error_permissions_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה להרשאות בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_projects_create_error" xml:space="preserve">
-    <value>error_projects_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הפרוייקט לא נשמר במערכת</value>
   </data>
   <data name="error_projects_get_error" xml:space="preserve">
-    <value>error_projects_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה לפרוייקטים בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_sub_projects_create_error" xml:space="preserve">
-    <value>error_sub_projects_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. התת-פרוייקט לא נשמר במערכת</value>
   </data>
   <data name="error_sub_projects_get_error" xml:space="preserve">
-    <value>error_sub_projects_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה לתת-פרוייקטים בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_suppliers_create_error" xml:space="preserve">
-    <value>error_suppliers_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. הספק לא נשמר במערכת</value>
   </data>
   <data name="error_suppliers_get_error" xml:space="preserve">
-    <value>error_suppliers_get_error</value>
+    <value>קרתה שגיאה בזמן הגישה לספקים בבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_users_create_error" xml:space="preserve">
-    <value>error_users_create_error</value>
+    <value>קרתה שגיאה בזמן השמירה למסד הנתונים. המשתמש לא נשמר במערכת</value>
   </data>
   <data name="error_users_delete_error" xml:space="preserve">
-    <value>error_users_delete_error</value>
+    <value>לא הייתה אפשרות להסיר את המשתמש. אנא נסה שוב</value>
   </data>
   <data name="error_users_exist_error" xml:space="preserve">
-    <value>error_users_exist_error</value>
+    <value>משתמש עם אימייל זהה כבר רשום במערכת</value>
   </data>
   <data name="error_users_get_error" xml:space="preserve">
-    <value>error_users_get_error</value>
+    <value>קרתה שגיאה בזמן משיכת המשתמשים מבסיס הנתונים. אנא נסה שוב</value>
   </data>
   <data name="error_users_limit_reached" xml:space="preserve">
-    <value>error_users_limit_reached</value>
+    <value>חברתך הגיעה לגבול מספר המשתמשים שלה. אין אפשרות ליצור משתמשים חדשים</value>
   </data>
   <data name="error_user_already_has_permissions" xml:space="preserve">
-    <value>error_user_already_has_permissions</value>
+    <value>למשתמש כבר יש  את ההרשאה שצויינה</value>
   </data>
   <data name="error_user_cannot_delete_self" xml:space="preserve">
-    <value>error_user_cannot_delete_self</value>
+    <value>למשתמש אין אפשרות להסיר את עצמו</value>
   </data>
   <data name="error_user_edit_permissions_error" xml:space="preserve">
-    <value>error_user_edit_permissions_error</value>
+    <value>היו שגיאות בזמן השמירה לבסיס הנתונים. לא כל ההרשאות נשמרו</value>
   </data>
   <data name="error_user_not_found" xml:space="preserve">
-    <value>error_user_not_found</value>
+    <value>לא הייתה אפשרות למצוא משתמש בבסיס הנתונים</value>
   </data>
   <data name="error_user_not_registerd" xml:space="preserve">
-    <value>error_user_not_registerd</value>
+    <value>חשבון משתשתמש זה אינו רשום במערכת</value>
   </data>
   <data name="error_user_was_canceled" xml:space="preserve">
-    <value>error_user_was_canceled</value>
+    <value>חשבון משתמש זה בוטל. אנא פנה למנהל המערכת</value>
   </data>
   <data name="AddAllocationToPermission" xml:space="preserve">
-    <value>Add Allocation To Permission</value>
+    <value>הוסף סעיף תקציבי לסל תקציבים</value>
   </data>
   <data name="Empty" xml:space="preserve">
-    <value>Empty</value>
+    <value>ריק</value>
   </data>
   <data name="PermissionAllocation" xml:space="preserve">
-    <value>Budget Basket</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+    <value>סל תקציבי</value>
   </data>
   <data name="Allocations" xml:space="preserve">
-    <value>Allocations</value>
+    <value>סעיפים תקציביים</value>
   </data>
   <data name="Monthly" xml:space="preserve">
-    <value>Monthly</value>
+    <value>חודשי</value>
   </data>
   <data name="Yearly" xml:space="preserve">
-    <value>Yearly</value>
+    <value>שנתי</value>
   </data>
   <data name="FileFormat" xml:space="preserve">
-    <value>File Format</value>
+    <value>מבנה קובץ</value>
   </data>
   <data name="BudgetBasket" xml:space="preserve">
-    <value>Budget Basket</value>
+    <value>סל תקציב</value>
   </data>
   <data name="Found" xml:space="preserve">
-    <value>Found</value>
+    <value>נמצאו</value>
   </data>
   <data name="Results" xml:space="preserve">
-    <value>Results</value>
+    <value>תוצאות</value>
   </data>
   <data name="AddToInventory" xml:space="preserve">
-    <value>Add to inventory</value>
+    <value>הוסף למלאי</value>
   </data>
   <data name="error_order_was_added_to_inventory" xml:space="preserve">
-    <value>This order was already added to the inventory</value>
+    <value>הזמנה זאת כבר הוכנסה למלאי</value>
   </data>
   <data name="PendingInventory" xml:space="preserve">
-    <value>Pending inventory insertion</value>
+    <value>הזמנות ממתינות להכנסה למלאי</value>
   </data>
   <data name="error_no_active_budget" xml:space="preserve">
-    <value>There is no active budget</value>
+    <value>לא נמצא תקציב פעיל</value>
   </data>
   <data name="error_supplier_item_create_error" xml:space="preserve">
-    <value>Could not create Item</value>
+    <value>קרתה שגיאה, הפריט לא נוצר</value>
   </data>
   <data name="InvoiceDate" xml:space="preserve">
-    <value>Invoice date</value>
+    <value>תאריך חשבונית</value>
   </data>
   <data name="InvoiceFile" xml:space="preserve">
-    <value>Invoice file</value>
+    <value>קובץ חשבונית</value>
   </data>
   <data name="InvoiceNumber" xml:space="preserve">
-    <value>Invoice number</value>
+    <value>מספר חשבונית</value>
   </data>
   <data name="ValueDate" xml:space="preserve">
-    <value>Value Date</value>
+    <value>תאריך ערך</value>
   </data>
   <data name="DisplayLanguage" xml:space="preserve">
-    <value>Display language</value>
+    <value>שפת תצוגה</value>
   </data>
   <data name="EditPendingUser" xml:space="preserve">
-    <value>Edit pending user</value>
+    <value>עריכת משתמש חדש</value>
   </data>
   <data name="EditUser" xml:space="preserve">
-    <value>Edit user</value>
+    <value>עריכת משתמש</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>שגיאה</value>
   </data>
   <data name="FirstName" xml:space="preserve">
-    <value>First name</value>
+    <value>שם פרטי</value>
   </data>
   <data name="LastName" xml:space="preserve">
-    <value>Last name</value>
+    <value>שם משפחה</value>
   </data>
   <data name="NewUser" xml:space="preserve">
-    <value>New user</value>
+    <value>משתמש חדש</value>
   </data>
   <data name="OrderApprover" xml:space="preserve">
-    <value>Order approver</value>
+    <value>מאשר הזמנות</value>
   </data>
   <data name="PendingUser" xml:space="preserve">
-    <value>Pending user</value>
+    <value>משתמש חדש</value>
   </data>
   <data name="User" xml:space="preserve">
-    <value>User</value>
+    <value>משתמש</value>
   </data>
   <data name="IsOutOfInventory" xml:space="preserve">
-    <value>Is Out Of Inventory</value>
+    <value>יצא מהמלאי</value>
   </data>
   <data name="Locations" xml:space="preserve">
-    <value>Locations</value>
+    <value>מיקומים</value>
   </data>
   <data name="RelatedInventoryItem" xml:space="preserve">
-    <value>Related Inventory Item</value>
+    <value>פריט מיוחס</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Serial Number</value>
+    <value>מספר סידורי</value>
   </data>
   <data name="WarrentyPeriodEnd" xml:space="preserve">
-    <value>Warrenty Period End</value>
+    <value>תאריך סיום אחריות</value>
   </data>
   <data name="WarrentyPeriodStart" xml:space="preserve">
-    <value>Warrenty Period Start</value>
+    <value>תאריך תחילת אחריות</value>
   </data>
   <data name="Address" xml:space="preserve">
-    <value>Address</value>
+    <value>כתובת</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>שמור</value>
   </data>
   <data name="Allocation" xml:space="preserve">
-    <value>Allocation</value>
+    <value>סעיף תקציבי</value>
   </data>
   <data name="Error_chooseMonthelyOrYearlyBudget" xml:space="preserve">
-    <value>choose Monthely Or Yearly Budget</value>
+    <value>יש לבחור תקציב שנתי או חודשי</value>
   </data>
   <data name="BasketsToAllocation" xml:space="preserve">
-    <value>Baskets To Allocation</value>
+    <value>סעיף תקציבי בסל</value>
   </data>
   <data name="error_allocation_exceeds_price" xml:space="preserve">
-    <value>Allocation amount is more then the total order price</value>
+    <value>סכום ההקצאה עולה על סכום ההזמנה</value>
   </data>
   <data name="error_allocation_smaller_then_price" xml:space="preserve">
-    <value>Allocation amount is less then the total order price</value>
+    <value>סכום ההקצאה קטן מסכום ההזמנה</value>
   </data>
   <data name="CancelSplit" xml:space="preserve">
-    <value>Cancel split</value>
+    <value>בטל פיצול</value>
   </data>
   <data name="error_no_selected_orders" xml:space="preserve">
-    <value>No orders were selected</value>
+    <value>לא נבחרו הזמנות</value>
   </data>
   <data name="HideDetails" xml:space="preserve">
-    <value>Hide details</value>
+    <value>הסתר פרטים</value>
   </data>
   <data name="HideGroup" xml:space="preserve">
-    <value>Hide group</value>
+    <value>הסתר קבוצה</value>
   </data>
   <data name="ItemsQuantity" xml:space="preserve">
-    <value>Items quantity</value>
+    <value>מספר פריטים</value>
   </data>
   <data name="NotInventoryItem" xml:space="preserve">
-    <value>Not an inventory item</value>
+    <value>אינו פריט מלאי</value>
   </data>
   <data name="RemovedItems" xml:space="preserve">
-    <value>Removed items</value>
+    <value>פריטים שהוסרו</value>
   </data>
   <data name="ReturnItemToList" xml:space="preserve">
-    <value>Return item to list</value>
+    <value>החזר פריט לרשימה</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
-    <value>Select All</value>
+    <value>בחר הכל</value>
   </data>
   <data name="SelectNone" xml:space="preserve">
-    <value>Select None</value>
+    <value>בחר כלום</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Show details</value>
+    <value>הצג פרטים</value>
   </data>
   <data name="ShowGroup" xml:space="preserve">
-    <value>Show group</value>
+    <value>הצג קבוצה</value>
   </data>
   <data name="SplitItems" xml:space="preserve">
-    <value>Split items</value>
+    <value>פצל פריטים</value>
   </data>
   <data name="State" xml:space="preserve">
-    <value>State</value>
+    <value>מצב</value>
   </data>
   <data name="WarrantyPeriod" xml:space="preserve">
-    <value>Warranty period</value>
+    <value>תקופת אחריות</value>
   </data>
   <data name="NoUsersFound" xml:space="preserve">
-    <value>No users found</value>
+    <value>לא נמצאו משתמשים</value>
   </data>
   <data name="UsersSearch" xml:space="preserve">
-    <value>Users search</value>
+    <value>חיפוש משתמשים</value>
   </data>
   <data name="DeleteUser" xml:space="preserve">
-    <value>Cancel user</value>
+    <value>ביטול משתמש</value>
   </data>
   <data name="OrderApproverFor" xml:space="preserve">
-    <value>Order approver for</value>
+    <value>מאשר הזמנות של</value>
   </data>
   <data name="ActiveUsers" xml:space="preserve">
-    <value>Active users</value>
+    <value>משתמשים פעילים</value>
   </data>
   <data name="CanceledUser" xml:space="preserve">
-    <value>Canceled user</value>
+    <value>משתמש מבוטל</value>
   </data>
   <data name="CanceledUsers" xml:space="preserve">
-    <value>Canceled users</value>
+    <value>משתמשים מבוטלים</value>
   </data>
   <data name="NewUsers" xml:space="preserve">
-    <value>New users</value>
+    <value>משתמשים חדשים</value>
   </data>
   <data name="NoActiveUsersFound" xml:space="preserve">
-    <value>No active users found</value>
+    <value>לא נמצאו משתמשים פעילים</value>
   </data>
   <data name="NoCanceledUsersFound" xml:space="preserve">
-    <value>No canceled users found</value>
+    <value>לא נמצאו משתמשים מבוטלים</value>
   </data>
   <data name="NoNewUsersFound" xml:space="preserve">
-    <value>No new users found</value>
+    <value>לא נמצאו משתמשים חדשים</value>
   </data>
   <data name="ReturnUser" xml:space="preserve">
-    <value>Return user</value>
+    <value>החזר משתמש</value>
   </data>
   <data name="UserDeleteConfirm" xml:space="preserve">
-    <value>Are you sure you want to cancel this user?</value>
+    <value>האם אתה בטוח שברצונך לבטל את המשתמש?</value>
   </data>
   <data name="UsersQuota" xml:space="preserve">
-    <value>Users quota</value>
+    <value>מכסת משתמשים</value>
   </data>
   <data name="UserUndoDeleteConfirm" xml:space="preserve">
-    <value>Are you sure you want to return this user?</value>
+    <value>האם אתה בטוח שברצונך להחזיר את המשתמש?</value>
   </data>
   <data name="NoMoreBasketsToAdd" xml:space="preserve">
-    <value>The are no more baskets to add</value>
+    <value>אין עוד סלים להוספה</value>
   </data>
   <data name="error_supplier_not_found" xml:space="preserve">
-    <value>A supplier was not found in the database</value>
+    <value>ספק לא נמצא בבסיס הנתונים</value>
   </data>
   <data name="NoSuppliersWereFound" xml:space="preserve">
-    <value>No suppliers were found</value>
+    <value>לא נמצאו ספקים</value>
   </data>
   <data name="ActivityHours" xml:space="preserve">
-    <value>Activity hours</value>
+    <value>שעות פעולה</value>
   </data>
   <data name="AdditionalPhoneNumber" xml:space="preserve">
-    <value>Additional phone number</value>
+    <value>מספר טלפון נוסף</value>
   </data>
   <data name="BranchLine" xml:space="preserve">
-    <value>Branch line</value>
+    <value>שלוחה</value>
   </data>
   <data name="CrewNumber" xml:space="preserve">
-    <value>Crew number</value>
+    <value>מספר צוות</value>
   </data>
   <data name="CustomerNumber" xml:space="preserve">
-    <value>Client number</value>
+    <value>מספר לקוח</value>
   </data>
   <data name="Fax" xml:space="preserve">
-    <value>Fax</value>
+    <value>פקס</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone number</value>
+    <value>מספר טלפון</value>
   </data>
   <data name="PresentorName" xml:space="preserve">
-    <value>Presentor name</value>
+    <value>שם הנציג</value>
   </data>
   <data name="vatNumber" xml:space="preserve">
-    <value>VAT number</value>
+    <value>מספר תיק מע"מ</value>
   </data>
   <data name="NoAllocationsWereFound" xml:space="preserve">
-    <value>No allocations were found</value>
+    <value>לא נמצאו הקצאות תקציביות</value>
   </data>
   <data name="NoBudgetsWereFound" xml:space="preserve">
-    <value>No budgets were found</value>
+    <value>לא נמצאו תקציבים</value>
   </data>
   <data name="OrderAllocations" xml:space="preserve">
-    <value>Order allocations</value>
-  </data>
-  <data name="OrdersRecovery" xml:space="preserve">
-    <value>Orders Recovery</value>
+    <value>הקצאות הזמנה</value>
   </data>
   <data name="error_InvoiceDateHaveToBeLaterThenInvoiceCreationDate" xml:space="preserve">
-    <value>Invoice Date Have To Be Later Then Invoice Creation Date</value>
+    <value>תאריך האסמכתא חייב להיות לאחר תאריך יצירת ההזמנה</value>
   </data>
   <data name="error_ValueDateHaveToBeLaterThenLatestAllocationDate" xml:space="preserve">
-    <value>Value Date Have To Be Later Then Latest Allocation Date</value>
+    <value>תאריך הערך חייב להיות גדול מתאריך הסעיף התקציבי המאוחר ביותר</value>
+  </data>
+  <data name="OrdersRecovery" xml:space="preserve">
+    <value>שחזור הזמנות</value>
   </data>
   <data name="error_wrongStatus" xml:space="preserve">
-    <value>wrong Status</value>
+    <value>סטטוס הזמנה שגוי</value>
   </data>
   <data name="DefineBaskets" xml:space="preserve">
-    <value>Define baskets</value>
+    <value>הגדר סלי תקציבים</value>
   </data>
   <data name="EditBasketAllocations" xml:space="preserve">
-    <value>Edit basket allocations</value>
+    <value>הגדר סעיפים תקציביים</value>
   </data>
   <data name="EmptyBasket" xml:space="preserve">
-    <value>Empty basket</value>
+    <value>סל ריק</value>
   </data>
   <data name="error_user_have_no_allocations" xml:space="preserve">
-    <value>You have no allocations to order from</value>
+    <value>אין לך הקצאות תקציביות להזמנות</value>
   </data>
   <data name="NoBasketsWereFound" xml:space="preserve">
-    <value>No baskets were found</value>
+    <value>לא נמצאו סלי תקציב</value>
   </data>
   <data name="error_budget_delete_error" xml:space="preserve">
-    <value>There was an error while trying to delete a budget</value>
+    <value>הייתה שגיאה בזמן מחיקת התקציב</value>
   </data>
   <data name="error_imported_allocations_amount_is_used" xml:space="preserve">
-    <value>Some imported allocations has an amount that is smaller then the amount already used</value>
+    <value>לחלק מההקצאות שיובאו יש סכום שקטן מהסכום שנוצל בהם</value>
   </data>
   <data name="TheNewAmount" xml:space="preserve">
-    <value>New amount</value>
+    <value>הסכום החדש</value>
   </data>
   <data name="TheTotalUsed" xml:space="preserve">
-    <value>Total used</value>
+    <value>הסכום שנוצל</value>
   </data>
   <data name="error_no_location_exist" xml:space="preserve">
-    <value>No location exist, you must create location before</value>
+    <value>אין מיקום קיים, יש ליצור מיקום לפני הוספה למלאי</value>
   </data>
   <data name="AllAllocationsOption" xml:space="preserve">
-    <value>All allocations</value>
+    <value>כל ההקצאות</value>
   </data>
   <data name="AllBudgetsOption" xml:space="preserve">
-    <value>All budgets</value>
+    <value>כל התקציבים</value>
   </data>
   <data name="AllStatusesOption" xml:space="preserve">
-    <value>All statuses</value>
+    <value>כל הסטאטוסים</value>
   </data>
   <data name="AllSuppliersOption" xml:space="preserve">
-    <value>All suppliers</value>
+    <value>כל הספקים</value>
   </data>
   <data name="AllUsersOption" xml:space="preserve">
-    <value>All users</value>
+    <value>כל המזמינים</value>
   </data>
   <data name="error_invalid_budget_year" xml:space="preserve">
-    <value>The budget year must be in 10 years range from current time</value>
+    <value>שנת התקציב חייבת להיות בטווח של 10 שנים מהזמן הנוכחי</value>
   </data>
   <data name="AddDate" xml:space="preserve">
-    <value>Date Added</value>
+    <value>תאריך הוספה</value>
   </data>
   <data name="RemainingAllocationAmount" xml:space="preserve">
-    <value>Remaining amount</value>
+    <value>יתרה</value>
   </data>
   <data name="Error_no_budgetType" xml:space="preserve">
-    <value>no budget Type</value>
+    <value>אין סוג תקציב</value>
   </data>
   <data name="error_order_notes_too_long" xml:space="preserve">
-    <value>Notes cannot be longer then 250 characters</value>
+    <value>אורך ההערות חייב להיות קטן מ-250 אותיות</value>
   </data>
   <data name="OrdersSystem" xml:space="preserve">
-    <value>Orders System</value>
+    <value>מערכת הזמנות</value>
   </data>
   <data name="OrderStatusChangedTo" xml:space="preserve">
-    <value>Order status changed to</value>
+    <value>שונה ל</value>
   </data>
   <data name="OrderStatusOf" xml:space="preserve">
-    <value>Order status of</value>
+    <value>סטטוס הזמנה מספר</value>
   </data>
   <data name="OrderStatusUpdateEvent" xml:space="preserve">
-    <value>Order status update</value>
+    <value>עדכון סטטוס הזמנה</value>
   </data>
   <data name="Status_Declined" xml:space="preserve">
-    <value>Declined</value>
+    <value>נדחתה</value>
   </data>
   <data name="Status_ExportedToFile" xml:space="preserve">
-    <value>Exported to file</value>
+    <value>יוצאה לקובץ</value>
   </data>
   <data name="Status_OrderCancelled" xml:space="preserve">
-    <value>Cancelled</value>
+    <value>בוטלה</value>
   </data>
   <data name="Status_PartiallyApproved" xml:space="preserve">
-    <value>Partially approved</value>
-  </data>
-  <data name="Status_Pending" xml:space="preserve">
-    <value>Pending</value>
+    <value>אושרה חלקית</value>
   </data>
   <data name="Status_PendingExport" xml:space="preserve">
-    <value>Pending export</value>
+    <value>ממתינה לייצוא</value>
   </data>
   <data name="Status_ApprovedPendingInvoice" xml:space="preserve">
-    <value>Approved</value>
+    <value>אושרה</value>
   </data>
   <data name="Status_PendingInvoiceApproval" xml:space="preserve">
-    <value>Pending invoice approval</value>
+    <value>ממתינה לאישור חשבונית</value>
   </data>
   <data name="Status_PendingOrderCreator" xml:space="preserve">
-    <value>Pending order creator</value>
+    <value>ממתינה ליוצר ההזמנה</value>
   </data>
   <data name="Status_PendingReceipt" xml:space="preserve">
-    <value>Pending receipt</value>
+    <value>ממתינה לקבלה</value>
   </data>
   <data name="Status_ReceiptScanned" xml:space="preserve">
-    <value>Receipt scanned</value>
+    <value>עברה סריקת קבלה</value>
   </data>
   <data name="error_no_suppliers" xml:space="preserve">
-    <value>No suppliers</value>
+    <value>אין ספקים</value>
   </data>
   <data name="Status_Unknown" xml:space="preserve">
-    <value>Unknown status</value>
+    <value>סטאטוס לא ידוע</value>
   </data>
   <data name="InventarNumber" xml:space="preserve">
-    <value>Inventar Number</value>
+    <value>מספר אינוונטר</value>
   </data>
   <data name="validation_IsNotDate" xml:space="preserve">
-    <value>is not a date</value>
+    <value>אינו תאריך</value>
   </data>
   <data name="validation_IsRequired" xml:space="preserve">
-    <value>is required</value>
+    <value>הוא שדה חובה</value>
   </data>
   <data name="validation_TheField" xml:space="preserve">
-    <value>The field</value>
+    <value>השדה</value>
   </data>
   <data name="validation_IsNotFile" xml:space="preserve">
-    <value>Please select a file</value>
+    <value>אנא בחר קובץ</value>
   </data>
   <data name="Characters" xml:space="preserve">
-    <value>characters</value>
+    <value>אותיות</value>
   </data>
   <data name="validation_LengthMustBeSmallerThen" xml:space="preserve">
-    <value>must be smaller then</value>
+    <value>חייב להיות קצר מ</value>
   </data>
   <data name="PendingFirstName" xml:space="preserve">
-    <value>Pending first name</value>
+    <value>ממתין לשם פרטי</value>
   </data>
   <data name="PendingLastName" xml:space="preserve">
-    <value>Pending last name</value>
+    <value>ממתין לשם משפחה</value>
   </data>
   <data name="validation_FileEmpty" xml:space="preserve">
-    <value>The file is empty</value>
+    <value>הקובץ ריק</value>
   </data>
   <data name="validation_FileTooBig" xml:space="preserve">
-    <value>The file size is higher then allowed</value>
+    <value>גודל הקובץ עולה על המותר</value>
   </data>
   <data name="validation_InvalidFileType" xml:space="preserve">
-    <value>The file type is not supported</value>
+    <value>סוג הקובץ אינו חוקי</value>
   </data>
   <data name="UpdateInvoice" xml:space="preserve">
-    <value>Update Invoice</value>
+    <value>עדכן חשבונית</value>
   </data>
   <data name="validation_FileNameIsInvalid" xml:space="preserve">
-    <value>The file name is invalid</value>
+    <value>שם הקובץ אינו חוקי</value>
   </data>
   <data name="validation_IsNotNumber" xml:space="preserve">
-    <value>is not a number</value>
+    <value>אינו מספר</value>
   </data>
   <data name="Receipt" xml:space="preserve">
-    <value>Receipt</value>
+    <value>קבלה</value>
   </data>
   <data name="UpdateReceipt" xml:space="preserve">
-    <value>Update Receipt</value>
+    <value>עדכן קבלה</value>
   </data>
   <data name="MaxFileSize" xml:space="preserve">
-    <value>Max file size</value>
+    <value>גודל מקסימלי</value>
   </data>
   <data name="Print" xml:space="preserve">
-    <value>Print</value>
+    <value>הדפס</value>
   </data>
   <data name="ReceiptFile" xml:space="preserve">
-    <value>Receipt file</value>
+    <value>קובץ קבלה</value>
   </data>
   <data name="ExeedingAllocation" xml:space="preserve">
-    <value>Exeeding allocation</value>
+    <value>הקצאה חריגה</value>
   </data>
   <data name="Warning_OrderExceedsAllocations" xml:space="preserve">
-    <value>This order exeeds the remaining amount of it's allocations</value>
+    <value>הזמנה זו חורגת מהסכום שנותר בהקצאות התקציביות שלה</value>
   </data>
   <data name="AllocationName" xml:space="preserve">
-    <value>Allocation Name</value>
+    <value>שם סעיף תקציבי</value>
   </data>
   <data name="SortingCode" xml:space="preserve">
-    <value>Sortiong Code</value>
+    <value>קוד מיון</value>
   </data>
   <data name="BasketsChangedPleaseReAllocate" xml:space="preserve">
-    <value>Your budget baskets were changed, please update allocations</value>
+    <value> הסלים התקציביים שלך השתנו, אנא הקצה מחדש</value>
   </data>
   <data name="LogOff" xml:space="preserve">
-    <value>Log off</value>
+    <value>התנתקות</value>
   </data>
   <data name="LogOffWasSuccessful" xml:space="preserve">
-    <value>You successfully loged off the system</value>
+    <value>התנתקת בהצלחה מהמערכת</value>
   </data>
   <data name="By" xml:space="preserve">
-    <value>By</value>
+    <value>על ידי</value>
   </data>
   <data name="error_no_suppliers_for_order" xml:space="preserve">
-    <value>There are no suppliers to order from</value>
+    <value>אין ספקים שניתן להזמין מהם</value>
   </data>
   <data name="SeeDetailsAt" xml:space="preserve">
-    <value>See details at</value>
+    <value>ראה פרטים</value>
   </data>
   <data name="Support" xml:space="preserve">
-    <value>Support</value>
+    <value>תמיכה</value>
   </data>
   <data name="RemoteControl" xml:space="preserve">
-    <value>Remote Control</value>
+    <value>השתלטות מרחוק</value>
   </data>
   <data name="IncludingVAT" xml:space="preserve">
-    <value>Including VAT</value>
+    <value>כולל מע"מ</value>
   </data>
   <data name="NotIncludingVAT" xml:space="preserve">
-    <value>Not including VAT</value>
+    <value>לא כולל מע"מ</value>
   </data>
   <data name="BudgetBasketsOf" xml:space="preserve">
-    <value>Budget baskets of</value>
+    <value>סלים תקציביים של</value>
   </data>
   <data name="DelayingOrders" xml:space="preserve">
-    <value>Delaying orders</value>
+    <value>הזמנות מתעכבות</value>
+  </data>
+  <data name="error_externalIdAlreadyExist" xml:space="preserve">
+    <value>מספר חיצוני כבר קיים במערכת</value>
+  </data>
+  <data name="ExternalId" xml:space="preserve">
+    <value>מספר חיצוני</value>
   </data>
 </root>

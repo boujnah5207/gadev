@@ -211,8 +211,7 @@
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\LocalizedDataAnnotations.cs" />
-    <Compile Include="Resources\Translation.cs" />
+    <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images.large\aol.gif" />
@@ -623,24 +622,12 @@
       <Project>{834d71f9-1a14-4597-bac4-8a0016687771}</Project>
       <Name>ExternalLibraries</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{c66a243b-6da8-4220-9044-0f11b4afc01e}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\BL\Resources\Dic.ar.resx">
-      <Link>Resources\Dic.ar.resx</Link>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\BL\Resources\Dic.he.resx">
-      <Link>Resources\Dic.he.resx</Link>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\BL\Resources\Dic.resx">
-      <Link>Resources\Dic.resx</Link>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\BL\Resources\Dic.ru.resx">
-      <Link>Resources\Dic.ru.resx</Link>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Content Include="App_GlobalResources\DataAnnotations.ru.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>DataAnnotations.ru.designer.cs</LastGenOutput>
@@ -649,6 +636,18 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>DataAnnotations.ar.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="..\Resources\Translation\Dic.ar.resx">
+      <Link>Translation\Dic.ar.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Translation\Dic.he.resx">
+      <Link>Translation\Dic.he.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Translation\Dic.resx">
+      <Link>Translation\Dic.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Translation\Dic.ru.resx">
+      <Link>Translation\Dic.ru.resx</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\DataAnnotations.he.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>DataAnnotations.he.designer.cs</LastGenOutput>
