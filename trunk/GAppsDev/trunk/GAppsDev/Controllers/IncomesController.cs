@@ -283,7 +283,7 @@ namespace GAppsDev.Controllers
                                     if (budgets_incomes.Amount < incomeFromDB.Amount)
                                     {
                                         decimal? allocatedIncome;
-                                        using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+                                        using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
                                         {
                                             allocatedIncome = allocationsRep.GetList()
                                                 .Where(x => x.IncomeId == incomeFromDB.Id)

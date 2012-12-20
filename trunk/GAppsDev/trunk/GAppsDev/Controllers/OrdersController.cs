@@ -174,18 +174,18 @@ namespace GAppsDev.Controllers
 
                 if (selectedStatus == Loc.Dic.ApproveOrder)
                 {
-                    if (CurrentUser.OrdersApproverId.HasValue)
-                    {
-                        orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
-                        orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
-                        orderFromDB.LastStatusChangeDate = DateTime.Now;
-                    }
-                    else
+                    if (Authorized(RoleType.SuperApprover) || !CurrentUser.OrdersApproverId.HasValue)
                     {
                         orderFromDB.NextOrderApproverId = null;
                         orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
-                        orderFromDB.LastStatusChangeDate = DateTime.Now;
                     }
+                    else
+                    {
+                        orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                        orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                    }
+
+                    orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
                 else if (selectedStatus == Loc.Dic.DeclineOrder)
                 {
