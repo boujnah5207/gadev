@@ -163,7 +163,7 @@ namespace GAppsDev.Controllers
             if (approverNotes != null && approverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
             Order orderFromDB;
-            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId))
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
@@ -1773,7 +1773,12 @@ namespace GAppsDev.Controllers
         [ChildActionOnly]
         public ActionResult PartialDetails(OrdersRepository.ExeedingOrderData model)
         {
-            //using(OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(
+            List<Orders_History> orderHistoryList = new List<Orders_History>();
+            
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OrderId))
+                orderHistoryList = ordersHistoryRep.GetList().ToList();
+            
+            ViewBag.orderHistoryList = orderHistoryList;
             return PartialView(model);
         }
 

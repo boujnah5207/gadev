@@ -127,8 +127,11 @@
     </div>
     <br />
     }
-
-
+            ---
+    @foreach (var item in (List<DB.Orders_History>)ViewBag.orderHistoryList)
+    {
+        @item.Notes
+    }
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
