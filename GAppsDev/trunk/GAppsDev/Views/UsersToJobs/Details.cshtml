@@ -1,0 +1,40 @@
+﻿@model DB.HR_UsersToJobs
+
+@{
+    ViewBag.Title = "Details";
+    ViewBag.PageName = "";
+    ViewBag.noSubMenu = true;
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>HR_UsersToJobs</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.HR_Jobs.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HR_Jobs.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.JobPercent)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.JobPercent)
+    </div>
+</fieldset>
+    @ViewBag.JobDescription
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -128,8 +128,8 @@ namespace GAppsDev.Controllers
                     using (SubProjectsRepository subProjectsRep = new SubProjectsRepository())
                     {
                         budget = budgetRep.GetEntity(budgets_expenses.BudgetId);
-                        project = projectsRep.GetEntity(budgets_expenses.ParentProjectId);
-                        subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId);
+                        project = projectsRep.GetEntity(budgets_expenses.ParentProjectId.Value);
+                        subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId.Value);
                     }
 
                     if (budget != null && project != null && subProject != null)
@@ -275,8 +275,8 @@ namespace GAppsDev.Controllers
                         expenseFromDB = expensesRep.GetEntity(budgets_expenses.Id);
 
                         budget = budgetRep.GetEntity(budgets_expenses.BudgetId);
-                        project = projectsRep.GetEntity(budgets_expenses.ParentProjectId);
-                        subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId);
+                        project = projectsRep.GetEntity(budgets_expenses.ParentProjectId.Value);
+                        subProject = subProjectsRep.GetEntity(budgets_expenses.SubProjectId.Value);
 
                         if (expenseFromDB != null)
                         {
