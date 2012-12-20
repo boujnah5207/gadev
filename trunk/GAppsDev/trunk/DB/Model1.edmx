@@ -40,8 +40,8 @@
           <EntitySet Name="Projects_SubProject" EntityType="designModel.Store.Projects_SubProject" store:Type="Tables" Schema="uddi" Table="Projects.SubProject" />
           <EntitySet Name="Suppliers" EntityType="designModel.Store.Suppliers" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Users" EntityType="designModel.Store.Users" store:Type="Tables" Schema="uddi" />
-          <EntitySet Name="Users_Hierarchies" EntityType="designModel.Store.Users_Hierarchies" store:Type="Tables" Schema="uddi" Table="Users.Hierarchies" />
-          <EntitySet Name="Users_HierarchyLevel" EntityType="designModel.Store.Users_HierarchyLevel" store:Type="Tables" Schema="uddi" Table="Users.HierarchyLevel" />
+          <EntitySet Name="Users_ApprovalRoutes" EntityType="designModel.Store.Users_ApprovalRoutes" store:Type="Tables" Schema="uddi" Table="Users.ApprovalRoutes" />
+          <EntitySet Name="Users_ApprovalStep" EntityType="designModel.Store.Users_ApprovalStep" store:Type="Tables" Schema="uddi" Table="Users.ApprovalStep" />
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Expenses" Association="designModel.Store.FK_Budget_ExpensesToIncome_Budget_Expenses">
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
@@ -210,6 +210,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Companies" Association="designModel.Store.FK_Orders_History_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_History_Orders" Association="designModel.Store.FK_Orders_History_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Orders_History" EntitySet="Orders_History" />
@@ -288,15 +292,15 @@
           </AssociationSet>
           <AssociationSet Name="FK_Users_Hierarchies_Companies" Association="designModel.Store.FK_Users_Hierarchies_Companies">
             <End Role="Companies" EntitySet="Companies" />
-            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users" Association="designModel.Store.FK_Users_HierarchyLevel_Users">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+            <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users_Hierarchies" Association="designModel.Store.FK_Users_HierarchyLevel_Users_Hierarchies">
-            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
-            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Companies" Association="designModel.Store.FK_Users_Companies">
             <End Role="Companies" EntitySet="Companies" />
@@ -590,11 +594,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="CompayId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="OrderHistoryActionId" Type="int" Nullable="false" />
-          <Property Name="Date" Type="datetime2" Nullable="false" />
-          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CreationDate" Type="datetime2" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders_History_Actions">
           <Key>
@@ -717,7 +722,7 @@
           <Property Name="JobPercent" Type="decimal" Precision="2" Scale="2" />
           <Property Name="CellularNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Users_Hierarchies">
+        <EntityType Name="Users_ApprovalRoutes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -725,12 +730,12 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Users_HierarchyLevel">
+        <EntityType Name="Users_ApprovalStep">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="HierarchyId" Type="int" Nullable="false" />
+          <Property Name="ApprovalRouteId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
@@ -1246,6 +1251,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_History_Companies">
+          <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
+          <End Role="Orders_History" Type="designModel.Store.Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="CompayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_History_Orders">
           <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="1" />
           <End Role="Orders_History" Type="designModel.Store.Orders_History" Multiplicity="*" />
@@ -1482,37 +1499,37 @@
         </Association>
         <Association Name="FK_Users_Hierarchies_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
-          <End Role="Users_Hierarchies" Type="designModel.Store.Users_Hierarchies" Multiplicity="*" />
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_Hierarchies">
+            <Dependent Role="Users_ApprovalRoutes">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Users_HierarchyLevel_Users">
           <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
-          <End Role="Users_HierarchyLevel" Type="designModel.Store.Users_HierarchyLevel" Multiplicity="*" />
+          <End Role="Users_ApprovalStep" Type="designModel.Store.Users_ApprovalStep" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_HierarchyLevel">
+            <Dependent Role="Users_ApprovalStep">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Users_HierarchyLevel_Users_Hierarchies">
-          <End Role="Users_Hierarchies" Type="designModel.Store.Users_Hierarchies" Multiplicity="1" />
-          <End Role="Users_HierarchyLevel" Type="designModel.Store.Users_HierarchyLevel" Multiplicity="*" />
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="1" />
+          <End Role="Users_ApprovalStep" Type="designModel.Store.Users_ApprovalStep" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users_Hierarchies">
+            <Principal Role="Users_ApprovalRoutes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_HierarchyLevel">
-              <PropertyRef Name="HierarchyId" />
+            <Dependent Role="Users_ApprovalStep">
+              <PropertyRef Name="ApprovalRouteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1591,8 +1608,8 @@
           <EntitySet Name="Projects_SubProject" EntityType="designModel.Projects_SubProject" />
           <EntitySet Name="Suppliers" EntityType="designModel.Supplier" />
           <EntitySet Name="Users" EntityType="designModel.User" />
-          <EntitySet Name="Users_Hierarchies" EntityType="designModel.Users_Hierarchies" />
-          <EntitySet Name="Users_HierarchyLevel" EntityType="designModel.Users_HierarchyLevel" />
+          <EntitySet Name="Users_ApprovalRoutes" EntityType="designModel.Users_ApprovalRoutes" />
+          <EntitySet Name="Users_ApprovalStep" EntityType="designModel.Users_ApprovalStep" />
           <AssociationSet Name="FK_Budget_Income_Budget" Association="designModel.FK_Budget_Income_Budget">
             <End Role="Budget" EntitySet="Budgets" />
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
@@ -1721,6 +1738,10 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_History_Companies" Association="designModel.FK_Orders_History_Companies">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Orders_History" EntitySet="Orders_History" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Companies" Association="designModel.FK_Orders_Companies">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Order" EntitySet="Orders" />
@@ -1739,7 +1760,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_Users_Hierarchies_Companies" Association="designModel.FK_Users_Hierarchies_Companies">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Companies" Association="designModel.FK_Users_Companies">
             <End Role="Company" EntitySet="Companies" />
@@ -1851,15 +1872,15 @@
           </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users" Association="designModel.FK_Users_HierarchyLevel_Users">
             <End Role="User" EntitySet="Users" />
-            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+            <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Users" Association="designModel.FK_Users_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="User1" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users_Hierarchies" Association="designModel.FK_Users_HierarchyLevel_Users_Hierarchies">
-            <End Role="Users_Hierarchies" EntitySet="Users_Hierarchies" />
-            <End Role="Users_HierarchyLevel" EntitySet="Users_HierarchyLevel" />
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Budget">
@@ -2054,11 +2075,12 @@
           <NavigationProperty Name="HR_Jobs" Relationship="designModel.FK_HR_Jobs_Companies" FromRole="Company" ToRole="HR_Jobs" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Companies" FromRole="Company" ToRole="Inventory" />
           <NavigationProperty Name="Locations" Relationship="designModel.FK_Locations_Companies" FromRole="Company" ToRole="Location" />
+          <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Companies" FromRole="Company" ToRole="Orders_History" />
           <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Companies" FromRole="Company" ToRole="Order" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Companies" FromRole="Company" ToRole="PendingUser" />
           <NavigationProperty Name="Projects_ParentProject" Relationship="designModel.FK_Projects_ParentProject_Companies" FromRole="Company" ToRole="Projects_ParentProject" />
           <NavigationProperty Name="Suppliers" Relationship="designModel.FK_Suppliers_Companies" FromRole="Company" ToRole="Supplier" />
-          <NavigationProperty Name="Users_Hierarchies" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Company" ToRole="Users_Hierarchies" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Company" ToRole="Users_ApprovalRoutes" />
           <NavigationProperty Name="Users" Relationship="designModel.FK_Users_Companies" FromRole="Company" ToRole="User" />
         </EntityType>
         <EntityType Name="CompaniesModul">
@@ -2236,11 +2258,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="OrderId" Nullable="false" />
+          <Property Type="Int32" Name="CompayId" Nullable="false" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="OrderId" Nullable="false" />
           <Property Type="Int32" Name="OrderHistoryActionId" Nullable="false" />
-          <Property Type="DateTime" Name="Date" Nullable="false" Precision="7" />
-          <Property Type="String" Name="Notes" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_History_Companies" FromRole="Orders_History" ToRole="Company" />
           <NavigationProperty Name="Order" Relationship="designModel.FK_Orders_History_Orders" FromRole="Orders_History" ToRole="Order" />
           <NavigationProperty Name="Orders_History_Actions" Relationship="designModel.FK_Orders_History_Orders_History_Actions" FromRole="Orders_History" ToRole="Orders_History_Actions" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Orders_History_Users" FromRole="Orders_History" ToRole="User" />
@@ -2394,30 +2418,30 @@
           <NavigationProperty Name="Orders_ApproverNotes" Relationship="designModel.FK_Orders_Approver_Notes_Users" FromRole="User" ToRole="Orders_ApproverNotes" />
           <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Users" FromRole="User" ToRole="Orders_History" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Users" FromRole="User" ToRole="PendingUser" />
-          <NavigationProperty Name="Users_HierarchyLevel" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="User" ToRole="Users_HierarchyLevel" />
+          <NavigationProperty Name="Users_ApprovalStep" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="User" ToRole="Users_ApprovalStep" />
           <NavigationProperty Name="Users1" Relationship="designModel.FK_Users_Users" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User1" Relationship="designModel.FK_Users_Users" FromRole="User1" ToRole="User" />
         </EntityType>
-        <EntityType Name="Users_Hierarchies">
+        <EntityType Name="Users_ApprovalRoutes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Users_Hierarchies" ToRole="Company" />
-          <NavigationProperty Name="Users_HierarchyLevel" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_Hierarchies" ToRole="Users_HierarchyLevel" />
+          <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Users_ApprovalRoutes" ToRole="Company" />
+          <NavigationProperty Name="Users_ApprovalStep" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_ApprovalRoutes" ToRole="Users_ApprovalStep" />
         </EntityType>
-        <EntityType Name="Users_HierarchyLevel">
+        <EntityType Name="Users_ApprovalStep">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="HierarchyId" Nullable="false" />
+          <Property Type="Int32" Name="ApprovalRouteId" Nullable="false" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="Level" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="Users_HierarchyLevel" ToRole="User" />
-          <NavigationProperty Name="Users_Hierarchies" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_HierarchyLevel" ToRole="Users_Hierarchies" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="Users_ApprovalStep" ToRole="User" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_ApprovalStep" ToRole="Users_ApprovalRoutes" />
         </EntityType>
         <Association Name="FK_Budget_Income_Budget">
           <End Type="designModel.Budget" Role="Budget" Multiplicity="1" />
@@ -2811,6 +2835,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_History_Companies">
+          <End Type="designModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="designModel.Orders_History" Role="Orders_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders_History">
+              <PropertyRef Name="CompayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
           <End Type="designModel.Order" Role="Order" Multiplicity="*" />
@@ -2861,12 +2897,12 @@
         </Association>
         <Association Name="FK_Users_Hierarchies_Companies">
           <End Type="designModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="designModel.Users_Hierarchies" Role="Users_Hierarchies" Multiplicity="*" />
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_Hierarchies">
+            <Dependent Role="Users_ApprovalRoutes">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3203,12 +3239,12 @@
         </Association>
         <Association Name="FK_Users_HierarchyLevel_Users">
           <End Type="designModel.User" Role="User" Multiplicity="1" />
-          <End Type="designModel.Users_HierarchyLevel" Role="Users_HierarchyLevel" Multiplicity="*" />
+          <End Type="designModel.Users_ApprovalStep" Role="Users_ApprovalStep" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_HierarchyLevel">
+            <Dependent Role="Users_ApprovalStep">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3226,14 +3262,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Users_HierarchyLevel_Users_Hierarchies">
-          <End Type="designModel.Users_Hierarchies" Role="Users_Hierarchies" Multiplicity="1" />
-          <End Type="designModel.Users_HierarchyLevel" Role="Users_HierarchyLevel" Multiplicity="*" />
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="1" />
+          <End Type="designModel.Users_ApprovalStep" Role="Users_ApprovalStep" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users_Hierarchies">
+            <Principal Role="Users_ApprovalRoutes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Users_HierarchyLevel">
-              <PropertyRef Name="HierarchyId" />
+            <Dependent Role="Users_ApprovalStep">
+              <PropertyRef Name="ApprovalRouteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3543,11 +3579,12 @@
           <EntitySetMapping Name="Orders_History">
             <EntityTypeMapping TypeName="designModel.Orders_History">
               <MappingFragment StoreEntitySet="Orders_History">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="OrderHistoryActionId" ColumnName="OrderHistoryActionId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompayId" ColumnName="CompayId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3683,21 +3720,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users_Hierarchies">
-            <EntityTypeMapping TypeName="designModel.Users_Hierarchies">
-              <MappingFragment StoreEntitySet="Users_Hierarchies">
+          <EntitySetMapping Name="Users_ApprovalRoutes">
+            <EntityTypeMapping TypeName="designModel.Users_ApprovalRoutes">
+              <MappingFragment StoreEntitySet="Users_ApprovalRoutes">
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users_HierarchyLevel">
-            <EntityTypeMapping TypeName="designModel.Users_HierarchyLevel">
-              <MappingFragment StoreEntitySet="Users_HierarchyLevel">
+          <EntitySetMapping Name="Users_ApprovalStep">
+            <EntityTypeMapping TypeName="designModel.Users_ApprovalStep">
+              <MappingFragment StoreEntitySet="Users_ApprovalStep">
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="ApprovalRouteId" ColumnName="ApprovalRouteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3723,42 +3760,42 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="74">
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="5.74266428209034" PointY="16.603244610411693" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="11.286395106132327" PointY="22.798360224253667" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="4.5566742292403593" PointY="30.628140806512974" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="7.2062911368935794" PointY="24.575234409689546" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="8.2059412953471487" PointY="26.903888506304419" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="2.1277935458942285" PointY="20.327782074142146" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="1.6621383231422577" PointY="2.0428372631048957" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="10.701278529456481" PointY="7.4609399621658676" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="6.389102370659403" PointY="23.457902561620763" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="0.1606731434169566" PointY="9.19913152288605" />
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="10.554120322016123" PointY="20.398031631669976" />
-        <edmx:EntityTypeShape EntityType="designModel.CompaniesModul" Width="1.5" PointX="9.2972602216979769" PointY="29.398903085570272" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="3.3831687473613621" PointY="17.208298989202966" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_Jobs" Width="1.5" PointX="7.9437102749681614" PointY="5.7331482347720994" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_JobsDescriptions" Width="1.5" PointX="4.2772171237865537" PointY="17.019373395023575" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_UsersToJobs" Width="1.5" PointX="4.8676560189890008" PointY="1.6958691038637743" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="3.249915424385069" PointY="28.961417956725423" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="0.34625195541710219" PointY="17.644686617723053" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="8.7856426373057275" PointY="3.5109877453702443" />
-        <edmx:EntityTypeShape EntityType="designModel.Modul" Width="1.5" PointX="10.618214640122938" PointY="4.3238281329739037" />
-        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="2.3677658077179298" PointY="25.064692300308817" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="9.656948177915508" PointY="0.78246678448397056" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_ApproverNotes" Width="1.5" PointX="8.5454128554767976" PointY="1.6270093180364973" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_History" Width="1.5" PointX="1.2665645337042233" PointY="1.1684628730492959" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_History_Actions" Width="1.5" PointX="4.2570641172384214" PointY="30.258969961786164" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="8.17729949959428" PointY="14.085495716931995" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="4.21164446147701" PointY="29.016324175994995" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="10.485376489574732" PointY="26.915739787237598" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="8.9289565072064079" PointY="0.69815053078259837" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="5.1662163367337621" PointY="26.942832288771324" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="3.5418425274742029" PointY="13.483628130277445" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="4.9384957798470257" PointY="4.8631367259021552" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="5.2213021708751572" PointY="3.9782470185208352" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="4.3730028534182361" PointY="7.470950904987264" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_Hierarchies" Width="1.5" PointX="0.41981201824723369" PointY="10.892056127494227" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_HierarchyLevel" Width="1.5" PointX="6.0122098485064743" PointY="13.526618576388163" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="3.7882914411780853" PointY="28.850249870144879" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="1.035394337510408" PointY="21.2868030915441" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="6.6273518440440995" PointY="1.5677305318264898" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="1.9527491992119463" PointY="10.269064893140023" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="4.3108038177298393" PointY="3.7621655332679698" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="0.9557545115033883" PointY="22.01585948002332" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="3.0319992243461309" PointY="14.902852139856131" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="10.669965689382499" PointY="18.646254518370263" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="7.3814955443989" PointY="15.146653182407214" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="10.516881264055558" PointY="19.18016728161842" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="8.5813890064979859" PointY="25.095220592382933" />
+        <edmx:EntityTypeShape EntityType="designModel.CompaniesModul" Width="1.5" PointX="7.6461983209691" PointY="28.435906751284332" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="0.53020809801770752" PointY="10.515177657136311" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_Jobs" Width="1.5" PointX="2.764671163058221" PointY="13.290900832643221" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_JobsDescriptions" Width="1.5" PointX="4.6436860508488893" PointY="30.391366033997091" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_UsersToJobs" Width="1.5" PointX="11.242086421345402" PointY="4.3055227418921529" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="10.695937826622249" PointY="1.3920922881886793" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="10.458800106523" PointY="27.639429209585966" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="7.5041729172245475" PointY="8.9698972147749263" />
+        <edmx:EntityTypeShape EntityType="designModel.Modul" Width="1.5" PointX="0.502661146457615" PointY="18.201959543955493" />
+        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="2.53309882550179" PointY="17.987221130163977" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.415327315412149" PointY="18.969666445148022" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_ApproverNotes" Width="1.5" PointX="2.1732435832606831" PointY="23.448696311306534" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History" Width="1.5" PointX="1.9642649562863004" PointY="30.490338056576597" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History_Actions" Width="1.5" PointX="8.5091180915521072" PointY="24.946102109246933" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="4.8399737443961079" PointY="15.038414559810615" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="11.521449275091964" PointY="11.558804189580867" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="10.432367674276405" PointY="17.006889917425294" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="3.1726453803352292" PointY="6.3251448154100895" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="7.45234306131133" PointY="7.1577605936479571" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="9.8232277863767123" PointY="23.9164303652553" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="11.20721328407862" PointY="13.104110813282482" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="2.1687256536300881" PointY="30.243155955450217" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="9.5600094783864957" PointY="6.6932389767343361" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalRoutes" Width="1.5" PointX="7.1297694459230492" PointY="0.81381262876736593" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalStep" Width="1.5" PointX="11.4881725271643" PointY="10.714090903622141" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />
@@ -3791,6 +3828,7 @@
         <edmx:AssociationConnector Association="designModel.FK_HR_Jobs_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Inventory_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Locations_Companies" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_History_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Companies" />
         <edmx:AssociationConnector Association="designModel.FK_Projects_ParentProject_Companies" />

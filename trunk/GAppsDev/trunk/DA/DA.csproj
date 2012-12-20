@@ -49,6 +49,8 @@
     <Compile Include="BudgetsPermissionsRepository.cs" />
     <Compile Include="BasketsToAllocationsRepository.cs" />
     <Compile Include="BudgetsRepository.cs" />
+    <Compile Include="HistoryActions.cs" />
+    <Compile Include="OrdersHistoryRepository.cs" />
     <Compile Include="UsersToBasketsRepository.cs" />
     <Compile Include="CompaniesRepository.cs" />
     <Compile Include="CookiesRepository.cs" />

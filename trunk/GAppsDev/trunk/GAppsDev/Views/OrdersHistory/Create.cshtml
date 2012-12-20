@@ -1,0 +1,69 @@
+﻿@model DB.Orders_History
+
+@{
+    ViewBag.Title = "Create";
+    ViewBag.PageName = "Orders";
+    ViewBag.noSubMenu = true;
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Orders_History</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrderId, "Order")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("OrderId", String.Empty)
+            @Html.ValidationMessageFor(model => model.OrderId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserId, "User")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("UserId", String.Empty)
+            @Html.ValidationMessageFor(model => model.UserId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrderHistoryActionId, "Orders_History_Actions")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("OrderHistoryActionId", String.Empty)
+            @Html.ValidationMessageFor(model => model.OrderHistoryActionId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Date)
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Notes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Notes)
+            @Html.ValidationMessageFor(model => model.Notes)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
