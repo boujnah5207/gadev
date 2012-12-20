@@ -186,6 +186,7 @@
     <Compile Include="Controllers\SubProjectsController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\UsersToJobsController.cs" />
     <Compile Include="ExtendedClasses\ExtendedClasses.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -593,6 +594,11 @@
     <Content Include="Views\Orders\UpdateInvoiceFile.cshtml" />
     <Content Include="Views\Orders\UpdateReceipt.cshtml" />
     <Content Include="Views\Orders\DelayingOrders.cshtml" />
+    <Content Include="Views\UsersToJobs\Index.cshtml" />
+    <Content Include="Views\UsersToJobs\Details.cshtml" />
+    <Content Include="Views\UsersToJobs\Create.cshtml" />
+    <Content Include="Views\UsersToJobs\Edit.cshtml" />
+    <Content Include="Views\UsersToJobs\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

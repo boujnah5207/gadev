@@ -129,15 +129,15 @@ namespace GAppsDev.Controllers
                         budget = budgetRep.GetEntity(budgets_incomes.BudgetId);
                         incomeType = incomeTypesRep.GetEntity(budgets_incomes.BudgetIncomeTypeId);
 
-                        if (budgets_incomes.BudgetsIncomeInstitutions.HasValue)
-                            institution = InstitutionsRep.GetEntity(budgets_incomes.BudgetsIncomeInstitutions.Value);
+                        if (budgets_incomes.BudgetsIncomeInstitutionsId.HasValue)
+                            institution = InstitutionsRep.GetEntity(budgets_incomes.BudgetsIncomeInstitutionsId.Value);
                         else
                             institution = null;
                     }
 
-                    if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution != null))
+                    if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutionsId.HasValue || institution != null))
                     {
-                        if (budget.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
+                        if (budget.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutionsId.HasValue || institution.CompanyId == CurrentUser.CompanyId))
                         {
                             bool wasCreated;
                             budgets_incomes.CompanyId = CurrentUser.CompanyId;
@@ -212,7 +212,7 @@ namespace GAppsDev.Controllers
 
                         ViewBag.BudgetId = new SelectList(budgetsList, "Id", "Name", income.BudgetId);
                         ViewBag.BudgetIncomeTypeId = new SelectList(incomeTypesList, "Id", "Name", income.BudgetIncomeTypeId);
-                        ViewBag.BudgetsIncomeInstitutions = new SelectList(institutionsList, "Id", "Name", income.BudgetsIncomeInstitutions);
+                        ViewBag.BudgetsIncomeInstitutions = new SelectList(institutionsList, "Id", "Name", income.BudgetsIncomeInstitutionsId);
                     }
                     catch
                     {
@@ -269,16 +269,16 @@ namespace GAppsDev.Controllers
                         budget = budgetRep.GetEntity(budgets_incomes.BudgetId);
                         incomeType = incomeTypesRep.GetEntity(budgets_incomes.BudgetIncomeTypeId);
 
-                        if (budgets_incomes.BudgetsIncomeInstitutions.HasValue)
-                            institution = InstitutionsRep.GetEntity(budgets_incomes.BudgetsIncomeInstitutions.Value);
+                        if (budgets_incomes.BudgetsIncomeInstitutionsId.HasValue)
+                            institution = InstitutionsRep.GetEntity(budgets_incomes.BudgetsIncomeInstitutionsId.Value);
                         else
                             institution = null;
 
                         if (incomeFromDB != null)
                         {
-                            if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution != null))
+                            if (budget != null && incomeType != null && (!budgets_incomes.BudgetsIncomeInstitutionsId.HasValue || institution != null))
                             {
-                                if (incomeFromDB.CompanyId == CurrentUser.CompanyId && budget.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutions.HasValue || institution.CompanyId == CurrentUser.CompanyId))
+                                if (incomeFromDB.CompanyId == CurrentUser.CompanyId && budget.CompanyId == CurrentUser.CompanyId && (!budgets_incomes.BudgetsIncomeInstitutionsId.HasValue || institution.CompanyId == CurrentUser.CompanyId))
                                 {
                                     if (budgets_incomes.Amount < incomeFromDB.Amount)
                                     {
@@ -296,7 +296,7 @@ namespace GAppsDev.Controllers
 
                                     incomeFromDB.BudgetId = budgets_incomes.BudgetId;
                                     incomeFromDB.BudgetIncomeTypeId = budgets_incomes.BudgetIncomeTypeId;
-                                    incomeFromDB.BudgetsIncomeInstitutions = budgets_incomes.BudgetsIncomeInstitutions;
+                                    incomeFromDB.BudgetsIncomeInstitutionsId = budgets_incomes.BudgetsIncomeInstitutionsId;
                                     incomeFromDB.CustomName = budgets_incomes.CustomName;
                                     incomeFromDB.Amount = budgets_incomes.Amount;
 
