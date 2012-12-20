@@ -52,7 +52,6 @@
     <Compile Include="UsersToBasketsRepository.cs" />
     <Compile Include="CompaniesRepository.cs" />
     <Compile Include="CookiesRepository.cs" />
-    <Compile Include="ExpensesToIncomeRepository.cs" />
     <Compile Include="IncomeTypesRepository.cs" />
     <Compile Include="InstitutionsRepository.cs" />
     <Compile Include="InventoryRepository.cs" />

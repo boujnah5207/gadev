@@ -278,7 +278,7 @@ namespace BL
             bool amountIsInvalid = false;
             StringBuilder builder = new StringBuilder();
 
-            using (ExpensesToIncomeRepository allocationsRep = new ExpensesToIncomeRepository())
+            using (AllocationRepository allocationsRep = new AllocationRepository(companyId))
             using (AllocationMonthsRepository allocationMonthsRep = new AllocationMonthsRepository())
             using (BudgetsRepository budgetsRep = new BudgetsRepository(companyId))
             {
