@@ -51,11 +51,12 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_HR_Jobs_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "HR_Jobs", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.HR_Jobs), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Inventory_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Inventory", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Inventory), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Locations_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Location), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_History_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Orders_History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_History), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Projects_ParentProject_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Projects_ParentProject", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Projects_ParentProject), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Suppliers_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Supplier), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Hierarchies_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Users_Hierarchies", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_Hierarchies), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Hierarchies_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_ApprovalRoutes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Companies", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Company), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_CompaniesModuls_Moduls", "Modul", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Modul), "CompaniesModul", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.CompaniesModul), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Cookies_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Cooky", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Cooky), true)]
@@ -83,9 +84,9 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Users_HierarchyLevel", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_HierarchyLevel), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Users_ApprovalStep", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_ApprovalStep), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
-[assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Users_Hierarchies), "Users_HierarchyLevel", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_HierarchyLevel), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Users_ApprovalRoutes), "Users_ApprovalStep", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_ApprovalStep), true)]
 
 #endregion
 
@@ -684,34 +685,34 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Users_Hierarchies> Users_Hierarchies
+        public ObjectSet<Users_ApprovalRoutes> Users_ApprovalRoutes
         {
             get
             {
-                if ((_Users_Hierarchies == null))
+                if ((_Users_ApprovalRoutes == null))
                 {
-                    _Users_Hierarchies = base.CreateObjectSet<Users_Hierarchies>("Users_Hierarchies");
+                    _Users_ApprovalRoutes = base.CreateObjectSet<Users_ApprovalRoutes>("Users_ApprovalRoutes");
                 }
-                return _Users_Hierarchies;
+                return _Users_ApprovalRoutes;
             }
         }
-        private ObjectSet<Users_Hierarchies> _Users_Hierarchies;
+        private ObjectSet<Users_ApprovalRoutes> _Users_ApprovalRoutes;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Users_HierarchyLevel> Users_HierarchyLevel
+        public ObjectSet<Users_ApprovalStep> Users_ApprovalStep
         {
             get
             {
-                if ((_Users_HierarchyLevel == null))
+                if ((_Users_ApprovalStep == null))
                 {
-                    _Users_HierarchyLevel = base.CreateObjectSet<Users_HierarchyLevel>("Users_HierarchyLevel");
+                    _Users_ApprovalStep = base.CreateObjectSet<Users_ApprovalStep>("Users_ApprovalStep");
                 }
-                return _Users_HierarchyLevel;
+                return _Users_ApprovalStep;
             }
         }
-        private ObjectSet<Users_HierarchyLevel> _Users_HierarchyLevel;
+        private ObjectSet<Users_ApprovalStep> _Users_ApprovalStep;
 
         #endregion
 
@@ -990,19 +991,19 @@ namespace DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Users_Hierarchies EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Users_ApprovalRoutes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToUsers_Hierarchies(Users_Hierarchies users_Hierarchies)
+        public void AddToUsers_ApprovalRoutes(Users_ApprovalRoutes users_ApprovalRoutes)
         {
-            base.AddObject("Users_Hierarchies", users_Hierarchies);
+            base.AddObject("Users_ApprovalRoutes", users_ApprovalRoutes);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Users_HierarchyLevel EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Users_ApprovalStep EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToUsers_HierarchyLevel(Users_HierarchyLevel users_HierarchyLevel)
+        public void AddToUsers_ApprovalStep(Users_ApprovalStep users_ApprovalStep)
         {
-            base.AddObject("Users_HierarchyLevel", users_HierarchyLevel);
+            base.AddObject("Users_ApprovalStep", users_ApprovalStep);
         }
 
         #endregion
@@ -5381,6 +5382,28 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_History_Companies", "Orders_History")]
+        public EntityCollection<Orders_History> Orders_History
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Orders_History>("designModel.FK_Orders_History_Companies", "Orders_History");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Orders_History>("designModel.FK_Orders_History_Companies", "Orders_History", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Companies", "Order")]
         public EntityCollection<Order> Orders
         {
@@ -5469,18 +5492,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Hierarchies_Companies", "Users_Hierarchies")]
-        public EntityCollection<Users_Hierarchies> Users_Hierarchies
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Hierarchies_Companies", "Users_ApprovalRoutes")]
+        public EntityCollection<Users_ApprovalRoutes> Users_ApprovalRoutes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_Hierarchies>("designModel.FK_Users_Hierarchies_Companies", "Users_Hierarchies");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_ApprovalRoutes>("designModel.FK_Users_Hierarchies_Companies", "Users_ApprovalRoutes");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_Hierarchies>("designModel.FK_Users_Hierarchies_Companies", "Users_Hierarchies", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_ApprovalRoutes>("designModel.FK_Users_Hierarchies_Companies", "Users_ApprovalRoutes", value);
                 }
             }
         }
@@ -8736,18 +8759,20 @@ namespace DB
         /// Create a new Orders_History object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="orderId">Initial value of the OrderId property.</param>
+        /// <param name="compayId">Initial value of the CompayId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="orderId">Initial value of the OrderId property.</param>
         /// <param name="orderHistoryActionId">Initial value of the OrderHistoryActionId property.</param>
-        /// <param name="date">Initial value of the Date property.</param>
-        public static Orders_History CreateOrders_History(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 userId, global::System.Int32 orderHistoryActionId, global::System.DateTime date)
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        public static Orders_History CreateOrders_History(global::System.Int32 id, global::System.Int32 compayId, global::System.Int32 userId, global::System.Int32 orderId, global::System.Int32 orderHistoryActionId, global::System.DateTime creationDate)
         {
             Orders_History orders_History = new Orders_History();
             orders_History.Id = id;
-            orders_History.OrderId = orderId;
+            orders_History.CompayId = compayId;
             orders_History.UserId = userId;
+            orders_History.OrderId = orderId;
             orders_History.OrderHistoryActionId = orderHistoryActionId;
-            orders_History.Date = date;
+            orders_History.CreationDate = creationDate;
             return orders_History;
         }
 
@@ -8787,24 +8812,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 OrderId
+        public global::System.Int32 CompayId
         {
             get
             {
-                return _OrderId;
+                return _CompayId;
             }
             set
             {
-                OnOrderIdChanging(value);
-                ReportPropertyChanging("OrderId");
-                _OrderId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrderId");
-                OnOrderIdChanged();
+                OnCompayIdChanging(value);
+                ReportPropertyChanging("CompayId");
+                _CompayId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompayId");
+                OnCompayIdChanged();
             }
         }
-        private global::System.Int32 _OrderId;
-        partial void OnOrderIdChanging(global::System.Int32 value);
-        partial void OnOrderIdChanged();
+        private global::System.Int32 _CompayId;
+        partial void OnCompayIdChanging(global::System.Int32 value);
+        partial void OnCompayIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8835,6 +8860,30 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
+        public global::System.Int32 OrderId
+        {
+            get
+            {
+                return _OrderId;
+            }
+            set
+            {
+                OnOrderIdChanging(value);
+                ReportPropertyChanging("OrderId");
+                _OrderId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderId");
+                OnOrderIdChanged();
+            }
+        }
+        private global::System.Int32 _OrderId;
+        partial void OnOrderIdChanging(global::System.Int32 value);
+        partial void OnOrderIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
         public global::System.Int32 OrderHistoryActionId
         {
             get
@@ -8853,30 +8902,6 @@ namespace DB
         private global::System.Int32 _OrderHistoryActionId;
         partial void OnOrderHistoryActionIdChanging(global::System.Int32 value);
         partial void OnOrderHistoryActionIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime Date
-        {
-            get
-            {
-                return _Date;
-            }
-            set
-            {
-                OnDateChanging(value);
-                ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Date");
-                OnDateChanged();
-            }
-        }
-        private global::System.DateTime _Date;
-        partial void OnDateChanging(global::System.DateTime value);
-        partial void OnDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8901,11 +8926,73 @@ namespace DB
         private global::System.String _Notes;
         partial void OnNotesChanging(global::System.String value);
         partial void OnNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
 
         #endregion
 
     
         #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_History_Companies", "Company")]
+        public Company Company
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_History_Companies", "Company").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_History_Companies", "Company").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Company> CompanyReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Company>("designModel.FK_Orders_History_Companies", "Company");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Company>("designModel.FK_Orders_History_Companies", "Company", value);
+                }
+            }
+        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12031,18 +12118,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users", "Users_HierarchyLevel")]
-        public EntityCollection<Users_HierarchyLevel> Users_HierarchyLevel
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users", "Users_ApprovalStep")]
+        public EntityCollection<Users_ApprovalStep> Users_ApprovalStep
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_HierarchyLevel>("designModel.FK_Users_HierarchyLevel_Users", "Users_HierarchyLevel");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_ApprovalStep>("designModel.FK_Users_HierarchyLevel_Users", "Users_ApprovalStep");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_HierarchyLevel>("designModel.FK_Users_HierarchyLevel_Users", "Users_HierarchyLevel", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_ApprovalStep>("designModel.FK_Users_HierarchyLevel_Users", "Users_ApprovalStep", value);
                 }
             }
         }
@@ -12114,26 +12201,26 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Users_Hierarchies")]
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Users_ApprovalRoutes")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Users_Hierarchies : EntityObject
+    public partial class Users_ApprovalRoutes : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Users_Hierarchies object.
+        /// Create a new Users_ApprovalRoutes object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        public static Users_Hierarchies CreateUsers_Hierarchies(global::System.Int32 id, global::System.String name, global::System.Int32 companyId)
+        public static Users_ApprovalRoutes CreateUsers_ApprovalRoutes(global::System.Int32 id, global::System.String name, global::System.Int32 companyId)
         {
-            Users_Hierarchies users_Hierarchies = new Users_Hierarchies();
-            users_Hierarchies.Id = id;
-            users_Hierarchies.Name = name;
-            users_Hierarchies.CompanyId = companyId;
-            return users_Hierarchies;
+            Users_ApprovalRoutes users_ApprovalRoutes = new Users_ApprovalRoutes();
+            users_ApprovalRoutes.Id = id;
+            users_ApprovalRoutes.Name = name;
+            users_ApprovalRoutes.CompanyId = companyId;
+            return users_ApprovalRoutes;
         }
 
         #endregion
@@ -12264,18 +12351,18 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_HierarchyLevel")]
-        public EntityCollection<Users_HierarchyLevel> Users_HierarchyLevel
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalStep")]
+        public EntityCollection<Users_ApprovalStep> Users_ApprovalStep
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_HierarchyLevel>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_HierarchyLevel");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_ApprovalStep>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalStep");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_HierarchyLevel>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_HierarchyLevel", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_ApprovalStep>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalStep", value);
                 }
             }
         }
@@ -12287,28 +12374,28 @@ namespace DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Users_HierarchyLevel")]
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Users_ApprovalStep")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Users_HierarchyLevel : EntityObject
+    public partial class Users_ApprovalStep : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Users_HierarchyLevel object.
+        /// Create a new Users_ApprovalStep object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="hierarchyId">Initial value of the HierarchyId property.</param>
+        /// <param name="approvalRouteId">Initial value of the ApprovalRouteId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
         /// <param name="level">Initial value of the Level property.</param>
-        public static Users_HierarchyLevel CreateUsers_HierarchyLevel(global::System.Int32 id, global::System.Int32 hierarchyId, global::System.Int32 userId, global::System.Int32 level)
+        public static Users_ApprovalStep CreateUsers_ApprovalStep(global::System.Int32 id, global::System.Int32 approvalRouteId, global::System.Int32 userId, global::System.Int32 level)
         {
-            Users_HierarchyLevel users_HierarchyLevel = new Users_HierarchyLevel();
-            users_HierarchyLevel.Id = id;
-            users_HierarchyLevel.HierarchyId = hierarchyId;
-            users_HierarchyLevel.UserId = userId;
-            users_HierarchyLevel.Level = level;
-            return users_HierarchyLevel;
+            Users_ApprovalStep users_ApprovalStep = new Users_ApprovalStep();
+            users_ApprovalStep.Id = id;
+            users_ApprovalStep.ApprovalRouteId = approvalRouteId;
+            users_ApprovalStep.UserId = userId;
+            users_ApprovalStep.Level = level;
+            return users_ApprovalStep;
         }
 
         #endregion
@@ -12347,24 +12434,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 HierarchyId
+        public global::System.Int32 ApprovalRouteId
         {
             get
             {
-                return _HierarchyId;
+                return _ApprovalRouteId;
             }
             set
             {
-                OnHierarchyIdChanging(value);
-                ReportPropertyChanging("HierarchyId");
-                _HierarchyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("HierarchyId");
-                OnHierarchyIdChanged();
+                OnApprovalRouteIdChanging(value);
+                ReportPropertyChanging("ApprovalRouteId");
+                _ApprovalRouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApprovalRouteId");
+                OnApprovalRouteIdChanged();
             }
         }
-        private global::System.Int32 _HierarchyId;
-        partial void OnHierarchyIdChanging(global::System.Int32 value);
-        partial void OnHierarchyIdChanged();
+        private global::System.Int32 _ApprovalRouteId;
+        partial void OnApprovalRouteIdChanging(global::System.Int32 value);
+        partial void OnApprovalRouteIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12463,16 +12550,16 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies")]
-        public Users_Hierarchies Users_Hierarchies
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes")]
+        public Users_ApprovalRoutes Users_ApprovalRoutes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_Hierarchies>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_Hierarchies>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes").Value = value;
             }
         }
         /// <summary>
@@ -12480,17 +12567,17 @@ namespace DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Users_Hierarchies> Users_HierarchiesReference
+        public EntityReference<Users_ApprovalRoutes> Users_ApprovalRoutesReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_Hierarchies>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_Hierarchies>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_Hierarchies", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes", value);
                 }
             }
         }

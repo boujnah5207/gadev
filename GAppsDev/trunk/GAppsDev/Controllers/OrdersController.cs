@@ -158,10 +158,12 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult ModifyStatus(string approverNotes, string selectedStatus, int id = 0)
         {
+            int? historyActionId = null;
             if (!Authorized(RoleType.OrdersApprover)) return Error(Loc.Dic.error_no_permission);
             if (approverNotes != null && approverNotes.Length > 250) return Error(Loc.Dic.error_order_notes_too_long);
 
             Order orderFromDB;
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId))
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
@@ -178,11 +180,14 @@ namespace GAppsDev.Controllers
                     {
                         orderFromDB.NextOrderApproverId = null;
                         orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                        historyActionId = (int)HistoryActions.PassedApprovalRoute;
                     }
                     else
                     {
                         orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
                         orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
+                        historyActionId = (int)HistoryActions.PartiallyApproved;
+
                     }
 
                     orderFromDB.LastStatusChangeDate = DateTime.Now;
@@ -190,15 +195,20 @@ namespace GAppsDev.Controllers
                 else if (selectedStatus == Loc.Dic.DeclineOrder)
                 {
                     orderFromDB.StatusId = (int)StatusType.Declined;
+                    historyActionId = (int)HistoryActions.Declined;
                     orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
                 else if (selectedStatus == Loc.Dic.SendBackToUser)
                 {
                     orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
+                    historyActionId = (int)HistoryActions.ReturnedToCreator;
                     orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
 
                 if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
+
+                Orders_History orderHistory = new Orders_History();
+                if(historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, approverNotes);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
 
@@ -1763,6 +1773,7 @@ namespace GAppsDev.Controllers
         [ChildActionOnly]
         public ActionResult PartialDetails(OrdersRepository.ExeedingOrderData model)
         {
+            //using(OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(
             return PartialView(model);
         }
 

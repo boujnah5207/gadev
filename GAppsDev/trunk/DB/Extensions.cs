@@ -34,6 +34,7 @@ namespace DB
     public class SuppliersMetaData
     {
         [LocalizedNumberString]
+        [LocalizedName("ExternalId")]
         public int ExternalId { get; set; }
     }
 
