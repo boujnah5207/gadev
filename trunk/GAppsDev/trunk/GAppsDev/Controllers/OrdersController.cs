@@ -1773,12 +1773,9 @@ namespace GAppsDev.Controllers
         [ChildActionOnly]
         public ActionResult PartialDetails(OrdersRepository.ExeedingOrderData model)
         {
-            List<Orders_History> orderHistoryList = new List<Orders_History>();
-            
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OrderId))
-                orderHistoryList = ordersHistoryRep.GetList().ToList();
+            ViewBag.orderHistoryList = ordersHistoryRep.GetList().ToList();
             
-            ViewBag.orderHistoryList = orderHistoryList;
             return PartialView(model);
         }
 

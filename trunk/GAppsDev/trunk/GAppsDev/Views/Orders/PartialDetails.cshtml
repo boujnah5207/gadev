@@ -132,6 +132,9 @@
     {
         @item.Notes
     }
+    ***
+    @Html.Action("PartialOrdersHistory", new { ViewBag.orderHistoryList} )
+
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
