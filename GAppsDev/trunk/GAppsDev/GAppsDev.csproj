@@ -180,7 +180,7 @@
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\OrdersHistoryController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\PermissionsAllocationsController.cs" />
     <Compile Include="Controllers\BasketsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -600,11 +600,7 @@
     <Content Include="Views\UsersToJobs\Create.cshtml" />
     <Content Include="Views\UsersToJobs\Edit.cshtml" />
     <Content Include="Views\UsersToJobs\Delete.cshtml" />
-    <Content Include="Views\OrdersHistory\Index.cshtml" />
-    <Content Include="Views\OrdersHistory\Details.cshtml" />
-    <Content Include="Views\OrdersHistory\Create.cshtml" />
-    <Content Include="Views\OrdersHistory\Edit.cshtml" />
-    <Content Include="Views\OrdersHistory\Delete.cshtml" />
+    <Content Include="Views\History\PartialOrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

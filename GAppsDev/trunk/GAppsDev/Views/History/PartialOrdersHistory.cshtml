@@ -1,32 +1,27 @@
 ﻿@model IEnumerable<DB.Orders_History>
 
-@{
-    ViewBag.Title = "Index";
-    ViewBag.PageName = "Orders";
-    ViewBag.noSubMenu = true;
-}
-
-<h2>Index</h2>
-
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Order.Notes)
+            @Html.DisplayNameFor(model => model.CompayId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.Email)
+            @Html.DisplayNameFor(model => model.UserId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Orders_History_Actions.Name)
+            @Html.DisplayNameFor(model => model.OrderId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.OrderHistoryActionId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDate)
         </th>
         <th></th>
     </tr>
@@ -34,19 +29,22 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Order.Notes)
+            @Html.DisplayFor(modelItem => item.CompayId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.Email)
+            @Html.DisplayFor(modelItem => item.UserId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Orders_History_Actions.Name)
+            @Html.DisplayFor(modelItem => item.OrderId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Date)
+            @Html.DisplayFor(modelItem => item.OrderHistoryActionId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
