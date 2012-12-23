@@ -16,10 +16,11 @@ namespace DA
         ReturnedToCreator = 5,
         PassedApprovalRoute = 6,
         Canceled = 7,
-        InvoiceScaned = 8,
+        InvoiceScanned = 8,
         InvoiceApproved = 9,
         ExportedToFile = 10,
-        ReceiptScaned = 11,
-        AddedToInventory = 12
+        ReceiptScanned = 11,
+        AddedToInventory = 12,
+        OrderPrinted = 13
     }
 }

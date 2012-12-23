@@ -1434,4 +1434,52 @@
   <data name="StepNumber" xml:space="preserve">
     <value>שלב</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>פעולה</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>היסטוריה</value>
+  </data>
+  <data name="AddedToInventory" xml:space="preserve">
+    <value>התווסף למלאי</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>בוטל</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>נוצר</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>נדחה</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>נערך</value>
+  </data>
+  <data name="ExportedToFile" xml:space="preserve">
+    <value>יוצא לקובץ</value>
+  </data>
+  <data name="InvoiceApproved" xml:space="preserve">
+    <value>חשבונית אושרה</value>
+  </data>
+  <data name="InvoiceScanned" xml:space="preserve">
+    <value>חשבונית נסרקה</value>
+  </data>
+  <data name="PartiallyApproved" xml:space="preserve">
+    <value>אושר חלקית</value>
+  </data>
+  <data name="PassedApprovalRoute" xml:space="preserve">
+    <value>הושלם מסלול האישור</value>
+  </data>
+  <data name="ReceiptScanned" xml:space="preserve">
+    <value>קבלה נסרקה</value>
+  </data>
+  <data name="ReturnedToCreator" xml:space="preserve">
+    <value>הוחזר ליוצר ההזמנה</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>לא ידוע</value>
+  </data>
+  <data name="OrderPrinted" xml:space="preserve">
+    <value>הזמנה הודפסה</value>
+  </data>
 </root>

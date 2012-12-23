@@ -78,15 +78,20 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Orders_Statuses", "Orders_Statuses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Statuses), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Users_ApprovalRoutes), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Approver_Notes_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Orders_ApproverNotes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_ApproverNotes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_History_Orders_History_Actions", "Orders_History_Actions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_History_Actions), "Orders_History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_History), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_History_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Orders_History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_History), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Items_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Supplier), "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_Items), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_OrderToItem_Orders_Items", "Orders_Items", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_Items), "Orders_OrderToItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_OrderToItem), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Users_ApprovalRoutes), "PendingUser", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.PendingUser), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Users_ApprovalStep", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_ApprovalStep), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_UsersToRoutes_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Users_UsersToRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_UsersToRoutes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Users_ApprovalRoutes), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.User), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Users_ApprovalRoutes), "Users_ApprovalStep", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_ApprovalStep), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Users_ApprovalRoutes), "Users_UsersToRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Users_UsersToRoutes), true)]
 
 #endregion
 
@@ -713,6 +718,22 @@ namespace DB
             }
         }
         private ObjectSet<Users_ApprovalStep> _Users_ApprovalStep;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Users_UsersToRoutes> Users_UsersToRoutes
+        {
+            get
+            {
+                if ((_Users_UsersToRoutes == null))
+                {
+                    _Users_UsersToRoutes = base.CreateObjectSet<Users_UsersToRoutes>("Users_UsersToRoutes");
+                }
+                return _Users_UsersToRoutes;
+            }
+        }
+        private ObjectSet<Users_UsersToRoutes> _Users_UsersToRoutes;
 
         #endregion
 
@@ -1004,6 +1025,14 @@ namespace DB
         public void AddToUsers_ApprovalStep(Users_ApprovalStep users_ApprovalStep)
         {
             base.AddObject("Users_ApprovalStep", users_ApprovalStep);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Users_UsersToRoutes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUsers_UsersToRoutes(Users_UsersToRoutes users_UsersToRoutes)
+        {
+            base.AddObject("Users_UsersToRoutes", users_UsersToRoutes);
         }
 
         #endregion
@@ -8222,6 +8251,54 @@ namespace DB
         private global::System.Boolean _IsDelaying;
         partial void OnIsDelayingChanging(global::System.Boolean value);
         partial void OnIsDelayingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ApprovalRouteId
+        {
+            get
+            {
+                return _ApprovalRouteId;
+            }
+            set
+            {
+                OnApprovalRouteIdChanging(value);
+                ReportPropertyChanging("ApprovalRouteId");
+                _ApprovalRouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApprovalRouteId");
+                OnApprovalRouteIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ApprovalRouteId;
+        partial void OnApprovalRouteIdChanging(Nullable<global::System.Int32> value);
+        partial void OnApprovalRouteIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ApprovalRouteStep
+        {
+            get
+            {
+                return _ApprovalRouteStep;
+            }
+            set
+            {
+                OnApprovalRouteStepChanging(value);
+                ReportPropertyChanging("ApprovalRouteStep");
+                _ApprovalRouteStep = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApprovalRouteStep");
+                OnApprovalRouteStepChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ApprovalRouteStep;
+        partial void OnApprovalRouteStepChanging(Nullable<global::System.Int32> value);
+        partial void OnApprovalRouteStepChanged();
 
         #endregion
 
@@ -8527,6 +8604,44 @@ namespace DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes")]
+        public Users_ApprovalRoutes Users_ApprovalRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Users_ApprovalRoutes> Users_ApprovalRoutesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -8759,16 +8874,16 @@ namespace DB
         /// Create a new Orders_History object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="compayId">Initial value of the CompayId property.</param>
+        /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
         /// <param name="orderId">Initial value of the OrderId property.</param>
         /// <param name="orderHistoryActionId">Initial value of the OrderHistoryActionId property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
-        public static Orders_History CreateOrders_History(global::System.Int32 id, global::System.Int32 compayId, global::System.Int32 userId, global::System.Int32 orderId, global::System.Int32 orderHistoryActionId, global::System.DateTime creationDate)
+        public static Orders_History CreateOrders_History(global::System.Int32 id, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderId, global::System.Int32 orderHistoryActionId, global::System.DateTime creationDate)
         {
             Orders_History orders_History = new Orders_History();
             orders_History.Id = id;
-            orders_History.CompayId = compayId;
+            orders_History.CompanyId = companyId;
             orders_History.UserId = userId;
             orders_History.OrderId = orderId;
             orders_History.OrderHistoryActionId = orderHistoryActionId;
@@ -8812,24 +8927,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 CompayId
+        public global::System.Int32 CompanyId
         {
             get
             {
-                return _CompayId;
+                return _CompanyId;
             }
             set
             {
-                OnCompayIdChanging(value);
-                ReportPropertyChanging("CompayId");
-                _CompayId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CompayId");
-                OnCompayIdChanged();
+                OnCompanyIdChanging(value);
+                ReportPropertyChanging("CompanyId");
+                _CompanyId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompanyId");
+                OnCompanyIdChanged();
             }
         }
-        private global::System.Int32 _CompayId;
-        partial void OnCompayIdChanging(global::System.Int32 value);
-        partial void OnCompayIdChanged();
+        private global::System.Int32 _CompanyId;
+        partial void OnCompanyIdChanging(global::System.Int32 value);
+        partial void OnCompanyIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10350,6 +10465,30 @@ namespace DB
         private global::System.Int32 _LanguageId;
         partial void OnLanguageIdChanging(global::System.Int32 value);
         partial void OnLanguageIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> DefaultApprovalRouteId
+        {
+            get
+            {
+                return _DefaultApprovalRouteId;
+            }
+            set
+            {
+                OnDefaultApprovalRouteIdChanging(value);
+                ReportPropertyChanging("DefaultApprovalRouteId");
+                _DefaultApprovalRouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DefaultApprovalRouteId");
+                OnDefaultApprovalRouteIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _DefaultApprovalRouteId;
+        partial void OnDefaultApprovalRouteIdChanging(Nullable<global::System.Int32> value);
+        partial void OnDefaultApprovalRouteIdChanged();
 
         #endregion
 
@@ -10466,6 +10605,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_PendingUsers_Users", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes")]
+        public Users_ApprovalRoutes Users_ApprovalRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Users_ApprovalRoutes> Users_ApprovalRoutesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "Users_ApprovalRoutes", value);
                 }
             }
         }
@@ -11852,6 +12029,30 @@ namespace DB
         private global::System.String _CellularNumber;
         partial void OnCellularNumberChanging(global::System.String value);
         partial void OnCellularNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> DefaultApprovalRouteId
+        {
+            get
+            {
+                return _DefaultApprovalRouteId;
+            }
+            set
+            {
+                OnDefaultApprovalRouteIdChanging(value);
+                ReportPropertyChanging("DefaultApprovalRouteId");
+                _DefaultApprovalRouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DefaultApprovalRouteId");
+                OnDefaultApprovalRouteIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _DefaultApprovalRouteId;
+        partial void OnDefaultApprovalRouteIdChanging(Nullable<global::System.Int32> value);
+        partial void OnDefaultApprovalRouteIdChanged();
 
         #endregion
 
@@ -12138,6 +12339,28 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_UsersToRoutes_Users", "Users_UsersToRoutes")]
+        public EntityCollection<Users_UsersToRoutes> Users_UsersToRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_UsersToRoutes>("designModel.FK_Users_UsersToRoutes_Users", "Users_UsersToRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_UsersToRoutes>("designModel.FK_Users_UsersToRoutes_Users", "Users_UsersToRoutes", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Users", "User1")]
         public EntityCollection<User> Users1
         {
@@ -12188,6 +12411,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Users_Users", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes")]
+        public Users_ApprovalRoutes Users_ApprovalRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Users_ApprovalRoutes> Users_ApprovalRoutesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_Users_ApprovalRoutes", "Users_ApprovalRoutes", value);
                 }
             }
         }
@@ -12349,6 +12610,72 @@ namespace DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users_ApprovalRoutes", "Order")]
+        public EntityCollection<Order> Orders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Users_ApprovalRoutes", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Users_ApprovalRoutes", "Order", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_PendingUsers_Users_ApprovalRoutes", "PendingUser")]
+        public EntityCollection<PendingUser> PendingUsers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "PendingUser");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PendingUser>("designModel.FK_PendingUsers_Users_ApprovalRoutes", "PendingUser", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_Users_ApprovalRoutes", "User")]
+        public EntityCollection<User> Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("designModel.FK_Users_Users_ApprovalRoutes", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("designModel.FK_Users_Users_ApprovalRoutes", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalStep")]
         public EntityCollection<Users_ApprovalStep> Users_ApprovalStep
         {
@@ -12361,6 +12688,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_ApprovalStep>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalStep", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_UsersToRoutes")]
+        public EntityCollection<Users_UsersToRoutes> Users_UsersToRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Users_UsersToRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_UsersToRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Users_UsersToRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_UsersToRoutes", value);
                 }
             }
         }
@@ -12576,6 +12925,201 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_HierarchyLevel_Users_Hierarchies", "Users_ApprovalRoutes", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="designModel", Name="Users_UsersToRoutes")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Users_UsersToRoutes : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Users_UsersToRoutes object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="approvalRouteId">Initial value of the ApprovalRouteId property.</param>
+        public static Users_UsersToRoutes CreateUsers_UsersToRoutes(global::System.Int32 id, global::System.Int32 userId, global::System.Int32 approvalRouteId)
+        {
+            Users_UsersToRoutes users_UsersToRoutes = new Users_UsersToRoutes();
+            users_UsersToRoutes.Id = id;
+            users_UsersToRoutes.UserId = userId;
+            users_UsersToRoutes.ApprovalRouteId = approvalRouteId;
+            return users_UsersToRoutes;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserId
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                if (_UserId != value)
+                {
+                    OnUserIdChanging(value);
+                    ReportPropertyChanging("UserId");
+                    _UserId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserId");
+                    OnUserIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UserId;
+        partial void OnUserIdChanging(global::System.Int32 value);
+        partial void OnUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ApprovalRouteId
+        {
+            get
+            {
+                return _ApprovalRouteId;
+            }
+            set
+            {
+                if (_ApprovalRouteId != value)
+                {
+                    OnApprovalRouteIdChanging(value);
+                    ReportPropertyChanging("ApprovalRouteId");
+                    _ApprovalRouteId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ApprovalRouteId");
+                    OnApprovalRouteIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ApprovalRouteId;
+        partial void OnApprovalRouteIdChanging(global::System.Int32 value);
+        partial void OnApprovalRouteIdChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_UsersToRoutes_Users", "User")]
+        public User User
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_UsersToRoutes_Users", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_UsersToRoutes_Users", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Users_UsersToRoutes_Users", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Users_UsersToRoutes_Users", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes")]
+        public Users_ApprovalRoutes Users_ApprovalRoutes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Users_ApprovalRoutes> Users_ApprovalRoutesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes", "Users_ApprovalRoutes", value);
                 }
             }
         }

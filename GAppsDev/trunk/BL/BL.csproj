@@ -74,6 +74,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Resources\Translation\Dic.resx">
       <Link>Translation\Dic.resx</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Resources\Translation\Dic.ru.resx">
       <Link>Translation\Dic.ru.resx</Link>

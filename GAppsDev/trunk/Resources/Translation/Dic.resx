@@ -1437,4 +1437,52 @@
   <data name="StepNumber" xml:space="preserve">
     <value>Step number</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="AddedToInventory" xml:space="preserve">
+    <value>Added To Inventory</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>Edited</value>
+  </data>
+  <data name="ExportedToFile" xml:space="preserve">
+    <value>Exported To File</value>
+  </data>
+  <data name="InvoiceApproved" xml:space="preserve">
+    <value>Invoice Approved</value>
+  </data>
+  <data name="InvoiceScanned" xml:space="preserve">
+    <value>Invoice Scanned</value>
+  </data>
+  <data name="PartiallyApproved" xml:space="preserve">
+    <value>Partially Approved</value>
+  </data>
+  <data name="PassedApprovalRoute" xml:space="preserve">
+    <value>Passed Approval Route</value>
+  </data>
+  <data name="ReceiptScanned" xml:space="preserve">
+    <value>Receipt Scanned</value>
+  </data>
+  <data name="ReturnedToCreator" xml:space="preserve">
+    <value>Returned To Creator</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="OrderPrinted" xml:space="preserve">
+    <value>Order Printed</value>
+  </data>
 </root>

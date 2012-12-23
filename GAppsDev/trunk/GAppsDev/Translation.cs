@@ -36,11 +36,58 @@ namespace GAppsDev
                     return Loc.Dic.Status_PendingReceipt;
                 case StatusType.ReceiptScanned:
                     return Loc.Dic.Status_ReceiptScanned;
+
                 default:
                     return Loc.Dic.Status_Unknown;
             }
         }
+        public static string OrderHistoryAction(HistoryActions action)
+        {
+            switch (action)
+            {
+                case HistoryActions.Created:
+                    return Loc.Dic.Created;
 
+                case HistoryActions.Edited:
+                    return Loc.Dic.Edited;
+
+                case HistoryActions.PartiallyApproved:
+                    return Loc.Dic.PartiallyApproved;
+
+                case HistoryActions.Declined:
+                    return Loc.Dic.Declined;
+
+                case HistoryActions.ReturnedToCreator:
+                    return Loc.Dic.ReturnedToCreator;
+
+                case HistoryActions.PassedApprovalRoute:
+                    return Loc.Dic.PassedApprovalRoute;
+
+                case HistoryActions.Canceled:
+                    return Loc.Dic.Canceled;
+
+                case HistoryActions.InvoiceScanned:
+                    return Loc.Dic.InvoiceScanned;
+
+                case HistoryActions.InvoiceApproved:
+                    return Loc.Dic.InvoiceApproved;
+
+                case HistoryActions.ExportedToFile:
+                    return Loc.Dic.ExportedToFile;
+
+                case HistoryActions.ReceiptScanned:
+                    return Loc.Dic.ReceiptScanned;
+
+                case HistoryActions.AddedToInventory:
+                    return Loc.Dic.AddedToInventory;
+
+                case HistoryActions.OrderPrinted:
+                    return Loc.Dic.OrderPrinted;
+
+                default:
+                    return Loc.Dic.Unknown;
+            }
+        }
         public static string Month(int month)
         {
             switch (month)
