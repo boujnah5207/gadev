@@ -127,13 +127,13 @@
     </div>
     <br />
     }
-            ---
-    @foreach (var item in (List<DB.Orders_History>)ViewBag.orderHistoryList)
+
+@*    @foreach (var item in (List<DB.Orders_History>)ViewBag.orderHistoryList)
     {
         @item.Notes
     }
-    ***
-    @Html.Action("PartialOrdersHistory", new { ViewBag.orderHistoryList} )
+
+    @Html.Action("PartialOrdersHistory", new { ViewBag.orderHistoryList} )*@
 
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)

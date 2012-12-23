@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web;
+using DA;
+using System.Data.Objects;
 
 namespace System.Web.Mvc.Html
 {
@@ -133,6 +135,60 @@ namespace System.Web.Mvc.Html
                 return String.Format("<li><a href='{0}?page={1}&sortby={2}&order={3}' > {4} </a></li>", baseURL, page, sortby, order, linkText);
             else
                 return String.Format("<span class='currentPage'> {0} </span>", linkText);
+        }
+
+        public static int CountUserOrders(this HtmlHelper htmlHelper, int userId, int companyId)
+        {
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
+            {
+                return ordersRep.GetList().Where(x => x.UserId == userId).Count();
+            }
+        }
+
+        public static int CountUserPendingOrders(this HtmlHelper htmlHelper, int userId, int companyId)
+        {
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
+            {
+                return ordersRep.GetList().Where(x => x.NextOrderApproverId == userId).Count();
+            }
+        }
+
+        public static int CountDelayingOrders(this HtmlHelper htmlHelper, int companyId)
+        {
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
+            {
+                DateTime CurrentTime = DateTime.Now;
+                return ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x =>
+                        EntityFunctions.DiffHours(x.CreationDate, CurrentTime) >= 48 &&
+                        x.StatusId < (int)StatusType.ApprovedPendingInvoice &&
+                        x.StatusId != (int)StatusType.Declined &&
+                        x.StatusId != (int)StatusType.OrderCancelled
+                        )
+                    .Count();
+            }
+        }
+
+        public static int CountPendingExport(this HtmlHelper htmlHelper, int companyId)
+        {
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
+            {
+                return ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x => x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
+                    .Count();
+            }
+        }
+
+        public static int CountPendingInventory(this HtmlHelper htmlHelper, int companyId)
+        {
+            using (OrdersRepository ordersRep = new OrdersRepository(companyId))
+            {
+                return ordersRep.GetList("Orders_Statuses", "Supplier", "User")
+                    .Where(x =>
+                        !x.WasAddedToInventory &&
+                        x.StatusId > (int)StatusType.InvoiceScannedPendingOrderCreator)
+                    .Count();
+            }
         }
     }
 }

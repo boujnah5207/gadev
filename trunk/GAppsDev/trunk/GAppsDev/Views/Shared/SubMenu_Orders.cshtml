@@ -11,12 +11,12 @@
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersApprover))
             {
                 <li>|</li>
-                <li>@Html.ActionLink(Loc.Dic.PendingOrders, "PendingOrders", "Orders", null, new { id = "PendingOrdersLink" })</li>
+                <li>@Html.ActionLink(String.Format("{0} ({1})", Loc.Dic.PendingOrders, Html.CountUserPendingOrders((int)ViewBag.CurrentUser.UserId, (int)ViewBag.CurrentUser.CompanyId)), "PendingOrders", "Orders", null, new { id = "PendingOrdersLink" })</li>
             }
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SuperApprover))
             {
                 <li>|</li>
-                <li>@Html.ActionLink(Loc.Dic.DelayingOrders, "DelayingOrders", "Orders", null, new { id = "DelayingOrdersLink" })</li>
+                <li>@Html.ActionLink(String.Format("{0} ({1})", Loc.Dic.DelayingOrders, Html.CountDelayingOrders((int)ViewBag.CurrentUser.CompanyId)), "DelayingOrders", "Orders", null, new { id = "DelayingOrdersLink" })</li>
             }
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersViewer))
             {
@@ -26,7 +26,7 @@
             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
             {
                 <li>|</li>
-                <li>@Html.ActionLink(Loc.Dic.ExportToFile, "OrdersToExport", "Orders", null, new { id = "ExportToFileLink" })</li>
+                <li>@Html.ActionLink(String.Format("{0} ({1})", Loc.Dic.OrdersToExport, Html.CountPendingExport((int)ViewBag.CurrentUser.CompanyId)), "OrdersToExport", "Orders", null, new { id = "ExportToFileLink" })</li>
             }
 
         </ul>

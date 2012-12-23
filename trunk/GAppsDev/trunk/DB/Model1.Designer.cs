@@ -6745,7 +6745,7 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> OriginalQuantity
+        public Nullable<global::System.Decimal> OriginalQuantity
         {
             get
             {
@@ -6760,8 +6760,8 @@ namespace DB
                 OnOriginalQuantityChanged();
             }
         }
-        private Nullable<global::System.Int32> _OriginalQuantity;
-        partial void OnOriginalQuantityChanging(Nullable<global::System.Int32> value);
+        private Nullable<global::System.Decimal> _OriginalQuantity;
+        partial void OnOriginalQuantityChanging(Nullable<global::System.Decimal> value);
         partial void OnOriginalQuantityChanged();
     
         /// <summary>
@@ -6769,7 +6769,7 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> RemainingQuantity
+        public Nullable<global::System.Decimal> RemainingQuantity
         {
             get
             {
@@ -6784,8 +6784,8 @@ namespace DB
                 OnRemainingQuantityChanged();
             }
         }
-        private Nullable<global::System.Int32> _RemainingQuantity;
-        partial void OnRemainingQuantityChanging(Nullable<global::System.Int32> value);
+        private Nullable<global::System.Decimal> _RemainingQuantity;
+        partial void OnRemainingQuantityChanging(Nullable<global::System.Decimal> value);
         partial void OnRemainingQuantityChanged();
 
         #endregion
@@ -9236,16 +9236,14 @@ namespace DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="title">Initial value of the Title property.</param>
-        /// <param name="subTitle">Initial value of the SubTitle property.</param>
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="isCanceled">Initial value of the IsCanceled property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
-        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.String subTitle, global::System.DateTime creationDate, global::System.Boolean isCanceled, global::System.Int32 companyId)
+        public static Orders_Items CreateOrders_Items(global::System.Int32 id, global::System.String title, global::System.DateTime creationDate, global::System.Boolean isCanceled, global::System.Int32 companyId)
         {
             Orders_Items orders_Items = new Orders_Items();
             orders_Items.Id = id;
             orders_Items.Title = title;
-            orders_Items.SubTitle = subTitle;
             orders_Items.CreationDate = creationDate;
             orders_Items.IsCanceled = isCanceled;
             orders_Items.CompanyId = companyId;
@@ -9334,7 +9332,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String SubTitle
         {
@@ -9346,7 +9344,7 @@ namespace DB
             {
                 OnSubTitleChanging(value);
                 ReportPropertyChanging("SubTitle");
-                _SubTitle = StructuralObject.SetValidValue(value, false);
+                _SubTitle = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("SubTitle");
                 OnSubTitleChanged();
             }
@@ -9815,7 +9813,7 @@ namespace DB
         /// <param name="itemId">Initial value of the ItemId property.</param>
         /// <param name="quantity">Initial value of the Quantity property.</param>
         /// <param name="singleItemPrice">Initial value of the SingleItemPrice property.</param>
-        public static Orders_OrderToItem CreateOrders_OrderToItem(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 itemId, global::System.Int32 quantity, global::System.Decimal singleItemPrice)
+        public static Orders_OrderToItem CreateOrders_OrderToItem(global::System.Int32 id, global::System.Int32 orderId, global::System.Int32 itemId, global::System.Decimal quantity, global::System.Decimal singleItemPrice)
         {
             Orders_OrderToItem orders_OrderToItem = new Orders_OrderToItem();
             orders_OrderToItem.Id = id;
@@ -9910,7 +9908,7 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Quantity
+        public global::System.Decimal Quantity
         {
             get
             {
@@ -9925,8 +9923,8 @@ namespace DB
                 OnQuantityChanged();
             }
         }
-        private global::System.Int32 _Quantity;
-        partial void OnQuantityChanging(global::System.Int32 value);
+        private global::System.Decimal _Quantity;
+        partial void OnQuantityChanging(global::System.Decimal value);
         partial void OnQuantityChanged();
     
         /// <summary>
@@ -12387,14 +12385,14 @@ namespace DB
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="approvalRouteId">Initial value of the ApprovalRouteId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
-        /// <param name="level">Initial value of the Level property.</param>
-        public static Users_ApprovalStep CreateUsers_ApprovalStep(global::System.Int32 id, global::System.Int32 approvalRouteId, global::System.Int32 userId, global::System.Int32 level)
+        /// <param name="stepNumber">Initial value of the StepNumber property.</param>
+        public static Users_ApprovalStep CreateUsers_ApprovalStep(global::System.Int32 id, global::System.Int32 approvalRouteId, global::System.Int32 userId, global::System.Int32 stepNumber)
         {
             Users_ApprovalStep users_ApprovalStep = new Users_ApprovalStep();
             users_ApprovalStep.Id = id;
             users_ApprovalStep.ApprovalRouteId = approvalRouteId;
             users_ApprovalStep.UserId = userId;
-            users_ApprovalStep.Level = level;
+            users_ApprovalStep.StepNumber = stepNumber;
             return users_ApprovalStep;
         }
 
@@ -12482,24 +12480,24 @@ namespace DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Level
+        public global::System.Int32 StepNumber
         {
             get
             {
-                return _Level;
+                return _StepNumber;
             }
             set
             {
-                OnLevelChanging(value);
-                ReportPropertyChanging("Level");
-                _Level = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Level");
-                OnLevelChanged();
+                OnStepNumberChanging(value);
+                ReportPropertyChanging("StepNumber");
+                _StepNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StepNumber");
+                OnStepNumberChanged();
             }
         }
-        private global::System.Int32 _Level;
-        partial void OnLevelChanging(global::System.Int32 value);
-        partial void OnLevelChanged();
+        private global::System.Int32 _StepNumber;
+        partial void OnStepNumberChanging(global::System.Int32 value);
+        partial void OnStepNumberChanged();
 
         #endregion
 

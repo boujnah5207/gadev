@@ -1,0 +1,18 @@
+﻿@model DB.Users_ApprovalRoutes
+
+@{
+    ViewBag.Title = Loc.Dic.Delete;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllApprovalRoutes";
+}
+
+<h3>@Loc.Dic.ConfirmDelete</h3>
+
+@Html.Action("PartialDetails", new { route = Model })
+
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="@Loc.Dic.Delete" /> |
+        @Html.ActionLink(Loc.Dic.BackToList, "Index")
+    </p>
+}

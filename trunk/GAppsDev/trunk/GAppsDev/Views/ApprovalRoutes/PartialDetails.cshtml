@@ -1,0 +1,18 @@
+﻿@model DB.Users_ApprovalRoutes
+
+<fieldset>
+    <legend>@Loc.Dic.ApprovalRoute</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <br />
+
+    <span class="bold">@Loc.Dic.ApprovalRoute:</span>
+    @Html.Action("StepsList", new { steps = Model.Users_ApprovalStep.ToList(), baseUrl = Url.Action("Details")})
+    <br />
+
+</fieldset>

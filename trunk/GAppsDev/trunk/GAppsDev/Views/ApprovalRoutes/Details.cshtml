@@ -1,0 +1,14 @@
+﻿@model DB.Users_ApprovalRoutes
+
+@{
+    ViewBag.Title = Loc.Dic.Details;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllApprovalRoutes";
+}
+
+@Html.Action("PartialDetails", new { route = Model })
+
+<p>
+    @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Loc.Dic.BackToList, "Index")
+</p>

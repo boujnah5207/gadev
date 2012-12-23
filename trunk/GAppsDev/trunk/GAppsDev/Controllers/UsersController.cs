@@ -238,9 +238,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // POST: /Users/Create
-
         [HttpPost]
         [OpenIdAuthorize]
         public ActionResult Create(PendingUser user, string[] roleNames)
@@ -330,9 +327,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // GET: /Users/Create
-
         [OpenIdAuthorize]
         public ActionResult EditBaskets(int id = 0)
         {
@@ -374,9 +368,6 @@ namespace GAppsDev.Controllers
                 return View(model);
             }
         }
-
-        //
-        // POST: /Users/Create
 
         [HttpPost]
         [OpenIdAuthorize]
@@ -466,9 +457,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // GET: /Users/Edit/5
-
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
@@ -511,9 +499,6 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
             }
         }
-
-        //
-        // POST: /Users/Edit/5
 
         [HttpPost]
         [OpenIdAuthorize]
@@ -578,7 +563,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-
         [OpenIdAuthorize]
         public ActionResult EditPending(int id = 0)
         {
@@ -621,9 +605,6 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
             }
         }
-
-        //
-        // POST: /Users/Edit/5
 
         [HttpPost]
         [OpenIdAuthorize]
@@ -683,8 +664,28 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // GET: /Users/Delete/5
+        [OpenIdAuthorize]
+        public ActionResult CreateApprovalRoute(int id = 0)
+        {
+            List<User> usersSelectList;
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            {
+                usersSelectList = 
+                    usersRep.GetList()
+                    .Where(user => ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover)
+                    .ToList();
+            }
+
+            ViewBag.UsersSelectList = new SelectList(usersSelectList, "Id", "FullName");
+            return View();
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult CreateApprovalRoute(ApprovalRouteModel model)
+        {
+            return RedirectToAction("Index");
+        }
 
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)

@@ -1401,7 +1401,40 @@
   <data name="error_externalIdAlreadyExist" xml:space="preserve">
     <value>The external Id already exist</value>
   </data>
+  <data name="CreateApprovalRoute" xml:space="preserve">
+    <value>Create approval route</value>
+  </data>
   <data name="ExternalId" xml:space="preserve">
     <value>External Id</value>
+  </data>
+  <data name="ApprovalRoutes" xml:space="preserve">
+    <value>Approval routes</value>
+  </data>
+  <data name="InsertAfter" xml:space="preserve">
+    <value>Insert after</value>
+  </data>
+  <data name="ListStartLocation" xml:space="preserve">
+    <value>List start</value>
+  </data>
+  <data name="NoApproverRoutesWereFound" xml:space="preserve">
+    <value>No approverroutes were found</value>
+  </data>
+  <data name="RouteSteps" xml:space="preserve">
+    <value>Route steps</value>
+  </data>
+  <data name="Step" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="ApprovalRoute" xml:space="preserve">
+    <value>Approval route</value>
+  </data>
+  <data name="ApprovalRouteName" xml:space="preserve">
+    <value>Approval route name</value>
+  </data>
+  <data name="RouteHasNoSteps" xml:space="preserve">
+    <value>The route has no steps</value>
+  </data>
+  <data name="StepNumber" xml:space="preserve">
+    <value>Step number</value>
   </data>
 </root>
