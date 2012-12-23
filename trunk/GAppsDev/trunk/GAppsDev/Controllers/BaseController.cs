@@ -11,6 +11,12 @@ namespace GAppsDev.Controllers
 {
     public abstract class BaseController : Controller
     {
+        public const int ITEMS_PER_PAGE = 10;
+        public const int FIRST_PAGE = 1;
+        public const string NO_SORT_BY = "None";
+        public const string DEFAULT_DESC_ORDER = "DESC";
+        public const int FIRST_DAY_OF_MONTH = 1;
+
         public OpenIdUser CurrentUser 
         {
             get

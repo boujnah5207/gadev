@@ -17,11 +17,7 @@ namespace GAppsDev.Controllers
 {
     public class SuppliersController : BaseController
     {
-        const int ITEMS_PER_PAGE = 10;
-        const int FIRST_PAGE = 1;
-        const string NO_SORT_BY = "None";
         const string DEFAULT_SORT = "name";
-        const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
 

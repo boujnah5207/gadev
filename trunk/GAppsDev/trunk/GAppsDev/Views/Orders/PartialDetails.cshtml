@@ -10,7 +10,7 @@
     <div class="display-label">
         @Loc.Dic.OrderNumber
     </div>
-    <div class="display-field" style="font-size:x-large;">
+    <div class="display-field" style="font-size: x-large;">
         @Html.DisplayFor(model => model.OriginalOrder.OrderNumber)
     </div>
     <br />
@@ -33,7 +33,7 @@
         @Html.DisplayFor(model => model.OriginalOrder.Supplier.Name)
     </div>
     <br />
-    
+
     <div class="display-label">
         @Loc.Dic.OrderStatusName
     </div>
@@ -41,7 +41,7 @@
         @Html.DisplayFor(model => model.OriginalOrder.Orders_Statuses.Name)
     </div>
     <br />
-    
+
     <div class="display-label">
         @Loc.Dic.CreationDate
     </div>
@@ -52,7 +52,7 @@
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
-        <div class="display-label"> 
+        <div class="display-label">
             @Loc.Dic.InvoiceNumber
         </div>
         <div class="display-field">
@@ -60,16 +60,16 @@
         </div>
         <br />
         
-        <div class="display-label"> 
-            @Loc.Dic.InvoiceDate 
+        <div class="display-label">
+            @Loc.Dic.InvoiceDate
         </div>
         <div class="display-field">
             @Model.OriginalOrder.InvoiceDate.Value.ToShortDateString()
         </div>
         <br />
         
-        <div class="display-label"> 
-            @Loc.Dic.ValueDate 
+        <div class="display-label">
+            @Loc.Dic.ValueDate
         </div>
         <div class="display-field">
             @Model.OriginalOrder.ValueDate.Value.ToShortDateString()
@@ -79,14 +79,14 @@
 
     @if (Model.OriginalOrder.IsFutureOrder)
     {
-    <div class="display-label">
-        @Loc.Dic.FutureOrder
-    </div>
-    <div class="display-field">
-        @{ int futureMonth = Model.OriginalOrder.Orders_OrderToAllocation.Max(x => x.MonthId); }
-        @Html.GetMonthName(futureMonth) @Model.OriginalOrder.Budget.Year
-    </div>
-    <br />
+        <div class="display-label">
+            @Loc.Dic.FutureOrder
+        </div>
+        <div class="display-field">
+            @{ int futureMonth = Model.OriginalOrder.Orders_OrderToAllocation.Max(x => x.MonthId); }
+            @Html.GetMonthName(futureMonth) @Model.OriginalOrder.Budget.Year
+        </div>
+        <br />
     }
 
     <div class="display-label">
@@ -97,69 +97,64 @@
     </div>
     <br />
 
-    <div class="display-label"> @Loc.Dic.OrderItems </div>
-    @Html.Action("ListOrderItems", new { orderItems = Model.OriginalOrder.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })    
+    <div class="display-label">@Loc.Dic.OrderItems </div>
+    @Html.Action("ListOrderItems", new { orderItems = Model.OriginalOrder.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index") })
     <br />
 
-    <div class="display-label"> @Loc.Dic.OrderAllocations </div>
-    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.OriginalOrder.Orders_OrderToAllocation.ToList(), budgetYear = Model.OriginalOrder.Budget.Year, isFutureOrder = Model.OriginalOrder.IsFutureOrder, baseUrl = Url.Action("Index"), exeedingData = Model })    
+    <div class="display-label">@Loc.Dic.OrderAllocations </div>
+    @Html.Action("ListOrderAllocations", new { orderAllocations = Model.OriginalOrder.Orders_OrderToAllocation.ToList(), budgetYear = Model.OriginalOrder.Budget.Year, isFutureOrder = Model.OriginalOrder.IsFutureOrder, baseUrl = Url.Action("Index"), exeedingData = Model })
     <br />
 
-    
+
     @if (!String.IsNullOrEmpty(Model.OriginalOrder.Notes))
     {
+        <div class="display-label">
+            @Loc.Dic.Notes
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OriginalOrder.Notes)
+        </div>
+        <br />
+    }
+
     <div class="display-label">
-        @Loc.Dic.Notes
+        @Loc.Dic.History
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OriginalOrder.Notes)
-    </div>
-    <br />
-    }
 
-    @if (!String.IsNullOrEmpty(Model.OriginalOrder.OrderApproverNotes))
+    @if (((List<DB.Orders_History>)ViewBag.orderHistoryList).Any())
+    { 
+        @Html.Action("SimpleListOrdersHistory", "History", new { ordersHistoryList = (List<DB.Orders_History>)ViewBag.orderHistoryList, baseUrl = Url.Action("Details") })    
+    }
+    else
     {
-    <div class="display-label">
-        @Loc.Dic.OrderApproverNotes
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OriginalOrder.OrderApproverNotes)
-    </div>
-    <br />
+        <span class="no-properties">@(Loc.Dic.Empty).</span> 
     }
-
-@*    @foreach (var item in (List<DB.Orders_History>)ViewBag.orderHistoryList)
-    {
-        @item.Notes
-    }
-
-    @Html.Action("PartialOrdersHistory", new { ViewBag.orderHistoryList} )*@
 
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
     {
-        <div class="display-label"> @Loc.Dic.Actions </div>
+        <div class="display-label">@Loc.Dic.Actions </div>
         <br />
         <span class="bold">@Loc.Dic.Invoice: </span> @Html.ActionLink(Loc.Dic.DownloadInvoice, "DownloadInvoice", new { id = Model.OriginalOrder.Id });
-        if (isSystemManager)
-        {
+                                                                                                                                                      if (isSystemManager)
+                                                                                                                                                      {
         <text>|</text> @Html.ActionLink(Loc.Dic.UpdateInvoice, "UploadInvoiceFile", new { id = Model.OriginalOrder.Id })
-        }
+                                                                                                                                                      }
         <br />
-        if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
-        {
-            <span class="bold">@Loc.Dic.Receipt: </span> @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.OriginalOrder.Id });
-            if (isSystemManager)
-            {
-            <text>|</text> @Html.ActionLink(Loc.Dic.UpdateReceipt, "UploadReceiptFile", new { id = Model.OriginalOrder.Id })
-            }
-            <br />
-        }
+                                                                                                                                                      if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.ReceiptScanned)
+                                                                                                                                                      {
+        <span class="bold">@Loc.Dic.Receipt: </span> @Html.ActionLink(Loc.Dic.DownloadReceipt, "DownloadReceipt", new { id = Model.OriginalOrder.Id });
+                                                                                                                                                      if (isSystemManager)
+                                                                                                                                                      {
+        <text>|</text> @Html.ActionLink(Loc.Dic.UpdateReceipt, "UploadReceiptFile", new { id = Model.OriginalOrder.Id })
+                                                                                                                                                      }
+        <br />
+                                                                                                                                                      }
         <span class="bold">@Loc.Dic.Order: </span>
-        if (Model.OriginalOrder.UserId == ViewBag.CurrentUser.UserId && (Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
-        {
-            @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.OriginalOrder.Id }) <text>|</text>
-        }
+                                                                                                                                                      if (Model.OriginalOrder.UserId == ViewBag.CurrentUser.UserId && (Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.Pending || Model.OriginalOrder.Orders_Statuses.Id == (int)DA.StatusType.PendingOrderCreator))
+                                                                                                                                                      {
+        @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = Model.OriginalOrder.Id }) <text>|</text>
+                                                                                                                                                      }
         @Html.ActionLink(Loc.Dic.Print, "DownloadOrderAsPdf", new { id = Model.OriginalOrder.Id }) 
         <br />
     }

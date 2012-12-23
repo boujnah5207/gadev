@@ -27,12 +27,7 @@ namespace GAppsDev.Controllers
 {
     public class OrdersController : BaseController
     {
-        const int ITEMS_PER_PAGE = 10;
-        const int FIRST_PAGE = 1;
-        const string NO_SORT_BY = "None";
-        const string DEFAULT_SORT = "lastChange";
-        const string DEFAULT_DESC_ORDER = "DESC";
-        const int FIRST_DAY_OF_MONTH = 1;
+        public const string DEFAULT_SORT = "lastChange";
 
         const string INVOICE_FOLDER_NAME = "Invoices";
         const string RECEIPT_FOLDER_NAME = "Receipts";
@@ -258,6 +253,8 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult UploadInvoiceFile(UploadInvoiceModel model, int id = 0)
         {
+            int? historyActionId = null;
+
             if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
 
             if (!ModelState.IsValid)
@@ -268,6 +265,8 @@ namespace GAppsDev.Controllers
 
             Order order;
             bool isModelValid = true;
+
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
             using (OrderToAllocationRepository orderAlloRep = new OrderToAllocationRepository())
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
@@ -303,7 +302,11 @@ namespace GAppsDev.Controllers
                 order.InvoiceDate = model.InvoiceDate;
                 order.ValueDate = model.ValueDate;
                 if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
-
+                
+                historyActionId = (int)HistoryActions.InvoiceScanned;
+                Orders_History orderHistory = new Orders_History();
+                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
+                
                 SaveUniqueFile(model.File, INVOICE_FOLDER_NAME, id);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
@@ -355,6 +358,11 @@ namespace GAppsDev.Controllers
 
             Order order;
             bool isModelValid = true;
+            int? historyActionId = null;
+
+
+            
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id);
@@ -382,7 +390,9 @@ namespace GAppsDev.Controllers
                 }
 
                 SaveUniqueFile(model.File, RECEIPT_FOLDER_NAME, id);
-
+                historyActionId = (int)HistoryActions.ReceiptScanned;
+                Orders_History orderHistory = new Orders_History();
+                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
                 emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
 
@@ -394,6 +404,7 @@ namespace GAppsDev.Controllers
         public ActionResult DownloadInvoice(int id = 0)
         {
             Order order;
+
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id);
@@ -465,19 +476,28 @@ namespace GAppsDev.Controllers
             HttpCookie cookie = Request.Cookies[cookieName];
             Dictionary<string, string> cookies = new Dictionary<string, string>();
             cookies.Add(cookieName, cookie.Value);
+            int? historyActionId = null;
+
+
 
             Order order;
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
+
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
                 order = ordersRep.GetEntity(id);
-            }
 
+                historyActionId = (int)HistoryActions.OrderPrinted;
+                Orders_History orderHistory = new Orders_History();
+                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
+            }
             return new ActionAsPdf("PrintOrderToScreen", new { password = PRINT_PASSWORD, id = id, companyId = CurrentUser.CompanyId, userId = CurrentUser.UserId, userRoles = CurrentUser.Roles, languageCode = CurrentUser.LanguageCode, coinSign = CurrentUser.CompanyCoinSign }) { FileName = String.Format("Order_{0}.pdf", order.OrderNumber) };
         }
 
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
+
             OrdersRepository.ExeedingOrderData model = new OrdersRepository.ExeedingOrderData();
 
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
@@ -921,7 +941,14 @@ namespace GAppsDev.Controllers
             }
 
             if (noErrors)
+            {
+                int? historyActionId = null;
+                historyActionId = (int)HistoryActions.Edited;
+                Orders_History orderHistory = new Orders_History();
+                using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
+                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 return RedirectToAction("MyOrders");
+            }
             else
                 return Error(Loc.Dic.error_order_update_items_error);
 
@@ -1520,6 +1547,11 @@ namespace GAppsDev.Controllers
                             );
                         order.StatusId = (int)StatusType.InvoiceExportedToFile;
                         ordersRep.Update(order);
+                        int? historyActionId = null;
+                        historyActionId = (int)HistoryActions.ExportedToFile;
+                        Orders_History orderHistory = new Orders_History();
+                        using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                            if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                     }
 
                     Response.AppendHeader("Refresh", "1");
@@ -1771,9 +1803,10 @@ namespace GAppsDev.Controllers
         [ChildActionOnly]
         public ActionResult PartialDetails(OrdersRepository.ExeedingOrderData model)
         {
-            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OrderId))
-            ViewBag.orderHistoryList = ordersHistoryRep.GetList().ToList();
-            
+            List<Orders_History> orderHistoryList = new List<Orders_History>();
+            using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OriginalOrder.Id))
+            orderHistoryList = ordersHistoryRep.GetList("User", "Orders_History_Actions").OrderByDescending(x => x.CreationDate).ToList();
+            ViewBag.orderHistoryList = orderHistoryList;
             return PartialView(model);
         }
 
@@ -1872,6 +1905,11 @@ namespace GAppsDev.Controllers
                 }
 
                 ordersRepository.Update(order);
+                int? historyActionId = null;
+                historyActionId = (int)HistoryActions.InvoiceApproved;
+                Orders_History orderHistory = new Orders_History();
+                using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
             }
 
             return RedirectToAction("MyOrders");

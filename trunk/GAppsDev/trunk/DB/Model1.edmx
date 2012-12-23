@@ -42,6 +42,13 @@
           <EntitySet Name="Users" EntityType="designModel.Store.Users" store:Type="Tables" Schema="uddi" />
           <EntitySet Name="Users_ApprovalRoutes" EntityType="designModel.Store.Users_ApprovalRoutes" store:Type="Tables" Schema="uddi" Table="Users.ApprovalRoutes" />
           <EntitySet Name="Users_ApprovalStep" EntityType="designModel.Store.Users_ApprovalStep" store:Type="Tables" Schema="uddi" Table="Users.ApprovalStep" />
+          <EntitySet Name="Users_UsersToRoutes" EntityType="designModel.Store.Users_UsersToRoutes" store:Type="Tables" store:Schema="uddi" store:Name="Users.UsersToRoutes">
+            <DefiningQuery>SELECT 
+      [Users_UsersToRoutes].[Id] AS [Id], 
+      [Users_UsersToRoutes].[UserId] AS [UserId], 
+      [Users_UsersToRoutes].[ApprovalRouteId] AS [ApprovalRouteId]
+      FROM [uddi].[Users.UsersToRoutes] AS [Users_UsersToRoutes]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Budget_ExpensesToIncome_Budget_Expenses" Association="designModel.Store.FK_Budget_ExpensesToIncome_Budget_Expenses">
             <End Role="Budgets_Expenses" EntitySet="Budgets_Expenses" />
             <End Role="Budgets_Allocations" EntitySet="Budgets_Allocations" />
@@ -270,6 +277,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Users_ApprovalRoutes" Association="designModel.Store.FK_Orders_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_PendingUsers_Companies" Association="designModel.Store.FK_PendingUsers_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="PendingUsers" EntitySet="PendingUsers" />
@@ -280,6 +291,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_PendingUsers_Users" Association="designModel.Store.FK_PendingUsers_Users">
             <End Role="Users" EntitySet="Users" />
+            <End Role="PendingUsers" EntitySet="PendingUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingUsers_Users_ApprovalRoutes" Association="designModel.Store.FK_PendingUsers_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
             <End Role="PendingUsers" EntitySet="PendingUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_Projects_ParentProject_Companies" Association="designModel.Store.FK_Projects_ParentProject_Companies">
@@ -302,6 +317,14 @@
             <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
             <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_UsersToRoutes_Users" Association="designModel.Store.FK_Users_UsersToRoutes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Users_UsersToRoutes" EntitySet="Users_UsersToRoutes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UsersToRoutes_Users_ApprovalRoutes" Association="designModel.Store.FK_Users_UsersToRoutes_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Users_UsersToRoutes" EntitySet="Users_UsersToRoutes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_Companies" Association="designModel.Store.FK_Users_Companies">
             <End Role="Companies" EntitySet="Companies" />
             <End Role="Users" EntitySet="Users" />
@@ -313,6 +336,10 @@
           <AssociationSet Name="FK_Users_Users" Association="designModel.Store.FK_Users_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Users1" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Users_ApprovalRoutes" Association="designModel.Store.FK_Users_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Budgets">
@@ -579,6 +606,8 @@
           <Property Name="WasAddedToInventory" Type="bit" Nullable="false" />
           <Property Name="IsExeeding" Type="bit" Nullable="false" />
           <Property Name="IsDelaying" Type="bit" Nullable="false" />
+          <Property Name="ApprovalRouteId" Type="int" />
+          <Property Name="ApprovalRouteStep" Type="int" />
         </EntityType>
         <EntityType Name="Orders_ApproverNotes">
           <Key>
@@ -594,7 +623,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CompayId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="OrderHistoryActionId" Type="int" Nullable="false" />
@@ -658,6 +687,7 @@
           <Property Name="Roles" Type="int" Nullable="false" />
           <Property Name="OrdersApproverId" Type="int" />
           <Property Name="LanguageId" Type="int" Nullable="false" />
+          <Property Name="DefaultApprovalRouteId" Type="int" />
         </EntityType>
         <EntityType Name="Projects_ParentProject">
           <Key>
@@ -721,6 +751,7 @@
           <Property Name="IsForManagment" Type="bit" Nullable="false" />
           <Property Name="JobPercent" Type="decimal" Precision="2" Scale="2" />
           <Property Name="CellularNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="DefaultApprovalRouteId" Type="int" />
         </EntityType>
         <EntityType Name="Users_ApprovalRoutes">
           <Key>
@@ -738,6 +769,19 @@
           <Property Name="ApprovalRouteId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StepNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view '800964065_design.uddi.Users.UsersToRoutes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Users_UsersToRoutes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApprovalRouteId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ApprovalRouteId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Budget_ExpensesToIncome_Budget_Expenses">
           <End Role="Budgets_Expenses" Type="designModel.Store.Budgets_Expenses" Multiplicity="0..1" />
@@ -1259,7 +1303,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Orders_History">
-              <PropertyRef Name="CompayId" />
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1437,6 +1481,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Users_ApprovalRoutes">
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Role="Orders" Type="designModel.Store.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PendingUsers_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
           <End Role="PendingUsers" Type="designModel.Store.PendingUsers" Multiplicity="*" />
@@ -1470,6 +1526,18 @@
             </Principal>
             <Dependent Role="PendingUsers">
               <PropertyRef Name="OrdersApproverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingUsers_Users_ApprovalRoutes">
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Role="PendingUsers" Type="designModel.Store.PendingUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingUsers">
+              <PropertyRef Name="DefaultApprovalRouteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1535,6 +1603,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_UsersToRoutes_Users">
+          <End Role="Users" Type="designModel.Store.Users" Multiplicity="1" />
+          <End Role="Users_UsersToRoutes" Type="designModel.Store.Users_UsersToRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_UsersToRoutes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UsersToRoutes_Users_ApprovalRoutes">
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="1" />
+          <End Role="Users_UsersToRoutes" Type="designModel.Store.Users_UsersToRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_UsersToRoutes">
+              <PropertyRef Name="ApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_Companies">
           <End Role="Companies" Type="designModel.Store.Companies" Multiplicity="1" />
           <End Role="Users" Type="designModel.Store.Users" Multiplicity="*" />
@@ -1568,6 +1660,18 @@
             </Principal>
             <Dependent Role="Users1">
               <PropertyRef Name="OrdersApproverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Users_ApprovalRoutes">
+          <End Role="Users_ApprovalRoutes" Type="designModel.Store.Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Role="Users" Type="designModel.Store.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="DefaultApprovalRouteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1612,6 +1716,7 @@
           <EntitySet Name="Users" EntityType="designModel.User" />
           <EntitySet Name="Users_ApprovalRoutes" EntityType="designModel.Users_ApprovalRoutes" />
           <EntitySet Name="Users_ApprovalStep" EntityType="designModel.Users_ApprovalStep" />
+          <EntitySet Name="Users_UsersToRoutes" EntityType="designModel.Users_UsersToRoutes" />
           <AssociationSet Name="FK_Budget_Income_Budget" Association="designModel.FK_Budget_Income_Budget">
             <End Role="Budget" EntitySet="Budgets" />
             <End Role="Budgets_Incomes" EntitySet="Budgets_Incomes" />
@@ -1848,6 +1953,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Users_ApprovalRoutes" Association="designModel.FK_Orders_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Approver_Notes_Users" Association="designModel.FK_Orders_Approver_Notes_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Orders_ApproverNotes" EntitySet="Orders_ApproverNotes" />
@@ -1872,17 +1981,33 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PendingUser" EntitySet="PendingUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_PendingUsers_Users_ApprovalRoutes" Association="designModel.FK_PendingUsers_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="PendingUser" EntitySet="PendingUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users" Association="designModel.FK_Users_HierarchyLevel_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UsersToRoutes_Users" Association="designModel.FK_Users_UsersToRoutes_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Users_UsersToRoutes" EntitySet="Users_UsersToRoutes" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Users" Association="designModel.FK_Users_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="User1" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_Users_ApprovalRoutes" Association="designModel.FK_Users_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_HierarchyLevel_Users_Hierarchies" Association="designModel.FK_Users_HierarchyLevel_Users_Hierarchies">
             <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
             <End Role="Users_ApprovalStep" EntitySet="Users_ApprovalStep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UsersToRoutes_Users_ApprovalRoutes" Association="designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes">
+            <End Role="Users_ApprovalRoutes" EntitySet="Users_ApprovalRoutes" />
+            <End Role="Users_UsersToRoutes" EntitySet="Users_UsersToRoutes" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Budget">
@@ -2233,6 +2358,8 @@
           <Property Type="Boolean" Name="WasAddedToInventory" Nullable="false" />
           <Property Type="Boolean" Name="IsExeeding" Nullable="false" />
           <Property Type="Boolean" Name="IsDelaying" Nullable="false" />
+          <Property Type="Int32" Name="ApprovalRouteId" />
+          <Property Type="Int32" Name="ApprovalRouteStep" />
           <NavigationProperty Name="Budget" Relationship="designModel.FK_Orders_Budgets" FromRole="Order" ToRole="Budget" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Orders_Companies" FromRole="Order" ToRole="Company" />
           <NavigationProperty Name="Inventories" Relationship="designModel.FK_Inventory_Orders" FromRole="Order" ToRole="Inventory" />
@@ -2243,6 +2370,7 @@
           <NavigationProperty Name="Orders_Statuses" Relationship="designModel.FK_Orders_Orders_Statuses" FromRole="Order" ToRole="Orders_Statuses" />
           <NavigationProperty Name="Supplier" Relationship="designModel.FK_Orders_Suppliers" FromRole="Order" ToRole="Supplier" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Orders_Users" FromRole="Order" ToRole="User" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Orders_Users_ApprovalRoutes" FromRole="Order" ToRole="Users_ApprovalRoutes" />
         </EntityType>
         <EntityType Name="Orders_ApproverNotes">
           <Key>
@@ -2260,7 +2388,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="CompayId" Nullable="false" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="OrderId" Nullable="false" />
           <Property Type="Int32" Name="OrderHistoryActionId" Nullable="false" />
@@ -2338,9 +2466,11 @@
           <Property Type="Int32" Name="Roles" Nullable="false" />
           <Property Type="Int32" Name="OrdersApproverId" />
           <Property Type="Int32" Name="LanguageId" Nullable="false" />
+          <Property Type="Int32" Name="DefaultApprovalRouteId" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_PendingUsers_Companies" FromRole="PendingUser" ToRole="Company" />
           <NavigationProperty Name="Language" Relationship="designModel.FK_PendingUsers_Languages" FromRole="PendingUser" ToRole="Language" />
           <NavigationProperty Name="User" Relationship="designModel.FK_PendingUsers_Users" FromRole="PendingUser" ToRole="User" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_PendingUsers_Users_ApprovalRoutes" FromRole="PendingUser" ToRole="Users_ApprovalRoutes" />
         </EntityType>
         <EntityType Name="Projects_ParentProject">
           <Key>
@@ -2410,6 +2540,7 @@
           <Property Type="Boolean" Name="IsForManagment" Nullable="false" />
           <Property Type="Decimal" Name="JobPercent" Precision="2" Scale="2" />
           <Property Type="String" Name="CellularNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="DefaultApprovalRouteId" />
           <NavigationProperty Name="Budgets_UsersToBaskets" Relationship="designModel.FK_Budgets_UsersToPermissions_Users" FromRole="User" ToRole="Budgets_UsersToBaskets" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Companies" FromRole="User" ToRole="Company" />
           <NavigationProperty Name="Cookies" Relationship="designModel.FK_Cookies_Users" FromRole="User" ToRole="Cooky" />
@@ -2421,8 +2552,10 @@
           <NavigationProperty Name="Orders_History" Relationship="designModel.FK_Orders_History_Users" FromRole="User" ToRole="Orders_History" />
           <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Users" FromRole="User" ToRole="PendingUser" />
           <NavigationProperty Name="Users_ApprovalStep" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="User" ToRole="Users_ApprovalStep" />
+          <NavigationProperty Name="Users_UsersToRoutes" Relationship="designModel.FK_Users_UsersToRoutes_Users" FromRole="User" ToRole="Users_UsersToRoutes" />
           <NavigationProperty Name="Users1" Relationship="designModel.FK_Users_Users" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User1" Relationship="designModel.FK_Users_Users" FromRole="User1" ToRole="User" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Users_Users_ApprovalRoutes" FromRole="User" ToRole="Users_ApprovalRoutes" />
         </EntityType>
         <EntityType Name="Users_ApprovalRoutes">
           <Key>
@@ -2432,7 +2565,11 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="CompanyId" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="designModel.FK_Users_Hierarchies_Companies" FromRole="Users_ApprovalRoutes" ToRole="Company" />
+          <NavigationProperty Name="Orders" Relationship="designModel.FK_Orders_Users_ApprovalRoutes" FromRole="Users_ApprovalRoutes" ToRole="Order" />
+          <NavigationProperty Name="PendingUsers" Relationship="designModel.FK_PendingUsers_Users_ApprovalRoutes" FromRole="Users_ApprovalRoutes" ToRole="PendingUser" />
+          <NavigationProperty Name="Users" Relationship="designModel.FK_Users_Users_ApprovalRoutes" FromRole="Users_ApprovalRoutes" ToRole="User" />
           <NavigationProperty Name="Users_ApprovalStep" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_ApprovalRoutes" ToRole="Users_ApprovalStep" />
+          <NavigationProperty Name="Users_UsersToRoutes" Relationship="designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes" FromRole="Users_ApprovalRoutes" ToRole="Users_UsersToRoutes" />
         </EntityType>
         <EntityType Name="Users_ApprovalStep">
           <Key>
@@ -2444,6 +2581,18 @@
           <Property Type="Int32" Name="StepNumber" Nullable="false" />
           <NavigationProperty Name="User" Relationship="designModel.FK_Users_HierarchyLevel_Users" FromRole="Users_ApprovalStep" ToRole="User" />
           <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" FromRole="Users_ApprovalStep" ToRole="Users_ApprovalRoutes" />
+        </EntityType>
+        <EntityType Name="Users_UsersToRoutes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApprovalRouteId" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="ApprovalRouteId" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="designModel.FK_Users_UsersToRoutes_Users" FromRole="Users_UsersToRoutes" ToRole="User" />
+          <NavigationProperty Name="Users_ApprovalRoutes" Relationship="designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes" FromRole="Users_UsersToRoutes" ToRole="Users_ApprovalRoutes" />
         </EntityType>
         <Association Name="FK_Budget_Income_Budget">
           <End Type="designModel.Budget" Role="Budget" Multiplicity="1" />
@@ -2845,7 +2994,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Orders_History">
-              <PropertyRef Name="CompayId" />
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3167,6 +3316,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Users_ApprovalRoutes">
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Type="designModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Approver_Notes_Users">
           <End Type="designModel.User" Role="User" Multiplicity="1" />
           <End Type="designModel.Orders_ApproverNotes" Role="Orders_ApproverNotes" Multiplicity="*" />
@@ -3239,6 +3400,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PendingUsers_Users_ApprovalRoutes">
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Type="designModel.PendingUser" Role="PendingUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingUser">
+              <PropertyRef Name="DefaultApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_HierarchyLevel_Users">
           <End Type="designModel.User" Role="User" Multiplicity="1" />
           <End Type="designModel.Users_ApprovalStep" Role="Users_ApprovalStep" Multiplicity="*" />
@@ -3247,6 +3420,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Users_ApprovalStep">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UsersToRoutes_Users">
+          <End Type="designModel.User" Role="User" Multiplicity="1" />
+          <End Type="designModel.Users_UsersToRoutes" Role="Users_UsersToRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_UsersToRoutes">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3263,6 +3448,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Users_ApprovalRoutes">
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="0..1" />
+          <End Type="designModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="DefaultApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_HierarchyLevel_Users_Hierarchies">
           <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3273,6 +3470,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Users_ApprovalStep">
+              <PropertyRef Name="ApprovalRouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UsersToRoutes_Users_ApprovalRoutes">
+          <End Type="designModel.Users_ApprovalRoutes" Role="Users_ApprovalRoutes" Multiplicity="1" />
+          <End Type="designModel.Users_UsersToRoutes" Role="Users_UsersToRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users_ApprovalRoutes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users_UsersToRoutes">
               <PropertyRef Name="ApprovalRouteId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3547,6 +3756,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="designModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="ApprovalRouteStep" ColumnName="ApprovalRouteStep" />
+                <ScalarProperty Name="ApprovalRouteId" ColumnName="ApprovalRouteId" />
                 <ScalarProperty Name="IsDelaying" ColumnName="IsDelaying" />
                 <ScalarProperty Name="IsExeeding" ColumnName="IsExeeding" />
                 <ScalarProperty Name="WasAddedToInventory" ColumnName="WasAddedToInventory" />
@@ -3588,7 +3799,7 @@
                 <ScalarProperty Name="OrderHistoryActionId" ColumnName="OrderHistoryActionId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CompayId" ColumnName="CompayId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3647,6 +3858,7 @@
           <EntitySetMapping Name="PendingUsers">
             <EntityTypeMapping TypeName="designModel.PendingUser">
               <MappingFragment StoreEntitySet="PendingUsers">
+                <ScalarProperty Name="DefaultApprovalRouteId" ColumnName="DefaultApprovalRouteId" />
                 <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
                 <ScalarProperty Name="OrdersApproverId" ColumnName="OrdersApproverId" />
                 <ScalarProperty Name="Roles" ColumnName="Roles" />
@@ -3707,6 +3919,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="designModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="DefaultApprovalRouteId" ColumnName="DefaultApprovalRouteId" />
                 <ScalarProperty Name="CellularNumber" ColumnName="CellularNumber" />
                 <ScalarProperty Name="JobPercent" ColumnName="JobPercent" />
                 <ScalarProperty Name="IsForManagment" ColumnName="IsForManagment" />
@@ -3743,6 +3956,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Users_UsersToRoutes">
+            <EntityTypeMapping TypeName="designModel.Users_UsersToRoutes">
+              <MappingFragment StoreEntitySet="Users_UsersToRoutes">
+                <ScalarProperty Name="ApprovalRouteId" ColumnName="ApprovalRouteId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3764,42 +3986,43 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <edmx:Diagram Name="Model1" ZoomLevel="74">
-        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="4.72984974120271" PointY="8.59735785825055" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="1.1248384030185818" PointY="4.6007788202728976" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="9.8844531690163784" PointY="9.9593617962484071" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="5.6295507446069042" PointY="11.879251277017989" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="10.918777707460698" PointY="29.352675973136293" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="5.5909544385927514" PointY="1.2437672322819788" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="3.0067115365558825" PointY="5.6519975986573838" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="8.5412157850997588" PointY="0.81010599472099265" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="10.67594346156155" PointY="14.26536416181613" />
-        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="9.1427195915685591" PointY="0.37062935548398146" />
-        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="5.8886088067146991" PointY="5.4083470280321064" />
-        <edmx:EntityTypeShape EntityType="designModel.CompaniesModul" Width="1.5" PointX="9.347651625679644" PointY="29.651565371850303" />
-        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="10.220173162510699" PointY="19.873093256667765" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_Jobs" Width="1.5" PointX="9.3105750257664255" PointY="15.783926464516636" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_JobsDescriptions" Width="1.5" PointX="0.33140928127402869" PointY="27.564563466033228" />
-        <edmx:EntityTypeShape EntityType="designModel.HR_UsersToJobs" Width="1.5" PointX="1.4069991136933673" PointY="18.446896755344653" />
-        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="6.69296974627905" PointY="20.213542619819538" />
-        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="8.1745392829992536" PointY="15.929519183900915" />
-        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="4.0562785323971315" PointY="26.024111387331089" />
-        <edmx:EntityTypeShape EntityType="designModel.Modul" Width="1.5" PointX="8.3134976980804929" PointY="5.0597956502157242" />
-        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="0.54658283877493019" PointY="23.016684259761444" />
-        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.168144085522808" PointY="13.471494978978996" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_ApproverNotes" Width="1.5" PointX="11.488871281728555" PointY="10.545202021740936" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_History" Width="1.5" PointX="2.9459349321881008" PointY="24.652773421561704" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_History_Actions" Width="1.5" PointX="5.1604349246064363" PointY="3.4294585154529003" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="10.053102654429665" PointY="1.284528658392154" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="0.56675359260605351" PointY="28.041633857433514" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="2.0902433684515969" PointY="7.2045856151751178" />
-        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="5.8763575711643128" PointY="5.3480037028659151" />
-        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="3.5051188950916377" PointY="6.4854485273759108" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="6.4241856478267287" PointY="31.22820885443511" />
-        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="4.1233099476077175" PointY="1.5521770871953" />
-        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="9.6002543762327424" PointY="28.462315080902687" />
-        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="5.7734429658266917" PointY="19.804354810996145" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalRoutes" Width="1.5" PointX="5.9449598164972661" PointY="6.8470562430317772" />
-        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalStep" Width="1.5" PointX="8.2475112156232413" PointY="2.4450711768330406" />
+        <edmx:EntityTypeShape EntityType="designModel.Budget" Width="1.5" PointX="10.057408125166505" PointY="29.906656353690966" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Allocations" Width="1.5" PointX="1.5150450530997688" PointY="16.083537004926956" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_AllocationToMonth" Width="1.5" PointX="6.5002266478260173" PointY="4.9477515094670244" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Baskets" Width="1.5" PointX="3.2323200885356966" PointY="5.1670467281560635" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_BasketsToAllocation" Width="1.5" PointX="9.071462026364852" PointY="22.275634135247969" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Expenses" Width="1.5" PointX="8.97399458520766" PointY="20.158133173435058" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes" Width="1.5" PointX="3.059942109072554" PointY="24.658803295650895" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_Institutions" Width="1.5" PointX="2.9744186955384997" PointY="8.6057510565061826" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_Incomes_types" Width="1.5" PointX="9.0971151483697419" PointY="6.2662731885287322" />
+        <edmx:EntityTypeShape EntityType="designModel.Budgets_UsersToBaskets" Width="1.5" PointX="0.79622102752151935" PointY="23.246844719744679" />
+        <edmx:EntityTypeShape EntityType="designModel.Company" Width="1.5" PointX="2.62365771765991" PointY="27.023172122902782" />
+        <edmx:EntityTypeShape EntityType="designModel.CompaniesModul" Width="1.5" PointX="11.200893994048654" PointY="24.435535174065983" />
+        <edmx:EntityTypeShape EntityType="designModel.Cooky" Width="1.5" PointX="9.6301656950405636" PointY="30.745576112878311" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_Jobs" Width="1.5" PointX="10.963688291126717" PointY="20.801543111354832" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_JobsDescriptions" Width="1.5" PointX="11.602782686987325" PointY="12.430788373775217" />
+        <edmx:EntityTypeShape EntityType="designModel.HR_UsersToJobs" Width="1.5" PointX="7.5567853914372556" PointY="4.1190392096149919" />
+        <edmx:EntityTypeShape EntityType="designModel.Inventory" Width="1.5" PointX="11.878685384932293" PointY="31.529788955827144" />
+        <edmx:EntityTypeShape EntityType="designModel.Language" Width="1.5" PointX="2.9242718028483314" PointY="8.894525785415679" />
+        <edmx:EntityTypeShape EntityType="designModel.Location" Width="1.5" PointX="8.4840348551441149" PointY="31.793636321925387" />
+        <edmx:EntityTypeShape EntityType="designModel.Modul" Width="1.5" PointX="2.5050427403790145" PointY="8.3794900217929342" />
+        <edmx:EntityTypeShape EntityType="designModel.Month" Width="1.5" PointX="1.4014650906442967" PointY="3.1274348064919164" />
+        <edmx:EntityTypeShape EntityType="designModel.Order" Width="1.5" PointX="10.020181500362316" PointY="23.705381344866652" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_ApproverNotes" Width="1.5" PointX="5.7550016333139506" PointY="9.5475727066153535" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History" Width="1.5" PointX="1.3813571116800221" PointY="27.350135041098174" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_History_Actions" Width="1.5" PointX="2.7374422097287336" PointY="20.998438800218718" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Items" Width="1.5" PointX="4.0035274270938377" PointY="18.476918050310072" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToAllocation" Width="1.5" PointX="5.4840827032383919" PointY="8.5797328243869035" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_OrderToItem" Width="1.5" PointX="2.7772992377995047" PointY="31.796582877541233" />
+        <edmx:EntityTypeShape EntityType="designModel.Orders_Statuses" Width="1.5" PointX="0.014102138585458574" PointY="11.604584967533398" />
+        <edmx:EntityTypeShape EntityType="designModel.PendingUser" Width="1.5" PointX="8.4011606818070454" PointY="18.588361614657735" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_ParentProject" Width="1.5" PointX="2.8917185249234172" PointY="19.817977124740359" />
+        <edmx:EntityTypeShape EntityType="designModel.Projects_SubProject" Width="1.5" PointX="2.3348598360711987" PointY="11.759777029864386" />
+        <edmx:EntityTypeShape EntityType="designModel.Supplier" Width="1.5" PointX="0.796577409280733" PointY="19.811613017605438" />
+        <edmx:EntityTypeShape EntityType="designModel.User" Width="1.5" PointX="7.6806145551058531" PointY="8.6300566683663327" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalRoutes" Width="1.5" PointX="6.3227794330207541" PointY="31.037257402686986" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_ApprovalStep" Width="1.5" PointX="6.743121791045704" PointY="24.465337407060591" />
+        <edmx:EntityTypeShape EntityType="designModel.Users_UsersToRoutes" Width="1.5" PointX="11.844809705319261" PointY="25.743766051597785" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Income_Budget" />
         <edmx:AssociationConnector Association="designModel.FK_Budget_Companies1" />
         <edmx:AssociationConnector Association="designModel.FK_Budgets_Expenses_Budgets" />
@@ -3859,15 +4082,20 @@
         <edmx:AssociationConnector Association="designModel.FK_Orders_Orders_Statuses" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Orders_Users_ApprovalRoutes" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Approver_Notes_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_History_Orders_History_Actions" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_History_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_Items_Suppliers" />
         <edmx:AssociationConnector Association="designModel.FK_Orders_OrderToItem_Orders_Items" />
         <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_PendingUsers_Users_ApprovalRoutes" />
         <edmx:AssociationConnector Association="designModel.FK_Users_HierarchyLevel_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_UsersToRoutes_Users" />
         <edmx:AssociationConnector Association="designModel.FK_Users_Users" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_Users_ApprovalRoutes" />
         <edmx:AssociationConnector Association="designModel.FK_Users_HierarchyLevel_Users_Hierarchies" />
+        <edmx:AssociationConnector Association="designModel.FK_Users_UsersToRoutes_Users_ApprovalRoutes" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

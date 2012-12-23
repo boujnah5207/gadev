@@ -20,10 +20,15 @@ namespace DA
             _userId = userId;
             _orderId = orderId;
         }
-
+        public override IQueryable<Orders_History> GetList(params string[] includes)
+        {
+            return base.GetList(includes)
+                .Where(x => x.CompanyId == _companyId && x.OrderId == _orderId);
+        }
         public bool Create(Orders_History entity, int actionId, string notes = null)
         {
-            entity.CompayId = _companyId;
+            entity.CreationDate = DateTime.Now;
+            entity.CompanyId = _companyId;
             entity.UserId = _userId;
             entity.OrderId = _orderId;
             entity.OrderHistoryActionId = actionId;
