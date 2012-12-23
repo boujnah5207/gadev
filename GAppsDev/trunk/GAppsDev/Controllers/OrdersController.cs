@@ -97,8 +97,7 @@ namespace GAppsDev.Controllers
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                     .Where(x =>
                         x.NextOrderApproverId == CurrentUser.UserId &&
-                        x.StatusId != (int)StatusType.Declined &&
-                        x.StatusId != (int)StatusType.PendingOrderCreator
+                        x.StatusId != (int)StatusType.Declined
                         );
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
@@ -187,7 +186,6 @@ namespace GAppsDev.Controllers
                         orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
                         orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
                         historyActionId = (int)HistoryActions.PartiallyApproved;
-
                     }
 
                     orderFromDB.LastStatusChangeDate = DateTime.Now;
@@ -1363,13 +1361,13 @@ namespace GAppsDev.Controllers
                 if (isRecovery)
                 {
                     ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                        .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                        .Where(x => x.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
                     ViewBag.isRecovery = true;
                 }
                 else
                 {
                     ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                    .Where(x => x.CompanyId == CurrentUser.CompanyId && x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                    .Where(x => x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
                     ViewBag.isRecovery = false;
                 }
 
@@ -1949,16 +1947,16 @@ namespace GAppsDev.Controllers
             {
                 bool isValidItem;
                 int itemId = 0;
-                int quantity = 0;
-                int singleItemPrice = 0;
+                decimal quantity = 0;
+                decimal singleItemPrice = 0;
 
                 string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (itemValues.Length == 3)
                 {
                     if (
                         int.TryParse(itemValues[0], out itemId) &&
-                        int.TryParse(itemValues[1], out quantity) &&
-                        int.TryParse(itemValues[2], out singleItemPrice)
+                        decimal.TryParse(itemValues[1], out quantity) &&
+                        decimal.TryParse(itemValues[2], out singleItemPrice)
                         )
                     {
                         isValidItem = true;

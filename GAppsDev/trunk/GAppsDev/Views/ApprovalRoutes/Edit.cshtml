@@ -1,0 +1,64 @@
+﻿@model GAppsDev.Models.ApprovalRouteModel
+
+@{
+    ViewBag.Title = Loc.Dic.Edit;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllApprovalRoutes";
+}
+
+@section ExtraScripts{
+    <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization", new { get = "ListStartLocation,Step,OrderApprover,Delete,RouteHasNoSteps" })'></script>
+    <script src="~/Scripts/CreateApprovalRouteScript.js"></script>
+}
+
+@using(Html.BeginForm()) {
+    @Html.HiddenFor( x => x.ApprovalRoute.Id);
+    
+    <text>@Loc.Dic.ApprovalRouteName: @Html.TextBoxFor( model => model.ApprovalRoute.Name) </text>
+    <br />
+    <br />
+    
+    @Loc.Dic.OrderApprover<text>:</text> @Html.DropDownList("users", (SelectList)ViewBag.UsersSelectList, new { id = "UsersSelectList"}) 
+    @Loc.Dic.InsertAfter<text>:</text> 
+    <select id="insertAfterList">
+        <option value="-1">@Loc.Dic.ListStartLocation</option>
+        @if (Model != null)
+        {
+            foreach (var step in Model.ApprovalRoute.Users_ApprovalStep)
+            {
+                <option value="@step.StepNumber"> @step.StepNumber - @step.User.FullName</option>
+            }
+        }
+    </select> 
+    <input id="addStepBtn" type="button" value="@Loc.Dic.Add" onClick="addStep()" />
+    
+    <fieldset>
+        <legend>@Loc.Dic.RouteSteps</legend>
+
+        <div id="StepsContainer">
+            @if(Model != null && Model.ApprovalRoute.Users_ApprovalStep.Any())
+            {
+                for (int i = 0; i < Model.ApprovalRoute.Users_ApprovalStep.Count; i++)
+                {
+                    var step = Model.ApprovalRoute.Users_ApprovalStep.ElementAt(i);
+                    
+                <div id="step-@i" class="existingStep">
+                    <input type="hidden" id="userField-@i" class="userField" name="Steps[@i].UserId" value="@step.UserId" />
+                    <input type="hidden" id="userNameField-@i" class="userNameField" value="@step.User.FullName" />
+                    <input type="hidden" id="stepField-@i" class="stepField" name="Steps[@i].StepNumber" value="@step.StepNumber" />
+                    <span>@Loc.Dic.Step: @step.StepNumber @Loc.Dic.OrderApprover: @step.User.FullName </span>
+                    <input type="button" value="@Loc.Dic.Delete" onClick="removeStep(@i) "/>
+                </div>
+                }
+            }
+            else
+            {
+                @Loc.Dic.RouteHasNoSteps
+            }
+        </div>
+    </fieldset>
+    
+    <p>
+        <input type="submit"  value="@Loc.Dic.Submit" />
+    </p>
+}

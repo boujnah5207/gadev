@@ -1398,7 +1398,40 @@
   <data name="error_externalIdAlreadyExist" xml:space="preserve">
     <value>המספר החיצוני כבר קיים במערכת</value>
   </data>
+  <data name="CreateApprovalRoute" xml:space="preserve">
+    <value>צור מסלול אישורים</value>
+  </data>
   <data name="ExternalId" xml:space="preserve">
     <value>מספר חיצוני</value>
+  </data>
+  <data name="ApprovalRoutes" xml:space="preserve">
+    <value>מסלולי אישורים</value>
+  </data>
+  <data name="InsertAfter" xml:space="preserve">
+    <value>הכנס אחרי</value>
+  </data>
+  <data name="ListStartLocation" xml:space="preserve">
+    <value>תחילת הרשימה</value>
+  </data>
+  <data name="NoApproverRoutesWereFound" xml:space="preserve">
+    <value>לא נמצאו מסלולי אישורים</value>
+  </data>
+  <data name="RouteSteps" xml:space="preserve">
+    <value>שלבי המסלול</value>
+  </data>
+  <data name="Step" xml:space="preserve">
+    <value>שלב</value>
+  </data>
+  <data name="ApprovalRoute" xml:space="preserve">
+    <value>מסלול אישורים</value>
+  </data>
+  <data name="ApprovalRouteName" xml:space="preserve">
+    <value>שם מסלול אישורים</value>
+  </data>
+  <data name="RouteHasNoSteps" xml:space="preserve">
+    <value>אין למסלול שלבים</value>
+  </data>
+  <data name="StepNumber" xml:space="preserve">
+    <value>שלב</value>
   </data>
 </root>

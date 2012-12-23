@@ -167,6 +167,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApprovalRoutesController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BudgetAllocationsController.cs" />
     <Compile Include="Controllers\BudgetsController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Models\Search\OrdersSearchFormModel.cs" />
     <Compile Include="Models\Supplier\AjaxSupplier.cs" />
     <Compile Include="Models\User\AllUsersModel.cs" />
+    <Compile Include="Models\User\ApprovalRouteModel.cs" />
     <Compile Include="Models\User\UserPermissionsModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
     <Compile Include="OpenIdService\OpenIdService.cs" />
@@ -400,6 +402,7 @@
     <Content Include="Rotativa\ssleay32.dll" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\AddToInventoryScript.js" />
+    <Content Include="Scripts\CreateApprovalRouteScript.js" />
     <Content Include="Scripts\CreateBudgetScript.js" />
     <Content Include="Scripts\createOrderScript.js" />
     <Content Include="Scripts\DatePickerScript.js" />
@@ -600,6 +603,14 @@
     <Content Include="Views\UsersToJobs\Create.cshtml" />
     <Content Include="Views\UsersToJobs\Edit.cshtml" />
     <Content Include="Views\UsersToJobs\Delete.cshtml" />
+    <Content Include="Views\ApprovalRoutes\Index.cshtml" />
+    <Content Include="Views\ApprovalRoutes\Details.cshtml" />
+    <Content Include="Views\ApprovalRoutes\Create.cshtml" />
+    <Content Include="Views\ApprovalRoutes\Edit.cshtml" />
+    <Content Include="Views\ApprovalRoutes\Delete.cshtml" />
+    <Content Include="Views\ApprovalRoutes\List.cshtml" />
+    <Content Include="Views\ApprovalRoutes\PartialDetails.cshtml" />
+    <Content Include="Views\ApprovalRoutes\StepsList.cshtml" />
     <Content Include="Views\History\PartialOrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>

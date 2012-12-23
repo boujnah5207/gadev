@@ -1,0 +1,70 @@
+﻿@model List<DB.Users_ApprovalStep>
+
+@{
+    string ReverseOrder;
+    if (ViewBag.Order == "ASC")
+    {
+        ReverseOrder = "DESC";
+    }
+    else
+    {
+        ReverseOrder = "ASC";
+    }
+}
+
+@if (ViewBag.IsCheckBoxed)
+{
+    <button type="button" id="selectAllApprovalSteps" onclick="$('.approvalStepCheckbox').attr('checked', true)">@Loc.Dic.SelectAll</button> 
+    <button type="button" id="deselectAllApprovalSteps" onclick="$('.approvalStepCheckbox').attr('checked', false)">@Loc.Dic.SelectNone</button>
+}
+<table class="listTable">
+    <tr class="headingRow">
+        @if (ViewBag.IsCheckBoxed)
+        {
+            <th>
+                @Loc.Dic.SelectedItems
+            </th>
+        }
+        @if ((bool)ViewBag.IsOrdered)
+        {
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.StepNumber, "number", ReverseOrder, (string)ViewBag.Sortby)</th>
+            <th>@Html.FilterLink((string)ViewBag.BaseUrl, Loc.Dic.OrderApprover, "approver", ReverseOrder, (string)ViewBag.Sortby)</th>
+        }
+        else
+        {
+            <th>
+                @Loc.Dic.StepNumber
+            </th>
+            <th>
+                @Loc.Dic.OrderApprover
+            </th>
+        }
+    </tr>
+    @for (int index = 0; index < Model.Count; index++)
+    {
+        DB.Users_ApprovalStep item = Model[index];
+        
+        <tr class="@if (index % 2 != 0)
+                   {<text>oddRow</text>}
+                   else
+                   {<text>evenRow</text>}" >
+            @if (ViewBag.IsCheckBoxed)
+            {
+                <td>
+                    <input type="checkbox" id="checkbox-@item.Id" class="approvalStepCheckbox" value="@item.Id" name="selectedApprovalSteps" />
+                </td>
+            }
+            <td>
+                @Html.DisplayTextFor(modelItem => item.StepNumber)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.User.FullName)
+            </td>
+        </tr>
+    }
+</table>
+@if ((bool)ViewBag.IsPaged)
+{ 
+    <br />
+    @Html.Pagination((string)ViewBag.BaseUrl, (int)ViewBag.NumberOfPages, 10, (int)ViewBag.CurrPage, (string)ViewBag.Sortby, (string)ViewBag.Order)
+}

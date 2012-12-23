@@ -1,0 +1,20 @@
+﻿@model List<DB.Users_ApprovalRoutes>
+
+@{
+    ViewBag.Title = Loc.Dic.ApprovalRoutes;
+    ViewBag.PageName = "Managment";
+    ViewBag.SubPageName = "AllApprovalRoutes";
+}
+
+<p>
+    @Html.ActionLink(Loc.Dic.CreateNew, "Create")
+</p>
+
+@if (Model.Any())
+{ 
+    @Html.Action("List", new { routes = Model, baseUrl = Url.Action("Index"), isOrdered = true, isPaged = true, sortby = (string)ViewBag.Sortby, order = (string)ViewBag.Order, currPage = (int)ViewBag.CurrPage, NumberOfPages = (int)ViewBag.NumberOfPages })    
+}
+else
+{
+    <span class="no-properties">@(Loc.Dic.NoApproverRoutesWereFound).</span> 
+}

@@ -31,6 +31,13 @@ namespace DB
         public Type Metadata { get { return typeof(AllocationToMonthMetaData); } }
     }
 
+    public class AllocationToMonthMetaData
+    {
+        [DisplayFormat(DataFormatString = "{0:0.##}")]
+        public decimal Amount { get; set; }
+
+    }
+
     public class SuppliersMetaData
     {
         [LocalizedNumberString]
@@ -44,13 +51,21 @@ namespace DB
         public Type Metadata { get { return typeof(SuppliersMetaData); } }
     }
 
-    public class AllocationToMonthMetaData
+    [MetadataType(typeof(Users_ApprovalRoutesMetaData))]
+    public partial class Users_ApprovalRoutes
     {
-        [DisplayFormat(DataFormatString = "{0:0.##}")]
-        public decimal Amount { get; set; }
-
+        public Type Metadata { get { return typeof(Users_ApprovalRoutesMetaData); } }
     }
 
+    public class Users_ApprovalRoutesMetaData
+    {
+        [LocalizedName("Name")]
+        public decimal Name { get; set; }
+    }
+
+    //
+    // Helper methods
+    //
     public partial class Budgets_Allocations
     {
         public string DisplayName
