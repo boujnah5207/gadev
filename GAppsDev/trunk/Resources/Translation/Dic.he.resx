@@ -1503,4 +1503,10 @@
   <data name="NotesForApprover" xml:space="preserve">
     <value>הערות למאשר ההזמנה</value>
   </data>
+  <data name="OriginalQuantity" xml:space="preserve">
+    <value>כמות מקורית</value>
+  </data>
+  <data name="RemainingQuantity" xml:space="preserve">
+    <value>כמות שנותרה</value>
+  </data>
 </root>

@@ -103,6 +103,8 @@ namespace GAppsDev.Controllers
             {
                 inventory.CompanyId = CurrentUser.CompanyId;
                 inventory.AddedBy = CurrentUser.UserId;
+                inventory.RemainingQuantity = inventory.OriginalQuantity;
+
                 using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
                 {
                     if(inventoryRepository.Create(inventory))
