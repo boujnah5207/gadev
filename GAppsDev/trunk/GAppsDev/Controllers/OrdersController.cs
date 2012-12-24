@@ -1021,7 +1021,7 @@ namespace GAppsDev.Controllers
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
                     StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
-                    model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                    model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget", "User1");
                 }
 
                 if (model != null)
