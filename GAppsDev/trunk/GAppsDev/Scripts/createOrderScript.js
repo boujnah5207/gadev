@@ -22,6 +22,15 @@ var removedAllocations = new Array();
 var isAddItemDialogOpen = false;
 
 $(function () {
+
+    var floatNumber = "1.1234567989";
+    console.log(floatNumber);
+    console.log(getFloat(floatNumber, 3));
+
+    //console.log(parseFloat(floatNumber));
+    //console.log(parseFloat(floatNumber * 1000));
+    //console.log(Math.floor(parseFloat(floatNumber) * 1000) / 1000);
+
     formContainer = $("#formContainer");
     form = $("#formContainer form");
     supplierButton = $("#SupplierButton");
@@ -51,12 +60,12 @@ $(function () {
         var isFutureOrder = $("#isFutureOrder").is(':checked');
 
         var totalAllocation;
-        var totalOrderPrice = parseFloat($("#totalOrderPrice").val());
+        var totalOrderPrice = getFloat($("#totalOrderPrice").val(), 3);
 
         if (isFutureOrder)
-            totalAllocation = parseFloat($("#totalFutureAllocation").val());
+            totalAllocation = getFloat($("#totalFutureAllocation").val(), 3);
         else
-            totalAllocation = parseFloat($("#totalNormalAllocation").val());
+            totalAllocation = getFloat($("#totalNormalAllocation").val(), 3);
 
         if (totalAllocation > totalOrderPrice) {
             alert(local.error_allocation_exceeds_price);
@@ -329,20 +338,20 @@ function updateItemFinalPrice() {
     var itemPrice;
 
     if (isNumber(itemQuantityField.val())) {
-        quantity = parseFloat(itemQuantityField.val(), 10);
+        quantity = getFloat(itemQuantityField.val(), 3);
     }
     else {
         quantity = 0;
     }
 
     if (isNumber(itemPriceField.val())) {
-        itemPrice = parseFloat(itemPriceField.val(), 10);
+        itemPrice = getFloat(itemPriceField.val(), 3);
     }
     else {
         itemPrice = 0;
     }
 
-    itemFinalPrice.val((quantity * itemPrice).toFixed(2));
+    itemFinalPrice.val(getFloat(quantity * itemPrice, 3));
 }
 
 function UpdateSupplierList(newSupplierList) {
@@ -407,11 +416,14 @@ function UpdateItemsList(newItemList) {
 function addNewItem(itemId, itemName, quantity, price) {
 
     if (isNaN(itemId)) {
-        alert("select Item or create one");
+        alert(local.NoItemSelected);
         return;
     }
 
-    var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: (price * quantity).toFixed(2) };
+    quantity = getFloat(quantity, 3);
+    price = getFloat(price, 3);
+
+    var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: getFloat(price * quantity, 3) };
     var isInArray = false;
     var doubleIndex;
     for (var i in itemList) {
@@ -434,9 +446,9 @@ function addNewItem(itemId, itemName, quantity, price) {
         var dialog_buttons = {};
 
         dialog_buttons[local.Merge] = function () {
-            itemList[doubleIndex].quantity = parseFloat(itemList[doubleIndex].quantity, 10) + parseFloat(itemToInsert.quantity, 10);
+            itemList[doubleIndex].quantity = (getFloat(itemList[doubleIndex].quantity, 3)) + (getFloat(itemToInsert.quantity, 3));
             itemList[doubleIndex].price = itemToInsert.price;
-            itemList[doubleIndex].finalPrice = (parseFloat(itemList[doubleIndex].price, 10) * parseFloat(itemList[doubleIndex].quantity, 10)).toFixed(2);
+            itemList[doubleIndex].finalPrice = (getFloat(itemList[doubleIndex].price, 3)) * (getFloat(itemList[doubleIndex].quantity, 3));
             itemQuantityField.val("");
             itemFinalPrice.val("0");
             updateItems();
@@ -469,7 +481,7 @@ function updateItems() {
     var value = "";
     var totalPrice = 0;
     for (var i in itemList) {
-        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span class='bold'>" + itemList[i].title + ":</span> <span class='bold'>" + local.Quantity + ":</span> " + itemList[i].quantity + " <span class='bold'>" + local.FinalPrice + ":</span> " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='" + local.Delete + "'/></div>"));
+        addedItemsContainer.append($("<div id='ItemlistIndex-" + i + "' class='addedItem'><span class='bold'>" + itemList[i].title + ":</span> <span class='bold'>" + local.Quantity + ":</span> " + itemList[i].quantity + "<span class='bold'>" + local.SingleItemPrice + ":</span> " + itemList[i].price + " <span class='bold'>" + local.FinalPrice + ":</span> " + itemList[i].finalPrice + "</span> <input class='RemoveItemButton' onClick='removeItem(" + i + ")' type='button' value='" + local.Delete + "'/></div>"));
         value += itemList[i].id + "," + itemList[i].quantity + "," + itemList[i].price + ";";
         totalPrice += itemList[i].quantity * itemList[i].price;
     }
@@ -480,7 +492,7 @@ function updateItems() {
         value = value.slice(0, value.length - 1);
     }
     hiddenItemField.val(value);
-    totalOrderPriceField.val(totalPrice.toFixed(2));
+    totalOrderPriceField.val(getFloat(totalPrice, 3));
 }
 
 function removeItem(index) {
@@ -511,9 +523,9 @@ function addAllocation() {
     var allocationId = $("#allocationsSelectList option:selected").val();
     var monthId = $("#allocation-" + allocationId + " option:selected").val();
     var monthName = $("#allocation-" + allocationId + " option:selected").text();
-    var wantedAmount = parseFloat($("#allocationAmount").val());
-    var remainingMonthAmount = parseFloat($("#allocation-" + allocationId + " option:selected").data("amount"));
-    var remainingAllocationAmount = parseFloat($("#allocationsSelectList option:selected").data("amount"));
+    var wantedAmount = getFloat($("#allocationAmount").val() * 1000) / 1000;
+    var remainingMonthAmount = getFloat($("#allocation-" + allocationId + " option:selected").data("amount"), 3);
+    var remainingAllocationAmount = getFloat($("#allocationsSelectList option:selected").data("amount"), 3);
     var allocationText = $("#allocationsSelectList option:selected").text();
     var allocationExists = false;
     var existingAllocation;
@@ -529,7 +541,7 @@ function addAllocation() {
         return;
     }
 
-    wantedAmount = parseFloat(wantedAmount).toFixed(2);
+    wantedAmount = getFloat(wantedAmount, 3);
 
     var isFutureOrder = $("#isFutureOrder").is(':checked');
 
@@ -700,14 +712,23 @@ function updateTotalAllocation() {
 
     for (var i = 0; i < existingFutureAllocations.length; i++) {
         if ($(existingFutureAllocations[i]).find(".isActiveField").val() == "true")
-            totalFutureAllocation += parseFloat($(existingFutureAllocations[i]).find(".amountField").val());
+            totalFutureAllocation += getFloat($(existingFutureAllocations[i]).find(".amountField").val(), 3);
     }
 
     for (var i = 0; i < existingNormalAllocations.length; i++) {
         if ($(existingNormalAllocations[i]).find(".isActiveField").val() == "true")
-            totalNormalAllocation += parseFloat($(existingNormalAllocations[i]).find(".amountField").val());
+            totalNormalAllocation += getFloat($(existingNormalAllocations[i]).find(".amountField").val(), 3);
     }
 
-    $("#totalNormalAllocation").val(totalNormalAllocation.toFixed(2));
-    $("#totalFutureAllocation").val(totalFutureAllocation.toFixed(2));
+    $("#totalNormalAllocation").val(getFloat(totalNormalAllocation, 3));
+    $("#totalFutureAllocation").val(getFloat(totalFutureAllocation, 3));
+}
+
+function getFloat(string, precision) {
+    var multiply = 1;
+    for (var i = 0; i < precision; i++) {
+        multiply *= 10;
+    }
+
+    return Math.floor(parseFloat(string) * multiply) / multiply;
 }

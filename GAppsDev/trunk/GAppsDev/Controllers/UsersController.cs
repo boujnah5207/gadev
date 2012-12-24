@@ -244,6 +244,8 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (user.DefaultApprovalRouteId == -1) user.DefaultApprovalRouteId = null;
+
                 if (Authorized(RoleType.SystemManager))
                 {
                     int companyUserCount = 0;
@@ -520,6 +522,8 @@ namespace GAppsDev.Controllers
         {
             if (Authorized(RoleType.SystemManager))
             {
+                if (user.DefaultApprovalRouteId == -1) user.DefaultApprovalRouteId = null;
+
                 if (ModelState.IsValid)
                 {
                     User userFromDatabase;

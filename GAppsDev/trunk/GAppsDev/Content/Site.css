@@ -236,6 +236,7 @@ tr.oddRow
     display:block;
     text-decoration: none;
     white-space: nowrap;
+    text-align:center;
 }
 #mainMenu ul li a:hover {
     background-color:none;
@@ -274,7 +275,7 @@ body#Orders a#OrdersLink,
     body.PendingOrders a#PendingOrdersLink,
     body.DelayingOrders a#DelayingOrdersLink,
     body.ExportToFile a#ExportToFileLink,
-body#Inventory a#InventoryLink,
+body#Inventory a#InventoryLink span,
     body.AllInventory a#AllInventory,
     body.PendingInventory a#PendingInventory,
     body.Locations a#Locations,
