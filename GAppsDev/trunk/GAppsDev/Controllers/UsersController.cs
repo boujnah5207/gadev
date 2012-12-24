@@ -17,9 +17,7 @@ namespace GAppsDev.Controllers
 {
     public class UsersController : BaseController
     {
-        const int ITEMS_PER_PAGE = 7;
-        const int FIRST_PAGE = 1;
-        const string NO_SORT_BY = "None";
+        new const int ITEMS_PER_PAGE = 20;
         const string DEFAULT_ORDER = "DESC";
 
         private Entities db = new Entities();
