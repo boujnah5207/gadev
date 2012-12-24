@@ -1488,4 +1488,7 @@
   <data name="error_order_already_approved" xml:space="preserve">
     <value>הזמנה זאת כבר אושרה</value>
   </data>
+  <data name="OrderForExistingInvoice" xml:space="preserve">
+    <value>הזמנה בעבור חשבונית קיימת</value>
+  </data>
 </root>

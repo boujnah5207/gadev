@@ -8,10 +8,22 @@
 @section ExtraCss{
     <link href="~/Content/site.css" rel="stylesheet" />
     <style>
-        body { border:none; font-size:medium;}
-        .itemTitle { text-decoration:underline }
-        .itemDetail { margin: 0 5px }
-        legend{font-size:large;}
+        body {
+            border: none;
+            font-size: medium;
+        }
+
+        .itemTitle {
+            text-decoration: underline;
+        }
+
+        .itemDetail {
+            margin: 0 5px;
+        }
+
+        legend {
+            font-size: large;
+        }
     </style>
     @if (ViewBag.LanguageCode == "he" || ViewBag.LanguageCode == "ar")
     {
@@ -28,13 +40,13 @@
 
     @if (ViewBag.LogoExists)
     {
-    <div id="logoContainer">
-        <img src=@(Url.Content("~/Content/LogoImages/" + Model.Company.Id + ".png")) style="max-width:500px;max-height:200px;"/>
-    </div>
+        <div id="logoContainer">
+            <img src=@(Url.Content("~/Content/LogoImages/" + Model.Company.Id + ".png")) style="max-width:500px;max-height:200px;"/>
+        </div>
     }
     else
     {
-        <h1> @Model.Company.Name </h1>
+        <h1>@Model.Company.Name </h1>
     }
     <br />
     <br />
@@ -47,16 +59,23 @@
     <br />
     <span class="bold">@Loc.Dic.OrderDate:</span> <span>@Model.CreationDate.ToShortDateString()</span>
     <br />
-
-    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index"), showCoinSign = true, coinSign = ViewBag.CompanyCoinSign})    
+    @if (Model.IsOrderForExistingInvoice)
+    {
+        <div class="display-label">
+            @Loc.Dic.OrderForExistingInvoice
+        </div>
+        <br />
+    }
+    @Html.Action("ListOrderItems", new { orderItems = Model.Orders_OrderToItem.ToList(), baseUrl = Url.Action("Index"), showCoinSign = true, coinSign = ViewBag.CompanyCoinSign })
     <br />
 
-    <div class="floatToSide" style="font-size:large;">
+    <div class="floatToSide" style="font-size: large;">
         <span class="bold">@Loc.Dic.TotalPrice:</span> <span>@Html.DisplayFor(model => Model.Price) @ViewBag.CompanyCoinSign @Loc.Dic.IncludingVAT</span>
     </div>
     <br />
 
     <span class="bold">@Loc.Dic.Notes:</span><br />
     <span>@Html.DisplayFor(model => Model.Notes)</span>
-    <br /><br />
+    <br />
+    <br />
 </fieldset>
