@@ -563,8 +563,8 @@ namespace GAppsDev.Controllers
             if (model.IsFutureOrder && !Authorized(RoleType.FutureOrderWriter)) return Error(Loc.Dic.Error_NoPermission);
             if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
             model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-            decimal totalOrderPrice = (decimal.Round(ItemsList.Sum(x => x.SingleItemPrice * x.Quantity) * 100) / 100);
-            decimal totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 100) / 100);
+            decimal totalOrderPrice = (decimal.Floor(ItemsList.Sum(x => x.SingleItemPrice * x.Quantity) * 1000) / 1000);
+            decimal totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 1000) / 1000);
             if (totalOrderPrice != totalAllocation) return Error(Loc.Dic.error_order_insufficient_allocation);
 
             // Initializing needed temporary variables

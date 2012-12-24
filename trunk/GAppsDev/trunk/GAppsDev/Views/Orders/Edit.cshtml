@@ -194,7 +194,7 @@
                             combinedAllocations.Add(new GAppsDev.Models.OrderAllocation()
                             {
                                 AllocationId = allocationId,
-                                Amount = Model.Allocations.Sum(x => x.Amount),
+                                Amount = Model.Allocations.Where(x => x.AllocationId == allocationId).Sum(x => x.Amount),
                                 IsActive = true,
                                 MonthId = null,
                                 Name = Model.Allocations.First(x => x.AllocationId == allocationId).Name

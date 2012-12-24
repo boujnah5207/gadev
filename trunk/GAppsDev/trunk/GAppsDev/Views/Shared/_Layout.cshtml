@@ -65,8 +65,7 @@
                     <div id="mainMenu">
                         <ul>
                             <li id="OrdersPage">
-                                <img src="~/Content/images/GoldCoins.png" />
-                                    @{
+                                @{
                                     string actionName; 
                                     if(DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.OrdersWriter))
                                     {
@@ -84,20 +83,28 @@
                                     {
                                         actionName = "Home";
                                     }
-                                    }
-                                    @Html.ActionLink(Loc.Dic.Procurement, actionName, "Orders", null, new { id = "OrdersLink" })
+                                }
+                                <a id="OrdersLink" href="@Url.Action(actionName, "Orders")">
+                                <img src="~/Content/images/GoldCoins.png" style="width:50px;height:50px;" /><br />
+                                @Loc.Dic.Procurement
+                                </a>
                             </li>
                             <li>|</li>
                             <li id="InventoryPage">
-                                <img src="~/Content/images/filing_cabinet-g42.png" />
-                                @Html.ActionLink(Loc.Dic.Inventory, "Home", "Inventory", null, new { id = "InventoryLink" })
+                                <a id="InventoryLink" href="@Url.Action("Home", "Inventory")">
+                                <img src="~/Content/images/filing_cabinet-g42.png" style="width:50px;height:50px;" /><br />
+                                @Loc.Dic.Inventory
+                                </a>
                             </li>
                             @if (ViewBag.CurrentUser != null && DA.Roles.HasRole(ViewBag.CurrentUser.Roles, DA.RoleType.SystemManager))
                             {
                                 <li>|</li>
                                 <li id="CompaniesPage">
-                                    <img src="~/Content/images/50px-Tools_clipart.png"/>
-                                    @Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id = "ManagmentLink" })
+                                    <a id="ManagmentLink" href="@Url.Action("Home", "Companies")">
+                                    <img src="~/Content/images/50px-Tools_clipart.png" style="width:50px;height:50px;"/><br />
+                                    <span>@Loc.Dic.Managment</span>
+                                    </a>
+                                    @*@Html.ActionLink(Loc.Dic.Managment, "Home", "Companies", null, new { id = "ManagmentLink" })*@
                                 </li>
                             }
                         </ul>
