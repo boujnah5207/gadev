@@ -1491,4 +1491,7 @@
   <data name="OrderForExistingInvoice" xml:space="preserve">
     <value>הזמנה בעבור חשבונית קיימת</value>
   </data>
+  <data name="NextApprover" xml:space="preserve">
+    <value>מאשר הבא</value>
+  </data>
 </root>

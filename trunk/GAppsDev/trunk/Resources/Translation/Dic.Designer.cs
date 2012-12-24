@@ -2626,6 +2626,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next Approver.
+        /// </summary>
+        public static string NextApprover {
+            get {
+                return ResourceManager.GetString("NextApprover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No active users found.
         /// </summary>
         public static string NoActiveUsersFound {
@@ -3711,15 +3720,6 @@ namespace Loc {
         public static string String1 {
             get {
                 return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
             }
         }
         
