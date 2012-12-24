@@ -45,7 +45,10 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.OriginalOrder.Orders_Statuses.Name)
-        @Html.DisplayFor(model => model.OriginalOrder.User1.FullName)
+        @if (Model.OriginalOrder.User1.FullName != null)
+        {
+            @Html.DisplayFor(model => model.OriginalOrder.User1.FullName)
+        }
     </div>
     <br />
 
