@@ -168,7 +168,7 @@ namespace GAppsDev.Controllers
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
                 if ((orderFromDB.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
-                orderFromDB.OrderApproverNotes = approverNotes;
+                
 
                 if (!orderFromDB.ApprovalRouteId.HasValue || !orderFromDB.ApprovalRouteStep.HasValue)
                     return Error(Loc.Dic.error_order_already_approved);
@@ -701,6 +701,10 @@ namespace GAppsDev.Controllers
                     return Error(Loc.Dic.error_orders_create_error);
                 }
             }
+            using (OrdersHistoryRepository ordersHistoryRepository = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id)){
+                Orders_History orderHis = new Orders_History();
+                ordersHistoryRepository.Create(orderHis, (int)HistoryActions.Created, model.NotesForApprover);
+            }
 
             return RedirectToAction("MyOrders");
         }
@@ -999,7 +1003,7 @@ namespace GAppsDev.Controllers
                 historyActionId = (int)HistoryActions.Edited;
                 Orders_History orderHistory = new Orders_History();
                 using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
-                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, model.Order.Notes);
+                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, model.NotesForApprover);
                 return RedirectToAction("MyOrders");
             }
             else
@@ -1535,8 +1539,6 @@ namespace GAppsDev.Controllers
                             paymentMonthId = order.Orders_OrderToAllocation.Max(o => o.MonthId);
                         }
 
-                        string orderNotes = order.Notes == null ? String.Empty : order.Notes;
-
                         List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
                         List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
 
@@ -1718,13 +1720,7 @@ namespace GAppsDev.Controllers
                     {
                         foreach (var word in searchWords)
                         {
-                            if (!String.IsNullOrEmpty(order.Notes) && order.Notes.Contains(word))
-                            {
-                                TextMatchOrders.Add(order);
-                                break;
-                            }
-
-                            if (!String.IsNullOrEmpty(order.OrderApproverNotes) && order.OrderApproverNotes.Contains(word))
+                            if (!String.IsNullOrEmpty(order.NotesForSupplier) && order.NotesForSupplier.Contains(word))
                             {
                                 TextMatchOrders.Add(order);
                                 break;

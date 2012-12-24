@@ -15,11 +15,7 @@ namespace DB
 
     public class OrderMetaData
     {
-        [StringLength(250)]
-        public string Notes { get; set; }
-
-        [StringLength(250)]
-        public string OrderApproverNotes { get; set; }
+        
     }
 
     [MetadataType(typeof(AllocationToMonthMetaData))]
