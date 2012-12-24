@@ -191,7 +191,7 @@ namespace System.Web.Mvc.Html
             }
         }
 
-        public static MvcHtmlString DisplayDecimal(decimal? value, int precision)
+        public static MvcHtmlString DisplayDecimal(this HtmlHelper htmlHelper, decimal? value, int precision)
         {
             if(!value.HasValue) return new MvcHtmlString("0");
 

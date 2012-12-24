@@ -694,7 +694,7 @@ textarea {
     }
     
     input.display {
-        width:70px;
+        width:100px;
         border-color:#505050;
         background-color:#c8c8c8;
         cursor:default;
