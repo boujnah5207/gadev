@@ -612,7 +612,6 @@
     <Content Include="Views\ApprovalRoutes\List.cshtml" />
     <Content Include="Views\ApprovalRoutes\PartialDetails.cshtml" />
     <Content Include="Views\ApprovalRoutes\StepsList.cshtml" />
-    <Content Include="Views\History\PartialOrdersHistory.cshtml" />
     <Content Include="Views\History\SimpleListOrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
