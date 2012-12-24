@@ -45,12 +45,24 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.OriginalOrder.Orders_Statuses.Name)
-        @if (Model.OriginalOrder.User1.FullName != null)
-        {
-            @Html.DisplayFor(model => model.OriginalOrder.User1.FullName)
-        }
+
     </div>
     <br />
+
+
+
+
+    @if (Model.OriginalOrder.User1.FullName != null)
+    {
+        <div class="display-label">
+            @Loc.Dic.NextApprover
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OriginalOrder.User1.FullName)
+
+        </div>
+        <br />
+    }
 
     <div class="display-label">
         @Loc.Dic.CreationDate

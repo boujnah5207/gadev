@@ -19,9 +19,9 @@
         <textarea name="approverNotes" maxlength="250" ></textarea>
     </div>
     <p>
-        <input type="submit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
-        <input type="submit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />
-        <input type="submit" name="selectedStatus" value="@Loc.Dic.SendBackToUser" />
+        <input type="submit" class="disableOnSubmit" name="selectedStatus" value="@Loc.Dic.ApproveOrder" />
+        <input type="submit" class="disableOnSubmit" name="selectedStatus" value="@Loc.Dic.DeclineOrder" />
+        <input type="submit" class="disableOnSubmit" name="selectedStatus" value="@Loc.Dic.SendBackToUser" />
         | @Html.ActionLink(Loc.Dic.BackToList, "Index")
     </p>
 }

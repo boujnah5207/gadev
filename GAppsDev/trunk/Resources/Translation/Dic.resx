@@ -1494,4 +1494,7 @@
   <data name="OrderForExistingInvoice" xml:space="preserve">
     <value>Order For Existing Invoice</value>
   </data>
+  <data name="NextApprover" xml:space="preserve">
+    <value>Next Approver</value>
+  </data>
 </root>
