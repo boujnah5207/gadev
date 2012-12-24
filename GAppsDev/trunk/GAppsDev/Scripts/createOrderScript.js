@@ -23,14 +23,6 @@ var isAddItemDialogOpen = false;
 
 $(function () {
 
-    var floatNumber = "1.1234567989";
-    console.log(floatNumber);
-    console.log(getFloat(floatNumber, 3));
-
-    //console.log(parseFloat(floatNumber));
-    //console.log(parseFloat(floatNumber * 1000));
-    //console.log(Math.floor(parseFloat(floatNumber) * 1000) / 1000);
-
     formContainer = $("#formContainer");
     form = $("#formContainer form");
     supplierButton = $("#SupplierButton");
@@ -375,7 +367,6 @@ function InitializeItemsList(newItemList) {
     for (var i = 0; i < newItemList.length; i++) {
         var subTitle;
 
-        console.log("Type: " + typeof (newItemList[i].SubTitle) + " Value: " + newItemList[i].SubTitle);
         if (typeof (newItemList[i].SubTitle) != "string")
             subTitle = "";
         else
@@ -396,8 +387,6 @@ function UpdateItemsList(newItemList) {
 
     for (var i = 0; i < newItemList.length; i++) {
         var subTitle;
-
-        console.log("Type: " + typeof (newItemList[i].SubTitle) + " Value: " + newItemList[i].SubTitle);
 
         if (typeof (newItemList[i].SubTitle) != "string")
             subTitle = "";

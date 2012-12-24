@@ -811,11 +811,11 @@ namespace GAppsDev.Controllers
             if (itemsFromEditForm.Count == 0) return Error(Loc.Dic.error_order_has_no_items);
             if (itemsFromEditForm.Count == 0) return Error(Loc.Dic.error_order_has_no_items);
 
-            totalOrderPrice = (decimal.Round(itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity) * 100) / 100);
+            totalOrderPrice = (decimal.Floor(itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity) * 1000) / 1000);
 
             if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
             model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-            totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 100) / 100);
+            totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 1000) / 1000);
 
             if (totalOrderPrice != totalAllocation) return Error(Loc.Dic.error_order_insufficient_allocation);
 

@@ -74,7 +74,7 @@
                 @Html.DisplayTextFor(modelItem => item.SingleItemPrice) @if (ViewBag.ShowCoinSign) {<text>@ViewBag.CompanyCoinSign</text> }
             </td>
             <td>
-                @((item.Quantity * item.SingleItemPrice).ToString("0.##")) @if (ViewBag.ShowCoinSign) {<text>@ViewBag.CompanyCoinSign</text> }
+                @((Math.Floor((item.Quantity * item.SingleItemPrice) * 1000) / 1000)) @if (ViewBag.ShowCoinSign) {<text>@ViewBag.CompanyCoinSign</text> }
             </td>
         </tr>
     }
