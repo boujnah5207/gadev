@@ -190,5 +190,22 @@ namespace System.Web.Mvc.Html
                     .Count();
             }
         }
+
+        public static MvcHtmlString DisplayDecimal(decimal? value, int precision)
+        {
+            if(!value.HasValue) return new MvcHtmlString("0");
+
+            int multiply = 1;
+            string zeroFormat = "0.";
+            for (int i = 0; i < precision; i++)
+            {
+                multiply *= 10;
+                zeroFormat += "#";
+            }
+
+            value = Math.Floor(value.Value * multiply) / multiply;
+
+            return new MvcHtmlString(value.Value.ToString(zeroFormat));
+        }
     }
 }

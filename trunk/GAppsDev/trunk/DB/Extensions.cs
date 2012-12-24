@@ -15,9 +15,6 @@ namespace DB
 
     public class OrderMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:0.##}")]
-        public decimal Price { get; set; }
-
         [StringLength(250)]
         public string Notes { get; set; }
 
