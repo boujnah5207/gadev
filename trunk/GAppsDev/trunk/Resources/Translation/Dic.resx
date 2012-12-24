@@ -1500,4 +1500,10 @@
   <data name="EditAndReturnToApprover" xml:space="preserve">
     <value>Edit and send for approval</value>
   </data>
+  <data name="NotesForSupplier" xml:space="preserve">
+    <value>Notes For Supplier</value>
+  </data>
+  <data name="NotesForApprover" xml:space="preserve">
+    <value>Notes For Approver</value>
+  </data>
 </root>

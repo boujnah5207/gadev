@@ -1497,4 +1497,10 @@
   <data name="EditAndReturnToApprover" xml:space="preserve">
     <value>ערוך ושלח לאישור</value>
   </data>
+  <data name="NotesForSupplier" xml:space="preserve">
+    <value>הערות לספק</value>
+  </data>
+  <data name="NotesForApprover" xml:space="preserve">
+    <value>הערות למאשר ההזמנה</value>
+  </data>
 </root>

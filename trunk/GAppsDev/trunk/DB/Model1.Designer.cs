@@ -7742,28 +7742,24 @@ namespace DB
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="companyId">Initial value of the CompanyId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
-        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
         /// <param name="supplierId">Initial value of the SupplierId property.</param>
         /// <param name="statusId">Initial value of the StatusId property.</param>
-        /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
         /// <param name="wasAddedToInventory">Initial value of the WasAddedToInventory property.</param>
-        /// <param name="isExeeding">Initial value of the IsExeeding property.</param>
-        /// <param name="isDelaying">Initial value of the IsDelaying property.</param>
+        /// <param name="isFutureOrder">Initial value of the IsFutureOrder property.</param>
         /// <param name="isOrderForExistingInvoice">Initial value of the IsOrderForExistingInvoice property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding, global::System.Boolean isDelaying, global::System.Boolean isOrderForExistingInvoice)
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Int32 orderNumber, global::System.Boolean wasAddedToInventory, global::System.Boolean isFutureOrder, global::System.Boolean isOrderForExistingInvoice)
         {
             Order order = new Order();
             order.Id = id;
             order.CreationDate = creationDate;
             order.CompanyId = companyId;
             order.UserId = userId;
-            order.OrderNumber = orderNumber;
             order.SupplierId = supplierId;
             order.StatusId = statusId;
-            order.IsFutureOrder = isFutureOrder;
+            order.OrderNumber = orderNumber;
             order.WasAddedToInventory = wasAddedToInventory;
-            order.IsExeeding = isExeeding;
-            order.IsDelaying = isDelaying;
+            order.IsFutureOrder = isFutureOrder;
             order.IsOrderForExistingInvoice = isOrderForExistingInvoice;
             return order;
         }
@@ -7826,6 +7822,30 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastStatusChangeDate
+        {
+            get
+            {
+                return _LastStatusChangeDate;
+            }
+            set
+            {
+                OnLastStatusChangeDateChanging(value);
+                ReportPropertyChanging("LastStatusChangeDate");
+                _LastStatusChangeDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastStatusChangeDate");
+                OnLastStatusChangeDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastStatusChangeDate;
+        partial void OnLastStatusChangeDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastStatusChangeDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Int32 CompanyId
@@ -7874,26 +7894,26 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 OrderNumber
+        public Nullable<global::System.Int32> BudgetId
         {
             get
             {
-                return _OrderNumber;
+                return _BudgetId;
             }
             set
             {
-                OnOrderNumberChanging(value);
-                ReportPropertyChanging("OrderNumber");
-                _OrderNumber = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrderNumber");
-                OnOrderNumberChanged();
+                OnBudgetIdChanging(value);
+                ReportPropertyChanging("BudgetId");
+                _BudgetId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BudgetId");
+                OnBudgetIdChanged();
             }
         }
-        private global::System.Int32 _OrderNumber;
-        partial void OnOrderNumberChanging(global::System.Int32 value);
-        partial void OnOrderNumberChanged();
+        private Nullable<global::System.Int32> _BudgetId;
+        partial void OnBudgetIdChanging(Nullable<global::System.Int32> value);
+        partial void OnBudgetIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7922,26 +7942,74 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Notes
+        public global::System.Int32 StatusId
         {
             get
             {
-                return _Notes;
+                return _StatusId;
             }
             set
             {
-                OnNotesChanging(value);
-                ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Notes");
-                OnNotesChanged();
+                OnStatusIdChanging(value);
+                ReportPropertyChanging("StatusId");
+                _StatusId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StatusId");
+                OnStatusIdChanged();
             }
         }
-        private global::System.String _Notes;
-        partial void OnNotesChanging(global::System.String value);
-        partial void OnNotesChanged();
+        private global::System.Int32 _StatusId;
+        partial void OnStatusIdChanging(global::System.Int32 value);
+        partial void OnStatusIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
+        partial void OnOrderNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String NotesForSupplier
+        {
+            get
+            {
+                return _NotesForSupplier;
+            }
+            set
+            {
+                OnNotesForSupplierChanging(value);
+                ReportPropertyChanging("NotesForSupplier");
+                _NotesForSupplier = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("NotesForSupplier");
+                OnNotesForSupplierChanged();
+            }
+        }
+        private global::System.String _NotesForSupplier;
+        partial void OnNotesForSupplierChanging(global::System.String value);
+        partial void OnNotesForSupplierChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7970,54 +8038,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 StatusId
-        {
-            get
-            {
-                return _StatusId;
-            }
-            set
-            {
-                OnStatusIdChanging(value);
-                ReportPropertyChanging("StatusId");
-                _StatusId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("StatusId");
-                OnStatusIdChanged();
-            }
-        }
-        private global::System.Int32 _StatusId;
-        partial void OnStatusIdChanging(global::System.Int32 value);
-        partial void OnStatusIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String OrderApproverNotes
-        {
-            get
-            {
-                return _OrderApproverNotes;
-            }
-            set
-            {
-                OnOrderApproverNotesChanging(value);
-                ReportPropertyChanging("OrderApproverNotes");
-                _OrderApproverNotes = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("OrderApproverNotes");
-                OnOrderApproverNotesChanged();
-            }
-        }
-        private global::System.String _OrderApproverNotes;
-        partial void OnOrderApproverNotesChanging(global::System.String value);
-        partial void OnOrderApproverNotesChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.Int32> NextOrderApproverId
@@ -8038,30 +8058,6 @@ namespace DB
         private Nullable<global::System.Int32> _NextOrderApproverId;
         partial void OnNextOrderApproverIdChanging(Nullable<global::System.Int32> value);
         partial void OnNextOrderApproverIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastStatusChangeDate
-        {
-            get
-            {
-                return _LastStatusChangeDate;
-            }
-            set
-            {
-                OnLastStatusChangeDateChanging(value);
-                ReportPropertyChanging("LastStatusChangeDate");
-                _LastStatusChangeDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LastStatusChangeDate");
-                OnLastStatusChangeDateChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _LastStatusChangeDate;
-        partial void OnLastStatusChangeDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastStatusChangeDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8138,126 +8134,6 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsFutureOrder
-        {
-            get
-            {
-                return _IsFutureOrder;
-            }
-            set
-            {
-                OnIsFutureOrderChanging(value);
-                ReportPropertyChanging("IsFutureOrder");
-                _IsFutureOrder = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsFutureOrder");
-                OnIsFutureOrderChanged();
-            }
-        }
-        private global::System.Boolean _IsFutureOrder;
-        partial void OnIsFutureOrderChanging(global::System.Boolean value);
-        partial void OnIsFutureOrderChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> BudgetId
-        {
-            get
-            {
-                return _BudgetId;
-            }
-            set
-            {
-                OnBudgetIdChanging(value);
-                ReportPropertyChanging("BudgetId");
-                _BudgetId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("BudgetId");
-                OnBudgetIdChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _BudgetId;
-        partial void OnBudgetIdChanging(Nullable<global::System.Int32> value);
-        partial void OnBudgetIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean WasAddedToInventory
-        {
-            get
-            {
-                return _WasAddedToInventory;
-            }
-            set
-            {
-                OnWasAddedToInventoryChanging(value);
-                ReportPropertyChanging("WasAddedToInventory");
-                _WasAddedToInventory = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("WasAddedToInventory");
-                OnWasAddedToInventoryChanged();
-            }
-        }
-        private global::System.Boolean _WasAddedToInventory;
-        partial void OnWasAddedToInventoryChanging(global::System.Boolean value);
-        partial void OnWasAddedToInventoryChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsExeeding
-        {
-            get
-            {
-                return _IsExeeding;
-            }
-            set
-            {
-                OnIsExeedingChanging(value);
-                ReportPropertyChanging("IsExeeding");
-                _IsExeeding = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsExeeding");
-                OnIsExeedingChanged();
-            }
-        }
-        private global::System.Boolean _IsExeeding;
-        partial void OnIsExeedingChanging(global::System.Boolean value);
-        partial void OnIsExeedingChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsDelaying
-        {
-            get
-            {
-                return _IsDelaying;
-            }
-            set
-            {
-                OnIsDelayingChanging(value);
-                ReportPropertyChanging("IsDelaying");
-                _IsDelaying = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsDelaying");
-                OnIsDelayingChanged();
-            }
-        }
-        private global::System.Boolean _IsDelaying;
-        partial void OnIsDelayingChanging(global::System.Boolean value);
-        partial void OnIsDelayingChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.Int32> ApprovalRouteId
@@ -8302,6 +8178,54 @@ namespace DB
         private Nullable<global::System.Int32> _ApprovalRouteStep;
         partial void OnApprovalRouteStepChanging(Nullable<global::System.Int32> value);
         partial void OnApprovalRouteStepChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean WasAddedToInventory
+        {
+            get
+            {
+                return _WasAddedToInventory;
+            }
+            set
+            {
+                OnWasAddedToInventoryChanging(value);
+                ReportPropertyChanging("WasAddedToInventory");
+                _WasAddedToInventory = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("WasAddedToInventory");
+                OnWasAddedToInventoryChanged();
+            }
+        }
+        private global::System.Boolean _WasAddedToInventory;
+        partial void OnWasAddedToInventoryChanging(global::System.Boolean value);
+        partial void OnWasAddedToInventoryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsFutureOrder
+        {
+            get
+            {
+                return _IsFutureOrder;
+            }
+            set
+            {
+                OnIsFutureOrderChanging(value);
+                ReportPropertyChanging("IsFutureOrder");
+                _IsFutureOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsFutureOrder");
+                OnIsFutureOrderChanged();
+            }
+        }
+        private global::System.Boolean _IsFutureOrder;
+        partial void OnIsFutureOrderChanging(global::System.Boolean value);
+        partial void OnIsFutureOrderChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

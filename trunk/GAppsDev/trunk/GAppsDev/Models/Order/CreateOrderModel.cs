@@ -16,6 +16,8 @@ namespace GAppsDev.Models
         public int? BudgetAllocationId { get; set; }
         public List<OrderAllocation> Allocations { get; set; }
 
+        public string NotesForApprover { get; set; }
+
         public CreateOrderModel()
         {
             Order = new Order();

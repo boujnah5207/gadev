@@ -128,13 +128,13 @@
     <br />
 
 
-    @if (!String.IsNullOrEmpty(Model.OriginalOrder.Notes))
+    @if (!String.IsNullOrEmpty(Model.OriginalOrder.NotesForSupplier))
     {
         <div class="display-label">
-            @Loc.Dic.Notes
+            @Loc.Dic.NotesForSupplier
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.OriginalOrder.Notes)
+            @Html.DisplayFor(model => model.OriginalOrder.NotesForSupplier)
         </div>
         <br />
     }
