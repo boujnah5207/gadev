@@ -517,7 +517,7 @@ namespace GAppsDev.Controllers
             using (OrderToItemRepository orderItemsRep = new OrderToItemRepository())
             {
                 StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
-                model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
+                model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget", "User1");
 
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
                 if (!Authorized(RoleType.OrdersViewer) && model.OriginalOrder.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
@@ -1936,6 +1936,8 @@ namespace GAppsDev.Controllers
             if (!Authorized(RoleType.OrdersWriter))
                 return Error(Loc.Dic.error_no_permission);
 
+            int? historyActionId = null;
+
             using (OrdersRepository ordersRepository = new OrdersRepository(CurrentUser.CompanyId))
             {
                 Order order = ordersRepository.GetEntity(orderId);
@@ -1946,23 +1948,28 @@ namespace GAppsDev.Controllers
                 if (order.UserId != CurrentUser.UserId)
                     return Error(Loc.Dic.error_no_permission);
 
+
                 if (selectedStatus == Loc.Dic.ApproveInvoce)
                 {
                     order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport;
                     order.LastStatusChangeDate = DateTime.Now;
+                    historyActionId = (int)HistoryActions.InvoiceApproved;
+                    Orders_History orderHistory = new Orders_History();
+                    using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                        if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
                 if (selectedStatus == Loc.Dic.CancelOrder)
                 {
                     order.StatusId = (int)StatusType.OrderCancelled;
                     order.LastStatusChangeDate = DateTime.Now;
+                    historyActionId = (int)HistoryActions.Canceled;
+                    Orders_History orderHistory = new Orders_History();
+                    using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                        if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
 
                 ordersRepository.Update(order);
-                int? historyActionId = null;
-                historyActionId = (int)HistoryActions.InvoiceApproved;
-                Orders_History orderHistory = new Orders_History();
-                using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
-                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
+
             }
 
             return RedirectToAction("MyOrders");

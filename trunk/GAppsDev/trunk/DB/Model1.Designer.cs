@@ -79,6 +79,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Suppliers", "Supplier", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Supplier), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.Users_ApprovalRoutes), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
+[assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Users1", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DB.User), "Order", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Order), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_Approver_Notes_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Orders_ApproverNotes", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_ApproverNotes), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_History_Orders_History_Actions", "Orders_History_Actions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.Orders_History_Actions), "Orders_History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_History), true)]
 [assembly: EdmRelationshipAttribute("designModel", "FK_Orders_History_Users", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DB.User), "Orders_History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DB.Orders_History), true)]
@@ -7748,7 +7749,8 @@ namespace DB
         /// <param name="wasAddedToInventory">Initial value of the WasAddedToInventory property.</param>
         /// <param name="isExeeding">Initial value of the IsExeeding property.</param>
         /// <param name="isDelaying">Initial value of the IsDelaying property.</param>
-        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding, global::System.Boolean isDelaying)
+        /// <param name="isOrderForExistingInvoice">Initial value of the IsOrderForExistingInvoice property.</param>
+        public static Order CreateOrder(global::System.Int32 id, global::System.DateTime creationDate, global::System.Int32 companyId, global::System.Int32 userId, global::System.Int32 orderNumber, global::System.Int32 supplierId, global::System.Int32 statusId, global::System.Boolean isFutureOrder, global::System.Boolean wasAddedToInventory, global::System.Boolean isExeeding, global::System.Boolean isDelaying, global::System.Boolean isOrderForExistingInvoice)
         {
             Order order = new Order();
             order.Id = id;
@@ -7762,6 +7764,7 @@ namespace DB
             order.WasAddedToInventory = wasAddedToInventory;
             order.IsExeeding = isExeeding;
             order.IsDelaying = isDelaying;
+            order.IsOrderForExistingInvoice = isOrderForExistingInvoice;
             return order;
         }
 
@@ -8299,6 +8302,30 @@ namespace DB
         private Nullable<global::System.Int32> _ApprovalRouteStep;
         partial void OnApprovalRouteStepChanging(Nullable<global::System.Int32> value);
         partial void OnApprovalRouteStepChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOrderForExistingInvoice
+        {
+            get
+            {
+                return _IsOrderForExistingInvoice;
+            }
+            set
+            {
+                OnIsOrderForExistingInvoiceChanging(value);
+                ReportPropertyChanging("IsOrderForExistingInvoice");
+                _IsOrderForExistingInvoice = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOrderForExistingInvoice");
+                OnIsOrderForExistingInvoiceChanged();
+            }
+        }
+        private global::System.Boolean _IsOrderForExistingInvoice;
+        partial void OnIsOrderForExistingInvoiceChanging(global::System.Boolean value);
+        partial void OnIsOrderForExistingInvoiceChanged();
 
         #endregion
 
@@ -8639,6 +8666,44 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Users_ApprovalRoutes>("designModel.FK_Orders_Users_ApprovalRoutes", "Users_ApprovalRoutes", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users1", "User")]
+        public User User1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Orders_Users1", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Orders_Users1", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> User1Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("designModel.FK_Orders_Users1", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("designModel.FK_Orders_Users1", "User", value);
                 }
             }
         }
@@ -12241,6 +12306,28 @@ namespace DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Users", "Order", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("designModel", "FK_Orders_Users1", "Order")]
+        public EntityCollection<Order> Orders1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Order>("designModel.FK_Orders_Users1", "Order");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Order>("designModel.FK_Orders_Users1", "Order", value);
                 }
             }
         }

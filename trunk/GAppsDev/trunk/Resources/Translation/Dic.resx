@@ -1491,4 +1491,7 @@
   <data name="error_order_already_approved" xml:space="preserve">
     <value>This order is already approved</value>
   </data>
+  <data name="OrderForExistingInvoice" xml:space="preserve">
+    <value>Order For Existing Invoice</value>
+  </data>
 </root>

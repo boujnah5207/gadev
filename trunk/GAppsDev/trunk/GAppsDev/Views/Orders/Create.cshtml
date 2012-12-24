@@ -4,7 +4,7 @@
     ViewBag.Title = Loc.Dic.CreateNewOrder;
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "MyOrders";
-    
+
     bool hasFuturePermission = DA.Roles.HasRole((DA.RoleType)ViewBag.CurrentUser.Roles, DA.RoleType.FutureOrderWriter);
 }
 
@@ -12,6 +12,10 @@
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/createOrderScript.js"></script>
 }
+
+<h2>@Loc.Dic.CreateNewOrder</h2>
+<br />
+
 
 <fieldset>
     <legend>@Loc.Dic.ChooseSupplier</legend>
@@ -25,11 +29,12 @@
 
 <fieldset id="formContainer" style="display: none;">
     <legend>@Loc.Dic.OrderItems</legend>
-
-    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { id="mainForm", style = "display:none;" }))
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { id = "mainForm", style = "display:none;" }))
     {
-        @Html.ValidationSummary(true)
 
+        @Html.ValidationSummary(true)
+        @Html.CheckBoxFor(x => x.Order.IsOrderForExistingInvoice) @Loc.Dic.OrderForExistingInvoice
+        <br />
         <input id="SupplierId" name="Order.SupplierId" type="hidden" value="" />
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
@@ -48,7 +53,7 @@
                 <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateNewItem" onclick="addOrderItem()" />
             </div>
         </div>
-        
+
         <fieldset>
             <legend>@Loc.Dic.OrderItems</legend>
 
@@ -62,32 +67,32 @@
         <input class="display" type="text" id="totalOrderPrice" value="0" disabled="disabled" />
         <br />
         <br />
-        
-        <div id="OrderAllocationsContainer">
-        @if (hasFuturePermission)
-        {
-            @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
-            <br />
-        }
-        else
-        {
-            @Html.Hidden("IsFutureOrder", false, new { id = "isFutureOrder" })
-        }
-        <select id="allocationsSelectList" class="allocationsList" name="BudgetAllocationId">
-        @for (int i = 0; i < ViewBag.Allocations.Count; i++)
-        {
-            int maxMonth = ViewBag.BudgetYear == DateTime.Now.Year ? DateTime.Now.Month : 1;
-            
-            DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
-            decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= maxMonth).Sum(x => x.Amount);
-            <option data-amount="@amount" value="@allocation.Id">@allocation.DisplayName (@amount)</option>
-        }
-        </select>
 
-        @if (hasFuturePermission)
-        {
-            <span id="monthSelectContainer" style="display:none;">
-            @Loc.Dic.Month:
+        <div id="OrderAllocationsContainer">
+            @if (hasFuturePermission)
+            {
+                @Html.CheckBoxFor(model => model.IsFutureOrder, new { id = "isFutureOrder" }) <span>@Loc.Dic.FutureOrder</span>
+                <br />
+            }
+            else
+            {
+                @Html.Hidden("IsFutureOrder", false, new { id = "isFutureOrder" })
+            }
+            <select id="allocationsSelectList" class="allocationsList" name="BudgetAllocationId">
+                @for (int i = 0; i < ViewBag.Allocations.Count; i++)
+                {
+                    int maxMonth = ViewBag.BudgetYear == DateTime.Now.Year ? DateTime.Now.Month : 1;
+
+                    DB.Budgets_Allocations allocation = ((DB.Budgets_Allocations)ViewBag.Allocations[i]);
+                    decimal amount = allocation.Budgets_AllocationToMonth.Where(m => m.MonthId <= maxMonth).Sum(x => x.Amount);
+                    <option data-amount="@amount" value="@allocation.Id">@allocation.DisplayName (@amount)</option>
+                }
+            </select>
+
+            @if (hasFuturePermission)
+            {
+                <span id="monthSelectContainer" style="display: none;">
+                    @Loc.Dic.Month:
             
             @for (int i = 0; i < ViewBag.Allocations.Count; i++)
             {
@@ -96,7 +101,7 @@
 
                     @{
                                                                                                int startingMonth = ViewBag.BudgetYear == DateTime.Now.Year ? DateTime.Now.Month : 1;
-                    } 
+                    }
                     @for (int month = startingMonth; month <= 12; month++)
                     {
                         decimal amount;
@@ -115,44 +120,46 @@
 
                 </select>
             }
-            </span>
-        }
-        
-        @Loc.Dic.Amount: <input type="text" id="allocationAmount" value="" /> 
-        <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
+                </span>
+            }
 
-        @if (hasFuturePermission)
-        {
-        <div id="FutureOrderContainer" style="display:none;">
-            <fieldset id="futureAllocationsFieldset">
-                <legend>@Loc.Dic.BudgetAllocations</legend>
+            @Loc.Dic.Amount:
+            <input type="text" id="allocationAmount" value="" />
+            <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
 
-                <div id="futureAllocationsContainer">
-                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
+            @if (hasFuturePermission)
+            {
+                <div id="FutureOrderContainer" style="display: none;">
+                    <fieldset id="futureAllocationsFieldset">
+                        <legend>@Loc.Dic.BudgetAllocations</legend>
+
+                        <div id="futureAllocationsContainer">
+                            <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <span>@Loc.Dic.TotalAllocation: </span>
+                    <input class="display" type="text" id="totalFutureAllocation" value="0" disabled="disabled" />
                 </div>
-            </fieldset>
-            <br />
-            <span>@Loc.Dic.TotalAllocation: </span>
-            <input class="display" type="text" id="totalFutureAllocation" value="0" disabled="disabled" />
-        </div>
-        }
+            }
 
-        <div id="NormalOrderContainer">
-            <fieldset id="normalAllocationsFieldset">
-                <legend>@Loc.Dic.BudgetAllocations</legend>
-        
-                <div id="normalAllocationsContainer">
-                    <span>@Loc.Dic.NoAllocationsInOrder.</span>
-                </div>
-            </fieldset>
-            <br />
-            <span>@Loc.Dic.TotalAllocation: </span> <input class="display" type="text" id="totalNormalAllocation" value="0" disabled="disabled" />
-        </div>
-        
+            <div id="NormalOrderContainer">
+                <fieldset id="normalAllocationsFieldset">
+                    <legend>@Loc.Dic.BudgetAllocations</legend>
+
+                    <div id="normalAllocationsContainer">
+                        <span>@Loc.Dic.NoAllocationsInOrder.</span>
+                    </div>
+                </fieldset>
+                <br />
+                <span>@Loc.Dic.TotalAllocation: </span>
+                <input class="display" type="text" id="totalNormalAllocation" value="0" disabled="disabled" />
+            </div>
+
         </div>
         <br />
         <br />
-        
+
         <div class="editor-label">
             @Loc.Dic.Notes:
         </div>
@@ -160,9 +167,9 @@
             @Html.TextAreaFor(model => model.Order.Notes, new { maxlength = "250" })
             @Html.ValidationMessageFor(model => model.Order.Notes)
         </div>
-        
+
         <p>
-            <input type="submit" value="@Loc.Dic.Submit" />
+            <input class="disableOnSubmit" type="submit" value="@Loc.Dic.Submit" />
         </p>
     }
 </fieldset>

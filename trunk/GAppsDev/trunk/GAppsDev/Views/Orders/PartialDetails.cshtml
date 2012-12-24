@@ -6,7 +6,13 @@
 
 <fieldset>
     <legend>@Loc.Dic.OrderDetails</legend>
-
+    @if (Model.OriginalOrder.IsOrderForExistingInvoice)
+    {
+        <div class="display-label">
+            ***@Loc.Dic.OrderForExistingInvoice***
+        </div>
+        <br />
+    }
     <div class="display-label">
         @Loc.Dic.OrderNumber
     </div>
@@ -39,6 +45,7 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.OriginalOrder.Orders_Statuses.Name)
+        @Html.DisplayFor(model => model.OriginalOrder.User1.FullName)
     </div>
     <br />
 
@@ -117,16 +124,13 @@
         <br />
     }
 
-    <div class="display-label">
-        @Loc.Dic.History
-    </div>
+
     @if (((List<DB.Orders_History>)ViewBag.orderHistoryList).Any())
     { 
+        <div class="display-label">
+            @Loc.Dic.History
+        </div>
         @Html.Action("SimpleListOrdersHistory", "History", new { ordersHistoryList = (List<DB.Orders_History>)ViewBag.orderHistoryList, baseUrl = Url.Action("Details") })    
-    }
-    else
-    {
-        <span class="no-properties">@(Loc.Dic.Empty).</span> 
     }
 
     @if (Model.OriginalOrder.Orders_Statuses.Id >= (int)DA.StatusType.InvoiceScannedPendingOrderCreator)
