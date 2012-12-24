@@ -1,5 +1,4 @@
-﻿
-/@model DB.Inventory
+﻿@model DB.Inventory
 
 @{
     ViewBag.Title = "Details";
@@ -26,6 +25,22 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Orders_Items.Title)
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.OriginalQuantity
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OriginalQuantity)
+    </div>
+    <br />
+
+    <div class="display-label">
+        @Loc.Dic.RemainingQuantity
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RemainingQuantity)
     </div>
     <br />
 

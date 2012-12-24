@@ -1506,4 +1506,10 @@
   <data name="NotesForApprover" xml:space="preserve">
     <value>Notes For Approver</value>
   </data>
+  <data name="OriginalQuantity" xml:space="preserve">
+    <value>Original quantity</value>
+  </data>
+  <data name="RemainingQuantity" xml:space="preserve">
+    <value>Remaining quantity</value>
+  </data>
 </root>

@@ -27,7 +27,7 @@ namespace GAppsDev
                 case StatusType.ApprovedPendingInvoice:
                     return Loc.Dic.Status_ApprovedPendingInvoice;
                 case StatusType.InvoiceScannedPendingOrderCreator:
-                    return Loc.Dic.Status_PendingOrderCreator;
+                    return Loc.Dic.Status_PendingInvoiceApproval;
                 case StatusType.InvoiceApprovedByOrderCreatorPendingFileExport:
                     return Loc.Dic.Status_PendingExport;
                 case StatusType.InvoiceExportedToFile:

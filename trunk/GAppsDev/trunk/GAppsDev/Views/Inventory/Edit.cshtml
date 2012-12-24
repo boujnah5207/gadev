@@ -6,6 +6,9 @@
     ViewBag.PageName = "Inventory";
     ViewBag.SubPageName = "AllInventory";
 }
+@section ExtraScripts{
+    <script src="~/Scripts/DatePickerScript.js"></script>
+}
 
 @using (Html.BeginForm())
 {
@@ -21,6 +24,23 @@
         </div>
         <div class="editor-field">
             @Html.DisplayFor(model => model.Orders_Items.Title)
+        </div>
+        <br />
+
+        <div class="display-label">
+            @Loc.Dic.OriginalQuantity
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OriginalQuantity)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.RemainingQuantity
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RemainingQuantity)
+            @Html.ValidationMessageFor(model => model.RemainingQuantity)
         </div>
         <br />
 
@@ -71,8 +91,13 @@
         <div class="editor-label">
             @Loc.Dic.WarrantyPeriod
         </div>
+
         <div class="editor-field">
-            @Loc.Dic.From- @Html.EditorFor(model => model.WarrentyPeriodStart) @Loc.Dic.To- @Html.EditorFor(model => model.WarrentyPeriodEnd)
+            @Loc.Dic.From-
+            @Html.TextBoxFor(model => model.WarrentyPeriodStart, new { @class = "dateField" })
+            @Loc.Dic.To- 
+            @Html.TextBoxFor(model => model.WarrentyPeriodEnd, new { @class = "dateField" })
+
         </div>
         <br />
 

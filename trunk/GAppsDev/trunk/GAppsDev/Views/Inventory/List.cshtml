@@ -86,9 +86,13 @@
             </td>
 
             <td>
-                @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id }) |
+                @Html.ActionLink(Loc.Dic.Details, "Details", new { id = item.Id })
+                @if(DA.Roles.HasRole((int)ViewBag.CurrentUser.Roles, DA.RoleType.InventoryManager))
+                {
+                <text>|</text>
+                @Html.ActionLink(Loc.Dic.Edit, "Edit", new { id = item.Id }) <text>|</text>
                 @Html.ActionLink(Loc.Dic.Delete, "Delete", new { id = item.Id })
+                }
             </td>
         </tr>
     }

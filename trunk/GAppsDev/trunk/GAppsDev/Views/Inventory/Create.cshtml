@@ -9,6 +9,8 @@
 @section ExtraScripts{
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/CreateInventoryScript.js"></script>
+    <script src="~/Scripts/DatePickerScript.js"></script>
+
 }
 
 <h2>@Loc.Dic.CreateNew</h2>
@@ -36,8 +38,17 @@
         <div class="editor-field">
             <select name="ItemId" id="ItemDropDownList"></select>
         </div>
-
-
+        <br />
+        
+        <div class="editor-label">
+            @Loc.Dic.Quantity
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OriginalQuantity)
+            @Html.ValidationMessageFor(model => model.OriginalQuantity)
+        </div>
+        <br />
+        
         <div class="editor-label">
             @Loc.Dic.Location
         </div>
@@ -74,7 +85,7 @@
             @Loc.Dic.WarrentyPeriodStart
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodStart)
+            @Html.TextBoxFor(model => model.WarrentyPeriodStart, new { @class = "dateField" })
             @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
         </div>
 
@@ -82,7 +93,7 @@
             @Loc.Dic.WarrentyPeriodEnd
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.WarrentyPeriodEnd)
+            @Html.TextBoxFor(model => model.WarrentyPeriodEnd, new { @class = "dateField" })
             @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
         </div>
 

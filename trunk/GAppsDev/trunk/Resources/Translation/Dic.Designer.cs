@@ -3085,6 +3085,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Original quantity.
+        /// </summary>
+        public static string OriginalQuantity {
+            get {
+                return ResourceManager.GetString("OriginalQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Partially Approved.
         /// </summary>
         public static string PartiallyApproved {
@@ -3324,6 +3333,15 @@ namespace Loc {
         public static string RemainingAllocationAmount {
             get {
                 return ResourceManager.GetString("RemainingAllocationAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining quantity.
+        /// </summary>
+        public static string RemainingQuantity {
+            get {
+                return ResourceManager.GetString("RemainingQuantity", resourceCulture);
             }
         }
         
