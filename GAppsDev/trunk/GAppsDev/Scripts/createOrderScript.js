@@ -48,7 +48,6 @@ $(function () {
     });
 
     $('#mainForm').submit(function () {
-
         var isFutureOrder = $("#isFutureOrder").is(':checked');
 
         var totalAllocation;
@@ -61,10 +60,12 @@ $(function () {
 
         if (totalAllocation > totalOrderPrice) {
             alert(local.error_allocation_exceeds_price);
+            $("[type='submit']").removeAttr('disabled');
             return false;
         }
         else if (totalAllocation < totalOrderPrice) {
             alert(local.error_allocation_smaller_then_price);
+            $("[type='submit']").removeAttr('disabled');
             return false;
         }
 
@@ -74,6 +75,7 @@ $(function () {
         else {
             $("#FutureOrderContainer").remove();
         }
+
     });
 });
 
@@ -362,7 +364,15 @@ function InitializeItemsList(newItemList) {
     selectText += "<select class='supplierItemsSelectList' id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option title='" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "</option>";
+        var subTitle;
+
+        console.log("Type: " + typeof (newItemList[i].SubTitle) + " Value: " + newItemList[i].SubTitle);
+        if (typeof (newItemList[i].SubTitle) != "string")
+            subTitle = "";
+        else
+            subTitle = " - " + newItemList[i].SubTitle;
+
+        selectText += "<option title='" + newItemList[i].Title + subTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + subTitle + "</option>";
     }
 
     selectText += "</select>";
@@ -376,7 +386,16 @@ function UpdateItemsList(newItemList) {
     selectText += "<select class='supplierItemsSelectList' id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option title='" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + " - " + newItemList[i].SubTitle + "</option>";
+        var subTitle;
+
+        console.log("Type: " + typeof (newItemList[i].SubTitle) + " Value: " + newItemList[i].SubTitle);
+
+        if (typeof (newItemList[i].SubTitle) != "string")
+            subTitle = "";
+        else
+            subTitle = " - " + newItemList[i].SubTitle;
+
+        selectText += "<option title='" + newItemList[i].Title + subTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + subTitle + "</option>";
     }
 
     selectText += "</select>";
@@ -386,6 +405,12 @@ function UpdateItemsList(newItemList) {
 }
 
 function addNewItem(itemId, itemName, quantity, price) {
+
+    if (isNaN(itemId)) {
+        alert("select Item or create one");
+        return;
+    }
+
     var itemToInsert = { id: itemId, title: itemName, quantity: quantity, price: price, finalPrice: (price * quantity).toFixed(2) };
     var isInArray = false;
     var doubleIndex;
@@ -536,7 +561,6 @@ function addAllocation() {
         existingAllocations = $(".existingNormalAllocations");
 
         if (wantedAmount > remainingAllocationAmount) {
-            console.log(wantedAmount + " > " + remainingAllocationAmount);
             isExeedingAllocation = true;
             //alert(local.AmountExceedsAllocation);
             //return;

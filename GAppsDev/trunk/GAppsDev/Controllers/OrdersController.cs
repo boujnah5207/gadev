@@ -92,7 +92,8 @@ namespace GAppsDev.Controllers
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
                     .Where(x =>
                         x.NextOrderApproverId == CurrentUser.UserId &&
-                        x.StatusId != (int)StatusType.Declined
+                        x.StatusId != (int)StatusType.Declined &&
+                        x.StatusId != (int)StatusType.PendingOrderCreator
                         );
 
                 if (orders == null) return Error(Loc.Dic.error_orders_get_error);
@@ -160,43 +161,55 @@ namespace GAppsDev.Controllers
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
+            using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
             {
-                orderFromDB = ordersRep.GetEntity(id);
+                orderFromDB = ordersRep.GetEntity(id, "Users_ApprovalRoutes");
 
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
                 if ((orderFromDB.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
                 orderFromDB.OrderApproverNotes = approverNotes;
 
+                if (!orderFromDB.ApprovalRouteId.HasValue || !orderFromDB.ApprovalRouteStep.HasValue)
+                    return Error(Loc.Dic.error_order_already_approved);
+
+                List<Users_ApprovalStep> orderRouteSteps = orderFromDB.Users_ApprovalRoutes.Users_ApprovalStep.OrderBy(x => x.StepNumber).ToList();
+                Users_ApprovalStep firstStep = orderRouteSteps.FirstOrDefault();
+                Users_ApprovalStep currentStep = orderRouteSteps.Single(x => x.StepNumber == orderFromDB.ApprovalRouteStep);
+                Users_ApprovalStep nextStep = orderRouteSteps.FirstOrDefault(x => x.StepNumber > currentStep.StepNumber);
+
                 if (selectedStatus == Loc.Dic.ApproveOrder)
                 {
-                    if (Authorized(RoleType.SuperApprover) || !CurrentUser.OrdersApproverId.HasValue)
+                    if (Authorized(RoleType.SuperApprover) || nextStep == null)
                     {
+                        orderFromDB.ApprovalRouteStep = null;
                         orderFromDB.NextOrderApproverId = null;
                         orderFromDB.StatusId = (int)StatusType.ApprovedPendingInvoice;
                         historyActionId = (int)HistoryActions.PassedApprovalRoute;
                     }
                     else
                     {
-                        orderFromDB.NextOrderApproverId = CurrentUser.OrdersApproverId.Value;
+                        orderFromDB.ApprovalRouteStep = nextStep.StepNumber;
+                        orderFromDB.NextOrderApproverId = nextStep.UserId;
                         orderFromDB.StatusId = (int)StatusType.PartiallyApproved;
                         historyActionId = (int)HistoryActions.PartiallyApproved;
                     }
-
-                    orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
                 else if (selectedStatus == Loc.Dic.DeclineOrder)
                 {
+                    orderFromDB.NextOrderApproverId = null;
                     orderFromDB.StatusId = (int)StatusType.Declined;
                     historyActionId = (int)HistoryActions.Declined;
-                    orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
                 else if (selectedStatus == Loc.Dic.SendBackToUser)
                 {
+                    orderFromDB.ApprovalRouteStep = firstStep.StepNumber;
+                    orderFromDB.NextOrderApproverId = firstStep.UserId;
                     orderFromDB.StatusId = (int)StatusType.PendingOrderCreator;
                     historyActionId = (int)HistoryActions.ReturnedToCreator;
-                    orderFromDB.LastStatusChangeDate = DateTime.Now;
                 }
+
+                orderFromDB.LastStatusChangeDate = DateTime.Now;
 
                 if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
 
@@ -550,8 +563,8 @@ namespace GAppsDev.Controllers
             if (model.IsFutureOrder && !Authorized(RoleType.FutureOrderWriter)) return Error(Loc.Dic.Error_NoPermission);
             if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
             model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-            decimal totalOrderPrice = ItemsList.Sum(x => x.SingleItemPrice * x.Quantity);
-            decimal totalAllocation = model.Allocations.Sum(x => x.Amount);
+            decimal totalOrderPrice = (decimal.Round(ItemsList.Sum(x => x.SingleItemPrice * x.Quantity) * 100) / 100);
+            decimal totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 100) / 100);
             if (totalOrderPrice != totalAllocation) return Error(Loc.Dic.error_order_insufficient_allocation);
 
             // Initializing needed temporary variables
@@ -560,12 +573,13 @@ namespace GAppsDev.Controllers
 
             // Setting order properties
             model.Order.UserId = CurrentUser.UserId;
-            model.Order.Price = ItemsList.Sum(item => item.SingleItemPrice * item.Quantity);
+            model.Order.Price = totalOrderPrice;
             model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
             model.Order.IsFutureOrder = model.IsFutureOrder;
 
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
+            using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
             {
                 Budget currentBudget = budgetsRep.GetList().SingleOrDefault(x => x.IsActive);
                 if (currentBudget == null) return Error(Loc.Dic.error_database_error);
@@ -626,14 +640,29 @@ namespace GAppsDev.Controllers
                     }
                 }
 
-                if (!CurrentUser.OrdersApproverId.HasValue)
+                if (!CurrentUser.OrdersApprovalRouteId.HasValue)
                 {
                     model.Order.NextOrderApproverId = null;
                     model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
                 }
                 else
                 {
-                    model.Order.StatusId = (int)StatusType.Pending;
+                    Users_ApprovalRoutes orderRoute = routesRep.GetEntity(CurrentUser.OrdersApprovalRouteId.Value, "Users_ApprovalStep");
+                    Users_ApprovalStep firstStep = orderRoute.Users_ApprovalStep.OrderBy( x => x.StepNumber).FirstOrDefault();
+
+                    if (firstStep != null)
+                    {
+                        model.Order.ApprovalRouteId = orderRoute.Id;
+                        model.Order.ApprovalRouteStep = firstStep.StepNumber;
+                        model.Order.NextOrderApproverId = firstStep.UserId;
+                        model.Order.StatusId = (int)StatusType.Pending;
+                    }
+                    else
+                    {
+                        model.Order.ApprovalRouteStep = null;
+                        model.Order.NextOrderApproverId = null;
+                        model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                    }
                 }
             }
 
@@ -769,7 +798,7 @@ namespace GAppsDev.Controllers
 
             using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                orderFromDatabase = orderRep.GetEntity(model.Order.Id, "Supplier", "Orders_OrderToItem", "Orders_OrderToAllocation");
+                orderFromDatabase = orderRep.GetEntity(model.Order.Id, "Supplier", "Orders_OrderToItem", "Orders_OrderToAllocation", "Users_ApprovalRoutes.Users_ApprovalStep");
             }
 
             if (orderFromDatabase == null) return Error(Loc.Dic.error_order_not_found);
@@ -782,11 +811,11 @@ namespace GAppsDev.Controllers
             if (itemsFromEditForm.Count == 0) return Error(Loc.Dic.error_order_has_no_items);
             if (itemsFromEditForm.Count == 0) return Error(Loc.Dic.error_order_has_no_items);
 
-            totalOrderPrice = itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity);
+            totalOrderPrice = (decimal.Round(itemsFromEditForm.Sum(x => x.SingleItemPrice * x.Quantity) * 100) / 100);
 
             if (model.Allocations == null || model.Allocations.Where(x => x.IsActive).Count() == 0) return Error(Loc.Dic.error_invalid_form);
             model.Allocations = model.Allocations.Where(x => x.IsActive).ToList();
-            totalAllocation = model.Allocations.Sum(x => x.Amount);
+            totalAllocation = (decimal.Floor(model.Allocations.Sum(x => x.Amount) * 100) / 100);
 
             if (totalOrderPrice != totalAllocation) return Error(Loc.Dic.error_order_insufficient_allocation);
 
@@ -920,21 +949,45 @@ namespace GAppsDev.Controllers
 
                 using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
                 {
+                    if (!CurrentUser.OrdersApprovalRouteId.HasValue)
+                    {
+                        model.Order.NextOrderApproverId = null;
+                        model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                    }
+                    else
+                    {
+                        Users_ApprovalRoutes orderRoute = orderFromDatabase.Users_ApprovalRoutes; //routesRep.GetEntity(CurrentUser.OrdersApprovalRouteId.Value, "Users_ApprovalStep");
+                        Users_ApprovalStep firstStep = orderRoute.Users_ApprovalStep.OrderBy(x => x.StepNumber).FirstOrDefault();
+
+                        if (firstStep != null)
+                        {
+                            model.Order.ApprovalRouteId = orderRoute.Id;
+                            model.Order.ApprovalRouteStep = firstStep.StepNumber;
+                            model.Order.NextOrderApproverId = firstStep.UserId;
+                            model.Order.StatusId = (int)StatusType.Pending;
+                        }
+                        else
+                        {
+                            model.Order.ApprovalRouteId = null;
+                            model.Order.ApprovalRouteStep = null;
+                            model.Order.NextOrderApproverId = null;
+                            model.Order.StatusId = (int)StatusType.ApprovedPendingInvoice;
+                        }
+                    }
+
                     model.Order.CompanyId = orderFromDatabase.CompanyId;
                     model.Order.CreationDate = orderFromDatabase.CreationDate;
-                    model.Order.StatusId = orderFromDatabase.StatusId;
                     model.Order.SupplierId = orderFromDatabase.SupplierId;
                     model.Order.UserId = orderFromDatabase.UserId;
                     model.Order.OrderNumber = orderFromDatabase.OrderNumber;
                     model.Order.InvoiceNumber = orderFromDatabase.InvoiceNumber;
                     model.Order.InvoiceDate = orderFromDatabase.InvoiceDate;
-                    model.Order.LastStatusChangeDate = orderFromDatabase.LastStatusChangeDate;
-                    model.Order.NextOrderApproverId = orderFromDatabase.NextOrderApproverId;
+                    model.Order.LastStatusChangeDate = DateTime.Now;
                     model.Order.ValueDate = orderFromDatabase.ValueDate;
                     model.Order.WasAddedToInventory = orderFromDatabase.WasAddedToInventory;
                     model.Order.IsFutureOrder = model.IsFutureOrder;
 
-                    model.Order.Price = ordersRep.GetEntity(model.Order.Id).Orders_OrderToItem.Sum(item => item.SingleItemPrice * item.Quantity);
+                    model.Order.Price = totalOrderPrice;
 
                     ordersRep.Update(model.Order);
                 }
@@ -946,7 +999,7 @@ namespace GAppsDev.Controllers
                 historyActionId = (int)HistoryActions.Edited;
                 Orders_History orderHistory = new Orders_History();
                 using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
-                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
+                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, model.Order.Notes);
                 return RedirectToAction("MyOrders");
             }
             else
@@ -1805,7 +1858,7 @@ namespace GAppsDev.Controllers
         {
             List<Orders_History> orderHistoryList = new List<Orders_History>();
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OriginalOrder.Id))
-            orderHistoryList = ordersHistoryRep.GetList("User", "Orders_History_Actions").OrderByDescending(x => x.CreationDate).ToList();
+                orderHistoryList = ordersHistoryRep.GetList("User", "Orders_History_Actions").OrderByDescending(x => x.CreationDate).ToList();
             ViewBag.orderHistoryList = orderHistoryList;
             return PartialView(model);
         }

@@ -211,23 +211,23 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 List<string> roleNames = GetRoleNames();
-                List<SelectListItemDB> usersList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+                List<SelectListItemDB> ApprovalRoutesList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.NoApprovalRoute } };
                 SelectList languagesList;
 
                 using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+                using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
                 using (LanguagesRepository languagesRep = new LanguagesRepository())
                 {
-                    usersList.AddRange (
-                            usersRep.GetList()
-                            .Where(user => ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover)
-                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName })
+                    ApprovalRoutesList.AddRange(
+                            routesRep.GetList()
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                             );
                     
                     languagesList = new SelectList(languagesRep.GetList().ToList(), "Id", "Name");
                 }
 
                 ViewBag.RolesList = roleNames;
-                ViewBag.UsersList = new SelectList(usersList, "Id", "Name");
+                ViewBag.RoutesList = new SelectList(ApprovalRoutesList, "Id", "Name");
                 ViewBag.LanguagesList = languagesList;
 
                 return View();
@@ -240,7 +240,7 @@ namespace GAppsDev.Controllers
 
         [HttpPost]
         [OpenIdAuthorize]
-        public ActionResult Create(PendingUser user, string[] roleNames)
+        public ActionResult Create(User user, string[] roleNames)
         {
             if (ModelState.IsValid)
             {
@@ -250,13 +250,20 @@ namespace GAppsDev.Controllers
                     int companyUserLimit = 0;
 
                     using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+                    using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
                     using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
                     using (CompaniesRepository companiesRep = new CompaniesRepository())
                     {
+                        if (user.DefaultApprovalRouteId.HasValue)
+                        {
+                            var route = routesRep.GetEntity(user.DefaultApprovalRouteId.Value);
+                            if (route == null) return Error(Loc.Dic.error_invalid_form);
+                        }
+
                         try
                         {
                             companyUserCount =
-                                usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).Count() +
+                                usersRep.GetList().Where(x => x.IsActive).Count() +
                                 pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count();
 
                             companyUserLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
@@ -277,7 +284,7 @@ namespace GAppsDev.Controllers
                         return Error(Loc.Dic.error_users_limit_reached);
 
                     user.CompanyId = CurrentUser.CompanyId;
-                    user.CreationDate = DateTime.Now;
+                    user.CreationTime = DateTime.Now;
 
                     RoleType combinedRoles = RoleType.None;
                     List<RoleType> forbiddenRoles = GetForbiddenRoles();
@@ -300,10 +307,12 @@ namespace GAppsDev.Controllers
                         if (user.OrdersApproverId == -1)
                             user.OrdersApproverId = null;
 
+                        user.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
+
                         bool wasUserCreated;
-                        using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
+                        using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                         {
-                            wasUserCreated = pendingUserRep.Create(user);
+                            wasUserCreated = usersRep.Create(user);
                         }
 
                         if (wasUserCreated)
@@ -463,19 +472,24 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 User user;
-                List<SelectListItemDB> usersList = new List<SelectListItemDB> { new SelectListItemDB() { Id = -1, Name = "(ללא) מאשר סופי" } };
+                List<SelectListItemDB> ApprovalRoutesList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.NoApprovalRoute } };
 
-                using (UserRepository usersRep = new UserRepository())
+                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+                using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
                 {
                     user = usersRep.GetEntity(id);
-                    usersList.AddRange(usersRep.GetList().Where(u => u.CompanyId == CurrentUser.CompanyId && ((RoleType)u.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+
+                    ApprovalRoutesList.AddRange(
+                            routesRep.GetList()
+                            .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
+                            );
 
                     if (user != null)
                     {
                         if (user.CompanyId != CurrentUser.CompanyId)
                             return Error(Loc.Dic.error_no_permission);
 
-                        ViewBag.OrdersApproverId = new SelectList(usersList, "Id", "Name", user.OrdersApproverId.HasValue ? user.OrdersApproverId.Value : -1);
+                        ViewBag.RoutesList = new SelectList(ApprovalRoutesList, "Id", "Name");
 
                         List<string> roleNames = GetRoleNames();
 
@@ -510,13 +524,17 @@ namespace GAppsDev.Controllers
                 {
                     User userFromDatabase;
                     using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
+                    using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
                     {
                         userFromDatabase = userRep.GetEntity(user.Id);
 
                         if (userFromDatabase != null)
                         {
-                            if (userFromDatabase.CompanyId != CurrentUser.CompanyId)
-                                return Error(Loc.Dic.error_no_permission);
+                            if (user.DefaultApprovalRouteId.HasValue)
+                            {
+                                var route = routesRep.GetEntity(user.DefaultApprovalRouteId.Value);
+                                if (route == null) return Error(Loc.Dic.error_invalid_form);
+                            }
 
                             RoleType combinedRoles = RoleType.None;
                             List<RoleType> forbiddenRoles = GetForbiddenRoles();
@@ -539,6 +557,7 @@ namespace GAppsDev.Controllers
                             userFromDatabase.Email = user.Email;
                             userFromDatabase.Roles = (int)combinedRoles;
                             userFromDatabase.OrdersApproverId = user.OrdersApproverId.HasValue && user.OrdersApproverId.Value == -1 ? null : user.OrdersApproverId;
+                            userFromDatabase.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
 
                             User updatedUser = userRep.Update(userFromDatabase);
                             if (updatedUser != null)
@@ -693,7 +712,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.SystemManager))
             {
                 User user;
-                using (UserRepository userRep = new UserRepository())
+                using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
                 {
                     user = userRep.GetEntity(id, "Language", "User1", "Users1");
                 }
@@ -789,7 +808,7 @@ namespace GAppsDev.Controllers
             {
                 User user;
                 using (CookiesRepository cookieRep = new CookiesRepository())
-                using (UserRepository userRep = new UserRepository())
+                using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
                 {
                     user = userRep.GetEntity(id);
 
@@ -831,7 +850,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             User user;
-            using (UserRepository userRep = new UserRepository())
+            using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
             {
                 user = userRep.GetEntity(id, "Company", "Language", "User1", "Users1");
             }
@@ -875,7 +894,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             User user;
-            using (UserRepository userRep = new UserRepository())
+            using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
             {
                 user = userRep.GetEntity(id, "Company");
 

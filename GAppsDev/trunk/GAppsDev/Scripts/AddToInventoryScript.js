@@ -62,7 +62,6 @@ function split(id, index, quantity) {
     var oldExpandBtn = $("#expandingBtn-" + id + "-" + 0);
     var oldSplitBtn = $("#splitBtn-" + id + "-" + 0);
 
-    console.log("index: " + index);
     var originalLocationId = $("#locationList-" + id + "-" + index + " option:selected").val();
 
     for (var i = 0; i < quantity; i++) {
@@ -187,10 +186,7 @@ function getSplittedItem(id) {
 }
 
 function updateSplittedItems(id, index) {
-    console.log(id);
-    console.log($("#locationList-" + id + "-" + index + " option:selected"));
     var originalLocationId = $("#locationList-" + id + "-" + index + " option:selected").val();
-    console.log(originalLocationId);
 
     if (originalLocationId == null || originalLocationId == "") return;
 

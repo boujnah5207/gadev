@@ -67,7 +67,7 @@ namespace Mvc4.OpenId.Sample.Security
             {
                 logInResult.User = new OpenIdUser(fetchResponse, response.ClaimedIdentifier);
 
-                using (UserRepository userRep = new UserRepository())
+                using (AllUsersRepository userRep = new AllUsersRepository())
                 using (PendingUsersRepository pendingUserRep = new PendingUsersRepository())
                 {
                     User user = userRep.GetList().SingleOrDefault(x => x.Email == logInResult.User.Email);

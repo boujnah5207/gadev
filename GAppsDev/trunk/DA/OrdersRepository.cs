@@ -30,6 +30,7 @@ namespace DA
         public override Order GetEntity(int id, params string[] includes)
         {
             Order order = base.GetEntity(id, includes);
+            if (order == null) return null;
             return order.CompanyId == _companyId ? order : null;
         }
 
