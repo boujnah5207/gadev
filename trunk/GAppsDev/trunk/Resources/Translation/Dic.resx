@@ -1497,4 +1497,7 @@
   <data name="NextApprover" xml:space="preserve">
     <value>Next Approver</value>
   </data>
+  <data name="EditAndReturnToApprover" xml:space="preserve">
+    <value>Edit and send for approval</value>
+  </data>
 </root>
