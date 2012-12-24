@@ -1,4 +1,4 @@
-﻿@model DB.PendingUser
+﻿@model DB.User
 
 @{
     ViewBag.Title = Loc.Dic.NewUser;
@@ -11,6 +11,24 @@
 
     <fieldset>
         <legend>@Loc.Dic.NewUser</legend>
+
+        <div class="editor-label">
+            @Loc.Dic.FirstName
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Loc.Dic.LastName
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.Email
@@ -33,10 +51,10 @@
         <br />
 
         <div class="editor-label">
-            @Loc.Dic.OrderApprover
+            @Loc.Dic.ApprovalRoute
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.OrdersApproverId, (SelectList)ViewBag.UsersList)
+            @Html.DropDownListFor(model => model.DefaultApprovalRouteId, (SelectList)ViewBag.RoutesList)
         </div>
         <br />
 

@@ -16,9 +16,6 @@ namespace GAppsDev.Controllers
     {
         private Entities db = new Entities();
 
-        //
-        // GET: /OrderItems/
-
         [OpenIdAuthorize]
         public ActionResult Index()
         {

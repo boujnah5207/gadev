@@ -1434,6 +1434,9 @@
   <data name="StepNumber" xml:space="preserve">
     <value>שלב</value>
   </data>
+  <data name="NoApprovalRoute" xml:space="preserve">
+    <value>ללא (אישור אוטומטי)</value>
+  </data>
   <data name="Action" xml:space="preserve">
     <value>פעולה</value>
   </data>
@@ -1481,5 +1484,8 @@
   </data>
   <data name="OrderPrinted" xml:space="preserve">
     <value>הזמנה הודפסה</value>
+  </data>
+  <data name="error_order_already_approved" xml:space="preserve">
+    <value>הזמנה זאת כבר אושרה</value>
   </data>
 </root>

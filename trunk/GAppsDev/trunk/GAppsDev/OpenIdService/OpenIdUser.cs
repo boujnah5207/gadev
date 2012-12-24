@@ -23,6 +23,7 @@ namespace GAppsDev.OpenIdService
         public string FullName { get { return FirstName + " " + LastName; } }
         public int Roles { get; set; }
         public int? OrdersApproverId { get; set; }
+        public int? OrdersApprovalRouteId { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
         public DateTime LastActionTime { get; set; }
@@ -93,7 +94,7 @@ namespace GAppsDev.OpenIdService
                 if (isValidId && !String.IsNullOrWhiteSpace(claimedHashValue))
                 {
                     using (CookiesRepository cookiesRep = new CookiesRepository())
-                    using (UserRepository userRep = new UserRepository())
+                    using (AllUsersRepository userRep = new AllUsersRepository())
                     {
                         bool isCookieValid = cookiesRep.GetList().Any(x => x.UserId == claimedId && x.HashValue == claimedHashValue);
 
@@ -118,6 +119,7 @@ namespace GAppsDev.OpenIdService
                                     IsSignedByProvider = false,
                                     ClaimedIdentifier = claimedIdentifier,
                                     OrdersApproverId = loggingUser.OrdersApproverId,
+                                    OrdersApprovalRouteId = loggingUser.DefaultApprovalRouteId,
                                     IsActive = loggingUser.IsActive,
                                     LanguageCode = loggingUser.Language.Code
                                 };

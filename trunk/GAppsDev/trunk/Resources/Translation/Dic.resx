@@ -1437,6 +1437,9 @@
   <data name="StepNumber" xml:space="preserve">
     <value>Step number</value>
   </data>
+  <data name="NoApprovalRoute" xml:space="preserve">
+    <value>None (Approved automatically)</value>
+  </data>
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
@@ -1484,5 +1487,8 @@
   </data>
   <data name="OrderPrinted" xml:space="preserve">
     <value>Order Printed</value>
+  </data>
+  <data name="error_order_already_approved" xml:space="preserve">
+    <value>This order is already approved</value>
   </data>
 </root>

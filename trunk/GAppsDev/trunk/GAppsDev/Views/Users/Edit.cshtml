@@ -51,12 +51,12 @@
             }
         </div>
         <br />
-
+        
         <div class="editor-label">
-            @Loc.Dic.OrderApprover
+            @Loc.Dic.ApprovalRoute
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.OrdersApproverId, null)
+            @Html.DropDownListFor(model => model.DefaultApprovalRouteId, (SelectList)ViewBag.RoutesList)
         </div>
 
         <p>

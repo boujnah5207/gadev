@@ -427,6 +427,7 @@
     <Content Include="Scripts\openid-en.js" />
     <Content Include="Scripts\openid-jquery.js" />
     <Content Include="Scripts\OrdersToExportScript.js" />
+    <Content Include="Scripts\PreventMultipleSubmits.js" />
     <Content Include="Scripts\SearchScript.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -693,7 +694,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>53136</DevelopmentServerPort>
+          <DevelopmentServerPort>4328</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

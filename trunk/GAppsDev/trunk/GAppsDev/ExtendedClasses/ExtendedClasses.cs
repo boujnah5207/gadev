@@ -149,7 +149,7 @@ namespace System.Web.Mvc.Html
         {
             using (OrdersRepository ordersRep = new OrdersRepository(companyId))
             {
-                return ordersRep.GetList().Where(x => x.NextOrderApproverId == userId).Count();
+                return ordersRep.GetList().Where(x => x.NextOrderApproverId == userId && x.StatusId != (int)StatusType.PendingOrderCreator).Count();
             }
         }
 

@@ -27,5 +27,15 @@ namespace DA
             User user = base.GetEntity(id, includes);
             return user.CompanyId == _companyId && !user.IsForManagment ? user : null;
         }
+
+        public override bool Create(User entity)
+        {
+            entity.CreationTime = DateTime.Now;
+            entity.LastLogInTime = DateTime.Now;
+            entity.CompanyId = _companyId;
+            entity.IsActive = true;
+            entity.IsForManagment = false;
+            return base.Create(entity);
+        }
     }
 }
