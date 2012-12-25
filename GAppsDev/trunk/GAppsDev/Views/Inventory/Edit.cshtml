@@ -18,6 +18,10 @@
         <legend>@Loc.Dic.Inventory</legend>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ItemId)
+        @Html.HiddenFor(model => model.InventarNumber)
+        @Html.HiddenFor(model => model.CreationDate)
+        @Html.HiddenFor(model => model.OriginalQuantity)
 
         <div class="editor-label">
             @Loc.Dic.ItemName
@@ -74,7 +78,7 @@
             @Loc.Dic.RelatedInventoryItem
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.RelatedInventoryItem)
+            @Html.DropDownList("RelatedInventoryItem", String.Empty)
             @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
         </div>
         <br />

@@ -104,6 +104,7 @@ namespace GAppsDev.Controllers
                 inventory.CompanyId = CurrentUser.CompanyId;
                 inventory.AddedBy = CurrentUser.UserId;
                 inventory.RemainingQuantity = inventory.OriginalQuantity;
+                inventory.CreationDate = DateTime.Now;
 
                 using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
                 {
@@ -134,9 +135,9 @@ namespace GAppsDev.Controllers
                 return HttpNotFound();
             }
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", inventory.CompanyId);
-            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "OrderId", inventory.RelatedInventoryItem);
+            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "Orders_Items.Title", inventory.RelatedInventoryItem);
             ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", inventory.ItemId);
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "City", inventory.LocationId);
+            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventory.LocationId);
             return View(inventory);
         }
 
@@ -149,6 +150,7 @@ namespace GAppsDev.Controllers
         {
             if (ModelState.IsValid)
             {
+                inventory.CompanyId = CurrentUser.CompanyId;
                 db.Inventories.Attach(inventory);
                 db.ObjectStateManager.ChangeObjectState(inventory, EntityState.Modified);
                 db.SaveChanges();
