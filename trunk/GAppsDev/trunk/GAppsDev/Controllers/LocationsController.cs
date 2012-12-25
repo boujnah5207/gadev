@@ -31,7 +31,7 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Location> locations;
-            using (LocationsRepository locationsRep = new LocationsRepository())
+            using (LocationsRepository locationsRep = new LocationsRepository(CurrentUser.CompanyId))
             {
                 locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId);
 
@@ -75,7 +75,7 @@ namespace GAppsDev.Controllers
             if (ModelState.IsValid)
             {
                 location.CompanyId = CurrentUser.CompanyId;
-                using (LocationsRepository locationsRepository = new LocationsRepository())
+                using (LocationsRepository locationsRepository = new LocationsRepository(CurrentUser.CompanyId))
                 {
                     locationsRepository.Create(location);
                 }

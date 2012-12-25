@@ -16,7 +16,6 @@
                 <input type="hidden" name="InventoryItems[@i].ItemsToAdd[0].ItemId" value="@Model.OrderItems[i].Id" />
                 <input type="hidden" Id="ItemName-@(Model.OrderItems[i].Id)" value="@Model.OrderItems[i].Orders_Items.Title" />
                 <span class="bold">@Loc.Dic.Location: </span> @Html.DropDownList("InventoryItems[" + i + "].ItemsToAdd[0].LocationId", Model.LocationsList, Loc.Dic.SelectLocation, new { id="locationList-" + Model.OrderItems[i].Id + "-" + i, @class="locationList", onChange = "updateSplittedItems(" + Model.OrderItems[i].Id + "," + i + ")" })
-                @*<span class="bold">@Loc.Dic.ItemsQuantity: </span><span>@Model.OrderItems[i].Quantity</span>*@
 
                 <input id="expandingBtn-@(Model.OrderItems[i].Id)-0" type="button" value="@Loc.Dic.ShowDetails" onClick="expand(@(Model.OrderItems[i].Id),0)" />
                 @if (Model.OrderItems[i].Quantity > 1)

@@ -1509,4 +1509,7 @@
   <data name="RemainingQuantity" xml:space="preserve">
     <value>כמות שנותרה</value>
   </data>
+  <data name="error_invoice_not_scanned_and_approved" xml:space="preserve">
+    <value>להזמנה עדיין לא נסרקה ואושרה חשבונית</value>
+  </data>
 </root>

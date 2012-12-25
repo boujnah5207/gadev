@@ -1512,4 +1512,7 @@
   <data name="RemainingQuantity" xml:space="preserve">
     <value>Remaining quantity</value>
   </data>
+  <data name="error_invoice_not_scanned_and_approved" xml:space="preserve">
+    <value>The order does not have an approved invoice yet</value>
+  </data>
 </root>
