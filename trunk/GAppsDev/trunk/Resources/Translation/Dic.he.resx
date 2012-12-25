@@ -1512,4 +1512,28 @@
   <data name="error_invoice_not_scanned_and_approved" xml:space="preserve">
     <value>להזמנה עדיין לא נסרקה ואושרה חשבונית</value>
   </data>
+  <data name="AddToInventory_no_inventory_items" xml:space="preserve">
+    <value>ללא פריטי מלאי</value>
+  </data>
+  <data name="AddToInventory_with_inventory_items" xml:space="preserve">
+    <value>הוכנסו פריטי מלאי</value>
+  </data>
+  <data name="error_insufficient_allocation_info_for_export" xml:space="preserve">
+    <value>אין מספיק מידע על  הסעיף התקציבי בכדי לייצא לקובץ</value>
+  </data>
+  <data name="error_insufficient_company_info_for_export" xml:space="preserve">
+    <value>אין מספיק מידע על החברה בכדי לייצא לקובץ</value>
+  </data>
+  <data name="error_insufficient_order_info_for_export" xml:space="preserve">
+    <value>אין מספיק מידע על  ההזמנה בכדי לייצא לקובץ</value>
+  </data>
+  <data name="error_insufficient_supplier_info_for_export" xml:space="preserve">
+    <value>אין מספיק מידע על  הספק בכדי לייצא לקובץ</value>
+  </data>
+  <data name="error_order_has_no_allocations" xml:space="preserve">
+    <value>להזמנה אין סעיפים תקציביים</value>
+  </data>
+  <data name="error_order_price_too_high" xml:space="preserve">
+    <value>מחיר ההזמנה גבוהה מדי</value>
+  </data>
 </root>

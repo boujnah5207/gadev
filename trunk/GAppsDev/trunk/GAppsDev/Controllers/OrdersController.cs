@@ -1197,7 +1197,16 @@ namespace GAppsDev.Controllers
 
                 order.WasAddedToInventory = true;
                 order.LastStatusChangeDate = DateTime.Now;
-                ordersRep.Update(order);
+                if(ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+
+                bool hasInventoryItems = model.InventoryItems.Any(x => x.AddToInventory);
+                string notes = hasInventoryItems ? Loc.Dic.AddToInventory_with_inventory_items : Loc.Dic.AddToInventory_no_inventory_items;
+
+                int? historyActionId = null;
+                historyActionId = (int)HistoryActions.AddedToInventory;
+                Orders_History orderHistory = new Orders_History();
+                using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, notes);
 
                 return RedirectToAction("PendingInventory");
             }
@@ -1206,49 +1215,40 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult OrdersToExport(bool isRecovery = false, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (!Authorized(RoleType.SystemManager))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
 
             IEnumerable<Order> ordersToExport;
-
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
+                ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User");
+
                 if (isRecovery)
                 {
-                    ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                        .Where(x => x.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                    ordersToExport = ordersToExport.Where(x => x.StatusId > (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
                     ViewBag.isRecovery = true;
                 }
                 else
                 {
-                    ordersToExport = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                    .Where(x => x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
+                    ordersToExport = ordersToExport.Where(x => x.StatusId == (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport);
                     ViewBag.isRecovery = false;
                 }
+
+                ordersToExport = ordersToExport.ToList();
+
+                if (ordersToExport == null) return Error(Loc.Dic.error_order_get_error);
 
                 ordersToExport = Pagination(ordersToExport, page, sortby, order);
             }
 
-            if (ordersToExport != null)
-            {
-                return View(ordersToExport.ToList());
-            }
-            else
-            {
-                return Error(Loc.Dic.error_order_get_error);
-            }
-
+            return View(ordersToExport.ToList());
         }
 
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult OrdersToExport(List<int> selectedOrder = null)
         {
-            if (!Authorized(RoleType.SystemManager))
-                return Error(Loc.Dic.error_no_permission);
-
-            if (selectedOrder == null)
-                return Error(Loc.Dic.error_no_selected_orders);
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+            if (selectedOrder == null || selectedOrder.Count == 0) return Error(Loc.Dic.error_no_selected_orders);
 
             StringBuilder builder = new StringBuilder();
 
@@ -1264,68 +1264,50 @@ namespace GAppsDev.Controllers
 
                 userCompany = companiesRep.GetEntity(CurrentUser.CompanyId);
 
-                if (ordersToExport != null)
+                if (ordersToExport == null) return Error(Loc.Dic.error_database_error);
+                if (userCompany == null) return Error(Loc.Dic.error_database_error);
+
+                if (String.IsNullOrEmpty(userCompany.ExternalCoinCode) || String.IsNullOrEmpty(userCompany.ExternalExpenseCode))
+                    return Error(Loc.Dic.error_insufficient_company_info_for_export);
+
+                int numberOfOrders = 0;
+                builder.AppendLine(numberOfOrders.ToString().PadRight(180));
+
+                foreach (var order in ordersToExport)
                 {
-                    if (userCompany == null)
-                        return Error(Loc.Dic.error_database_error);
+                    decimal orderPrice;
 
-                    if (String.IsNullOrEmpty(userCompany.ExternalCoinCode) || String.IsNullOrEmpty(userCompany.ExternalExpenseCode))
-                        return Error("Insufficient company data for export");
-
-                    //int numberOfOrders = ordersToExport.Count > 999 ? 0 : ordersToExport.Count;
-                    int numberOfOrders = 0;
-
-                    builder.AppendLine(
-                        numberOfOrders.ToString().PadRight(180)
-                        );
-
-                    foreach (var order in ordersToExport)
+                    if (order.Price.HasValue)
                     {
-                        decimal orderPrice;
+                        if (order.Price.Value > 999999999) return Error(String.Format("({0}: {1}) {2}", Loc.Dic.Order, order.OrderNumber, Loc.Dic.error_order_price_too_high));
+                        
+                        orderPrice = order.Price.Value;
+                    }
+                    else
+                    {
+                        orderPrice = 0;
+                    }
 
-                        if (order.Price.HasValue)
-                        {
-                            if (order.Price.Value > 999999999)
-                                return Error("Price is too high");
-                            else
-                                orderPrice = order.Price.Value;
-                        }
-                        else
-                        {
-                            orderPrice = 0;
-                        }
+                    if (String.IsNullOrEmpty(order.Supplier.ExternalId))
+                        return Error(String.Format("({0}: {1}) {2}", Loc.Dic.Supplier, order.Supplier.Name, Loc.Dic.error_insufficient_supplier_info_for_export));
 
-                        if (order.Price > 999999999)
-                            return Error("Price is too high");
+                    if (String.IsNullOrEmpty(order.InvoiceNumber) || order.InvoiceDate == null)
+                        return Error(String.Format("({0}: {1}) {2}", Loc.Dic.Order, order.OrderNumber, Loc.Dic.error_insufficient_order_info_for_export));
 
-                        if (String.IsNullOrEmpty(order.Supplier.ExternalId))
-                            return Error("Insufficient supplier data for export");
+                    List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
+                    List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
 
-                        if (String.IsNullOrEmpty(order.InvoiceNumber) || order.InvoiceDate == null)
-                            return Error("Insufficient order data for export");
+                    if (!orderAllocations.Any()) return Error(String.Format("({0}: {1}) {2}", Loc.Dic.Order, order.OrderNumber, Loc.Dic.error_order_has_no_allocations));
 
-                        int paymentMonthId = 0;
-                        if (order.Orders_OrderToAllocation.Count > 0)
-                        {
-                            paymentMonthId = order.Orders_OrderToAllocation.Max(o => o.MonthId);
-                        }
+                    foreach (var allocation in distinctOrderAllocations)
+                    {
+                        if (String.IsNullOrEmpty(allocation.ExternalId)) return Error(String.Format("({0}: {1}) {2}", Loc.Dic.BudgetAllocation, allocation.DisplayName, Loc.Dic.error_insufficient_allocation_info_for_export));
 
-                        List<Orders_OrderToAllocation> orderAllocations = order.Orders_OrderToAllocation.ToList();
-                        List<Budgets_Allocations> distinctOrderAllocations = orderAllocations.Select(x => x.Budgets_Allocations).Distinct().ToList();
+                        decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
 
-                        if (orderAllocations.Count == 0)
-                            return Error("Insufficient allocation data for export");
-
-                        foreach (var allocation in distinctOrderAllocations)
-                        {
-                            if (String.IsNullOrEmpty(allocation.ExternalId))
-                                return Error("Insufficient allocation data for export");
-
-                            decimal allocationSum = orderAllocations.Where(x => x.AllocationId == allocation.Id).Sum(a => a.Amount);
-
-                            builder.AppendLine(
+                        builder.AppendLine(
                             String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                            String.Empty.PadLeft(3), //userCompany.ExternalExpenseCode.PadLeft(3),
+                            String.Empty.PadLeft(3),
                             order.InvoiceNumber.Substring(Math.Max(0, order.InvoiceNumber.Length - 5)).PadLeft(5),
                             order.InvoiceDate.Value.ToString("ddMMyy"),
                             String.Empty.PadLeft(5),
@@ -1345,52 +1327,49 @@ namespace GAppsDev.Controllers
                             String.Empty.PadLeft(12),
                             String.Empty.PadLeft(12)
                             )
-                            );
-                        }
-
-                        builder.AppendLine(
-                            String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
-                            String.Empty.PadLeft(3), //userCompany.ExternalExpenseCode.PadLeft(3),
-                            order.InvoiceNumber.PadLeft(5),
-                            order.InvoiceDate.Value.ToString("ddMMyy"),
-                            String.Empty.PadLeft(5),
-                            order.ValueDate.Value.ToString("ddMMyy"),
-                            userCompany.ExternalCoinCode.PadLeft(3),
-                            String.Empty.PadLeft(22),
-                            String.Empty.PadLeft(8),
-                            String.Empty.PadLeft(8),
-                            order.Supplier.ExternalId.ToString().PadLeft(8),
-                            String.Empty.PadLeft(8),
-                            String.Empty.PadLeft(12),
-                            String.Empty.PadLeft(12),
-                            orderPrice.ToString("0.00").PadLeft(12),
-                            String.Empty.PadLeft(12),
-                            String.Empty.PadLeft(12),
-                            String.Empty.PadLeft(12),
-                            String.Empty.PadLeft(12),
-                            String.Empty.PadLeft(12)
-                            )
-                            );
-                        order.StatusId = (int)StatusType.InvoiceExportedToFile;
-                        ordersRep.Update(order);
-                        int? historyActionId = null;
-                        historyActionId = (int)HistoryActions.ExportedToFile;
-                        Orders_History orderHistory = new Orders_History();
-                        using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
-                            if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
+                        );
                     }
 
-                    Response.AppendHeader("Refresh", "1");
-                    Response.AppendHeader("Location", Url.Action("OrdersToExport", "Orders", null, "http"));
+                    builder.AppendLine(
+                        String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}",
+                        String.Empty.PadLeft(3),
+                        order.InvoiceNumber.PadLeft(5),
+                        order.InvoiceDate.Value.ToString("ddMMyy"),
+                        String.Empty.PadLeft(5),
+                        order.ValueDate.Value.ToString("ddMMyy"),
+                        userCompany.ExternalCoinCode.PadLeft(3),
+                        String.Empty.PadLeft(22),
+                        String.Empty.PadLeft(8),
+                        String.Empty.PadLeft(8),
+                        order.Supplier.ExternalId.ToString().PadLeft(8),
+                        String.Empty.PadLeft(8),
+                        String.Empty.PadLeft(12),
+                        String.Empty.PadLeft(12),
+                        orderPrice.ToString("0.00").PadLeft(12),
+                        String.Empty.PadLeft(12),
+                        String.Empty.PadLeft(12),
+                        String.Empty.PadLeft(12),
+                        String.Empty.PadLeft(12),
+                        String.Empty.PadLeft(12)
+                        )
+                    );
 
-                    return File(Encoding.UTF8.GetBytes(builder.ToString()),
-                         "text/plain",
-                         "MOVEIN.DAT");
+                    order.StatusId = (int)StatusType.InvoiceExportedToFile;
+                    if(ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+
+                    int? historyActionId = null;
+                    historyActionId = (int)HistoryActions.ExportedToFile;
+                    Orders_History orderHistory = new Orders_History();
+                    using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                        if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
-                else
-                {
-                    return Error(Loc.Dic.error_order_get_error);
-                }
+
+                Response.AppendHeader("Refresh", "1");
+                Response.AppendHeader("Location", Url.Action("OrdersToExport", "Orders", null, "http"));
+
+                return File(Encoding.UTF8.GetBytes(builder.ToString()),
+                     "text/plain",
+                     "MOVEIN.DAT");
             }
         }
 

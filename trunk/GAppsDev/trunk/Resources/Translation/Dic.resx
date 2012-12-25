@@ -1515,4 +1515,28 @@
   <data name="error_invoice_not_scanned_and_approved" xml:space="preserve">
     <value>The order does not have an approved invoice yet</value>
   </data>
+  <data name="AddToInventory_no_inventory_items" xml:space="preserve">
+    <value>No inventory items</value>
+  </data>
+  <data name="AddToInventory_with_inventory_items" xml:space="preserve">
+    <value>Inventory items Added</value>
+  </data>
+  <data name="error_insufficient_allocation_info_for_export" xml:space="preserve">
+    <value>Insufficient allocation info for export</value>
+  </data>
+  <data name="error_insufficient_company_info_for_export" xml:space="preserve">
+    <value>Insufficient company info for export</value>
+  </data>
+  <data name="error_insufficient_order_info_for_export" xml:space="preserve">
+    <value>Insufficient order info for export</value>
+  </data>
+  <data name="error_insufficient_supplier_info_for_export" xml:space="preserve">
+    <value>Insufficient supplierr info for export</value>
+  </data>
+  <data name="error_order_has_no_allocations" xml:space="preserve">
+    <value>The order has no allocations</value>
+  </data>
+  <data name="error_order_price_too_high" xml:space="preserve">
+    <value>The order price is too high</value>
+  </data>
 </root>
