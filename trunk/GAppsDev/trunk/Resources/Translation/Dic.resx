@@ -1539,4 +1539,13 @@
   <data name="error_order_price_too_high" xml:space="preserve">
     <value>The order price is too high</value>
   </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="OptionalField" xml:space="preserve">
+    <value>Optional Field</value>
+  </data>
+  <data name="CreateItemForSupplier" xml:space="preserve">
+    <value>Create Item For Supplier</value>
+  </data>
 </root>

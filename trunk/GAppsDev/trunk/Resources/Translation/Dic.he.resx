@@ -1536,4 +1536,13 @@
   <data name="error_order_price_too_high" xml:space="preserve">
     <value>מחיר ההזמנה גבוהה מדי</value>
   </data>
+  <data name="Optional" xml:space="preserve">
+    <value>אופציונלי</value>
+  </data>
+  <data name="OptionalField" xml:space="preserve">
+    <value>שדה רשות</value>
+  </data>
+  <data name="CreateItemForSupplier" xml:space="preserve">
+    <value>צור פריט לספק</value>
+  </data>
 </root>
