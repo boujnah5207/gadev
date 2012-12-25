@@ -1548,4 +1548,13 @@
   <data name="CreateItemForSupplier" xml:space="preserve">
     <value>Create Item For Supplier</value>
   </data>
+  <data name="AddSupplierItem" xml:space="preserve">
+    <value>Add supplier Item</value>
+  </data>
+  <data name="CreateItem" xml:space="preserve">
+    <value>Create item</value>
+  </data>
+  <data name="SupplierItem" xml:space="preserve">
+    <value>Supplier item</value>
+  </data>
 </root>

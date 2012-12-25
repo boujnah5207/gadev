@@ -91,6 +91,7 @@ function beginCreate() {
     $("#suppliersList").replaceWith($("<span class='selectedSupplier'>" + selectedSupplier.Name + "</span>"));
     AddSupplierButton.remove();
     supplierButton.remove();
+    $("#AddOrderItemButton").toggle();
 
     $.ajax({
         type: "GET",
@@ -315,9 +316,14 @@ function addOrderItem() {
             });
 
             createItemDialog = createItemDialogContainer.dialog({
-                title: local.AddItem,
+                title: local.AddSupplierItem,
                 width: 400,
-                height: 400
+                height: 400,
+                close: function () {
+                    isAddItemDialogOpen = false;
+                    createItemDialogContainer.dialog("destroy");
+                    createItemDialogContainer.remove();
+                }
             });
 
             isAddItemDialogOpen = true;

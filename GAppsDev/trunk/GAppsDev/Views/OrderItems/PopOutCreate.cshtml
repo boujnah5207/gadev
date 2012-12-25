@@ -1,22 +1,14 @@
 ﻿@model DB.Orders_Items
 
-@{
-    ViewBag.Title = "PopOutCreate";
-}
-
 <div id="CreateFormContainer" class="popOutDialog">
-
-    @using (Html.BeginForm()) {
-        @Html.ValidationSummary(true)
         <fieldset>
-            <legend>@Loc.Dic.Item</legend>
+            <legend>@Loc.Dic.SupplierItem</legend>
 
             <div class="editor-label">
                 @Loc.Dic.ItemName
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Title)
-                @Html.ValidationMessageFor(model => model.Title)
             </div>
     
             <div class="editor-label">
@@ -24,17 +16,10 @@
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.SubTitle)
-                @Html.ValidationMessageFor(model => model.SubTitle)
             </div>
             
             <p>
-                <input id="submitOrderItem" type="button" value="הוסף" />
+                <input id="submitOrderItem" type="button" value="@Loc.Dic.CreateItem" />
             </p>
         </fieldset>
-    }
-    
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
-
 </div>
