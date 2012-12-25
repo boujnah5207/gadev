@@ -574,7 +574,6 @@ namespace GAppsDev.Controllers
             // Setting order properties
             model.Order.UserId = CurrentUser.UserId;
             model.Order.Price = totalOrderPrice;
-            model.Order.NextOrderApproverId = CurrentUser.OrdersApproverId;
             model.Order.IsFutureOrder = model.IsFutureOrder;
 
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
