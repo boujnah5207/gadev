@@ -115,7 +115,7 @@ namespace GAppsDev.Controllers
                 DateTime CurrentTime = DateTime.Now;
                 TimeSpan twoDays = TimeSpan.FromDays(2);
                 orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User")
-                    .Where(x => 
+                    .Where(x =>
                         EntityFunctions.DiffHours(x.CreationDate, CurrentTime) >= 48 &&
                         x.StatusId < (int)StatusType.ApprovedPendingInvoice &&
                         x.StatusId != (int)StatusType.Declined &&
@@ -141,7 +141,7 @@ namespace GAppsDev.Controllers
             {
                 StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
                 model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "User1", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget");
-                
+
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
                 if ((model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
@@ -168,7 +168,7 @@ namespace GAppsDev.Controllers
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
                 if ((orderFromDB.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
 
-                
+
 
                 if (!orderFromDB.ApprovalRouteId.HasValue || !orderFromDB.ApprovalRouteStep.HasValue)
                     return Error(Loc.Dic.error_order_already_approved);
@@ -214,7 +214,7 @@ namespace GAppsDev.Controllers
                 if (ordersRep.Update(orderFromDB) == null) return Error(Loc.Dic.error_database_error);
 
                 Orders_History orderHistory = new Orders_History();
-                if(historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, approverNotes);
+                if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, approverNotes);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
 
@@ -315,11 +315,11 @@ namespace GAppsDev.Controllers
                 order.InvoiceDate = model.InvoiceDate;
                 order.ValueDate = model.ValueDate;
                 if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
-                
+
                 historyActionId = (int)HistoryActions.InvoiceScanned;
                 Orders_History orderHistory = new Orders_History();
                 if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
-                
+
                 SaveUniqueFile(model.File, INVOICE_FOLDER_NAME, id);
 
                 EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
@@ -374,7 +374,7 @@ namespace GAppsDev.Controllers
             int? historyActionId = null;
 
 
-            
+
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
             using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
@@ -648,7 +648,7 @@ namespace GAppsDev.Controllers
                 else
                 {
                     Users_ApprovalRoutes orderRoute = routesRep.GetEntity(CurrentUser.OrdersApprovalRouteId.Value, "Users_ApprovalStep");
-                    Users_ApprovalStep firstStep = orderRoute.Users_ApprovalStep.OrderBy( x => x.StepNumber).FirstOrDefault();
+                    Users_ApprovalStep firstStep = orderRoute.Users_ApprovalStep.OrderBy(x => x.StepNumber).FirstOrDefault();
 
                     if (firstStep != null)
                     {
@@ -701,7 +701,8 @@ namespace GAppsDev.Controllers
                     return Error(Loc.Dic.error_orders_create_error);
                 }
             }
-            using (OrdersHistoryRepository ordersHistoryRepository = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id)){
+            using (OrdersHistoryRepository ordersHistoryRepository = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
+            {
                 Orders_History orderHis = new Orders_History();
                 ordersHistoryRepository.Create(orderHis, (int)HistoryActions.Created, model.NotesForApprover);
             }
@@ -1008,189 +1009,68 @@ namespace GAppsDev.Controllers
             }
             else
                 return Error(Loc.Dic.error_order_update_items_error);
-
         }
 
         [OpenIdAuthorize]
         public ActionResult Delete(int id = 0)
         {
-            if (Authorized(RoleType.OrdersWriter))
-            {
-                OrdersRepository.ExeedingOrderData model = new OrdersRepository.ExeedingOrderData();
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
-                    model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget", "User1");
-                }
-
-                if (model != null)
-                {
-                    if (model.OriginalOrder.UserId == CurrentUser.UserId)
-                    {
-                        if (model.OriginalOrder.StatusId == (int)StatusType.Pending || model.OriginalOrder.StatusId == (int)StatusType.PendingOrderCreator)
-                        {
-                            ViewBag.OrderId = model.OriginalOrder.Id;
-                            return View(model);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_order_delete_after_approval);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_no_permission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_order_not_found);
-                }
-            }
-            else
+            OrdersRepository.ExeedingOrderData model = new OrdersRepository.ExeedingOrderData();
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                return Error(Loc.Dic.error_no_permission);
+                StatusType minStatus = Authorized(RoleType.OrdersApprover) ? StatusType.ApprovedPendingInvoice : StatusType.Pending;
+                model = ordersRep.GetOrderWithExeedingData(id, minStatus, "Orders_Statuses", "Supplier", "User", "Orders_OrderToItem.Orders_Items", "Orders_OrderToAllocation", "Orders_OrderToAllocation.Budgets_Allocations", "Budget", "User1");
             }
+
+            if (model == null) return Error(Loc.Dic.error_order_not_found);
+            if (model.OriginalOrder.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+            if (model.OriginalOrder.StatusId != (int)StatusType.Pending && model.OriginalOrder.StatusId != (int)StatusType.PendingOrderCreator)
+                return Error(Loc.Dic.error_order_delete_after_approval);
+
+            ViewBag.OrderId = model.OriginalOrder.Id;
+            return View(model);
         }
-
-        //
-        // POST: /Orders/Delete/5
 
         [OpenIdAuthorize]
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id = 0)
         {
-            if (Authorized(RoleType.OrdersWriter))
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
+
+            Order order;
+            using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
+            using (OrderToAllocationRepository orderToAllocationRep = new OrderToAllocationRepository())
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                Order order;
-                using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                using (OrderToAllocationRepository orderToAllocationRep = new OrderToAllocationRepository())
-                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    order = orderRep.GetEntity(id);
+                order = orderRep.GetEntity(id);
 
-                    if (order != null)
-                    {
-                        if (order.UserId == CurrentUser.UserId)
-                        {
-                            if (order.StatusId == (int)StatusType.Pending || order.StatusId == (int)StatusType.PendingOrderCreator)
-                            {
-                                if (orderRep.Delete(order.Id))
-                                {
-                                    return RedirectToAction("MyOrders");
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.error_orders_delete_error);
-                                }
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_order_delete_after_approval);
-                            }
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_no_permission);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_order_not_found);
-                    }
-                }
+                if (order == null) return Error(Loc.Dic.error_order_not_found);
+                if (order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
+                if (order.StatusId != (int)StatusType.Pending && order.StatusId != (int)StatusType.PendingOrderCreator)
+                    return Error(Loc.Dic.error_order_delete_after_approval);
 
+                if (!orderRep.Delete(order.Id)) return Error(Loc.Dic.error_orders_delete_error);
             }
-            else
-            {
 
-                return Error(Loc.Dic.error_no_permission);
-            }
+            return RedirectToAction("MyOrders");
         }
 
         [OpenIdAuthorize]
         public ActionResult PendingInventory(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
         {
-            if (Authorized(RoleType.InventoryManager))
+            if (!Authorized(RoleType.InventoryManager)) return Error(Loc.Dic.error_no_permission);
+
+            IEnumerable<Order> orders;
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
             {
-                if (!Authorized(RoleType.OrdersViewer))
-                    return Error(Loc.Dic.error_no_permission);
+                orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => !x.WasAddedToInventory && x.StatusId > (int)StatusType.InvoiceScannedPendingOrderCreator);
 
-                IEnumerable<Order> orders;
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    orders = ordersRep.GetList("Orders_Statuses", "Supplier", "User").Where(x => !x.WasAddedToInventory && x.StatusId > (int)StatusType.InvoiceScannedPendingOrderCreator);
+                if (orders == null) return Error(Loc.Dic.error_orders_get_error);
 
-                    if (orders != null)
-                    {
-                        int numberOfItems = orders.Count();
-                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                        if (numberOfItems % ITEMS_PER_PAGE != 0)
-                            numberOfPages++;
+                orders = Pagination(orders, page, sortby, order);
 
-                        if (page <= 0)
-                            page = FIRST_PAGE;
-                        if (page > numberOfPages)
-                            page = numberOfPages;
-
-                        if (sortby != NO_SORT_BY)
-                        {
-                            Func<Func<Order, dynamic>, IEnumerable<Order>> orderFunction;
-
-                            if (order == DEFAULT_DESC_ORDER)
-                                orderFunction = x => orders.OrderByDescending(x);
-                            else
-                                orderFunction = x => orders.OrderBy(x);
-
-                            switch (sortby)
-                            {
-                                case "number":
-                                    orders = orderFunction(x => x.OrderNumber);
-                                    break;
-                                case "creation":
-                                    orders = orderFunction(x => x.CreationDate);
-                                    break;
-                                case "supplier":
-                                    orders = orderFunction(x => x.Supplier.Name);
-                                    break;
-                                case "status":
-                                    orders = orderFunction(x => x.StatusId);
-                                    break;
-                                case "price":
-                                    orders = orderFunction(x => x.Price);
-                                    break;
-                                case "lastChange":
-                                    orders = orderFunction(x => x.LastStatusChangeDate);
-                                    break;
-                                case "username":
-                                default:
-                                    orders = orderFunction(x => x.User.FirstName + " " + x.User.LastName);
-                                    break;
-                            }
-                        }
-
-                        orders = orders
-                            .Skip((page - 1) * ITEMS_PER_PAGE)
-                            .Take(ITEMS_PER_PAGE)
-                            .ToList();
-
-                        ViewBag.Sortby = sortby;
-                        ViewBag.Order = order;
-                        ViewBag.CurrPage = page;
-                        ViewBag.NumberOfPages = numberOfPages;
-
-                        return View(orders.ToList());
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_orders_get_error);
-                    }
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+                return View(orders.ToList());
             }
         }
 
@@ -1204,231 +1084,122 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult AddToInventory(int id = 0)
         {
-            if (Authorized(RoleType.InventoryManager))
+            if (!Authorized(RoleType.InventoryManager)) return Error(Loc.Dic.error_no_permission);
+
+            Order order;
+            List<Location> locations = null;
+            AddToInventoryModel model = new AddToInventoryModel();
+
+            using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (LocationsRepository locationsRep = new LocationsRepository(CurrentUser.CompanyId))
             {
-                AddToInventoryModel model = new AddToInventoryModel();
-                Order order;
-                using (OrdersRepository orderRep = new OrdersRepository(CurrentUser.CompanyId))
-                {
-                    order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                order = orderRep.GetEntity(id, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                if (order == null) return Error(Loc.Dic.error_order_not_found);
+                if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport) return Error(Loc.Dic.error_order_not_approved);
 
-                    if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                        return Error(Loc.Dic.error_order_not_approved);
-                }
-
-                if (order != null)
-                {
-                    if (order.CompanyId == CurrentUser.CompanyId)
-                    {
-                        List<Location> locations = null;
-                        using (LocationsRepository locationsRep = new LocationsRepository())
-                        using (OrderToItemRepository orderToItemRep = new OrderToItemRepository())
-                        {
-                            locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                            if (locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
-                            
-                            model.OrderItems = orderToItemRep.GetList("Orders_Items").Where(x => x.OrderId == order.Id).ToList();
-                        }
-
-                        if (model.OrderItems != null && locations != null)
-                        {
-                            model.OrderId = order.Id;
-                            model.LocationsList = new SelectList(locations, "Id", "Name");
-                            return View(model);
-                        }
-                        else
-                        {
-                            return Error(Loc.Dic.error_database_error);
-                        }
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_no_permission);
-                    }
-                }
-                else
-                {
-                    return Error(Loc.Dic.error_order_not_found);
-                }
+                locations = locationsRep.GetList().OrderBy(x => x.Name).ToList();
+                if (locations == null || locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
             }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
+
+            model.OrderId = order.Id;
+            model.OrderItems = order.Orders_OrderToItem.ToList();
+            model.LocationsList = new SelectList(locations, "Id", "Name");
+            return View(model);
         }
 
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult AddToInventory(AddToInventoryModel model)
         {
-            if (Authorized(RoleType.InventoryManager))
-            {
-                Order order;
-                List<Inventory> createdItems = new List<Inventory>();
-                List<Location> locations;
-                bool noCreationErrors = true;
+            if (!Authorized(RoleType.InventoryManager)) return Error(Loc.Dic.error_no_permission);
 
-                using (InventoryRepository inventoryRep = new InventoryRepository(CurrentUser.CompanyId))
-                using (LocationsRepository locationsRep = new LocationsRepository())
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            Order order;
+            List<Inventory> createdItems = new List<Inventory>();
+            List<Location> locations;
+            bool noCreationErrors = true;
+
+            using (InventoryRepository inventoryRep = new InventoryRepository(CurrentUser.CompanyId))
+            using (LocationsRepository locationsRep = new LocationsRepository(CurrentUser.CompanyId))
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            {
+                order = ordersRep.GetEntity(model.OrderId, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+
+                if (order == null) return Error(Loc.Dic.error_order_get_error);
+                if (order.WasAddedToInventory) return Error(Loc.Dic.error_order_was_added_to_inventory);
+                if (order.StatusId < (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport) return Error(Loc.Dic.error_invoice_not_scanned_and_approved);
+
+                locations = locationsRep.GetList().ToList();
+                if (locations == null || locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
+
+                foreach (SplittedInventoryItem splitedItem in model.InventoryItems)
                 {
-                    order = ordersRep.GetEntity(model.OrderId, "Supplier", "Orders_OrderToItem", "Orders_OrderToItem.Orders_Items");
+                    if (!noCreationErrors) break;
+                    if (!splitedItem.AddToInventory) continue;
 
-                    if (order != null)
+                    int? itemId = splitedItem.ItemsToAdd[0].ItemId;
+                    Orders_OrderToItem originalItem = order.Orders_OrderToItem.FirstOrDefault(x => x.Id == itemId);
+                    bool isValidList = originalItem != null && splitedItem.ItemsToAdd.All(x => x.ItemId == itemId);
+
+                    if (!isValidList) { noCreationErrors = false; break; }
+
+                    if (splitedItem.ItemsToAdd.Count == 1)
                     {
-                        if (order.CompanyId == CurrentUser.CompanyId)
+                        Inventory listItem = splitedItem.ItemsToAdd[0];
+                        if (!locations.Any(x => x.Id == listItem.LocationId)) return Error(Loc.Dic.error_invalid_form);
+
+                        Inventory newItem = new Inventory()
                         {
-                            if (order.WasAddedToInventory)
-                                return Error(Loc.Dic.error_order_was_added_to_inventory);
+                            AssignedTo = listItem.AssignedTo,
+                            LocationId = listItem.LocationId,
+                            Notes = listItem.Notes,
+                            SerialNumber = listItem.SerialNumber,
+                            Status = listItem.Status,
+                            WarrentyPeriodStart = listItem.WarrentyPeriodStart,
+                            WarrentyPeriodEnd = listItem.WarrentyPeriodEnd,
+                            ItemId = originalItem.ItemId,
+                            OrderId = order.Id,
+                            CompanyId = CurrentUser.CompanyId,
+                            IsOutOfInventory = false,
+                            OriginalQuantity = originalItem.Quantity,
+                            RemainingQuantity = originalItem.Quantity
+                        };
 
-                            if (order.StatusId >= (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
-                            {
-                                locations = locationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                                if (locations.Count == 0) return Error(Loc.Dic.error_no_locations_found);
-
-                                if (locations != null)
-                                {
-                                    foreach (SplittedInventoryItem splitedItem in model.InventoryItems)
-                                    {
-                                        if (!noCreationErrors)
-                                            break;
-
-                                        if (!splitedItem.AddToInventory)
-                                            continue;
-
-                                        int? itemId = splitedItem.ItemsToAdd[0].ItemId;
-                                        Orders_OrderToItem originalItem = order.Orders_OrderToItem.FirstOrDefault(x => x.Id == itemId);
-                                        bool isValidList = originalItem != null && splitedItem.ItemsToAdd.All(x => x.ItemId == itemId);
-
-                                        if (isValidList)
-                                        {
-                                            if (splitedItem.ItemsToAdd.Count == 1)
-                                            {
-                                                Inventory listItem = splitedItem.ItemsToAdd[0];
-
-                                                if (locations.Any(x => x.Id == listItem.LocationId))
-                                                {
-                                                    //for (int i = 0; i < originalItem.Quantity; i++)
-                                                    //{
-                                                        Inventory newItem = new Inventory()
-                                                        {
-                                                            AssignedTo = listItem.AssignedTo,
-                                                            LocationId = listItem.LocationId,
-                                                            Notes = listItem.Notes,
-                                                            SerialNumber = listItem.SerialNumber,
-                                                            Status = listItem.Status,
-                                                            WarrentyPeriodStart = listItem.WarrentyPeriodStart,
-                                                            WarrentyPeriodEnd = listItem.WarrentyPeriodEnd,
-                                                            ItemId = originalItem.ItemId,
-                                                            OrderId = order.Id,
-                                                            CompanyId = CurrentUser.CompanyId,
-                                                            IsOutOfInventory = false,
-                                                            OriginalQuantity = originalItem.Quantity,
-                                                            RemainingQuantity = originalItem.Quantity
-                                                        };
-
-                                                        if (inventoryRep.Create(newItem))
-                                                        {
-                                                            createdItems.Add(newItem);
-                                                        }
-                                                        else
-                                                        {
-                                                            noCreationErrors = false;
-                                                            break;
-                                                        }
-                                                    //}
-                                                }
-                                                else
-                                                {
-                                                    return Error(Loc.Dic.error_invalid_form);
-                                                }
-                                            }
-                                            else if (
-                                                originalItem.Quantity == splitedItem.ItemsToAdd.Count
-                                                )
-                                            {
-                                                foreach (var item in splitedItem.ItemsToAdd)
-                                                {
-                                                    if (locations.Any(x => x.Id == item.LocationId))
-                                                    {
-                                                        item.ItemId = originalItem.ItemId;
-                                                        item.OrderId = order.Id;
-                                                        item.CompanyId = CurrentUser.CompanyId;
-                                                        item.IsOutOfInventory = false;
-
-                                                        if (inventoryRep.Create(item))
-                                                        {
-                                                            createdItems.Add(item);
-                                                        }
-                                                        else
-                                                        {
-                                                            noCreationErrors = false;
-                                                            break;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        noCreationErrors = false;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                noCreationErrors = false;
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            noCreationErrors = false;
-                                            break;
-                                        }
-                                    }
-
-                                    if (noCreationErrors)
-                                    {
-                                        order.WasAddedToInventory = true;
-                                        order.LastStatusChangeDate = DateTime.Now;
-
-                                        ordersRep.Update(order);
-
-                                        return RedirectToAction("PendingInventory");
-                                    }
-                                    else
-                                    {
-                                        foreach (var item in createdItems)
-                                        {
-                                            inventoryRep.Delete(item.Id);
-                                        }
-
-                                        return Error(Loc.Dic.error_inventory_create_error);
-                                    }
-                                }
-                                else
-                                {
-                                    return Error(Loc.Dic.error_database_error);
-                                }
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_order_not_approved);
-                            }
-                        }
-                        else
+                        if (!inventoryRep.Create(newItem)) { noCreationErrors = false; break; }
+                        createdItems.Add(newItem);
+                    }
+                    else if (originalItem.Quantity == splitedItem.ItemsToAdd.Count)
+                    {
+                        foreach (var item in splitedItem.ItemsToAdd)
                         {
-                            return Error(Loc.Dic.error_no_permission);
+                            if (!locations.Any(x => x.Id == item.LocationId)) { noCreationErrors = false; break; }
+
+                            item.ItemId = originalItem.ItemId;
+                            item.OrderId = order.Id;
+                            item.CompanyId = CurrentUser.CompanyId;
+                            item.IsOutOfInventory = false;
+
+                            if (!inventoryRep.Create(item)) { noCreationErrors = false; break; }
+                            createdItems.Add(item);
                         }
                     }
-                    else
-                    {
-                        return Error(Loc.Dic.error_order_get_error);
-                    }
+                    else { noCreationErrors = false; break; }
                 }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+
+                if (!noCreationErrors)
+                {
+                    foreach (var item in createdItems)
+                    {
+                        inventoryRep.Delete(item.Id);
+                    }
+
+                    return Error(Loc.Dic.error_inventory_create_error);
+                }
+
+                order.WasAddedToInventory = true;
+                order.LastStatusChangeDate = DateTime.Now;
+                ordersRep.Update(order);
+
+                return RedirectToAction("PendingInventory");
             }
         }
 

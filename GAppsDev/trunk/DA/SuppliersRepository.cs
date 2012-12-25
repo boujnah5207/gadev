@@ -32,7 +32,7 @@ namespace DA
         public override Supplier GetEntity(int id, params string[] includes)
         {
             Supplier supplier = base.GetEntity(id, includes);
-            return supplier.CompanyId == _companyId ? supplier : null;
+            return supplier != null && supplier.CompanyId == _companyId ? supplier : null;
         }
 
         public new Messeges Create(Supplier entity)

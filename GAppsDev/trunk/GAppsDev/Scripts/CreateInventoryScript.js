@@ -17,7 +17,6 @@ function getSupplierItems() {
             UpdateItemsList(response.data);
         }
     });
-
 }
 
 function UpdateItemsList(newItemList) {

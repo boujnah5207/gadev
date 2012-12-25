@@ -68,7 +68,7 @@ namespace GAppsDev.Controllers
         {
             using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository(CurrentUser.CompanyId))
             using (SuppliersRepository suppliersRepository = new SuppliersRepository(CurrentUser.CompanyId))
-            using (LocationsRepository locationsRepository = new LocationsRepository())
+            using (LocationsRepository locationsRepository = new LocationsRepository(CurrentUser.CompanyId))
             using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))
             {
 
@@ -116,7 +116,7 @@ namespace GAppsDev.Controllers
             }
 
             //using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository())
-            using (LocationsRepository locationsRepository = new LocationsRepository())
+            using (LocationsRepository locationsRepository = new LocationsRepository(CurrentUser.CompanyId))
             //using (InventoryRepository inventoryRepository = new InventoryRepository())
             {
                 //ViewBag.RelatedInventoryItem = new SelectList(orderItemsRepository.GetList(), "Id", "Title" + "SubTitle");
