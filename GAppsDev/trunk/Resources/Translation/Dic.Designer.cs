@@ -214,6 +214,24 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No inventory items.
+        /// </summary>
+        public static string AddToInventory_no_inventory_items {
+            get {
+                return ResourceManager.GetString("AddToInventory_no_inventory_items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory items Added.
+        /// </summary>
+        public static string AddToInventory_with_inventory_items {
+            get {
+                return ResourceManager.GetString("AddToInventory_with_inventory_items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Search.
         /// </summary>
         public static string AdvancedSearch {
@@ -1375,6 +1393,42 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insufficient allocation info for export.
+        /// </summary>
+        public static string error_insufficient_allocation_info_for_export {
+            get {
+                return ResourceManager.GetString("error_insufficient_allocation_info_for_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient company info for export.
+        /// </summary>
+        public static string error_insufficient_company_info_for_export {
+            get {
+                return ResourceManager.GetString("error_insufficient_company_info_for_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient order info for export.
+        /// </summary>
+        public static string error_insufficient_order_info_for_export {
+            get {
+                return ResourceManager.GetString("error_insufficient_order_info_for_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient supplierr info for export.
+        /// </summary>
+        public static string error_insufficient_supplier_info_for_export {
+            get {
+                return ResourceManager.GetString("error_insufficient_supplier_info_for_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The budget year must be in 10 years range from current time.
         /// </summary>
         public static string error_invalid_budget_year {
@@ -1573,6 +1627,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The order has no allocations.
+        /// </summary>
+        public static string error_order_has_no_allocations {
+            get {
+                return ResourceManager.GetString("error_order_has_no_allocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to error_order_has_no_items.
         /// </summary>
         public static string error_order_has_no_items {
@@ -1614,6 +1677,15 @@ namespace Loc {
         public static string error_order_notes_too_long {
             get {
                 return ResourceManager.GetString("error_order_notes_too_long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order price is too high.
+        /// </summary>
+        public static string error_order_price_too_high {
+            get {
+                return ResourceManager.GetString("error_order_price_too_high", resourceCulture);
             }
         }
         
