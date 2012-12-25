@@ -781,6 +781,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Item For Supplier.
+        /// </summary>
+        public static string CreateItemForSupplier {
+            get {
+                return ResourceManager.GetString("CreateItemForSupplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create New.
         /// </summary>
         public static string CreateNew {
@@ -2946,6 +2955,24 @@ namespace Loc {
         public static string October {
             get {
                 return ResourceManager.GetString("October", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional.
+        /// </summary>
+        public static string Optional {
+            get {
+                return ResourceManager.GetString("Optional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional Field.
+        /// </summary>
+        public static string OptionalField {
+            get {
+                return ResourceManager.GetString("OptionalField", resourceCulture);
             }
         }
         
