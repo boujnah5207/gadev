@@ -1196,7 +1196,7 @@ namespace GAppsDev.Controllers
 
                 order.WasAddedToInventory = true;
                 order.LastStatusChangeDate = DateTime.Now;
-                if(ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+                if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
 
                 bool hasInventoryItems = model.InventoryItems.Any(x => x.AddToInventory);
                 string notes = hasInventoryItems ? Loc.Dic.AddToInventory_with_inventory_items : Loc.Dic.AddToInventory_no_inventory_items;
@@ -1279,7 +1279,7 @@ namespace GAppsDev.Controllers
                     if (order.Price.HasValue)
                     {
                         if (order.Price.Value > 999999999) return Error(String.Format("({0}: {1}) {2}", Loc.Dic.Order, order.OrderNumber, Loc.Dic.error_order_price_too_high));
-                        
+
                         orderPrice = order.Price.Value;
                     }
                     else
@@ -1354,7 +1354,7 @@ namespace GAppsDev.Controllers
                     );
 
                     order.StatusId = (int)StatusType.InvoiceExportedToFile;
-                    if(ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
+                    if (ordersRep.Update(order) == null) return Error(Loc.Dic.error_database_error);
 
                     int? historyActionId = null;
                     historyActionId = (int)HistoryActions.ExportedToFile;
@@ -1375,121 +1375,106 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Search()
         {
-            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
-            {
-                if (!Authorized(RoleType.OrdersViewer))
-                {
-                    ViewBag.UserId = CurrentUser.UserId;
-                }
+            if (!Authorized(RoleType.OrdersWriter) && !Authorized(RoleType.OrdersViewer)) return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.OrdersViewer)) ViewBag.UserId = CurrentUser.UserId;
 
-                return View();
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
+            return View();
         }
 
         [OpenIdAuthorize]
         [HttpPost]
         public ActionResult Search(OrdersSearchValuesModel model)
         {
-            if (Authorized(RoleType.OrdersWriter) || Authorized(RoleType.OrdersViewer))
+            if (!Authorized(RoleType.OrdersWriter) && !Authorized(RoleType.OrdersViewer)) return Error(Loc.Dic.error_no_permission);
+
+            List<Order> matchingOrders;
+            List<Order> TextMatchOrders = new List<Order>();
+
+            ViewBag.UserId = model.UserId;
+            ViewBag.StatusId = model.StatusId;
+            ViewBag.SupplierId = model.SupplierId;
+            ViewBag.HideUserField = model.HideUserField;
+            ViewBag.HideStatusField = model.HideStatusField;
+            ViewBag.HideSupplierField = model.HideSupplierField;
+
+            using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
             {
-                List<Order> matchingOrders;
-                List<Order> TextMatchOrders = new List<Order>();
+                IQueryable<Order> ordersQuery;
 
-                ViewBag.UserId = model.UserId;
-                ViewBag.StatusId = model.StatusId;
-                ViewBag.SupplierId = model.SupplierId;
-                ViewBag.HideUserField = model.HideUserField;
-                ViewBag.HideStatusField = model.HideStatusField;
-                ViewBag.HideSupplierField = model.HideSupplierField;
+                ordersQuery = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
 
-                using (OrdersRepository ordersRep = new OrdersRepository(CurrentUser.CompanyId))
-                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
-                using (SuppliersRepository suppliersRep = new SuppliersRepository(CurrentUser.CompanyId))
-                using (OrderStatusesRepository statusesRep = new OrderStatusesRepository())
+                if (Authorized(RoleType.OrdersViewer))
                 {
-                    IQueryable<Order> ordersQuery;
-
-                    ordersQuery = ordersRep.GetList("Company", "Orders_Statuses", "Supplier", "User").Where(x => x.CompanyId == CurrentUser.CompanyId);
-
-                    if (Authorized(RoleType.OrdersViewer))
-                    {
-                        if (model.UserId.HasValue && model.UserId.Value != -1)
-                            ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);
-                    }
-                    else
-                    {
-                        ordersQuery = ordersQuery.Where(x => x.UserId == CurrentUser.UserId);
-                        ViewBag.UserId = CurrentUser.UserId;
-                    }
-
-                    if (model.BudgetId.HasValue && model.BudgetId.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.BudgetId == model.BudgetId.Value);
-
-                    if (model.OrderNumber.HasValue && model.OrderNumber.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.OrderNumber == model.OrderNumber.Value);
-
-                    if (model.SupplierId.HasValue && model.SupplierId.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.SupplierId == model.SupplierId.Value);
-
-                    if (model.StatusId.HasValue && model.StatusId.Value != -1)
-                        ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
-
-                    if (model.AllocationId != null && model.AllocationId != "-1")
-                        ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any(oa => oa.Budgets_Allocations.ExternalId == model.AllocationId));
-
-                    if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
-                        model.PriceMax = null;
-
-                    if (model.PriceMin.HasValue)
-                        ordersQuery = ordersQuery.Where(x => x.Price >= model.PriceMin.Value);
-
-                    if (model.PriceMax.HasValue)
-                        ordersQuery = ordersQuery.Where(x => x.Price <= model.PriceMax.Value);
-
-                    if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value < model.CreationMin.Value)
-                        model.CreationMax = null;
-
-                    if (model.CreationMin.HasValue)
-                        ordersQuery = ordersQuery.Where(x => x.CreationDate >= model.CreationMin.Value);
-
-                    if (model.CreationMax.HasValue)
-                        ordersQuery = ordersQuery.Where(x => x.CreationDate <= model.CreationMax.Value);
-
-                    matchingOrders = ordersQuery.ToList();
-                }
-
-                if (!String.IsNullOrEmpty(model.NoteText))
-                {
-                    List<string> searchWords = model.NoteText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(str => str.Trim()).ToList();
-                    foreach (var order in matchingOrders)
-                    {
-                        foreach (var word in searchWords)
-                        {
-                            if (!String.IsNullOrEmpty(order.NotesForSupplier) && order.NotesForSupplier.Contains(word))
-                            {
-                                TextMatchOrders.Add(order);
-                                break;
-                            }
-                        }
-                    }
-
-                    model.Matches = TextMatchOrders;
-                    return View(model);
+                    if (model.UserId.HasValue && model.UserId.Value != -1)
+                        ordersQuery = ordersQuery.Where(x => x.UserId == model.UserId.Value);
                 }
                 else
                 {
-                    model.Matches = matchingOrders;
-                    return View(model);
+                    ordersQuery = ordersQuery.Where(x => x.UserId == CurrentUser.UserId);
+                    ViewBag.UserId = CurrentUser.UserId;
                 }
+
+                if (model.BudgetId.HasValue && model.BudgetId.Value != -1)
+                    ordersQuery = ordersQuery.Where(x => x.BudgetId == model.BudgetId.Value);
+
+                if (model.OrderNumber.HasValue && model.OrderNumber.Value != -1)
+                    ordersQuery = ordersQuery.Where(x => x.OrderNumber == model.OrderNumber.Value);
+
+                if (model.SupplierId.HasValue && model.SupplierId.Value != -1)
+                    ordersQuery = ordersQuery.Where(x => x.SupplierId == model.SupplierId.Value);
+
+                if (model.StatusId.HasValue && model.StatusId.Value != -1)
+                    ordersQuery = ordersQuery.Where(x => x.StatusId == model.StatusId.Value);
+
+                if (model.AllocationId != null && model.AllocationId != "-1")
+                    ordersQuery = ordersQuery.Where(x => x.Orders_OrderToAllocation.Any(oa => oa.Budgets_Allocations.ExternalId == model.AllocationId));
+
+                if (model.PriceMin.HasValue && model.PriceMax.HasValue && model.PriceMax.Value < model.PriceMin.Value)
+                    model.PriceMax = null;
+
+                if (model.PriceMin.HasValue)
+                    ordersQuery = ordersQuery.Where(x => x.Price >= model.PriceMin.Value);
+
+                if (model.PriceMax.HasValue)
+                    ordersQuery = ordersQuery.Where(x => x.Price <= model.PriceMax.Value);
+
+                if (model.CreationMin.HasValue && model.CreationMax.HasValue && model.CreationMax.Value < model.CreationMin.Value)
+                    model.CreationMax = null;
+
+                if (model.CreationMin.HasValue)
+                    ordersQuery = ordersQuery.Where(x => x.CreationDate >= model.CreationMin.Value);
+
+                if (model.CreationMax.HasValue)
+                    ordersQuery = ordersQuery.Where(x => x.CreationDate <= model.CreationMax.Value);
+
+                matchingOrders = ordersQuery.ToList();
+            }
+
+            if (!String.IsNullOrEmpty(model.NoteText))
+            {
+                List<string> searchWords = model.NoteText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(str => str.Trim()).ToList();
+                foreach (var order in matchingOrders)
+                {
+                    foreach (var word in searchWords)
+                    {
+                        if (!String.IsNullOrEmpty(order.NotesForSupplier) && order.NotesForSupplier.Contains(word))
+                        {
+                            TextMatchOrders.Add(order);
+                            break;
+                        }
+                    }
+                }
+
+                model.Matches = TextMatchOrders;
             }
             else
             {
-                return Error(Loc.Dic.error_no_permission);
+                model.Matches = matchingOrders;
             }
+
+            return View(model);
         }
 
         [ChildActionOnly]
@@ -1611,8 +1596,7 @@ namespace GAppsDev.Controllers
         [ChildActionOnly]
         public ActionResult SearchForm(OrdersSearchValuesModel model, bool isExpanding, bool isCollapsed, int? userId = null, int? statusId = null, int? supplierId = null, bool hideUserField = false, bool hideStatusField = false, bool hideSupplierField = false)
         {
-            if (model == null)
-                model = new OrdersSearchValuesModel();
+            if (model == null) model = new OrdersSearchValuesModel();
 
             using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             using (BudgetsRepository budgetsRep = new BudgetsRepository(CurrentUser.CompanyId))
@@ -1655,8 +1639,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult InvoiceApproval(int id = 0)
         {
-            if (!Authorized(RoleType.OrdersWriter))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
             Order order;
             using (OrdersRepository ordersRepository = new OrdersRepository(CurrentUser.CompanyId))
@@ -1664,11 +1647,9 @@ namespace GAppsDev.Controllers
                 order = ordersRepository.GetEntity(id);
             }
 
-            if (order == null)
-                return Error(Loc.Dic.error_order_not_found);
+            if (order == null) return Error(Loc.Dic.error_order_not_found);
 
-            if (order.UserId != CurrentUser.UserId)
-                return Error(Loc.Dic.error_no_permission);
+            if (order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
             ViewBag.orderId = id;
             return View();
@@ -1678,8 +1659,7 @@ namespace GAppsDev.Controllers
         [HttpPost]
         public ActionResult InvoiceApproval(string selectedStatus, int orderId = 0)
         {
-            if (!Authorized(RoleType.OrdersWriter))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
             int? historyActionId = null;
 
@@ -1687,12 +1667,8 @@ namespace GAppsDev.Controllers
             {
                 Order order = ordersRepository.GetEntity(orderId);
 
-                if (order == null)
-                    return Error(Loc.Dic.error_order_not_found);
-
-                if (order.UserId != CurrentUser.UserId)
-                    return Error(Loc.Dic.error_no_permission);
-
+                if (order == null) return Error(Loc.Dic.error_order_not_found);
+                if (order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
                 if (selectedStatus == Loc.Dic.ApproveInvoce)
                 {

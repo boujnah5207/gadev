@@ -16,7 +16,6 @@
 <h2>@Loc.Dic.CreateNewOrder</h2>
 <br />
 
-
 <fieldset>
     <legend>@Loc.Dic.ChooseSupplier</legend>
     <label class="inlineLabel" for="choosenSupplier">@Loc.Dic.Supplier: </label>
@@ -24,7 +23,7 @@
     @Html.DropDownList("SupplierId", (SelectList)ViewBag.SupplierId, new { id = "suppliersList" })
 
     <input id="SupplierButton" type="button" value="@Loc.Dic.ChooseAndContinue" onclick="beginCreate()" />
-            <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateItemForSupplier" onclick="addOrderItem()" />
+    <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateItemForSupplier" onclick="addOrderItem()" style="display:none;"/>
 
     <!-- <input id="AddSupplierButton" type="button" value="Loc.Dic.CreateNew" onclick="addSupplier()" /> -->
 </fieldset>

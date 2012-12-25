@@ -1545,4 +1545,13 @@
   <data name="CreateItemForSupplier" xml:space="preserve">
     <value>צור פריט לספק</value>
   </data>
+  <data name="AddSupplierItem" xml:space="preserve">
+    <value>צור פריט ספק</value>
+  </data>
+  <data name="CreateItem" xml:space="preserve">
+    <value>צור פריט</value>
+  </data>
+  <data name="SupplierItem" xml:space="preserve">
+    <value>פריט ספק</value>
+  </data>
 </root>
