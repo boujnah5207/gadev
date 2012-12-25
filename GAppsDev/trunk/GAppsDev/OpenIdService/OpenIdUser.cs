@@ -22,7 +22,7 @@ namespace GAppsDev.OpenIdService
         public string LastName { get; set; }
         public string FullName { get { return FirstName + " " + LastName; } }
         public int Roles { get; set; }
-        public int? OrdersApproverId { get; set; }
+        //public int? OrdersApproverId { get; set; }
         public int? OrdersApprovalRouteId { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
@@ -118,7 +118,7 @@ namespace GAppsDev.OpenIdService
                                     LastLogInTime = loggingUser.LastLogInTime,
                                     IsSignedByProvider = false,
                                     ClaimedIdentifier = claimedIdentifier,
-                                    OrdersApproverId = loggingUser.OrdersApproverId,
+                                    //OrdersApproverId = loggingUser.OrdersApproverId,
                                     OrdersApprovalRouteId = loggingUser.DefaultApprovalRouteId,
                                     IsActive = loggingUser.IsActive,
                                     LanguageCode = loggingUser.Language.Code

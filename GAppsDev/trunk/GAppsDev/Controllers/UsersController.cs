@@ -304,8 +304,6 @@ namespace GAppsDev.Controllers
                             }
                         }
                         user.Roles = (int)combinedRoles;
-                        if (user.OrdersApproverId == -1)
-                            user.OrdersApproverId = null;
 
                         user.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
 
@@ -558,7 +556,6 @@ namespace GAppsDev.Controllers
                             userFromDatabase.LastName = user.LastName;
                             userFromDatabase.Email = user.Email;
                             userFromDatabase.Roles = (int)combinedRoles;
-                            userFromDatabase.OrdersApproverId = user.OrdersApproverId.HasValue && user.OrdersApproverId.Value == -1 ? null : user.OrdersApproverId;
                             userFromDatabase.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
 
                             User updatedUser = userRep.Update(userFromDatabase);
