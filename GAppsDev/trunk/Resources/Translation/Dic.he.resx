@@ -1560,4 +1560,7 @@
   <data name="error_inventory_item_not_found" xml:space="preserve">
     <value>לא הייתה אפשרות למצוא את פריט המלאי בבסיס הנתונים</value>
   </data>
+  <data name="RemoveNotificationsMessage" xml:space="preserve">
+    <value>אם ברצונך לבטל את שליחת ההתראות לאימייל זה לחץ על הקישור הבא</value>
+  </data>
 </root>

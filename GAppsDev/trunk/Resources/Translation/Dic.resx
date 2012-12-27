@@ -1563,4 +1563,7 @@
   <data name="error_inventory_item_not_found" xml:space="preserve">
     <value>The inventory item was not found</value>
   </data>
+  <data name="RemoveNotificationsMessage" xml:space="preserve">
+    <value>To stop reciving notifications to this email click the following link</value>
+  </data>
 </root>
