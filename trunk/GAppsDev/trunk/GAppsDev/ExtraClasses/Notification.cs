@@ -8,15 +8,16 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 
 namespace GAppsDev.ExtraClasses
 {
-    public class SendNotification
+    public class SendNotifications
     {
         //public const string FROM_ADDRESS = "NOREPLY@pqdev.com";
         //public const string FROM_PASSWORD = "noreply50100200";
 
-        //public void OrderApproved(Order order, string returnUrl)
+        //public void OrderApproved(Order order, UrlHelper url)
         //{
         //    EmailMethods emailMethods = new EmailMethods(FROM_ADDRESS, Loc.Dic.OrdersSystem, FROM_PASSWORD);
 
@@ -25,10 +26,12 @@ namespace GAppsDev.ExtraClasses
 
         //    emailBody.AppendLine(emailSubject);
         //    emailBody.AppendLine();
-        //    emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, Url.Action("Details", "Orders", new { id = id }, "http")));
+        //    emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, url.Action("Details", "Orders", new { id = order.Id }, "http")));
+        //    emailBody.AppendLine();
+        //    emailBody.AppendLine();
+        //    emailBody.AppendLine(String.Format("{0}:\n{1}", Loc.Dic.RemoveNotificationsMessage, url.Action("RemoveNotifications", "Users", new { id = order.User.NotificationsCode }, "http")));
 
-        //    emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, emailSubject, emailBody.ToString());
-
+        //    emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, emailSubject, emailBody.ToString());
         //}
     }
 }

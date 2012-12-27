@@ -7,11 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DB
 {
-
-    
-
-
-
     [MetadataType(typeof(OrderMetaData))]
     public partial class Order
     {
