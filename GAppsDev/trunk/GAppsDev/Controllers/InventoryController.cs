@@ -13,11 +13,7 @@ namespace GAppsDev.Controllers
 {
     public class InventoryController : BaseController
     {
-        const int ITEMS_PER_PAGE = 10;
-        const int FIRST_PAGE = 1;
-        const string NO_SORT_BY = "None";
         const string DEFAULT_SORT = "name";
-        const string DEFAULT_DESC_ORDER = "DESC";
 
         private Entities db = new Entities();
 
@@ -75,10 +71,9 @@ namespace GAppsDev.Controllers
                 ViewBag.RelatedInventoryItem = new SelectList(inventoryRepository.GetList("Orders_Items")
                                   .Select( x => new { Id = x.Id, InventarNumber = x.InventarNumber, Title = x.Orders_Items.Title, SubTitle = x.Orders_Items.SubTitle })
                                   .ToList()
-                  .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.InventarNumber + " " + x.Title + " " + x.SubTitle })
+                  .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.InventarNumber + " - " + x.Title + " " + x.SubTitle })
                   .OrderBy(x => x.Name)
                   .ToList(), "Id", "Name");
-
 
                 if (locationsRepository.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count() == 0)
                     return Error(Loc.Dic.error_no_location_exist);
@@ -129,15 +124,22 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Edit(int id = 0)
         {
-            Inventory inventory = db.Inventories.Single(i => i.Id == id);
-            if (inventory == null)
+            Inventory inventory;
+            List<Inventory> relatedInventoryItemList;
+            List<Location> locationsList;
+            using (InventoryRepository inventoryRep = new InventoryRepository(CurrentUser.CompanyId))
+            using (LocationsRepository locationsRep = new LocationsRepository(CurrentUser.CompanyId))
             {
-                return HttpNotFound();
+                inventory = inventoryRep.GetEntity(id);
+
+                if (inventory == null) return Error(Loc.Dic.error_inventory_item_not_found);
+
+                locationsList = locationsRep.GetList().ToList();
+                relatedInventoryItemList = inventoryRep.GetList("Orders_Items").ToList();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", inventory.CompanyId);
-            ViewBag.RelatedInventoryItem = new SelectList(db.Inventories, "Id", "Orders_Items.Title", inventory.RelatedInventoryItem);
-            ViewBag.ItemId = new SelectList(db.Orders_Items, "Id", "Title", inventory.ItemId);
-            ViewBag.LocationId = new SelectList(db.Locations, "Id", "Name", inventory.LocationId);
+
+            ViewBag.RelatedInventoryItem = new SelectList(relatedInventoryItemList, "Id", "Orders_Items.Title", inventory.RelatedInventoryItem);
+            ViewBag.LocationId = new SelectList(locationsList, "Id", "Name", inventory.LocationId);
             return View(inventory);
         }
 

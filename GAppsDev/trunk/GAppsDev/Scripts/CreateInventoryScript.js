@@ -21,10 +21,17 @@ function getSupplierItems() {
 
 function UpdateItemsList(newItemList) {
     selectText = "";
-    selectText += "<select id='ItemDropDownList' name='ItemId'>";
+    selectText += "<select class='supplierItemsSelectList' id='ItemDropDownList' name='ItemId'>";
 
     for (var i = 0; i < newItemList.length; i++) {
-        selectText += "<option value=" + newItemList[i].Id + ">" + newItemList[i].Title +" "+ newItemList[i].SubTitle + "</option>";
+        var subTitle;
+
+        if (typeof (newItemList[i].SubTitle) != "string")
+            subTitle = "";
+        else
+            subTitle = " - " + newItemList[i].SubTitle;
+
+        selectText += "<option title='" + newItemList[i].Title + subTitle + "' value=" + newItemList[i].Id + ">" + newItemList[i].Title + subTitle + "</option>";
     }
 
     selectText += "</select>";

@@ -232,7 +232,7 @@
     <value>Search</value>
   </data>
   <data name="SearchForWordsInNotes" xml:space="preserve">
-    <value>Search for the following words in the notes</value>
+    <value>Search for the following words in the supplier notes</value>
   </data>
   <data name="Send" xml:space="preserve">
     <value>Send</value>
@@ -1556,5 +1556,11 @@
   </data>
   <data name="SupplierItem" xml:space="preserve">
     <value>Supplier item</value>
+  </data>
+  <data name="AmountFromAllocation" xml:space="preserve">
+    <value>Allocation amount</value>
+  </data>
+  <data name="error_inventory_item_not_found" xml:space="preserve">
+    <value>The inventory item was not found</value>
   </data>
 </root>

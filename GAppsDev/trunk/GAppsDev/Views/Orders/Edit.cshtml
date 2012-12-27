@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = Loc.Dic.EditOrder;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.PageName = "Orders";
     ViewBag.SubPageName = "AllOrders";
 
@@ -23,17 +22,17 @@
     <legend>@Loc.Dic.ChosenSupplier</legend>
     <label class="inlineLabel" for="choosenSupplier">@Loc.Dic.Supplier: </label>
     <span class='selectedSupplier'>@Model.Order.Supplier.Name </span>
+    <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateItemForSupplier" onclick="addOrderItem()" />
 </fieldset>
 
+@using (Html.BeginForm("Edit", "Orders", FormMethod.Post, new { id = "mainForm" }))
+{
 <fieldset id="formContainer">
-    <legend>@Loc.Dic.OrderDetails</legend>
-
-    @using (Html.BeginForm("Edit", "Orders", FormMethod.Post, new { id = "mainForm" }))
-    {
+    <legend>@Loc.Dic.OrderItems</legend>
         @Html.ValidationSummary(true)
         
-        @Html.HiddenFor(model => model.Order.SupplierId, new { id = "SupplierId" });
-        @Html.HiddenFor(model => model.Order.Id);
+        @Html.HiddenFor(model => model.Order.SupplierId, new { id = "SupplierId" })
+        @Html.HiddenFor(model => model.Order.Id)
         <input id="ItemsAsString" name="itemsString" type="hidden" value="" />
 
         <div class="editor-field">
@@ -48,7 +47,6 @@
                 @Loc.Dic.TotalPrice:
                 <input class="display" id="itemFinalPrice" type="text" disabled="disabled" />
                 <input id="AddNewItemButton" type="button" value="@Loc.Dic.Add" />
-                <input id="AddOrderItemButton" type="button" value="@Loc.Dic.CreateNewItem" onclick="addOrderItem()"/>
             </div>
         </div>
         
@@ -60,11 +58,14 @@
             </div>
 
         </fieldset>
+        <br />
         <span>@Loc.Dic.TotalPrice: </span>
         <input class="display" type="text" id="totalOrderPrice" disabled="disabled" />
-        <br />
-        <br />
-        
+    <br />
+</fieldset>
+
+<fieldset>
+    <legend>@Loc.Dic.BudgetAllocations</legend>
         <div id="OrderAllocationsContainer">
             @if (hasFuturePermission)
             {
@@ -75,6 +76,7 @@
             {
                 @Html.Hidden("IsFutureOrder", false, new { id = "isFutureOrder" })
             }
+            @Loc.Dic.BudgetAllocation: 
             <select id="allocationsSelectList" class="allocationsList" name="BudgetAllocationId">
                 @for (int i = 0; i < ViewBag.Allocations.Count; i++)
                 {
@@ -124,7 +126,7 @@
                 </span>
             }
 
-            @Loc.Dic.Amount:
+            @Loc.Dic.AmountFromAllocation:
             <input type="text" id="allocationAmount" value="" />
             <input id="addAllocationBtn" type="button" value="@Loc.Dic.AddAllocation" onClick="addAllocation()" />
 
@@ -254,37 +256,29 @@
                 <span>@Loc.Dic.TotalAllocation: </span>
                 <input class="display" type="text" id="totalNormalAllocation" value="0" disabled="disabled" />
             </div>
-
         </div>
-        <br />
-        <br />
-        
-        <div class="editor-label">
-            @Loc.Dic.NotesForSupplier
-        </div>
-        <div class="editor-field">
-            @Html.TextAreaFor(model => model.Order.NotesForSupplier, new { maxlength = "250" })
-            @Html.ValidationMessageFor(model => model.Order.NotesForSupplier)
-        </div>
-        <br />
-        
-        <div class="editor-label">
-            @Loc.Dic.NotesForApprover
-        </div>
-        <div class="editor-field">
-            @Html.TextAreaFor(model => model.NotesForApprover, new { maxlength = "250" })
-            @Html.ValidationMessageFor(model => model.NotesForApprover)
-        </div>
-        <br />
-
-        <p>
-            <input type="submit" class="disableOnSubmit" value="@Loc.Dic.UpdateOrder" />
-        </p>
-    }
 </fieldset>
+<br />
+        
+<div class="editor-label">
+    @Loc.Dic.NotesForSupplier
+</div>
+<div class="editor-field">
+    @Html.TextAreaFor(model => model.Order.NotesForSupplier, new { maxlength = "250" })
+    @Html.ValidationMessageFor(model => model.Order.NotesForSupplier)
+</div>
+<br />
 
-<div>
-    @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
+<div class="editor-label">
+    @Loc.Dic.NotesForApprover
+</div>
+<div class="editor-field">
+    @Html.TextAreaFor(model => model.NotesForApprover, new { maxlength = "250" })
+    @Html.ValidationMessageFor(model => model.NotesForApprover)
 </div>
 
-
+<p>
+    <input type="submit" class="disableOnSubmit" value="@Loc.Dic.UpdateOrder" /> |
+    @Html.ActionLink(Loc.Dic.BackToList, "MyOrders")
+</p>
+}
