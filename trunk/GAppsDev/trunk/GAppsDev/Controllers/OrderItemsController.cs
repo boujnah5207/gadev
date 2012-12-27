@@ -103,7 +103,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 bool wasCreated;
-                using (OrderItemsRepository itemRep = new OrderItemsRepository(CurrentUser.CompanyId))
+                using (OrderItemsRepository itemRep = new OrderItemsRepository(CurrentUser.CompanyId, orderItem.SupplierId))
                 {
                     wasCreated = itemRep.Create(orderItem);
                 }
@@ -184,7 +184,7 @@ namespace GAppsDev.Controllers
             if (Authorized(RoleType.OrdersWriter))
             {
                 List<AjaxOrderItem> allItems;
-                using (OrderItemsRepository itemRep = new OrderItemsRepository(CurrentUser.CompanyId))
+                using (OrderItemsRepository itemRep = new OrderItemsRepository(CurrentUser.CompanyId, id))
                 {
                     if(id.HasValue)
                         allItems = itemRep.GetList().Where(item => item.SupplierId == id && item.CompanyId == CurrentUser.CompanyId).Select(x => new AjaxOrderItem() { Id = x.Id, Title = x.Title, SubTitle = x.SubTitle }).OrderBy(x => x.Title).ToList();

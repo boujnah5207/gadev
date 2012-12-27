@@ -62,7 +62,6 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Create()
         {
-            using (OrderItemsRepository orderItemsRepository = new OrderItemsRepository(CurrentUser.CompanyId))
             using (SuppliersRepository suppliersRepository = new SuppliersRepository(CurrentUser.CompanyId))
             using (LocationsRepository locationsRepository = new LocationsRepository(CurrentUser.CompanyId))
             using (InventoryRepository inventoryRepository = new InventoryRepository(CurrentUser.CompanyId))

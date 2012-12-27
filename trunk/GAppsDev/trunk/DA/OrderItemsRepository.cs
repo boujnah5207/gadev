@@ -11,12 +11,13 @@ namespace DA
     public class OrderItemsRepository : BaseRepository<Orders_Items, Entities>
     {
         private int _companyId;
-        private int _supplierId;
+        private int? _supplierId;
 
-        public OrderItemsRepository(int companyId, int supplierId)
+        public OrderItemsRepository(int companyId, int? supplierId)
         {
             _companyId = companyId;
             _supplierId = supplierId;
+
         }
 
         public override IQueryable<Orders_Items> GetList(params string[] includes)
@@ -50,7 +51,7 @@ namespace DA
 
         public Orders_Items GetExist(Orders_Items orderitem)
         {
-                return (this.GetList().SingleOrDefault(x => x.Title == orderitem.Title && x.SubTitle == orderitem.SubTitle));
+            return (this.GetList().SingleOrDefault(x => x.Title == orderitem.Title && x.SubTitle == orderitem.SubTitle));
         }
     }
 }
