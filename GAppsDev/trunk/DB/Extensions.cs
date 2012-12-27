@@ -7,6 +7,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DB
 {
+
+    
+
+
+
     [MetadataType(typeof(OrderMetaData))]
     public partial class Order
     {
@@ -31,10 +36,6 @@ namespace DB
 
     }
 
-
-
-
-
     [MetadataType(typeof(Users_ApprovalRoutesMetaData))]
     public partial class Users_ApprovalRoutes
     {
@@ -46,7 +47,6 @@ namespace DB
         [LocalizedName("Name")]
         public decimal Name { get; set; }
     }
-
 
     //
     // Helper methods
