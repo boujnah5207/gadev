@@ -229,7 +229,7 @@
     <value>חפש</value>
   </data>
   <data name="SearchForWordsInNotes" xml:space="preserve">
-    <value>חפש את המילים הבאות בהערות</value>
+    <value>חפש את המילים הבאות בהערות לספק</value>
   </data>
   <data name="Send" xml:space="preserve">
     <value>שלח</value>
@@ -310,7 +310,7 @@
     <value>רשימת מלאי</value>
   </data>
   <data name="BudgetAllocation" xml:space="preserve">
-    <value>הקצאה תקציבית</value>
+    <value>סעיף תקציבי</value>
   </data>
   <data name="SearchResults" xml:space="preserve">
     <value>תוצאות חיפוש</value>
@@ -661,7 +661,7 @@
     <value>ספטמבר</value>
   </data>
   <data name="TotalAllocation" xml:space="preserve">
-    <value>סך הקצאה</value>
+    <value>סך הקצאה מסעיפים</value>
   </data>
   <data name="LastChangeDate" xml:space="preserve">
     <value>עודכן בתאריך</value>
@@ -1553,5 +1553,11 @@
   </data>
   <data name="SupplierItem" xml:space="preserve">
     <value>פריט ספק</value>
+  </data>
+  <data name="AmountFromAllocation" xml:space="preserve">
+    <value>כמות הקצאה</value>
+  </data>
+  <data name="error_inventory_item_not_found" xml:space="preserve">
+    <value>לא הייתה אפשרות למצוא את פריט המלאי בבסיס הנתונים</value>
   </data>
 </root>

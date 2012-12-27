@@ -40,11 +40,11 @@
         }
         else
         { 
-            <th class="mobile-hidden">
-                @Loc.Dic.LastChangeDate
-            </th>
             <th>
                 @Loc.Dic.OrderNumber
+            </th>
+            <th class="mobile-hidden">
+                @Loc.Dic.LastChangeDate
             </th>
             if (ViewBag.ShowUserName)
             {
@@ -142,8 +142,6 @@
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceApprovedByOrderCreatorPendingFileExport)
                 {
                     <text>|</text> @Html.ActionLink(Loc.Dic.PrintOrder, "DownloadOrderAsPdf", new { id = item.Id })
-                
-                    
                 }
                 @if (item.Orders_Statuses.Id == (int)DA.StatusType.InvoiceExportedToFilePendingReceipt)
                 {

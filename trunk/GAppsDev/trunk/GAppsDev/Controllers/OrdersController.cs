@@ -1589,6 +1589,7 @@ namespace GAppsDev.Controllers
             List<Orders_History> orderHistoryList = new List<Orders_History>();
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.OriginalOrder.Id))
                 orderHistoryList = ordersHistoryRep.GetList("User", "Orders_History_Actions").OrderByDescending(x => x.CreationDate).ToList();
+            
             ViewBag.orderHistoryList = orderHistoryList;
             return PartialView(model);
         }
@@ -1605,15 +1606,15 @@ namespace GAppsDev.Controllers
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             {
                 List<SelectListItemDB> usersAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllUsersOption } };
-                usersAsSelectItems.AddRange(usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
+                usersAsSelectItems.AddRange(usersRep.GetList().Select(x => new SelectListItemDB() { Id = x.Id, Name = x.FirstName + " " + x.LastName }));
                 model.UsersList = new SelectList(usersAsSelectItems, "Id", "Name");
 
                 List<SelectListItemDB> budgetsAsSelectItems = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.AllBudgetsOption } };
-                budgetsAsSelectItems.AddRange(budgetsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = "(" + x.Year + ") " + x.Name }));
+                budgetsAsSelectItems.AddRange(budgetsRep.GetList().AsEnumerable().Select(x => new SelectListItemDB() { Id = x.Id, Name = "(" + x.Year + ") " + x.Name }));
                 model.BudgetsList = new SelectList(budgetsAsSelectItems, "Id", "Name");
 
                 List<Supplier> suppliersSelectList = new List<Supplier>() { new Supplier() { Id = -1, Name = Loc.Dic.AllSuppliersOption } };
-                suppliersSelectList.AddRange(suppliersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).OrderByDescending(x => x.Name).ToList());
+                suppliersSelectList.AddRange(suppliersRep.GetList().OrderByDescending(x => x.Name).ToList());
                 model.SuppliersList = new SelectList(suppliersSelectList, "Id", "Name");
 
                 List<Orders_Statuses> statusesSelectList = new List<Orders_Statuses>() { new Orders_Statuses() { Id = -1, Name = Loc.Dic.AllStatusesOption } };
@@ -1621,7 +1622,7 @@ namespace GAppsDev.Controllers
                 model.StatusesList = new SelectList(statusesSelectList, "Id", "Name");
 
                 List<SelectListStringItem> allocationsSelectList = new List<SelectListStringItem>() { new SelectListStringItem() { Id = "-1", Name = Loc.Dic.AllAllocationsOption } };
-                allocationsSelectList.AddRange(allocationsRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsCanceled).GroupBy(x => x.ExternalId).AsEnumerable().Select(x => new SelectListStringItem() { Id = x.First().ExternalId, Name = x.First().DisplayName }).ToList());
+                allocationsSelectList.AddRange(allocationsRep.GetList().GroupBy(x => x.ExternalId).AsEnumerable().Select(x => new SelectListStringItem() { Id = x.First().ExternalId, Name = x.First().DisplayName }).ToList());
                 model.AllocationsList = new SelectList(allocationsSelectList, "Id", "Name");
             }
 
@@ -1648,7 +1649,6 @@ namespace GAppsDev.Controllers
             }
 
             if (order == null) return Error(Loc.Dic.error_order_not_found);
-
             if (order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
             ViewBag.orderId = id;
@@ -1661,11 +1661,11 @@ namespace GAppsDev.Controllers
         {
             if (!Authorized(RoleType.OrdersWriter)) return Error(Loc.Dic.error_no_permission);
 
+            Order order;
             int? historyActionId = null;
-
             using (OrdersRepository ordersRepository = new OrdersRepository(CurrentUser.CompanyId))
             {
-                Order order = ordersRepository.GetEntity(orderId);
+                order = ordersRepository.GetEntity(orderId);
 
                 if (order == null) return Error(Loc.Dic.error_order_not_found);
                 if (order.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
@@ -1675,28 +1675,25 @@ namespace GAppsDev.Controllers
                     order.StatusId = (int)StatusType.InvoiceApprovedByOrderCreatorPendingFileExport;
                     order.LastStatusChangeDate = DateTime.Now;
                     historyActionId = (int)HistoryActions.InvoiceApproved;
-                    Orders_History orderHistory = new Orders_History();
-                    using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
-                        if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
                 if (selectedStatus == Loc.Dic.CancelOrder)
                 {
                     order.StatusId = (int)StatusType.OrderCancelled;
                     order.LastStatusChangeDate = DateTime.Now;
                     historyActionId = (int)HistoryActions.Canceled;
-                    Orders_History orderHistory = new Orders_History();
-                    using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
-                        if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
 
-                ordersRepository.Update(order);
+                Orders_History orderHistory = new Orders_History();
+                using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, order.Id))
+                    if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
 
+                if (ordersRepository.Update(order) == null) return Error(Loc.Dic.error_database_error);
             }
 
             return RedirectToAction("MyOrders");
         }
 
-        private IEnumerable<Order> Pagination(IEnumerable<Order> orders, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
+        private IEnumerable<Order> Pagination(IEnumerable<Order> orders, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER, bool showAll = false)
         {
             int numberOfItems = orders.Count();
             int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
@@ -1744,10 +1741,13 @@ namespace GAppsDev.Controllers
                 }
             }
 
-            orders = orders
-                .Skip((page - 1) * ITEMS_PER_PAGE)
-                .Take(ITEMS_PER_PAGE)
-                .ToList();
+            if (!showAll)
+            {
+                orders = orders
+                    .Skip((page - 1) * ITEMS_PER_PAGE)
+                    .Take(ITEMS_PER_PAGE)
+                    .ToList();
+            }
 
             ViewBag.Sortby = sortby;
             ViewBag.Order = order;
@@ -1764,48 +1764,29 @@ namespace GAppsDev.Controllers
             string[] splitItems = itemsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in splitItems)
             {
-                bool isValidItem;
                 int itemId = 0;
                 decimal quantity = 0;
                 decimal singleItemPrice = 0;
 
                 string[] itemValues = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                if (itemValues.Length == 3)
+
+                if (itemValues.Length != 3 ||
+                    !int.TryParse(itemValues[0], out itemId) ||
+                    !decimal.TryParse(itemValues[1], out quantity) ||
+                    !decimal.TryParse(itemValues[2], out singleItemPrice))
                 {
-                    if (
-                        int.TryParse(itemValues[0], out itemId) &&
-                        decimal.TryParse(itemValues[1], out quantity) &&
-                        decimal.TryParse(itemValues[2], out singleItemPrice)
-                        )
-                    {
-                        isValidItem = true;
-                    }
-                    else
-                    {
-                        isValidItem = false;
-                    }
-                }
-                else
-                {
-                    isValidItem = false;
+                    return null;
                 }
 
-                if (isValidItem)
-                {
-                    Orders_OrderToItem newItem = new Orders_OrderToItem()
+                items.Add(
+                    new Orders_OrderToItem()
                     {
                         OrderId = orderId,
                         ItemId = itemId,
                         Quantity = quantity,
                         SingleItemPrice = singleItemPrice
-                    };
-
-                    items.Add(newItem);
-                }
-                else
-                {
-                    return null;
-                }
+                    }
+                );
             }
 
             return items;
@@ -1813,7 +1794,7 @@ namespace GAppsDev.Controllers
 
         private string ItemsToString(IEnumerable<Orders_OrderToItem> orderItems)
         {
-            string existingItems = "";
+            string existingItems = String.Empty;
 
             foreach (var item in orderItems)
             {

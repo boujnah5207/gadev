@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = Loc.Dic.Inventory;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.PageName = "Inventory";
     ViewBag.SubPageName = "AllInventory";
 }
@@ -35,7 +34,8 @@
             @Loc.Dic.OriginalQuantity
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.OriginalQuantity)
+            @(Model.OriginalQuantity ?? 0)
+            @*@Html.DisplayFor(model => model.OriginalQuantity)*@
         </div>
         <br />
 
@@ -132,7 +132,3 @@
 <div>
     @Html.ActionLink(Loc.Dic.BackToList, "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
