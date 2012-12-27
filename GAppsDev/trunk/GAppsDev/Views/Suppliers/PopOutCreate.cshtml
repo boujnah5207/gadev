@@ -10,10 +10,10 @@
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>שדות חובה</legend>
+            <legend>@Loc.Dic.AddSupplier</legend>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Name)
+                @Loc.Dic.SupplierName
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Name)

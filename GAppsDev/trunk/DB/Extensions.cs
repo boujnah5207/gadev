@@ -31,18 +31,9 @@ namespace DB
 
     }
 
-    public class SuppliersMetaData
-    {
-        [LocalizedNumberString]
-        [LocalizedName("ExternalId")]
-        public int ExternalId { get; set; }
-    }
 
-    [MetadataType(typeof(SuppliersMetaData))]
-    public partial class Suppliers
-    {
-        public Type Metadata { get { return typeof(SuppliersMetaData); } }
-    }
+
+
 
     [MetadataType(typeof(Users_ApprovalRoutesMetaData))]
     public partial class Users_ApprovalRoutes
@@ -55,6 +46,7 @@ namespace DB
         [LocalizedName("Name")]
         public decimal Name { get; set; }
     }
+
 
     //
     // Helper methods

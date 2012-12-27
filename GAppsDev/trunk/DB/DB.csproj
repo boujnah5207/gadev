@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAnnotations\SuppliersDataAnnotations.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="LocalizedDataAnnotations.cs" />
     <Compile Include="Model1.Designer.cs">
