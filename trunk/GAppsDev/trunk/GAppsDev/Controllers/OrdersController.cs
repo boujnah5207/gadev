@@ -220,7 +220,7 @@ namespace GAppsDev.Controllers
 
                 string emailSubject = String.Format("{0} {1} {2} {3} {4}", Loc.Dic.Order, orderFromDB.OrderNumber, Translation.Status((StatusType)orderFromDB.StatusId), Loc.Dic.By, CurrentUser.FullName);
                 StringBuilder emailBody = new StringBuilder();
-
+                
                 emailBody.AppendLine(emailSubject);
                 emailBody.AppendLine();
                 emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, Url.Action("Details", "Orders", new { id = id }, "http")));

@@ -190,6 +190,7 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\UsersToJobsController.cs" />
     <Compile Include="ExtendedClasses\ExtendedClasses.cs" />
+    <Compile Include="ExtraClasses\Notification.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
