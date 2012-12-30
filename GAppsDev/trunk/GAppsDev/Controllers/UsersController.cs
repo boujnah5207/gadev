@@ -22,29 +22,48 @@ namespace GAppsDev.Controllers
 
         private Entities db = new Entities();
 
-        //
-        // GET: /Users/
         [OpenIdAuthorize]
-        public ActionResult LanguageSet()
+        public ActionResult Settings()
         {
+            UserSettingsModel model = new UserSettingsModel();
             using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
             using (LanguagesRepository languagesRepository = new LanguagesRepository())
             {
-                int lanId = userRepository.GetEntity(CurrentUser.UserId).LanguageId;
-                return View(new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", lanId));
+                User user = userRepository.GetEntity(CurrentUser.UserId);
+                model.NotificationsEmail = user.NotificationEmail;
+                ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
             }
+
+            return View(model);
         }
 
         [OpenIdAuthorize]
         [HttpPost]
-        public ActionResult LanguageSet(int languageId)
+        public ActionResult Settings(UserSettingsModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
+                using (LanguagesRepository languagesRepository = new LanguagesRepository())
+                {
+                    User user = userRepository.GetEntity(CurrentUser.UserId);
+                    model.NotificationsEmail = user.NotificationEmail;
+                    ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
+                }
+
+                return View(model);
+            }
+
             using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             {
                 User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
-                user.LanguageId = languageId;
-                usersRep.Update(user);
+                user.LanguageId = model.LanguageId;
+                user.NotificationEmail = String.IsNullOrEmpty(model.NotificationsEmail) ? null : model.NotificationsEmail;
+
+                if (usersRep.Update(user) == null) return Error(Loc.Dic.error_database_error);
                 CurrentUser.LanguageCode = user.Language.Code;
+                CurrentUser.NotificationEmail = user.NotificationEmail;
+
                 return RedirectToAction("index", "Home");
             }
         }
@@ -150,17 +169,15 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
         {
-            if (!Authorized(RoleType.UsersManager))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.UsersManager)) return Error(Loc.Dic.error_no_permission);
 
             User user;
             using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             {
-                user = usersRep.GetEntity(id, "Language", "User1", "Users1");
+                user = usersRep.GetEntity(id, "Language", "Users_ApprovalRoutes");
             }
 
-            if (user == null)
-                return Error(Loc.Dic.error_user_not_found);
+            if (user == null) return Error(Loc.Dic.error_user_not_found);
 
             return View(user);
         }
@@ -169,8 +186,7 @@ namespace GAppsDev.Controllers
         [OpenIdAuthorize]
         public ActionResult PartialDetails(User user)
         {
-            if (!Authorized(RoleType.UsersManager))
-                return Error(Loc.Dic.error_no_permission);
+            if (!Authorized(RoleType.UsersManager)) return Error(Loc.Dic.error_no_permission);
 
             return PartialView(user);
         }
@@ -303,8 +319,8 @@ namespace GAppsDev.Controllers
                                 return Error(Loc.Dic.error_invalid_form);
                             }
                         }
-                        user.Roles = (int)combinedRoles;
 
+                        user.Roles = (int)combinedRoles;
                         user.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
 
                         bool wasUserCreated;
@@ -703,6 +719,25 @@ namespace GAppsDev.Controllers
         public ActionResult CreateApprovalRoute(ApprovalRouteModel model)
         {
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult RemoveNotifications(string id)
+        {
+            User user;
+            using (AllUsersRepository usersRep = new AllUsersRepository())
+            {
+                user = usersRep.GetList().SingleOrDefault(x => x.NotificationCode == id);
+                if (user == null) return Error(Loc.Dic.error_user_not_found);
+
+                user.NotificationEmail = null;
+                if (usersRep.Update(user) == null) return Error(Loc.Dic.error_database_error);
+            }
+
+            ViewBag.Title = Loc.Dic.RemoveNotifications;
+            ViewBag.Message = Loc.Dic.NotificationsWereRemoved;
+            ViewBag.Align = "right";
+            return View();
         }
 
         [OpenIdAuthorize]

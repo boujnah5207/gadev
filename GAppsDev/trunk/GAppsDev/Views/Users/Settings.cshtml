@@ -1,0 +1,32 @@
+﻿@model GAppsDev.Models.UserSettingsModel
+
+@{
+    ViewBag.Title = Loc.Dic.UserSettings;
+    ViewBag.PageName = "";
+    ViewBag.noSubMenu = true;
+}
+
+<h3>@Loc.Dic.UserSettings</h3>
+<br />
+
+@using (Html.BeginForm())
+{
+    <div class="editor-label">
+        @Loc.Dic.SecondaryNotificationsEmail
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.NotificationsEmail)
+        @Html.ValidationMessageFor(model => model.NotificationsEmail)
+    </div>
+    <br />
+    
+    <div class="editor-label">
+        @Loc.Dic.DisplayLanguage
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("LanguageId", (SelectList)ViewBag.LanguagesList)
+    </div>
+    <br />
+    
+    <input type="submit" value="@Loc.Dic.Submit" />
+}

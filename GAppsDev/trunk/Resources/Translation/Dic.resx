@@ -1566,4 +1566,40 @@
   <data name="RemoveNotificationsMessage" xml:space="preserve">
     <value>To stop reciving notifications to this email click the following link</value>
   </data>
+  <data name="Email_CopyOfExportedFileIsAttached" xml:space="preserve">
+    <value>A copy of the exported file is attached to this email</value>
+  </data>
+  <data name="Email_OrdersWereExported" xml:space="preserve">
+    <value>orders were exported to file</value>
+  </data>
+  <data name="error_order_is_canceled" xml:space="preserve">
+    <value>The order is canceled</value>
+  </data>
+  <data name="ModifyOrderStatusAt" xml:space="preserve">
+    <value>Modify status at</value>
+  </data>
+  <data name="NotificationsWereRemoved" xml:space="preserve">
+    <value>Your secondary email was removed, you will no longer recive notifications to that email.</value>
+  </data>
+  <data name="OrderFrom" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="PendingYourApproval" xml:space="preserve">
+    <value>pending your approval</value>
+  </data>
+  <data name="RemoveNotifications" xml:space="preserve">
+    <value>Remove notifications</value>
+  </data>
+  <data name="SecondaryNotificationsEmail" xml:space="preserve">
+    <value>Secondary notifications email</value>
+  </data>
+  <data name="SelectSupplier" xml:space="preserve">
+    <value>Select supplier</value>
+  </data>
+  <data name="UserSettings" xml:space="preserve">
+    <value>User settings</value>
+  </data>
+  <data name="validation_IsNotEmail" xml:space="preserve">
+    <value>is not a valid email</value>
+  </data>
 </root>

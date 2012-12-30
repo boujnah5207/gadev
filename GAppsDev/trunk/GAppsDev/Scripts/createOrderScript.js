@@ -61,12 +61,18 @@ $(function () {
 
         if (totalAllocation > totalOrderPrice) {
             alert(local.error_allocation_exceeds_price);
-            $("[type='submit']").removeAttr('disabled');
+            if (submitted !== undefined) {
+                submitted = false;
+            }
+
             return false;
         }
         else if (totalAllocation < totalOrderPrice) {
             alert(local.error_allocation_smaller_then_price);
-            $("[type='submit']").removeAttr('disabled');
+            if (submitted !== undefined) {
+                submitted = false;
+            }
+
             return false;
         }
 

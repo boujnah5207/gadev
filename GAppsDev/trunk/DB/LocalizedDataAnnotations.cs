@@ -103,4 +103,21 @@ namespace DB
             return Regex.IsMatch(stringValue, "^[0-9]+$");
         }
     }
+
+    public class LocalizedEmailAttribute : ValidationAttribute
+    {
+        public override string FormatErrorMessage(string name)
+        {
+            return String.Format("{0} {1} {2}", Loc.Dic.validation_TheField, name, Loc.Dic.validation_IsNotEmail);
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (value == null) return true;
+
+            string stringValue = Convert.ToString(value);
+
+            return Regex.IsMatch(stringValue, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$");
+        }
+    }
 }

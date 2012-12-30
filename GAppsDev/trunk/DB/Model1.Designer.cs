@@ -11781,6 +11781,30 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String NotificationEmail
+        {
+            get
+            {
+                return _NotificationEmail;
+            }
+            set
+            {
+                OnNotificationEmailChanging(value);
+                ReportPropertyChanging("NotificationEmail");
+                _NotificationEmail = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("NotificationEmail");
+                OnNotificationEmailChanged();
+            }
+        }
+        private global::System.String _NotificationEmail;
+        partial void OnNotificationEmailChanging(global::System.String value);
+        partial void OnNotificationEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String FirstName
@@ -12017,6 +12041,30 @@ namespace DB
         private Nullable<global::System.Int32> _DefaultApprovalRouteId;
         partial void OnDefaultApprovalRouteIdChanging(Nullable<global::System.Int32> value);
         partial void OnDefaultApprovalRouteIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String NotificationCode
+        {
+            get
+            {
+                return _NotificationCode;
+            }
+            set
+            {
+                OnNotificationCodeChanging(value);
+                ReportPropertyChanging("NotificationCode");
+                _NotificationCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("NotificationCode");
+                OnNotificationCodeChanged();
+            }
+        }
+        private global::System.String _NotificationCode;
+        partial void OnNotificationCodeChanging(global::System.String value);
+        partial void OnNotificationCodeChanged();
 
         #endregion
 
@@ -12918,7 +12966,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Int32 UserId
         {
@@ -12928,14 +12976,11 @@ namespace DB
             }
             set
             {
-                if (_UserId != value)
-                {
-                    OnUserIdChanging(value);
-                    ReportPropertyChanging("UserId");
-                    _UserId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("UserId");
-                    OnUserIdChanged();
-                }
+                OnUserIdChanging(value);
+                ReportPropertyChanging("UserId");
+                _UserId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UserId");
+                OnUserIdChanged();
             }
         }
         private global::System.Int32 _UserId;
@@ -12945,7 +12990,7 @@ namespace DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Int32 ApprovalRouteId
         {
@@ -12955,14 +13000,11 @@ namespace DB
             }
             set
             {
-                if (_ApprovalRouteId != value)
-                {
-                    OnApprovalRouteIdChanging(value);
-                    ReportPropertyChanging("ApprovalRouteId");
-                    _ApprovalRouteId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("ApprovalRouteId");
-                    OnApprovalRouteIdChanged();
-                }
+                OnApprovalRouteIdChanging(value);
+                ReportPropertyChanging("ApprovalRouteId");
+                _ApprovalRouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApprovalRouteId");
+                OnApprovalRouteIdChanged();
             }
         }
         private global::System.Int32 _ApprovalRouteId;

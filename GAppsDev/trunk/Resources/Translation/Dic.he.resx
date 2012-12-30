@@ -1563,4 +1563,40 @@
   <data name="RemoveNotificationsMessage" xml:space="preserve">
     <value>אם ברצונך לבטל את שליחת ההתראות לאימייל זה לחץ על הקישור הבא</value>
   </data>
+  <data name="Email_CopyOfExportedFileIsAttached" xml:space="preserve">
+    <value>עותק של קובץ הייצוא מצורף לאימייל זה</value>
+  </data>
+  <data name="Email_OrdersWereExported" xml:space="preserve">
+    <value>הזמנות יוצאו לקובץ</value>
+  </data>
+  <data name="error_order_is_canceled" xml:space="preserve">
+    <value>ההזמנה מבוטלת</value>
+  </data>
+  <data name="ModifyOrderStatusAt" xml:space="preserve">
+    <value>עדכן סטאטוס</value>
+  </data>
+  <data name="NotificationsWereRemoved" xml:space="preserve">
+    <value>כתובת האימייל המשנית הוסרה, המערכת לא תשלח התרעות נוספות לאימייל זה</value>
+  </data>
+  <data name="OrderFrom" xml:space="preserve">
+    <value>מאת</value>
+  </data>
+  <data name="PendingYourApproval" xml:space="preserve">
+    <value>ממתינה לאישורך</value>
+  </data>
+  <data name="RemoveNotifications" xml:space="preserve">
+    <value>הסר התרעות</value>
+  </data>
+  <data name="SecondaryNotificationsEmail" xml:space="preserve">
+    <value>אימייל נוסף להתרעות</value>
+  </data>
+  <data name="SelectSupplier" xml:space="preserve">
+    <value>בחר ספק</value>
+  </data>
+  <data name="UserSettings" xml:space="preserve">
+    <value>הגדרות משתמש</value>
+  </data>
+  <data name="validation_IsNotEmail" xml:space="preserve">
+    <value>אינו אימייל חוקי</value>
+  </data>
 </root>

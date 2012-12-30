@@ -18,11 +18,12 @@ namespace GAppsDev.OpenIdService
         public string CompanyName { get; set; }
         public string CompanyCoinSign { get; set; }
         public string Email { get; set; }
+        public string NotificationEmail { get; set; }
+        public string NotificationCode { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get { return FirstName + " " + LastName; } }
         public int Roles { get; set; }
-        //public int? OrdersApproverId { get; set; }
         public int? OrdersApprovalRouteId { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastLogInTime { get; set; }
@@ -111,6 +112,8 @@ namespace GAppsDev.OpenIdService
                                     CompanyName = loggingUser.Company.Name,
                                     CompanyCoinSign = loggingUser.Company.CoinSign,
                                     Email = loggingUser.Email,
+                                    NotificationEmail = loggingUser.NotificationEmail,
+                                    NotificationCode = loggingUser.NotificationCode,
                                     FirstName = loggingUser.FirstName,
                                     LastName = loggingUser.LastName,
                                     Roles = loggingUser.Roles,
@@ -118,7 +121,6 @@ namespace GAppsDev.OpenIdService
                                     LastLogInTime = loggingUser.LastLogInTime,
                                     IsSignedByProvider = false,
                                     ClaimedIdentifier = claimedIdentifier,
-                                    //OrdersApproverId = loggingUser.OrdersApproverId,
                                     OrdersApprovalRouteId = loggingUser.DefaultApprovalRouteId,
                                     IsActive = loggingUser.IsActive,
                                     LanguageCode = loggingUser.Language.Code

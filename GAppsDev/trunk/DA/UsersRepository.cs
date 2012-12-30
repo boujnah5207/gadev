@@ -25,7 +25,7 @@ namespace DA
         public override User GetEntity(int id, params string[] includes)
         {
             User user = base.GetEntity(id, includes);
-            return user.CompanyId == _companyId && !user.IsForManagment ? user : null;
+            return user != null && user.CompanyId == _companyId && !user.IsForManagment ? user : null;
         }
 
         public override bool Create(User entity)
@@ -35,6 +35,8 @@ namespace DA
             entity.CompanyId = _companyId;
             entity.IsActive = true;
             entity.IsForManagment = false;
+            entity.NotificationCode = Guid.NewGuid().ToString("N");
+
             return base.Create(entity);
         }
     }
