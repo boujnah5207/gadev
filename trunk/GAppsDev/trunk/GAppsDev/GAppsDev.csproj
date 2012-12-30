@@ -190,7 +190,7 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\UsersToJobsController.cs" />
     <Compile Include="ExtendedClasses\ExtendedClasses.cs" />
-    <Compile Include="ExtraClasses\Notification.cs" />
+    <Compile Include="ExtraClasses\SendNotifications.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,6 +212,7 @@
     <Compile Include="Models\User\AllUsersModel.cs" />
     <Compile Include="Models\User\ApprovalRouteModel.cs" />
     <Compile Include="Models\User\UserPermissionsModel.cs" />
+    <Compile Include="Models\User\UserSettingsModel.cs" />
     <Compile Include="OpenIdService\LogInResult.cs" />
     <Compile Include="OpenIdService\OpenIdService.cs" />
     <Compile Include="OpenIdService\OpenIdUser.cs" />
@@ -553,7 +554,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Localization\Localization.cshtml" />
-    <Content Include="Views\Users\LanguageSet.cshtml" />
+    <Content Include="Views\Users\Settings.cshtml" />
     <Content Include="Views\Users\EditBaskets.cshtml" />
     <Content Include="Views\Orders\Home.cshtml" />
     <Content Include="Views\Companies\Home.cshtml" />
@@ -614,6 +615,7 @@
     <Content Include="Views\ApprovalRoutes\PartialDetails.cshtml" />
     <Content Include="Views\ApprovalRoutes\StepsList.cshtml" />
     <Content Include="Views\History\SimpleListOrdersHistory.cshtml" />
+    <Content Include="Views\Users\RemoveNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Invoices\" />

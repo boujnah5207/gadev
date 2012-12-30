@@ -21,30 +21,13 @@
     </div>
     <br />
 
-    @if(Model.User1 != null)
+    @if (Model.Users_ApprovalRoutes != null)
     {
     <div class="display-label">
-         @Loc.Dic.OrderApprover
+         @Loc.Dic.ApprovalRoute
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.User1.FirstName) @Html.DisplayFor(model => model.User1.LastName)
-    </div>
-    <br />
-    }
-
-    @if (Model.Users1 != null && Model.Users1.Count > 0)
-    {
-    <div class="display-label">
-         @Loc.Dic.OrderApproverFor:
-    </div>
-    <div class="display-field">
-        <ul>
-        @foreach (var user in Model.Users1)
-        {
-            <li><span>@user.FirstName @user.LastName</span></li>
-        }
-        </ul>
-        @Html.DisplayFor(model => model.User1.FirstName) @Html.DisplayFor(model => model.User1.LastName)
+        @Html.DisplayFor(model => model.Users_ApprovalRoutes.Name)
     </div>
     <br />
     }

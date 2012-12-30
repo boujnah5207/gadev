@@ -22,6 +22,8 @@ using BL;
 using GAppsDev.Models.FileModels;
 using Roles = DA.Roles;
 using System.Data.Objects;
+using GAppsDev.ExtraClasses;
+using SystemFile = System.IO.File;
 
 namespace GAppsDev.Controllers
 {
@@ -144,6 +146,8 @@ namespace GAppsDev.Controllers
 
                 if (model == null) return Error(Loc.Dic.error_order_get_error);
                 if ((model.OriginalOrder.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
+                if (model.OriginalOrder.StatusId == (int)StatusType.OrderCancelled) return Error(Loc.Dic.error_order_is_canceled);
+                if (model.OriginalOrder.StatusId >= (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_approved);
 
                 return View(model);
             }
@@ -163,15 +167,12 @@ namespace GAppsDev.Controllers
             using (AllocationRepository allocationsRep = new AllocationRepository(CurrentUser.CompanyId))
             using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
             {
-                orderFromDB = ordersRep.GetEntity(id, "Users_ApprovalRoutes");
+                orderFromDB = ordersRep.GetEntity(id, "User", "Users_ApprovalRoutes");
 
                 if (orderFromDB == null) return Error(Loc.Dic.error_order_get_error);
                 if ((orderFromDB.NextOrderApproverId != CurrentUser.UserId) && !Authorized(RoleType.SuperApprover)) return Error(Loc.Dic.error_no_permission);
-
-
-
-                if (!orderFromDB.ApprovalRouteId.HasValue || !orderFromDB.ApprovalRouteStep.HasValue)
-                    return Error(Loc.Dic.error_order_already_approved);
+                if (orderFromDB.StatusId == (int)StatusType.OrderCancelled) return Error(Loc.Dic.error_order_is_canceled);
+                if (orderFromDB.StatusId >= (int)StatusType.ApprovedPendingInvoice) return Error(Loc.Dic.error_order_already_approved);
 
                 List<Users_ApprovalStep> orderRouteSteps = orderFromDB.Users_ApprovalRoutes.Users_ApprovalStep.OrderBy(x => x.StepNumber).ToList();
                 Users_ApprovalStep firstStep = orderRouteSteps.FirstOrDefault();
@@ -216,16 +217,20 @@ namespace GAppsDev.Controllers
                 Orders_History orderHistory = new Orders_History();
                 if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, approverNotes);
 
-                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                //EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
 
-                string emailSubject = String.Format("{0} {1} {2} {3} {4}", Loc.Dic.Order, orderFromDB.OrderNumber, Translation.Status((StatusType)orderFromDB.StatusId), Loc.Dic.By, CurrentUser.FullName);
-                StringBuilder emailBody = new StringBuilder();
+                //string emailSubject = String.Format("{0} {1} {2} {3} {4}", Loc.Dic.Order, orderFromDB.OrderNumber, Translation.Status((StatusType)orderFromDB.StatusId), Loc.Dic.By, CurrentUser.FullName);
+                //StringBuilder emailBody = new StringBuilder();
                 
-                emailBody.AppendLine(emailSubject);
-                emailBody.AppendLine();
-                emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, Url.Action("Details", "Orders", new { id = id }, "http")));
+                //emailBody.AppendLine(emailSubject);
+                //emailBody.AppendLine();
+                //emailBody.AppendLine(String.Format("{0}: {1}", Loc.Dic.SeeDetailsAt, Url.Action("Details", "Orders", new { id = id }, "http")));
 
-                emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, emailSubject, emailBody.ToString());
+                //emailMethods.sendGoogleEmail(orderFromDB.User.Email, orderFromDB.User.FirstName, emailSubject, emailBody.ToString());
+                
+                SendNotifications.OrderStatusChanged(orderFromDB, CurrentUser, Url);
+                if (orderFromDB.StatusId == (int)StatusType.PartiallyApproved)
+                    SendNotifications.OrderPendingApproval(orderFromDB, Url);
 
                 return RedirectToAction("PendingOrders");
             }
@@ -322,8 +327,10 @@ namespace GAppsDev.Controllers
 
                 SaveUniqueFile(model.File, INVOICE_FOLDER_NAME, id);
 
-                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
-                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + " " + order.OrderNumber + " " + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + "\n" + Url.Action("MyOrders", "Orders", null, "http"));
+                //EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                //emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + " " + order.OrderNumber + " " + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + "\n" + Url.Action("MyOrders", "Orders", null, "http"));
+
+                SendNotifications.OrderStatusChanged(order, CurrentUser, Url);
 
                 return RedirectToAction("Index");
             }
@@ -406,8 +413,11 @@ namespace GAppsDev.Controllers
                 historyActionId = (int)HistoryActions.ReceiptScanned;
                 Orders_History orderHistory = new Orders_History();
                 if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
-                EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
-                emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
+                
+                //EmailMethods emailMethods = new EmailMethods("NOREPLY@pqdev.com", Loc.Dic.OrdersSystem, "noreply50100200");
+                //emailMethods.sendGoogleEmail(order.User.Email, order.User.FirstName, Loc.Dic.OrderStatusUpdateEvent, Loc.Dic.OrderStatusOf + order.OrderNumber + Loc.Dic.OrderStatusChangedTo + Translation.Status((StatusType)order.StatusId) + Url.Action("MyOrders", "Orders", null, "http"));
+
+                SendNotifications.OrderStatusChanged(order, CurrentUser, Url);
 
                 return RedirectToAction("Index");
             }
@@ -491,8 +501,6 @@ namespace GAppsDev.Controllers
             cookies.Add(cookieName, cookie.Value);
             int? historyActionId = null;
 
-
-
             Order order;
             using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, id))
 
@@ -504,6 +512,7 @@ namespace GAppsDev.Controllers
                 Orders_History orderHistory = new Orders_History();
                 if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
             }
+
             return new ActionAsPdf("PrintOrderToScreen", new { password = PRINT_PASSWORD, id = id, companyId = CurrentUser.CompanyId, userId = CurrentUser.UserId, userRoles = CurrentUser.Roles, languageCode = CurrentUser.LanguageCode, coinSign = CurrentUser.CompanyCoinSign }) { FileName = String.Format("Order_{0}.pdf", order.OrderNumber) };
         }
 
@@ -672,6 +681,8 @@ namespace GAppsDev.Controllers
                 bool creationError = false;
                 if (!ordersRep.Create(model.Order)) return Error(Loc.Dic.error_orders_create_error);
 
+                model.Order = ordersRep.GetEntity(model.Order.Id, "User", "User1");
+
                 foreach (Orders_OrderToItem item in ItemsList)
                 {
                     item.OrderId = model.Order.Id;
@@ -700,10 +711,16 @@ namespace GAppsDev.Controllers
                     return Error(Loc.Dic.error_orders_create_error);
                 }
             }
+
             using (OrdersHistoryRepository ordersHistoryRepository = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
             {
                 Orders_History orderHis = new Orders_History();
                 ordersHistoryRepository.Create(orderHis, (int)HistoryActions.Created, model.NotesForApprover);
+            }
+
+            if (model.Order.NextOrderApproverId.HasValue)
+            {
+                SendNotifications.OrderPendingApproval(model.Order, Url);
             }
 
             return RedirectToAction("MyOrders");
@@ -787,6 +804,7 @@ namespace GAppsDev.Controllers
             if (!ModelState.IsValid) return Error(Loc.Dic.error_invalid_form);
 
             // Initializing needed temporary variables
+            bool wasReturnedToCreator;
             bool allowExeeding = true;
             List<Orders_OrderToAllocation> AllocationsToCreate = new List<Orders_OrderToAllocation>();
 
@@ -809,6 +827,7 @@ namespace GAppsDev.Controllers
             if (orderFromDatabase.UserId != CurrentUser.UserId) return Error(Loc.Dic.error_no_permission);
 
             if (orderFromDatabase.StatusId != (int)StatusType.Pending && orderFromDatabase.StatusId != (int)StatusType.PendingOrderCreator) return Error(Loc.Dic.error_order_edit_after_approval);
+            wasReturnedToCreator = orderFromDatabase.StatusId == (int)StatusType.PendingOrderCreator;
 
             itemsFromEditForm = ItemsFromString(itemsString, model.Order.Id);
             if (itemsFromEditForm == null) return Error(Loc.Dic.error_invalid_form);
@@ -994,6 +1013,8 @@ namespace GAppsDev.Controllers
                     model.Order.Price = totalOrderPrice;
 
                     ordersRep.Update(model.Order);
+
+                    model.Order = ordersRep.GetEntity(model.Order.Id, "User", "User1");
                 }
             }
 
@@ -1004,6 +1025,15 @@ namespace GAppsDev.Controllers
                 Orders_History orderHistory = new Orders_History();
                 using (OrdersHistoryRepository ordersHistoryRep = new OrdersHistoryRepository(CurrentUser.CompanyId, CurrentUser.UserId, model.Order.Id))
                     if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value, model.NotesForApprover);
+
+                if (wasReturnedToCreator)
+                {
+                    if (model.Order.NextOrderApproverId.HasValue)
+                    {
+                        SendNotifications.OrderPendingApproval(model.Order, Url);
+                    }
+                }
+                
                 return RedirectToAction("MyOrders");
             }
             else
@@ -1363,12 +1393,17 @@ namespace GAppsDev.Controllers
                         if (historyActionId.HasValue) ordersHistoryRep.Create(orderHistory, historyActionId.Value);
                 }
 
+                //FileStream fileStream = new FileStream(//SystemFile.("", FileMode.Open());
+                byte[] fileBytes = Encoding.UTF8.GetBytes(builder.ToString());
+                string fileName = "MOVEIN.DAT";
+                //Stream stream = new MemoryStream(fileBytes);
+
+                SendNotifications.OrdersExported(CurrentUser, Url, ordersToExport.Count, fileBytes);
+
                 Response.AppendHeader("Refresh", "1");
                 Response.AppendHeader("Location", Url.Action("OrdersToExport", "Orders", null, "http"));
 
-                return File(Encoding.UTF8.GetBytes(builder.ToString()),
-                     "text/plain",
-                     "MOVEIN.DAT");
+                return File(fileBytes, "text/plain", fileName);
             }
         }
 

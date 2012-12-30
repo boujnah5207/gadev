@@ -10,10 +10,10 @@
     <script type="text/javascript" src='@Url.Action("LocalizeJavascript", "Localization")'></script>
     <script src="~/Scripts/CreateInventoryScript.js"></script>
     <script src="~/Scripts/DatePickerScript.js"></script>
-
 }
 
 <h2>@Loc.Dic.CreateNew</h2>
+<br />
 
 @using (Html.BeginForm())
 {
@@ -22,22 +22,16 @@
     <fieldset>
         <legend>@Loc.Dic.Inventory</legend>
 
-        <div class="editor-label">
-            @Loc.Dic.Supplier
-        </div>
-        <button type="button" id="addSupplierButton">@Loc.Dic.AddSupplier</button>
-        <div class="editor-field">
-            @Html.DropDownList("sid", (SelectList)ViewBag.Suppliers, Loc.Dic.SelectNone, new { id = "suppliersDropDownList" })
-        </div>
+        @Loc.Dic.Supplier: 
+        @Html.DropDownList("sid", (SelectList)ViewBag.Suppliers, Loc.Dic.SelectSupplier, new { id = "suppliersDropDownList" }) 
+        <button type="button" id="addSupplierButton">@Loc.Dic.AddSupplier</button> 
+        <br />
+        <br />
 
-
-        <div class="editor-label">
-            @Loc.Dic.Item
-        </div>
-        <button type="button" id="addItemButton">@Loc.Dic.AddItem</button>
-        <div class="editor-field">
-            <select name="ItemId" id="ItemDropDownList"></select>
-        </div>
+        @Loc.Dic.Item: 
+        <select name="ItemId" id="ItemDropDownList"></select> 
+        <button type="button" id="addItemButton">@Loc.Dic.AddItem</button> 
+        <br />
         <br />
         
         <div class="editor-label">
@@ -56,6 +50,7 @@
             @Html.DropDownListFor(model => model.LocationId, (SelectList)ViewBag.LocationId, Loc.Dic.SelectNone)
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.RelatedInventoryItem
@@ -64,6 +59,7 @@
             @Html.DropDownListFor(model => model.RelatedInventoryItem, (SelectList)ViewBag.RelatedInventoryItem, Loc.Dic.SelectNone)
             @Html.ValidationMessageFor(model => model.RelatedInventoryItem)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.AssignedTo
@@ -72,6 +68,7 @@
             @Html.EditorFor(model => model.AssignedTo)
             @Html.ValidationMessageFor(model => model.AssignedTo)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.SerialNumber
@@ -80,6 +77,7 @@
             @Html.EditorFor(model => model.SerialNumber)
             @Html.ValidationMessageFor(model => model.SerialNumber)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodStart
@@ -88,6 +86,7 @@
             @Html.TextBoxFor(model => model.WarrentyPeriodStart, new { @class = "dateField" })
             @Html.ValidationMessageFor(model => model.WarrentyPeriodStart)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.WarrentyPeriodEnd
@@ -96,6 +95,7 @@
             @Html.TextBoxFor(model => model.WarrentyPeriodEnd, new { @class = "dateField" })
             @Html.ValidationMessageFor(model => model.WarrentyPeriodEnd)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.Notes
@@ -104,7 +104,7 @@
             @Html.EditorFor(model => model.Notes)
             @Html.ValidationMessageFor(model => model.Notes)
         </div>
-
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.Status
@@ -113,6 +113,7 @@
             @Html.EditorFor(model => model.Status)
             @Html.ValidationMessageFor(model => model.Status)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.IsOutOfInventory
@@ -121,17 +122,11 @@
             @Html.EditorFor(model => model.IsOutOfInventory)
             @Html.ValidationMessageFor(model => model.IsOutOfInventory)
         </div>
+        <br />
 
-        <p>
-            <input class="disableOnSubmit" type="submit" value="@Loc.Dic.CreateNew" />
-        </p>
+        <div>
+            <input class="disableOnSubmit" type="submit" value="@Loc.Dic.CreateNew" /> | 
+            @Html.ActionLink(Loc.Dic.BackToList, "Index")
+        </div>
     </fieldset>
-}
-
-<div>
-    @Html.ActionLink(Loc.Dic.BackToList, "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 }

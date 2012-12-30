@@ -1,7 +1,7 @@
 ﻿@model DB.Inventory
 
 @{
-    ViewBag.Title = Loc.Dic.Inventory;
+    ViewBag.Title = Loc.Dic.Edit;
     ViewBag.PageName = "Inventory";
     ViewBag.SubPageName = "AllInventory";
 }
@@ -55,6 +55,7 @@
             @Html.EditorFor(model => model.IsOutOfInventory)
             @Html.ValidationMessageFor(model => model.IsOutOfInventory)
         </div>
+        <br />
 
         <div class="editor-label">
             @Loc.Dic.Location
@@ -95,7 +96,6 @@
         <div class="editor-label">
             @Loc.Dic.WarrantyPeriod
         </div>
-
         <div class="editor-field">
             @Loc.Dic.From-
             @Html.TextBoxFor(model => model.WarrentyPeriodStart, new { @class = "dateField" })
@@ -123,12 +123,9 @@
         </div>
         <br />
 
-        <p>
-            <input type="submit" value="@Loc.Dic.Save" />
-        </p>
+        <div>
+            <input type="submit" value="@Loc.Dic.Save" /> | 
+            @Html.ActionLink(Loc.Dic.BackToList, "Index")
+        </div>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink(Loc.Dic.BackToList, "Index")
-</div>

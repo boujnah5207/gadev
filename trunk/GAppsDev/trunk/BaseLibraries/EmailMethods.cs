@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using System.IO;
 
 namespace BaseLibraries
 {
@@ -12,7 +13,14 @@ namespace BaseLibraries
     {
         MailAddress fromAddress;
         string fromPassword;
-        public bool sendGoogleEmail(string email, string fullName, string subject, string body)
+
+        public EmailMethods(string fromEmail, string fromName, string fromSecurePassword)
+        {
+            fromAddress = new MailAddress(fromEmail, fromName);
+            fromPassword = fromSecurePassword;
+        }
+
+        public bool sendGoogleEmail(string email, string fullName, string subject, string body, byte[] attachmentFile = null, string attachmentName = null)
         {
             MailAddress toAddress = new MailAddress(email, fullName);
             string mailSubject = subject;
@@ -33,16 +41,23 @@ namespace BaseLibraries
                 Body = body
             })
             {
-                smtp.Send(message);
+                if (attachmentFile != null)
+                {
+                    Stream stream = new MemoryStream(attachmentFile);
+
+                    Attachment attachment = new Attachment(stream, attachmentName);
+                    message.Attachments.Add(attachment);
+                    smtp.Send(message);
+
+                    stream.Close();
+                }
+                else
+                {
+                    smtp.Send(message);
+                }
+
                 return true;
             }
         }
-        public EmailMethods(string fromEmail, string fromName, string fromSecurePassword)
-        {
-            fromAddress = new MailAddress(fromEmail, fromName);
-            fromPassword = fromSecurePassword;
-        }
-
     }
-
 }

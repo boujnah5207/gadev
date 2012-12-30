@@ -84,10 +84,6 @@ namespace GAppsDev.Controllers
                 Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
             }
 
-            //HttpCookie myCookie = new HttpCookie(OpenIdMembershipService.LOGIN_COOKIE_NAME);
-            //myCookie.Expires = DateTime.Now.AddDays(-1d);
-            //Response.Cookies.Add(myCookie);
-
             return View();
         }
     }
