@@ -51,7 +51,8 @@ namespace DA
 
         public Orders_Items GetExist(Orders_Items orderitem)
         {
-            return (this.GetList().SingleOrDefault(x => x.Title == orderitem.Title && x.SubTitle == orderitem.SubTitle));
+
+            return (this.GetList().SingleOrDefault(x => x.Title == orderitem.Title && (orderitem.SubTitle == null ? x.SubTitle == null : x.SubTitle == orderitem.SubTitle)));
         }
     }
 }
