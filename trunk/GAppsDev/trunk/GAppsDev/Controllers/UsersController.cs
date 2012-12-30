@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
 using GAppsDev.Models.Search;
 using GAppsDev.Models.UserModels;
 using Mvc4.OpenId.Sample.Security;
-using System.Globalization;
 using GAppsDev.Models;
 
 namespace GAppsDev.Controllers
@@ -19,8 +15,6 @@ namespace GAppsDev.Controllers
     {
         new const int ITEMS_PER_PAGE = 20;
         const string DEFAULT_ORDER = "DESC";
-
-        private Entities db = new Entities();
 
         [OpenIdAuthorize]
         public ActionResult Settings()
@@ -162,9 +156,6 @@ namespace GAppsDev.Controllers
                 return Error(Loc.Dic.error_no_permission);
             }
         }
-
-        //
-        // GET: /Users/Details/5
 
         [OpenIdAuthorize]
         public ActionResult Details(int id = 0)
@@ -831,9 +822,6 @@ namespace GAppsDev.Controllers
             }
         }
 
-        //
-        // POST: /Users/Delete/5
-
         [HttpPost, ActionName("Delete")]
         [OpenIdAuthorize]
         public ActionResult DeleteConfirmed(int id)
@@ -1148,12 +1136,6 @@ namespace GAppsDev.Controllers
             }
 
             return forbiddenRoles;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DA;
 using DB;
-using GAppsDev.OpenIdService;
 using Mvc4.OpenId.Sample.Security;
 using GAppsDev.Models;
 using Rotativa;
@@ -16,9 +13,6 @@ using System.IO;
 using GAppsDev.Models.Search;
 using System.Globalization;
 using System.Text;
-using System.Web.Security;
-using System.DirectoryServices.AccountManagement;
-using BL;
 using GAppsDev.Models.FileModels;
 using Roles = DA.Roles;
 using System.Data.Objects;
@@ -36,16 +30,11 @@ namespace GAppsDev.Controllers
 
         const string PRINT_PASSWORD = "S#At7e5eqes2Tres$aph6C5apRu=aZ!BrE_u-a-!suwRU4R9D3EzaTRU&pe=&Ehe";
 
-        private Entities db = new Entities();
-
         [OpenIdAuthorize]
         public ActionResult Home()
         {
             return View();
         }
-
-        //
-        // GET: /Orders/
 
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER)
@@ -1884,12 +1873,6 @@ namespace GAppsDev.Controllers
             var fullFilePath = Path.Combine(directoryPath, fileName);
             file.SaveAs(fullFilePath);
             file.InputStream.Close();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }
