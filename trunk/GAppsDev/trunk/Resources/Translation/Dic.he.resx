@@ -1599,4 +1599,55 @@
   <data name="validation_IsNotEmail" xml:space="preserve">
     <value>אינו אימייל חוקי</value>
   </data>
+  <data name="Field_Activity_Hours" xml:space="preserve">
+    <value>שעות פעילות</value>
+  </data>
+  <data name="Field_Additional_Phone" xml:space="preserve">
+    <value>טלפון נוסף</value>
+  </data>
+  <data name="Field_Address" xml:space="preserve">
+    <value>כתובת</value>
+  </data>
+  <data name="Field_Branch_line" xml:space="preserve">
+    <value>מספר שלוחה טלפונית</value>
+  </data>
+  <data name="Field_City" xml:space="preserve">
+    <value>עיר</value>
+  </data>
+  <data name="Field_CreationDate" xml:space="preserve">
+    <value>תאריך יצירה</value>
+  </data>
+  <data name="Field_Crew_Number" xml:space="preserve">
+    <value>מספר צוות מטפל</value>
+  </data>
+  <data name="Field_Customer_Number" xml:space="preserve">
+    <value>מספר לקוח</value>
+  </data>
+  <data name="Field_Email" xml:space="preserve">
+    <value>דוא"ל</value>
+  </data>
+  <data name="Field_ExternalId" xml:space="preserve">
+    <value>מספר חיצוני</value>
+  </data>
+  <data name="Field_Fax" xml:space="preserve">
+    <value>פקס</value>
+  </data>
+  <data name="Field_IsCanceled" xml:space="preserve">
+    <value>האם בוטל?</value>
+  </data>
+  <data name="Field_Name" xml:space="preserve">
+    <value>שם</value>
+  </data>
+  <data name="Field_Notes" xml:space="preserve">
+    <value>הערות</value>
+  </data>
+  <data name="Field_Phone_Number" xml:space="preserve">
+    <value>מספר טלפון</value>
+  </data>
+  <data name="Field_Presentor_name" xml:space="preserve">
+    <value>שם נציג מטפל</value>
+  </data>
+  <data name="Field_VAT_Number" xml:space="preserve">
+    <value>מספר מס הכנסה</value>
+  </data>
 </root>
