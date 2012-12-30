@@ -1255,7 +1255,7 @@
     <value>Pending export</value>
   </data>
   <data name="Status_ApprovedPendingInvoice" xml:space="preserve">
-    <value>Approved</value>
+    <value>Approval completed</value>
   </data>
   <data name="Status_PendingInvoiceApproval" xml:space="preserve">
     <value>Pending invoice approval</value>

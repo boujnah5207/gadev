@@ -1252,13 +1252,13 @@
     <value>ממתינה לייצוא</value>
   </data>
   <data name="Status_ApprovedPendingInvoice" xml:space="preserve">
-    <value>אושרה</value>
+    <value>אושרה סופית</value>
   </data>
   <data name="Status_PendingInvoiceApproval" xml:space="preserve">
     <value>ממתינה לאישור חשבונית</value>
   </data>
   <data name="Status_PendingOrderCreator" xml:space="preserve">
-    <value>ממתינה ליוצר ההזמנה</value>
+    <value>הוחזרה ליוצר ההזמנה</value>
   </data>
   <data name="Status_PendingReceipt" xml:space="preserve">
     <value>ממתינה לקבלה</value>
@@ -1576,7 +1576,7 @@
     <value>עדכן סטאטוס</value>
   </data>
   <data name="NotificationsWereRemoved" xml:space="preserve">
-    <value>כתובת האימייל המשנית הוסרה, המערכת לא תשלח התרעות נוספות לאימייל זה</value>
+    <value>כתובת האימייל המשנית הוסרה, המערכת לא תשלח התראות נוספות לאימייל זה</value>
   </data>
   <data name="OrderFrom" xml:space="preserve">
     <value>מאת</value>
@@ -1585,10 +1585,10 @@
     <value>ממתינה לאישורך</value>
   </data>
   <data name="RemoveNotifications" xml:space="preserve">
-    <value>הסר התרעות</value>
+    <value>הסר התראות</value>
   </data>
   <data name="SecondaryNotificationsEmail" xml:space="preserve">
-    <value>אימייל נוסף להתרעות</value>
+    <value>אימייל נוסף להתראות</value>
   </data>
   <data name="SelectSupplier" xml:space="preserve">
     <value>בחר ספק</value>

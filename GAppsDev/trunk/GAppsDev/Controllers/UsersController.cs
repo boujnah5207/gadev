@@ -15,145 +15,34 @@ namespace GAppsDev.Controllers
     {
         new const int ITEMS_PER_PAGE = 20;
         const string DEFAULT_ORDER = "DESC";
-
-        [OpenIdAuthorize]
-        public ActionResult Settings()
-        {
-            UserSettingsModel model = new UserSettingsModel();
-            using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
-            using (LanguagesRepository languagesRepository = new LanguagesRepository())
-            {
-                User user = userRepository.GetEntity(CurrentUser.UserId);
-                model.NotificationsEmail = user.NotificationEmail;
-                ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
-            }
-
-            return View(model);
-        }
-
-        [OpenIdAuthorize]
-        [HttpPost]
-        public ActionResult Settings(UserSettingsModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
-                using (LanguagesRepository languagesRepository = new LanguagesRepository())
-                {
-                    User user = userRepository.GetEntity(CurrentUser.UserId);
-                    model.NotificationsEmail = user.NotificationEmail;
-                    ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
-                }
-
-                return View(model);
-            }
-
-            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
-            {
-                User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
-                user.LanguageId = model.LanguageId;
-                user.NotificationEmail = String.IsNullOrEmpty(model.NotificationsEmail) ? null : model.NotificationsEmail;
-
-                if (usersRep.Update(user) == null) return Error(Loc.Dic.error_database_error);
-                CurrentUser.LanguageCode = user.Language.Code;
-                CurrentUser.NotificationEmail = user.NotificationEmail;
-
-                return RedirectToAction("index", "Home");
-            }
-        }
+        public const string DEFAULT_SORT = "username";
 
         [OpenIdAuthorize]
         public ActionResult Index(int page = FIRST_PAGE, string sortby = NO_SORT_BY, string order = DEFAULT_ORDER)
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.UsersManager)) return Error(Loc.Dic.error_no_permission);
+
+            AllUsersModel model = new AllUsersModel();
+            IEnumerable<User> activeUsersQuery;
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
+            using (CompaniesRepository companiesRep = new CompaniesRepository())
             {
-                AllUsersModel model = new AllUsersModel();
-                IEnumerable<User> activeUsers;
-                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
-                using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
-                using (CompaniesRepository companiesRep = new CompaniesRepository())
-                {
-                    activeUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
-                    model.PendingUsers = pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).ToList();
-                    model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+                activeUsersQuery = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && x.IsActive).ToList();
+                activeUsersQuery = Pagination(activeUsersQuery, page, sortby, order).ToList();
+                model.NonActiveUsers = usersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId && !x.IsActive).ToList();
+                Company company = companiesRep.GetEntity(CurrentUser.CompanyId);
 
-                    model.ActiveUsersCount = activeUsers.Count();
-                    model.CanceledUsersCount = model.NonActiveUsers.Count();
+                if (model.NonActiveUsers == null) return Error(Loc.Dic.error_users_get_error);
+                if (activeUsersQuery == null) return Error(Loc.Dic.error_users_get_error);
+                if (company == null) return Error(Loc.Dic.error_database_error);
 
-                    if (model.ActiveUsers != null && model.PendingUsers != null && model.NonActiveUsers != null)
-                    {
-                        try
-                        {
-                            model.UsersLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
-                        }
-                        catch
-                        {
-                            return Error(Loc.Dic.error_database_error);
-                        }
+                model.ActiveUsers = activeUsersQuery.ToList();
+                model.ActiveUsersCount = activeUsersQuery.Count();
+                model.CanceledUsersCount = model.NonActiveUsers.Count();
+                model.UsersLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
 
-                        int numberOfItems = activeUsers.Count();
-                        int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
-                        if (numberOfItems % ITEMS_PER_PAGE != 0)
-                            numberOfPages++;
-
-                        if (page <= 0)
-                            page = FIRST_PAGE;
-                        if (page > numberOfPages)
-                            page = numberOfPages;
-
-                        if (sortby != NO_SORT_BY)
-                        {
-                            Func<Func<User, dynamic>, IEnumerable<User>> orderFunction;
-
-                            if (order == DEFAULT_ORDER)
-                                orderFunction = x => activeUsers.OrderByDescending(x);
-                            else
-                                orderFunction = x => activeUsers.OrderBy(x);
-
-                            switch (sortby)
-                            {
-                                case "username":
-                                default:
-                                    activeUsers = orderFunction(x => x.FirstName + " " + x.LastName);
-                                    break;
-                                case "roles":
-                                    activeUsers = orderFunction(x => ((RoleType)x.Roles).ToString());
-                                    break;
-                                case "email":
-                                    activeUsers = orderFunction(x => x.Email);
-                                    break;
-                                case "creation":
-                                    activeUsers = orderFunction(x => x.CreationTime);
-                                    break;
-                                case "login":
-                                    activeUsers = orderFunction(x => x.LastLogInTime);
-                                    break;
-                            }
-                        }
-
-                        activeUsers = activeUsers
-                            .Skip((page - 1) * ITEMS_PER_PAGE)
-                            .Take(ITEMS_PER_PAGE)
-                            .ToList();
-
-                        ViewBag.Sortby = sortby;
-                        ViewBag.Order = order;
-                        ViewBag.CurrPage = page;
-                        ViewBag.NumberOfPages = numberOfPages;
-
-                        model.ActiveUsers = activeUsers.ToList();
-
-                        return View(model);
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_users_get_error);
-                    }
-                }
-            }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
+                return View(model);
             }
         }
 
@@ -183,43 +72,42 @@ namespace GAppsDev.Controllers
         }
 
         [OpenIdAuthorize]
-        public ActionResult PendingUserDetails(int id = 0)
-        {
-            if (!Authorized(RoleType.UsersManager))
-                return Error(Loc.Dic.error_no_permission);
-
-            PendingUser user;
-            using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
-            {
-                user = pendingUsersRep.GetEntity(id, "Language", "User");
-            }
-
-            if (user == null)
-                return Error(Loc.Dic.error_user_not_found);
-
-            return View(user);
-        }
-
-        [ChildActionOnly]
-        [OpenIdAuthorize]
-        public ActionResult PendingUserPartialDetails(PendingUser user)
-        {
-            if (!Authorized(RoleType.UsersManager))
-                return Error(Loc.Dic.error_no_permission);
-
-            return PartialView(user);
-        }
-
-        [OpenIdAuthorize]
         public ActionResult Create()
         {
-            if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.UsersManager)) return Error(Loc.Dic.error_no_permission);
+
+            List<string> roleNames = GetRoleNames();
+            List<SelectListItemDB> ApprovalRoutesList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.NoApprovalRoute } };
+            SelectList languagesList;
+
+            using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
+            using (LanguagesRepository languagesRep = new LanguagesRepository())
             {
-                List<string> roleNames = GetRoleNames();
+                ApprovalRoutesList.AddRange(
+                        routesRep.GetList()
+                        .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
+                        );
+
+                languagesList = new SelectList(languagesRep.GetList().ToList(), "Id", "Name");
+            }
+
+            ViewBag.RolesList = roleNames;
+            ViewBag.RoutesList = new SelectList(ApprovalRoutesList, "Id", "Name");
+            ViewBag.LanguagesList = languagesList;
+
+            return View();
+        }
+
+        [HttpPost]
+        [OpenIdAuthorize]
+        public ActionResult Create(User user, string[] roleNames)
+        {
+            if (!ModelState.IsValid)
+            {
+                List<string> allRoleNames = GetRoleNames();
                 List<SelectListItemDB> ApprovalRoutesList = new List<SelectListItemDB>() { new SelectListItemDB() { Id = -1, Name = Loc.Dic.NoApprovalRoute } };
                 SelectList languagesList;
 
-                using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
                 using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
                 using (LanguagesRepository languagesRep = new LanguagesRepository())
                 {
@@ -227,118 +115,81 @@ namespace GAppsDev.Controllers
                             routesRep.GetList()
                             .Select(x => new SelectListItemDB() { Id = x.Id, Name = x.Name })
                             );
-                    
+
                     languagesList = new SelectList(languagesRep.GetList().ToList(), "Id", "Name");
                 }
 
-                ViewBag.RolesList = roleNames;
+                ViewBag.RolesList = allRoleNames;
                 ViewBag.RoutesList = new SelectList(ApprovalRoutesList, "Id", "Name");
                 ViewBag.LanguagesList = languagesList;
 
-                return View();
+                return View(user);
             }
-            else
-            {
-                return Error(Loc.Dic.error_no_permission);
-            }
-        }
 
-        [HttpPost]
-        [OpenIdAuthorize]
-        public ActionResult Create(User user, string[] roleNames)
-        {
-            if (ModelState.IsValid)
-            {
-                if (user.DefaultApprovalRouteId == -1) user.DefaultApprovalRouteId = null;
+            if (user.DefaultApprovalRouteId == -1) user.DefaultApprovalRouteId = null;
 
-                if (Authorized(RoleType.SystemManager))
+            if (!Authorized(RoleType.SystemManager)) return Error(Loc.Dic.error_no_permission);
+
+            int companyUserCount = 0;
+            int companyUserLimit = 0;
+
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
+            using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
+            using (CompaniesRepository companiesRep = new CompaniesRepository())
+            {
+                if (user.DefaultApprovalRouteId.HasValue)
                 {
-                    int companyUserCount = 0;
-                    int companyUserLimit = 0;
-
-                    using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
-                    using (ApprovalRoutesRepository routesRep = new ApprovalRoutesRepository(CurrentUser.CompanyId))
-                    using (PendingUsersRepository pendingUsersRep = new PendingUsersRepository())
-                    using (CompaniesRepository companiesRep = new CompaniesRepository())
-                    {
-                        if (user.DefaultApprovalRouteId.HasValue)
-                        {
-                            var route = routesRep.GetEntity(user.DefaultApprovalRouteId.Value);
-                            if (route == null) return Error(Loc.Dic.error_invalid_form);
-                        }
-
-                        try
-                        {
-                            companyUserCount =
-                                usersRep.GetList().Where(x => x.IsActive).Count() +
-                                pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count();
-
-                            companyUserLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
-                        }
-                        catch
-                        {
-                            return Error(Loc.Dic.error_database_error);
-                        }
-
-                        bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
-                        bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
-
-                        if (userExists || pendingUserExists)
-                            return Error(Loc.Dic.error_users_exist_error);
-                    }
-
-                    if (companyUserCount >= companyUserLimit)
-                        return Error(Loc.Dic.error_users_limit_reached);
-
-                    user.CompanyId = CurrentUser.CompanyId;
-                    user.CreationTime = DateTime.Now;
-
-                    RoleType combinedRoles = RoleType.None;
-                    List<RoleType> forbiddenRoles = GetForbiddenRoles();
-
-                    if (roleNames != null && roleNames.Count() > 0)
-                    {
-                        foreach (string roleName in roleNames)
-                        {
-                            RoleType role;
-                            if (Enum.TryParse(roleName, out role) && !forbiddenRoles.Contains(role))
-                            {
-                                combinedRoles = Roles.CombineRoles(combinedRoles, role);
-                            }
-                            else
-                            {
-                                return Error(Loc.Dic.error_invalid_form);
-                            }
-                        }
-
-                        user.Roles = (int)combinedRoles;
-                        user.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
-
-                        bool wasUserCreated;
-                        using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
-                        {
-                            wasUserCreated = usersRep.Create(user);
-                        }
-
-                        if (wasUserCreated)
-                            return RedirectToAction("Index");
-                        else
-                            return Error(Loc.Dic.error_users_create_error);
-                    }
-                    else
-                    {
-                        return Error(Loc.Dic.error_invalid_form);
-                    }
+                    var route = routesRep.GetEntity(user.DefaultApprovalRouteId.Value);
+                    if (route == null) return Error(Loc.Dic.error_invalid_form);
                 }
-                else
+
+                try
                 {
-                    return Error(Loc.Dic.error_no_permission);
+                    companyUserCount =
+                        usersRep.GetList().Where(x => x.IsActive).Count() +
+                        pendingUsersRep.GetList().Where(x => x.CompanyId == CurrentUser.CompanyId).Count();
+
+                    companyUserLimit = companiesRep.GetEntity(CurrentUser.CompanyId).UsersLimit;
                 }
+                catch
+                {
+                    return Error(Loc.Dic.error_database_error);
+                }
+
+                bool userExists = usersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+                bool pendingUserExists = pendingUsersRep.GetList().Any(x => x.CompanyId == CurrentUser.CompanyId && x.Email == user.Email);
+
+                if (userExists || pendingUserExists)
+                    return Error(Loc.Dic.error_users_exist_error);
             }
-            else
+
+            if (companyUserCount >= companyUserLimit) return Error(Loc.Dic.error_users_limit_reached);
+
+            user.CompanyId = CurrentUser.CompanyId;
+            user.CreationTime = DateTime.Now;
+
+            RoleType combinedRoles = RoleType.None;
+            List<RoleType> forbiddenRoles = GetForbiddenRoles();
+
+            if (roleNames == null || roleNames.Count() == 0) return Error(Loc.Dic.error_invalid_form);
+
+            foreach (string roleName in roleNames)
             {
-                return Error(ModelState);
+                RoleType role;
+                if (!Enum.TryParse(roleName, out role) || forbiddenRoles.Contains(role)) return Error(Loc.Dic.error_invalid_form);
+                combinedRoles = Roles.CombineRoles(combinedRoles, role);
             }
+
+            user.Roles = (int)combinedRoles;
+            user.DefaultApprovalRouteId = user.DefaultApprovalRouteId.HasValue && user.DefaultApprovalRouteId.Value == -1 ? null : user.DefaultApprovalRouteId;
+
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            {
+                if (!usersRep.Create(user)) return Error(Loc.Dic.error_users_create_error);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [OpenIdAuthorize]
@@ -359,7 +210,7 @@ namespace GAppsDev.Controllers
                 if (user == null) return Error(Loc.Dic.error_users_get_error);
 
                 model.User = user;
-                model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).Where(x=>x.Permission.CompanyId == CurrentUser.CompanyId).ToList();
+                model.UserPermissions = user.Budgets_UsersToBaskets.Select(x => new UserPermission() { Permission = x.Budgets_Baskets, IsActive = true }).Where(x => x.Permission.CompanyId == CurrentUser.CompanyId).ToList();
 
                 if (model.UserPermissions == null) return Error(Loc.Dic.error_permissions_get_error);
 
@@ -651,7 +502,7 @@ namespace GAppsDev.Controllers
 
                             RoleType combinedRoles = RoleType.None;
                             List<RoleType> forbiddenRoles = GetForbiddenRoles();
-                            
+
                             foreach (string roleName in roleNames)
                             {
                                 RoleType role;
@@ -695,7 +546,7 @@ namespace GAppsDev.Controllers
             List<User> usersSelectList;
             using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
             {
-                usersSelectList = 
+                usersSelectList =
                     usersRep.GetList()
                     .Where(user => ((RoleType)user.Roles & RoleType.OrdersApprover) == RoleType.OrdersApprover)
                     .ToList();
@@ -712,6 +563,51 @@ namespace GAppsDev.Controllers
             return RedirectToAction("Index");
         }
 
+        [OpenIdAuthorize]
+        public ActionResult Settings()
+        {
+            UserSettingsModel model = new UserSettingsModel();
+            using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
+            using (LanguagesRepository languagesRepository = new LanguagesRepository())
+            {
+                User user = userRepository.GetEntity(CurrentUser.UserId);
+                model.NotificationsEmail = user.NotificationEmail;
+                ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
+            }
+
+            return View(model);
+        }
+
+        [OpenIdAuthorize]
+        [HttpPost]
+        public ActionResult Settings(UserSettingsModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                using (UsersRepository userRepository = new UsersRepository(CurrentUser.CompanyId))
+                using (LanguagesRepository languagesRepository = new LanguagesRepository())
+                {
+                    User user = userRepository.GetEntity(CurrentUser.UserId);
+                    model.NotificationsEmail = user.NotificationEmail;
+                    ViewBag.LanguagesList = new SelectList(languagesRepository.GetList().ToList(), "Id", "Name", user.LanguageId);
+                }
+
+                return View(model);
+            }
+
+            using (UsersRepository usersRep = new UsersRepository(CurrentUser.CompanyId))
+            {
+                User user = usersRep.GetList().SingleOrDefault(x => x.Id == CurrentUser.UserId);
+                user.LanguageId = model.LanguageId;
+                user.NotificationEmail = String.IsNullOrEmpty(model.NotificationsEmail) ? null : model.NotificationsEmail;
+
+                if (usersRep.Update(user) == null) return Error(Loc.Dic.error_database_error);
+                CurrentUser.LanguageCode = user.Language.Code;
+                CurrentUser.NotificationEmail = user.NotificationEmail;
+
+                return RedirectToAction("index", "Home");
+            }
+        }
 
         public ActionResult RemoveNotifications(string id)
         {
@@ -739,7 +635,7 @@ namespace GAppsDev.Controllers
                 User user;
                 using (UsersRepository userRep = new UsersRepository(CurrentUser.CompanyId))
                 {
-                    user = userRep.GetEntity(id, "Language", "User1", "Users1");
+                    user = userRep.GetEntity(id, "Language");
                 }
 
                 if (user == null)
@@ -1082,6 +978,64 @@ namespace GAppsDev.Controllers
             ViewBag.IsCheckBoxed = false;
 
             return PartialView("List", users);
+        }
+
+        private IEnumerable<User> Pagination(IEnumerable<User> users, int page = FIRST_PAGE, string sortby = DEFAULT_SORT, string order = DEFAULT_DESC_ORDER, bool showAll = false)
+        {
+            int numberOfItems = users.Count();
+            int numberOfPages = numberOfItems / ITEMS_PER_PAGE;
+            if (numberOfItems % ITEMS_PER_PAGE != 0)
+                numberOfPages++;
+
+            if (page <= 0)
+                page = FIRST_PAGE;
+            if (page > numberOfPages)
+                page = numberOfPages;
+
+            if (sortby != NO_SORT_BY)
+            {
+                Func<Func<User, dynamic>, IEnumerable<User>> userFunction;
+
+                if (order == DEFAULT_DESC_ORDER)
+                    userFunction = x => users.OrderByDescending(x);
+                else
+                    userFunction = x => users.OrderBy(x);
+
+                switch (sortby)
+                {
+                    case "username":
+                    default:
+                        users = userFunction(x => x.FirstName + " " + x.LastName);
+                        break;
+                    case "roles":
+                        users = userFunction(x => ((RoleType)x.Roles).ToString());
+                        break;
+                    case "email":
+                        users = userFunction(x => x.Email);
+                        break;
+                    case "creation":
+                        users = userFunction(x => x.CreationTime);
+                        break;
+                    case "login":
+                        users = userFunction(x => x.LastLogInTime);
+                        break;
+                }
+            }
+
+            if (!showAll)
+            {
+                users = users
+                    .Skip((page - 1) * ITEMS_PER_PAGE)
+                    .Take(ITEMS_PER_PAGE)
+                    .ToList();
+            }
+
+            ViewBag.Sortby = sortby;
+            ViewBag.Order = order;
+            ViewBag.CurrPage = page;
+            ViewBag.NumberOfPages = numberOfPages;
+
+            return users;
         }
 
         private bool? CompanyCanAddUsers()
