@@ -15,55 +15,55 @@ namespace DB
     public class SupplierMetaData
     {
         [LocalizedNumberString]
-        [LocalizedName("ExternalId")]
+        [LocalizedName("Field_ExternalId")]
         public int ExternalId { get; set; }
 
-        [LocalizedName("VAT_Number")]
+        [LocalizedName("Field_VAT_Number")]
         public int VAT_Number { get; set; }
 
-        [LocalizedName("CreationDate")]
+        [LocalizedName("Field_CreationDate")]
         public DateTime CreationDate { get; set; }
 
-        [LocalizedName("Name")]
+        [LocalizedName("Field_Name")]
         public string Name { get; set; }
 
-        [LocalizedName("Address")]
+        [LocalizedName("Field_Address")]
         public string Address { get; set; }
 
-        [LocalizedName("City")]
+        [LocalizedName("Field_City")]
         public string City { get; set; }
 
-        [LocalizedName("Phone_Number")]
+        [LocalizedName("Field_Phone_Number")]
         public string Phone_Number { get; set; }
 
-        [LocalizedName("Customer_Number")]
+        [LocalizedName("Field_Customer_Number")]
         public string Customer_Number { get; set; }
 
-        [LocalizedName("Additional_Phone")]
+        [LocalizedName("Field_Additional_Phone")]
         public string Additional_Phone { get; set; }
 
-        [LocalizedName("EMail")]
+        [LocalizedName("Field_EMail")]
         public string EMail { get; set; }
 
-        [LocalizedName("Fax")]
+        [LocalizedName("Field_Fax")]
         public string Fax { get; set; }
 
-        [LocalizedName("Activity_Hours")]
+        [LocalizedName("Field_Activity_Hours")]
         public string Activity_Hours { get; set; }
 
-        [LocalizedName("Branch_line")]
+        [LocalizedName("Field_Branch_line")]
         public string Branch_line { get; set; }
 
-        [LocalizedName("Presentor_name")]
+        [LocalizedName("Field_Presentor_name")]
         public string Presentor_name { get; set; }
 
-        [LocalizedName("Crew_Number")]
+        [LocalizedName("Field_Crew_Number")]
         public string Crew_Number { get; set; }
 
-        [LocalizedName("Notes")]
+        [LocalizedName("Field_Notes")]
         public string Notes { get; set; }
 
-        [LocalizedName("IsCanceled")]
+        [LocalizedName("Field_IsCanceled")]
         public bool IsCanceled { get; set; }
     }
 }

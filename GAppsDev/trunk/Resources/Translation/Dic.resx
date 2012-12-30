@@ -1602,4 +1602,55 @@
   <data name="validation_IsNotEmail" xml:space="preserve">
     <value>is not a valid email</value>
   </data>
+  <data name="Field_Activity_Hours" xml:space="preserve">
+    <value>Activity Hours</value>
+  </data>
+  <data name="Field_Additional_Phone" xml:space="preserve">
+    <value>Additional Phone</value>
+  </data>
+  <data name="Field_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Field_Branch_line" xml:space="preserve">
+    <value>Branch line</value>
+  </data>
+  <data name="Field_City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Field_CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Field_Crew_Number" xml:space="preserve">
+    <value>Crew Number</value>
+  </data>
+  <data name="Field_Customer_Number" xml:space="preserve">
+    <value>Customer Number</value>
+  </data>
+  <data name="Field_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Field_ExternalId" xml:space="preserve">
+    <value>External Id</value>
+  </data>
+  <data name="Field_Fax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="Field_IsCanceled" xml:space="preserve">
+    <value>Is Canceled</value>
+  </data>
+  <data name="Field_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Field_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Field_Phone_Number" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Field_Presentor_name" xml:space="preserve">
+    <value>Presentor name</value>
+  </data>
+  <data name="Field_VAT_Number" xml:space="preserve">
+    <value>VAT Number</value>
+  </data>
 </root>
