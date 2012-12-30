@@ -35,19 +35,6 @@ else
     <span class="no-properties">@Loc.Dic.NoActiveUsersFound</span> 
 }
 
-<h2>@Loc.Dic.NewUsers (@Model.PendingUsers.Count)</h2>
-@if(Model.PendingUsers.Count > 0)
-{
-    @Html.Action("PendingUsersList", new { users = Model.PendingUsers, baseUrl = Url.Action("Index"), isOrdered = false, isPaged = false, sortby = "none", order = "DESC", currPage = 1, NumberOfPages = 1 })
-}
-else
-{
-    <div>
-        <span>@Loc.Dic.NoNewUsersFound.</span>
-    </div>
-}
-
-
 <h2>@Loc.Dic.CanceledUsers (@Model.CanceledUsersCount)</h2>
 @if (Model.NonActiveUsers.Count > 0)
 {

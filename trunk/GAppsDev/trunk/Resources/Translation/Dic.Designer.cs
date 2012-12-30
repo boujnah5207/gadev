@@ -4021,7 +4021,7 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Approved.
+        ///   Looks up a localized string similar to Approval completed.
         /// </summary>
         public static string Status_ApprovedPendingInvoice {
             get {
